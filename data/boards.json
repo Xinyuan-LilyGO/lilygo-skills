@@ -1,0 +1,1729 @@
+{
+  "schema_version": 1,
+  "boards": [
+    {
+      "id": "board-t-beam",
+      "family_id": null,
+      "product": false,
+      "display_name": "LilyGO T-Beam",
+      "aliases": [
+        "t-beam",
+        "t beam",
+        "tbeam"
+      ],
+      "mcu": "esp32",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "lora",
+        "gps",
+        "power"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-beam-series/t-beam/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [],
+      "source_hashes": {},
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [],
+      "warnings": [
+        "Series repository covers multiple LoRa products; board aliases should be confirmed during live Wiki refresh."
+      ]
+    },
+    {
+      "id": "board-t-camera-plus-s3",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Camera-Plus-S3",
+      "aliases": [
+        "t camera plus s3",
+        "t-camera-plus-s3",
+        "tcamerapluss3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-camera-series/t-camera-plus-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-camera-series/t-camera-plus-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "788a38c4f2873dbd2a68a19005d3b83a36c41be2d02b392bfece2fe6274d522f",
+        "repo": "d79f7332c02867048cd5b600deb6c70e88aa69ff66e94fa94eac803f59a53f7f",
+        "wiki": "5a3aa3acb73db5de14302c69a8d1b52ef06d0a94ce2b5392f43f1bc3170733c5"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-circle-s3",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Circle-S3",
+      "aliases": [
+        "t circle s3",
+        "t-circle-s3",
+        "tcircles3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3",
+      "wiki_url": "https://wiki.lilygo.cc/products/other/t-circle-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/other/t-circle-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "5446d70ec8f2b7f3a94911f9132b0455c967e3feab9b7408cf9505d08f29a796",
+        "repo": "7656477fc16383296eb87c7a8773c3bb5e40926f3bc929addc4707eeb925f5c5",
+        "wiki": "94b76e6b5da53332f6b6390d9040a02802fa94757bbec5eedaf74376da8e3517"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-connect-pro",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Connect-Pro",
+      "aliases": [
+        "t connect pro",
+        "t-connect-pro",
+        "tconnectpro"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-connect-series/t-connect-pro/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-connect-series/t-connect-pro/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "490ca714a89e359390f6ced7e9a44fee4c6b4f1733a36d0a35852bb359eed92f",
+        "repo": "d8f859b20b3add07f99ee1ed14d3dd9872fe03c63963097710a494bdb3dbcceb",
+        "wiki": "9947a261010199aa9f3e5321ceaac1502e8bcd84325b07f1ef3d5e58fc01416e"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-deck",
+      "family_id": null,
+      "product": false,
+      "display_name": "LilyGO T-Deck",
+      "aliases": [
+        "t-deck",
+        "t deck",
+        "tdeck"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "keyboard",
+        "lora",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-deck-series/t-deck/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [],
+      "source_hashes": {},
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [],
+      "warnings": []
+    },
+    {
+      "id": "board-t-display",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Display",
+      "aliases": [
+        "t display",
+        "t-display",
+        "tdisplay"
+      ],
+      "mcu": "esp32",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "0019c298488efecbdfbf49939571334501ae1108fd574fbfa20b3e49b41f1512",
+        "repo": "953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84",
+        "wiki": "b93ffef7800f2b523d375a9cead11c219e8f9ccd24092305e37435e527200283"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-bar",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Display-Bar",
+      "aliases": [
+        "t display bar",
+        "t-display-bar",
+        "tdisplaybar"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-bar/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-bar/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "ac88dac0d9a29d679abdb65421f15714aa5ec0265d616efbeab63d7f14b7f10a",
+        "repo": "a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216",
+        "wiki": "3ad040b63668023e70e7f853e77321135d98dd4ee08c048f23564361dca53730"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-p4",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Display-P4",
+      "aliases": [
+        "t display p4",
+        "t-display-p4",
+        "tdisplayp4"
+      ],
+      "mcu": "esp32-p4",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-p4/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-p4/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "c09d2e25e1bc3023aa4d3967ae1b114235896d1cf7b283b35c39d19ef1bf0a96",
+        "repo": "c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9",
+        "wiki": "f652e91436a78635824b83239b00355838ebc39d98f064ce8450203a71c67145"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-s3",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Display-S3",
+      "aliases": [
+        "t display",
+        "t display s3",
+        "t-display",
+        "t-display-s3",
+        "tdisplay",
+        "tdisplays3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+          "status": "github-cache"
+        },
+        {
+          "kind": "driver-header",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-pins",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+          "status": "github-live-verified"
+        }
+      ],
+      "source_hashes": {
+        "factory_pin_config": "3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4",
+        "platformio_board": "529abb0314591c5f3c31f517f32b9af98b19cb5e240784e22939512e0d65281a",
+        "product": "2d866d1cf677ed5187500d754fa16dde52fd897597992c6a124ebe0b86b6d9ff",
+        "repo": "08d4319885a8f16d40990f928938d35768d5bff628ff09b7043bcccc361a74ff",
+        "readme": "e0bbb025458c41301494845f4b0ed1df8b9fb4eec188d8db1552d09ba2619e50",
+        "setup206": "809949416716286a5b2db0821608251a1d69463ceea5721ccc5598a7fd841a5c",
+        "wiki": "fc61e9ac5c71f82e2c20891afd0673311455a5134c378bcbafaccb5de61f62a5"
+      },
+      "stale": false,
+      "peripheral_matrix": [
+        {
+          "category": "display",
+          "name": "LCD panel",
+          "chip": "ST7789 170x320 TFT",
+          "bus": "8-bit parallel display bus",
+          "driver": "TFT_eSPI Setup206; ESP-IDF i80-style panel init",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "power",
+          "name": "Display backlight and screen power",
+          "chip": "GPIO-controlled backlight and screen power",
+          "bus": "GPIO38 backlight; GPIO15 screen power",
+          "driver": "PIN_LCD_BL=GPIO38; PIN_POWER_ON=GPIO15",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "demo_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-display-lvgl",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+          "path": "examples/factory/factory.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "tft-display",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+          "path": "examples/tft/tft.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-s3-amoled",
+      "family_id": "board-t-display-s3",
+      "product": true,
+      "display_name": "LilyGO T-Display-S3-AMOLED",
+      "aliases": [
+        "t display s3 amoled",
+        "t-display-s3-amoled",
+        "tdisplays3amoled"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-amoled/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-amoled/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "75fbdf2da64c3294c2dacb641c6d67c68e80f47d878a9476a2ffe3bbd0a89b85",
+        "repo": "a6ce5a3cb587f2fa8efc3a6674b7ed424556deea03d9309a02b092766d88a3c5",
+        "wiki": "30b11117ff804206838c82339d50f37b1b0526b733e25730d2e5b478bb53b25b"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-s3-amoled-1.64",
+      "family_id": "board-t-display-s3",
+      "product": true,
+      "display_name": "LilyGO T-Display-S3-AMOLED-1.64",
+      "aliases": [
+        "t display s3 amoled 1.64",
+        "t-display-s3-amoled-1.64",
+        "tdisplays3amoled1.64"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-amoled-1.64/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-amoled-1.64/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "ae5b9f15f8de43132595790e87c67dc2d93a9574f99d691a29b24a5f71d57634",
+        "repo": "e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7",
+        "wiki": "79d705bcd18ba180da7dec37023d42dc825bb1d5d0ce241bab0f768e034c20ab"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-s3-long",
+      "family_id": "board-t-display-s3",
+      "product": true,
+      "display_name": "LilyGO T-Display-S3-Long",
+      "aliases": [
+        "t display s3 long",
+        "t-display-s3-long",
+        "tdisplays3long"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-long/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-long/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "37f0693c48f607b64a9564544a13df36487a3ef24b607d688e2cfcc98a5ae195",
+        "repo": "5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780",
+        "wiki": "9c44af72fb55f8ac73810054a67a7f8627b7b6eca4bf782ec16ea584b2bae9f6"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-display-s3-pro",
+      "family_id": "board-t-display-s3",
+      "product": true,
+      "display_name": "LilyGO T-Display-S3-Pro",
+      "aliases": [
+        "t display s3 pro",
+        "t-display-s3-pro",
+        "tdisplays3pro"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-pro/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-pro/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "70ffe37eef6c9c408ae1c303b18d4133a6ff6d39c53a9ece591f58b32ef8ea07",
+        "repo": "9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522",
+        "wiki": "4a08ef70c05875efe30ca1d14ed397c5670648fef80596ce20ca6b5699227df8"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-dongle-s3",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Dongle-S3",
+      "aliases": [
+        "t dongle",
+        "t dongle s3",
+        "t-dongle",
+        "t-dongle-s3",
+        "tdongle",
+        "tdongles3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-dongle-series/t-dongle-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-dongle-series/t-dongle-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "7d85cdaec0aeef1716609dc91acb8ea71ef84b3adcee3f974fde8116cda3c40b",
+        "repo": "eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0",
+        "wiki": "7fe7f5571daf46d032004a00359a237cd5f7c2c21a5fe5dd089b5259d0aad1f7"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-encoder-pro",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Encoder-Pro",
+      "aliases": [
+        "t encoder pro",
+        "t-encoder-pro",
+        "tencoderpro"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "input"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-encoder-series/t-encoder-pro/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-encoder-series/t-encoder-pro/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "077db8c79bd135d1bddcfa8e8300978d0631587078bed61975a9beecc7fa4248",
+        "repo": "aecc90be5534e8bfef6d096ddc0da7d091a7b0eb13c9675aab93c17a8ed00504",
+        "wiki": "aba80fe43c9c607f940f71b34c98d810f65cbcadf51ae008a9035a6c1a6bff75"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-halow-p4",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Halow-P4",
+      "aliases": [
+        "t halow p4",
+        "t-halow-p4",
+        "thalowp4"
+      ],
+      "mcu": "esp32-p4",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-halow-series/t-halow-p4/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-halow-series/t-halow-p4/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "0352f4c146e563837cac4ae4d52fb53f31e701d8ee6f19660d2d9332bf0a6cb4",
+        "repo": "d2a3b25353635928e9e44cc5dad2685b32847f98e268ed7cab8a978e892adf47",
+        "wiki": "355592c6d96cb2a98eeca59626835d0c03a0e8400a5ee2856b08d5e80f3e14d2"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-keyboard-s3-pro",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-Keyboard-S3-Pro",
+      "aliases": [
+        "t keyboard s3 pro",
+        "t-keyboard-s3-pro",
+        "tkeyboards3pro"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+      "wiki_url": "https://wiki.lilygo.cc/products/other/t-keyboard-s3-pro/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/other/t-keyboard-s3-pro/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "8d701238162dd08fbe8001e75fcf17e813d036f80b63ff2053c070986ac98fac",
+        "repo": "96485b035ded3d1fc53a0d8a09e78c11a00894c99b585986eef9a0e04ba56862",
+        "wiki": "b855b4a647aad42cd609f8bd7a69ecb8ea789ac835f2a8db7cda44d787412134"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-lora-pager",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T-LoRa-Pager",
+      "aliases": [
+        "t lora pager",
+        "t-lora-pager",
+        "tlorapager"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "lora"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-lora-series/t-lora-pager/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-lora-series/t-lora-pager/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "34fc3f51b661ae5a1f8fd93eb4ccb86ea871bf3fd8ff1e7732079e4cc56f3eac",
+        "repo": "d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a",
+        "wiki": "6f4fbd209dda5147be9fc295037ce42d3bb47fe17634aba93e6b3cd043fcaf35"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "radio-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-watch",
+      "family_id": null,
+      "product": false,
+      "display_name": "LilyGO T-Watch",
+      "aliases": [
+        "t-watch",
+        "t watch",
+        "twatch"
+      ],
+      "mcu": "esp32",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "power",
+        "input"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-2019/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [],
+      "source_hashes": {},
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [],
+      "warnings": [
+        "Watch family variants need live Wiki refresh before pin-level claims."
+      ]
+    },
+    {
+      "id": "board-t-watch-2021",
+      "family_id": "board-t-watch",
+      "product": true,
+      "display_name": "LilyGO T-Watch-2021",
+      "aliases": [
+        "t watch 2021",
+        "t-watch-2021",
+        "twatch2021"
+      ],
+      "mcu": "esp32",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "audio",
+        "display",
+        "input",
+        "power",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T-Watch-2021",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-2021/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-2021/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Watch-2021",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "011544bb3d4e1bd4d3c5efb64c6aede7c21d3562f00dd2eb1d126a6b435f8d63",
+        "repo": "eb4216e63d21f2576eb509357620d258ea03e0a01fec06e61b2be6e41758a51b",
+        "wiki": "b32f0f24d045d394012303c40518b2060170a81921c476ebf56b5e5abd7e3761"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Watch-2021",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-watch-s3",
+      "family_id": "board-t-watch",
+      "product": true,
+      "display_name": "LilyGO T-Watch-S3",
+      "aliases": [
+        "t watch s3",
+        "t-watch-s3",
+        "twatchs3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "audio",
+        "display",
+        "input",
+        "power",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "98e738cd24d8aa6a0794a51cd3707a102a35f83e78fbdbb8f3a11cb9d31c0e96",
+        "repo": "d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a",
+        "wiki": "5523dc5448f53447ab132020f28c98ebff5e7dbd089293148672ddc59a7974f0"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-watch-s3-plus",
+      "family_id": "board-t-watch",
+      "product": true,
+      "display_name": "LilyGO T-Watch-S3-Plus",
+      "aliases": [
+        "t watch s3 plus",
+        "t-watch-s3-plus",
+        "twatchs3plus"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "audio",
+        "display",
+        "input",
+        "power",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3-plus/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3-plus/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "05d9cccc829198e205bd965e54da4aadc0f475ac2e822917f62efb8437296b29",
+        "repo": "d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a",
+        "wiki": "3051b232c0da1eefd3f62a19a10f75a7fcd937313e0547e9bfa40b1ca2648a03"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "board-t-watch-ultra",
+      "family_id": "board-t-watch",
+      "product": true,
+      "display_name": "LilyGO T-Watch-Ultra",
+      "aliases": [
+        "t watch ultra",
+        "t-watch-ultra",
+        "twatch ultra",
+        "twatchultra"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "touch",
+        "lora",
+        "gnss",
+        "nfc",
+        "sensor",
+        "power",
+        "rtc",
+        "audio",
+        "haptic",
+        "input",
+        "storage",
+        "memory"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+      "wiki_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-ultra/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-ultra/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+          "status": "github-cache"
+        },
+        {
+          "kind": "hardware-doc",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "quick-start",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/lilygo-t-watch-ultra.md",
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "driver-header",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-pins",
+          "url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+          "status": "official-github"
+        }
+      ],
+      "source_hashes": {
+        "product": "aafdda493a97511c4930267634d1af766f5701cb6b5625ad82e70a6a3a59659d",
+        "repo": "d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a",
+        "wiki": "7029501dfa15faa31f1d7f9bfd5f00e399e082bde19e7aeb165950b61de0c268"
+      },
+      "stale": false,
+      "peripheral_matrix": [
+        {
+          "category": "display",
+          "name": "AMOLED panel",
+          "chip": "CO5300",
+          "bus": "QSPI",
+          "driver": "LilyGo display interface",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "touch",
+          "name": "Capacitive touch",
+          "chip": "CST9217",
+          "bus": "I2C 0x1A",
+          "driver": "TouchDrvCST92xx",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "gnss",
+          "name": "GNSS receiver",
+          "chip": "u-blox MIA-M10Q",
+          "bus": "UART",
+          "driver": "LilyGoLib GPS",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "radio",
+          "name": "LoRa radio option",
+          "chip": "SX1262 or SX1280",
+          "bus": "SPI",
+          "driver": "RadioLib/LilyGoLib radio",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "nfc",
+          "name": "NFC reader",
+          "chip": "ST25R3916",
+          "bus": "SPI",
+          "driver": "RFAL NFC",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "sensor",
+          "name": "Smart IMU",
+          "chip": "Bosch BHI260AP",
+          "bus": "I2C 0x28",
+          "driver": "SensorBHI260AP",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "power",
+          "name": "Power manager",
+          "chip": "AXP2101",
+          "bus": "I2C 0x34",
+          "driver": "XPowersAXP2101",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "rtc",
+          "name": "Real-time clock",
+          "chip": "PCF85063A",
+          "bus": "I2C 0x51",
+          "driver": "SensorPCF85063",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "audio",
+          "name": "PDM microphone",
+          "chip": "TDK T3902",
+          "bus": "PDM",
+          "driver": "LilyGoLib PDM",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "audio",
+          "name": "Class-D amplifier",
+          "chip": "MAX98357A",
+          "bus": "I2S",
+          "driver": "LilyGoLib audio",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "haptic",
+          "name": "Haptic driver",
+          "chip": "DRV2605",
+          "bus": "I2C 0x5A",
+          "driver": "SensorDRV2605",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "io",
+          "name": "GPIO expander",
+          "chip": "XL9555",
+          "bus": "I2C 0x20",
+          "driver": "ExtensionIOXL9555",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "storage",
+          "name": "MicroSD socket",
+          "chip": "microSD up to 32GB FAT32",
+          "bus": "SPI",
+          "driver": "Arduino SD / LilyGoLib installSD",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "memory",
+          "name": "External flash and PSRAM",
+          "chip": "16MB flash + 8MB PSRAM",
+          "bus": "QSPI",
+          "driver": "ESP32-S3 external memory",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "demo_refs": [
+        {
+          "framework": "arduino",
+          "target": "hello-world",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/helloworld/helloworld.ino",
+          "path": "examples/helloworld/helloworld.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "path": "examples/factory/factory.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "lvgl-get-started",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/lvgl/get_started/get_started.ino",
+          "path": "examples/lvgl/get_started/get_started.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "display-brightness",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/DisplayBrightness/DisplayBrightness.ino",
+          "path": "examples/peripheral/DisplayBrightness/DisplayBrightness.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "gnss",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/GPSFullExample/GPSFullExample.ino",
+          "path": "examples/peripheral/GPSFullExample/GPSFullExample.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "nfc",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/NFC_Reader/NFC_Reader.ino",
+          "path": "examples/peripheral/NFC_Reader/NFC_Reader.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "sd-card",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/SD_Test/SD_Test.ino",
+          "path": "examples/peripheral/SD_Test/SD_Test.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "power-monitor",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/power/PowerManageMonitor/PowerManageMonitor.ino",
+          "path": "examples/power/PowerManageMonitor/PowerManageMonitor.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "imu",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/sensor/BHI260AP_6DoF/BHI260AP_6DoF.ino",
+          "path": "examples/sensor/BHI260AP_6DoF/BHI260AP_6DoF.ino",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "arduino",
+          "target": "radio-factory",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/hw_sx1262.cpp",
+          "path": "examples/factory/hw_sx1262.cpp",
+          "stale": false,
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "framework": "platformio",
+          "target": "platformio-port",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO",
+          "path": "LilyGoLib-PlatformIO",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "LVGL and OTA are cross-board framework/application layers; this product skill exposes hardware capabilities and official source/demo references only.",
+        "Demo links are context/source evidence, not build, flash, serial, OTA, or rendered UI success."
+      ]
+    },
+    {
+      "id": "board-t7-s3",
+      "family_id": null,
+      "product": true,
+      "display_name": "LilyGO T7-S3",
+      "aliases": [
+        "t7 s3",
+        "t7-s3",
+        "t7s3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO/T7-S3",
+      "wiki_url": "https://wiki.lilygo.cc/products/t7-series/t7-s3/",
+      "source_status": "github-cache+wiki-cache",
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t7-series/t7-s3/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T7-S3",
+          "status": "github-cache"
+        }
+      ],
+      "source_hashes": {
+        "product": "58a59a5e42e091dcc3dd3ec33f451c7d81b2dc1137c411839696719fa92b75db",
+        "repo": "57d16067b5503f932b1797c305c0fb3f16d72e08b0dea03de64a7b2fb9fa6417",
+        "wiki": "14a7e7313d79f1616c011a956fe74cde6780f921ebc9cf9945a7bf4ab21ac4d1"
+      },
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "repository-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T7-S3",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Generated from cached Wiki product URL plus GitHub repository metadata; pin-level claims require a product matrix or source lookup."
+      ]
+    },
+    {
+      "id": "series-esp32-s3",
+      "family_id": null,
+      "product": false,
+      "display_name": "LilyGO ESP32-S3 Series",
+      "aliases": [
+        "esp32-s3",
+        "esp32s3",
+        "s3"
+      ],
+      "mcu": "esp32-s3",
+      "supported": true,
+      "frameworks": [
+        "arduino",
+        "esp-idf",
+        "rust",
+        "platformio"
+      ],
+      "peripherals": [
+        "display",
+        "input",
+        "storage"
+      ],
+      "repo_url": "https://github.com/Xinyuan-LilyGO",
+      "wiki_url": "https://wiki.lilygo.cc/products/",
+      "source_status": "series-from-github-cache+wiki-cache",
+      "source_urls": [],
+      "source_hashes": {},
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [],
+      "warnings": [
+        "Series candidate is used only when a prompt names ESP32-S3 without a specific board."
+      ]
+    },
+    {
+      "id": "future-rp2040-product",
+      "family_id": null,
+      "product": false,
+      "display_name": "Future LilyGO RP2040 product",
+      "aliases": [
+        "rp2040"
+      ],
+      "mcu": "rp2040",
+      "supported": false,
+      "frameworks": [],
+      "peripherals": [],
+      "repo_url": "",
+      "wiki_url": "",
+      "source_status": "unsupported-future",
+      "source_urls": [],
+      "source_hashes": {},
+      "stale": false,
+      "peripheral_matrix": [],
+      "demo_refs": [],
+      "warnings": [
+        "Stored only to prove non-ESP32 products do not become active route candidates."
+      ]
+    }
+  ]
+}

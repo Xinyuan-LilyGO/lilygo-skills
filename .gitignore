@@ -1,0 +1,11 @@
+doc/.hook-state.json
+# Aragorn workflow runtime/payload state is local-only. Durable public records
+# live in doc/state.json, doc/progress.md, doc/roadmap.md, doc/dev.md,
+# doc/design/**, doc/test-reports/**, doc/checkpoint/**, and doc/evidence/**.
+doc/workflow/
+.lilygo-skills/local.json
+.lilygo-skills/evidence/
+.lilygo-skills/generated-skills/
+.artifact-lens/
+.tmp/
+target/

@@ -1,0 +1,1318 @@
+{
+  "schema_version": 1,
+  "skills": [
+    {
+      "id": "lilygo-router",
+      "kind": "router",
+      "path": "skills/lilygo-router/SKILL.md",
+      "summary": "Top-level LilyGO ESP32-family routing and official source navigation.",
+      "triggers": [
+        "lilygo",
+        "t-display",
+        "t-beam",
+        "t-deck",
+        "t-watch",
+        "ttgo"
+      ],
+      "aliases": [],
+      "priority": 100,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "board-t-display-s3",
+      "kind": "board",
+      "path": "skills/board-t-display-s3/SKILL.md",
+      "summary": "LilyGO T-Display-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplay",
+        "t display",
+        "t-display",
+        "tdisplays3",
+        "t display s3",
+        "t display-s3",
+        "t-display s3",
+        "t-display-s3"
+      ],
+      "aliases": [
+        "tdisplay",
+        "t display",
+        "t-display",
+        "tdisplays3",
+        "t display s3",
+        "t display-s3",
+        "t-display s3",
+        "t-display-s3"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-beam",
+      "kind": "board",
+      "path": "skills/board-t-beam/SKILL.md",
+      "summary": "LilyGO T-Beam ESP32 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tbeam",
+        "t beam",
+        "t-beam"
+      ],
+      "aliases": [
+        "tbeam",
+        "t beam",
+        "t-beam"
+      ],
+      "priority": 90,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "board-t-deck",
+      "kind": "board",
+      "path": "skills/board-t-deck/SKILL.md",
+      "summary": "LilyGO T-Deck ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdeck",
+        "t deck",
+        "t-deck"
+      ],
+      "aliases": [
+        "tdeck",
+        "t deck",
+        "t-deck"
+      ],
+      "priority": 90,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "board-t-watch",
+      "kind": "board",
+      "path": "skills/board-t-watch/SKILL.md",
+      "summary": "LilyGO T-Watch ESP32 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "twatch",
+        "t watch",
+        "t-watch"
+      ],
+      "aliases": [
+        "twatch",
+        "t watch",
+        "t-watch"
+      ],
+      "priority": 90,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "board-t-dongle-s3",
+      "kind": "board",
+      "path": "skills/board-t-dongle-s3/SKILL.md",
+      "summary": "LilyGO T-Dongle-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdongle",
+        "t dongle",
+        "t-dongle",
+        "tdongles3",
+        "t dongle s3",
+        "t dongle-s3",
+        "t-dongle s3",
+        "t-dongle-s3"
+      ],
+      "aliases": [
+        "tdongle",
+        "t dongle",
+        "t-dongle",
+        "tdongles3",
+        "t dongle s3",
+        "t dongle-s3",
+        "t-dongle s3",
+        "t-dongle-s3"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "series-esp32-s3",
+      "kind": "board",
+      "path": "skills/series-esp32-s3/SKILL.md",
+      "summary": "LilyGO ESP32-S3 Series context for prompts that name the esp32-s3 family before a specific LilyGO board.",
+      "triggers": [
+        "s3",
+        "esp32s3",
+        "esp32 s3",
+        "esp32-s3",
+        "esp32s3series",
+        "esp32 s3 series",
+        "esp32-s3 series"
+      ],
+      "aliases": [
+        "s3",
+        "esp32s3",
+        "esp32 s3",
+        "esp32-s3"
+      ],
+      "priority": 80,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "fw-arduino",
+      "kind": "framework",
+      "path": "skills/fw-arduino/SKILL.md",
+      "summary": "Official Arduino-ESP32 and Arduino CLI context for LilyGO boards.",
+      "triggers": [
+        "arduino",
+        "arduino-esp32"
+      ],
+      "aliases": [],
+      "priority": 70,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "fw-esp-idf",
+      "kind": "framework",
+      "path": "skills/fw-esp-idf/SKILL.md",
+      "summary": "Official ESP-IDF and idf.py context for LilyGO ESP32 boards.",
+      "triggers": [
+        "esp-idf",
+        "idf.py",
+        "idf"
+      ],
+      "aliases": [],
+      "priority": 70,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "fw-rust",
+      "kind": "framework",
+      "path": "skills/fw-rust/SKILL.md",
+      "summary": "Official esp-rs Rust context and support boundaries for LilyGO ESP32 targets.",
+      "triggers": [
+        "rust",
+        "esp-rs",
+        "esp rs",
+        "embedded-hal"
+      ],
+      "aliases": [],
+      "priority": 70,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "fw-platformio",
+      "kind": "framework",
+      "path": "skills/fw-platformio/SKILL.md",
+      "summary": "Official PlatformIO Core runner context for LilyGO Arduino-style projects.",
+      "triggers": [
+        "platformio",
+        "platformio.ini",
+        "pio"
+      ],
+      "aliases": [],
+      "priority": 68,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "fw-lvgl",
+      "kind": "framework",
+      "path": "skills/fw-lvgl/SKILL.md",
+      "summary": "Official LVGL and esp_lvgl_port display loop context for LilyGO screens and watches.",
+      "triggers": [
+        "lvgl"
+      ],
+      "aliases": [],
+      "priority": 65,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-gps",
+      "kind": "peripheral",
+      "path": "skills/periph-gps/SKILL.md",
+      "summary": "GPS/GNSS fix, UART, antenna, and serial evidence context.",
+      "triggers": [
+        "gps",
+        "gnss",
+        "ublox",
+        "nmea"
+      ],
+      "aliases": [],
+      "priority": 60,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-cellular",
+      "kind": "peripheral",
+      "path": "skills/periph-cellular/SKILL.md",
+      "summary": "Cellular modem, SIM, PPP, LTE, and AT command context for LilyGO boards.",
+      "triggers": [
+        "cellular",
+        "lte",
+        "sim",
+        "ppp",
+        "modem",
+        "at command"
+      ],
+      "aliases": [],
+      "priority": 58,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "debug-flash-serial",
+      "kind": "debug",
+      "path": "skills/debug-flash-serial/SKILL.md",
+      "summary": "Flash, upload, serial monitor, and boot log debug source context.",
+      "triggers": [
+        "flash",
+        "serial",
+        "upload",
+        "monitor",
+        "debug",
+        "boot log"
+      ],
+      "aliases": [],
+      "priority": 55,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "debug-lvgl-loop",
+      "kind": "debug",
+      "path": "skills/debug-lvgl-loop/SKILL.md",
+      "summary": "LVGL debug-loop context for blank screen, input, rotation, refresh, heap, and timing symptoms.",
+      "triggers": [
+        "lvgl debug",
+        "flush",
+        "rotation",
+        "refresh",
+        "heap",
+        "touch input"
+      ],
+      "aliases": [],
+      "priority": 55,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "app-ota",
+      "kind": "application",
+      "path": "skills/app-ota/SKILL.md",
+      "summary": "OTA update flow context and evidence boundary for LilyGO boards.",
+      "triggers": [
+        "ota",
+        "firmware update",
+        "manifest",
+        "rollback"
+      ],
+      "aliases": [],
+      "priority": 55,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "app-smart-display",
+      "kind": "application",
+      "path": "skills/app-smart-display/SKILL.md",
+      "summary": "Smart display, dashboard, kiosk, and LVGL application context.",
+      "triggers": [
+        "smart display",
+        "dashboard",
+        "kiosk"
+      ],
+      "aliases": [],
+      "priority": 52,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "app-watch-ui-lvgl",
+      "kind": "application",
+      "path": "skills/app-watch-ui-lvgl/SKILL.md",
+      "summary": "WatchOS LVGL page-loop context for LilyGO T-Watch UI flows.",
+      "triggers": [
+        "watch ui",
+        "watchos",
+        "page loop"
+      ],
+      "aliases": [],
+      "priority": 52,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "app-meshtastic",
+      "kind": "application",
+      "path": "skills/app-meshtastic/SKILL.md",
+      "summary": "Meshtastic-style LoRa application context for T-Beam and T-Deck families.",
+      "triggers": [
+        "meshtastic",
+        "mesh"
+      ],
+      "aliases": [],
+      "priority": 52,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-arduino-cli",
+      "kind": "tool",
+      "path": "skills/tool-arduino-cli/SKILL.md",
+      "summary": "Official Arduino CLI install, compile, upload, board, and library context.",
+      "triggers": [
+        "arduino-cli",
+        "arduino cli",
+        "board manager",
+        "library manager"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-platformio-cli",
+      "kind": "tool",
+      "path": "skills/tool-platformio-cli/SKILL.md",
+      "summary": "Official PlatformIO Core CLI context for pio run, upload, monitor, and environments.",
+      "triggers": [
+        "platformio",
+        "platformio.ini",
+        "pio run",
+        "pio device monitor"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-espressif-doc-mcp",
+      "kind": "tool",
+      "path": "skills/tool-espressif-doc-mcp/SKILL.md",
+      "summary": "Official Espressif documentation MCP/source lookup context for ESP-IDF and chip docs.",
+      "triggers": [
+        "espressif mcp",
+        "esp-idf docs",
+        "source lookup"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-serial-debug",
+      "kind": "tool",
+      "path": "skills/tool-serial-debug/SKILL.md",
+      "summary": "Local serial-debug and serial-mcp-server context for serial evidence workflows.",
+      "triggers": [
+        "serial port",
+        "boot log",
+        "rts",
+        "dtr",
+        "serial-mcp"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-embedded-debugger",
+      "kind": "tool",
+      "path": "skills/tool-embedded-debugger/SKILL.md",
+      "summary": "Local embedded-debugger safety context for probe and debug evidence boundaries.",
+      "triggers": [
+        "probe",
+        "jtag",
+        "debugger",
+        "breakpoint"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "tool-lvgl-simulator",
+      "kind": "tool",
+      "path": "skills/tool-lvgl-simulator/SKILL.md",
+      "summary": "Official LVGL PC simulator and page-data context for V4 render evidence.",
+      "triggers": [
+        "lvgl simulator",
+        "page-data",
+        "screenshot"
+      ],
+      "aliases": [],
+      "priority": 45,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "board-t-camera-plus-s3",
+      "kind": "board",
+      "path": "skills/board-t-camera-plus-s3/SKILL.md",
+      "summary": "LilyGO T-Camera-Plus-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tcamerapluss3",
+        "t camera plus s3",
+        "t camera plus-s3",
+        "t camera-plus s3",
+        "t camera-plus-s3",
+        "t-camera plus s3",
+        "t-camera plus-s3",
+        "t-camera-plus s3",
+        "t-camera-plus-s3"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-circle-s3",
+      "kind": "board",
+      "path": "skills/board-t-circle-s3/SKILL.md",
+      "summary": "LilyGO T-Circle-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tcircles3",
+        "t circle s3",
+        "t circle-s3",
+        "t-circle s3",
+        "t-circle-s3"
+      ],
+      "aliases": [
+        "tcircles3",
+        "t circle s3",
+        "t circle-s3",
+        "t-circle s3",
+        "t-circle-s3"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-connect-pro",
+      "kind": "board",
+      "path": "skills/board-t-connect-pro/SKILL.md",
+      "summary": "LilyGO T-Connect-Pro ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tconnectpro",
+        "t connect pro",
+        "t connect-pro",
+        "t-connect pro",
+        "t-connect-pro"
+      ],
+      "aliases": [
+        "tconnectpro"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-display",
+      "kind": "board",
+      "path": "skills/board-t-display/SKILL.md",
+      "summary": "LilyGO T-Display ESP32 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplay",
+        "t display",
+        "t-display"
+      ],
+      "aliases": [
+        "tdisplay",
+        "t display",
+        "t-display"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-display-bar",
+      "kind": "board",
+      "path": "skills/board-t-display-bar/SKILL.md",
+      "summary": "LilyGO T-Display-Bar ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplaybar",
+        "t display bar",
+        "t display-bar",
+        "t-display bar",
+        "t-display-bar"
+      ],
+      "aliases": [
+        "tdisplaybar"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-display-p4",
+      "kind": "board",
+      "path": "skills/board-t-display-p4/SKILL.md",
+      "summary": "LilyGO T-Display-P4 ESP32-P4 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplayp4",
+        "t display p4",
+        "t display-p4",
+        "t-display p4",
+        "t-display-p4"
+      ],
+      "aliases": [
+        "tdisplayp4",
+        "t display p4",
+        "t display-p4",
+        "t-display p4",
+        "t-display-p4"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-display-s3-amoled",
+      "kind": "board",
+      "path": "skills/board-t-display-s3-amoled/SKILL.md",
+      "summary": "LilyGO T-Display-S3-AMOLED ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplays3amoled",
+        "t display s3 amoled",
+        "t display s3-amoled",
+        "t display-s3 amoled",
+        "t display-s3-amoled",
+        "t-display s3 amoled",
+        "t-display s3-amoled",
+        "t-display-s3 amoled",
+        "t-display-s3-amoled"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-display-s3",
+      "product": true
+    },
+    {
+      "id": "board-t-display-s3-amoled-1.64",
+      "kind": "board",
+      "path": "skills/board-t-display-s3-amoled-1.64/SKILL.md",
+      "summary": "LilyGO T-Display-S3-AMOLED-1.64 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplays3amoled1.64",
+        "t display s3 amoled 1.64",
+        "t display s3 amoled-1.64",
+        "t display s3-amoled 1.64",
+        "t display s3-amoled-1.64",
+        "t display-s3 amoled 1.64",
+        "t display-s3 amoled-1.64",
+        "t display-s3-amoled 1.64",
+        "t display-s3-amoled-1.64",
+        "t-display s3 amoled 1.64",
+        "t-display s3 amoled-1.64",
+        "t-display s3-amoled 1.64",
+        "t-display s3-amoled-1.64",
+        "t-display-s3 amoled 1.64",
+        "t-display-s3 amoled-1.64",
+        "t-display-s3-amoled 1.64",
+        "t-display-s3-amoled-1.64"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-display-s3",
+      "product": true
+    },
+    {
+      "id": "board-t-display-s3-long",
+      "kind": "board",
+      "path": "skills/board-t-display-s3-long/SKILL.md",
+      "summary": "LilyGO T-Display-S3-Long ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplays3long",
+        "t display s3 long",
+        "t display s3-long",
+        "t display-s3 long",
+        "t display-s3-long",
+        "t-display s3 long",
+        "t-display s3-long",
+        "t-display-s3 long",
+        "t-display-s3-long"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-display-s3",
+      "product": true
+    },
+    {
+      "id": "board-t-display-s3-pro",
+      "kind": "board",
+      "path": "skills/board-t-display-s3-pro/SKILL.md",
+      "summary": "LilyGO T-Display-S3-Pro ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tdisplays3pro",
+        "t display s3 pro",
+        "t display s3-pro",
+        "t display-s3 pro",
+        "t display-s3-pro",
+        "t-display s3 pro",
+        "t-display s3-pro",
+        "t-display-s3 pro",
+        "t-display-s3-pro"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-display-s3",
+      "product": true
+    },
+    {
+      "id": "board-t-encoder-pro",
+      "kind": "board",
+      "path": "skills/board-t-encoder-pro/SKILL.md",
+      "summary": "LilyGO T-Encoder-Pro ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tencoderpro",
+        "t encoder pro",
+        "t encoder-pro",
+        "t-encoder pro",
+        "t-encoder-pro"
+      ],
+      "aliases": [
+        "tencoderpro"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-halow-p4",
+      "kind": "board",
+      "path": "skills/board-t-halow-p4/SKILL.md",
+      "summary": "LilyGO T-Halow-P4 ESP32-P4 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "thalowp4",
+        "t halow p4",
+        "t halow-p4",
+        "t-halow p4",
+        "t-halow-p4"
+      ],
+      "aliases": [
+        "thalowp4",
+        "t halow p4",
+        "t halow-p4",
+        "t-halow p4",
+        "t-halow-p4"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-keyboard-s3-pro",
+      "kind": "board",
+      "path": "skills/board-t-keyboard-s3-pro/SKILL.md",
+      "summary": "LilyGO T-Keyboard-S3-Pro ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tkeyboards3pro",
+        "t keyboard s3 pro",
+        "t keyboard s3-pro",
+        "t keyboard-s3 pro",
+        "t keyboard-s3-pro",
+        "t-keyboard s3 pro",
+        "t-keyboard s3-pro",
+        "t-keyboard-s3 pro",
+        "t-keyboard-s3-pro"
+      ],
+      "aliases": [],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-lora-pager",
+      "kind": "board",
+      "path": "skills/board-t-lora-pager/SKILL.md",
+      "summary": "LilyGO T-LoRa-Pager ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "tlorapager",
+        "t lora pager",
+        "t lora-pager",
+        "t-lora pager",
+        "t-lora-pager"
+      ],
+      "aliases": [
+        "tlorapager",
+        "t lora pager",
+        "t lora-pager",
+        "t-lora pager",
+        "t-lora-pager"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "board-t-watch-2021",
+      "kind": "board",
+      "path": "skills/board-t-watch-2021/SKILL.md",
+      "summary": "LilyGO T-Watch-2021 ESP32 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "twatch2021",
+        "t watch 2021",
+        "t watch-2021",
+        "t-watch 2021",
+        "t-watch-2021"
+      ],
+      "aliases": [
+        "twatch2021",
+        "t watch 2021",
+        "t watch-2021",
+        "t-watch 2021",
+        "t-watch-2021"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-watch",
+      "product": true
+    },
+    {
+      "id": "board-t-watch-s3",
+      "kind": "board",
+      "path": "skills/board-t-watch-s3/SKILL.md",
+      "summary": "LilyGO T-Watch-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "twatchs3",
+        "t watch s3",
+        "t watch-s3",
+        "t-watch s3",
+        "t-watch-s3"
+      ],
+      "aliases": [
+        "twatchs3",
+        "t watch s3",
+        "t watch-s3",
+        "t-watch s3",
+        "t-watch-s3"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-watch",
+      "product": true
+    },
+    {
+      "id": "board-t-watch-s3-plus",
+      "kind": "board",
+      "path": "skills/board-t-watch-s3-plus/SKILL.md",
+      "summary": "LilyGO T-Watch-S3-Plus ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "twatchs3plus",
+        "t watch s3 plus",
+        "t watch s3-plus",
+        "t watch-s3 plus",
+        "t watch-s3-plus",
+        "t-watch s3 plus",
+        "t-watch s3-plus",
+        "t-watch-s3 plus",
+        "t-watch-s3-plus"
+      ],
+      "aliases": [
+        "twatchs3plus"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-watch",
+      "product": true
+    },
+    {
+      "id": "board-t-watch-ultra",
+      "kind": "board",
+      "path": "skills/board-t-watch-ultra/SKILL.md",
+      "summary": "LilyGO T-Watch-Ultra ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "twatchultra",
+        "twatch ultra",
+        "t watch ultra",
+        "t watch-ultra",
+        "t-watch ultra",
+        "t-watch-ultra"
+      ],
+      "aliases": [
+        "twatchultra",
+        "twatch ultra"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": "board-t-watch",
+      "product": true
+    },
+    {
+      "id": "board-t7-s3",
+      "kind": "board",
+      "path": "skills/board-t7-s3/SKILL.md",
+      "summary": "LilyGO T7-S3 ESP32-S3 board context with official GitHub, Wiki, and product source pointers.",
+      "triggers": [
+        "t7s3",
+        "t7 s3",
+        "t7-s3"
+      ],
+      "aliases": [
+        "t7s3",
+        "t7 s3",
+        "t7-s3"
+      ],
+      "priority": 95,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": true
+    },
+    {
+      "id": "periph-display",
+      "kind": "peripheral",
+      "path": "skills/periph-display/SKILL.md",
+      "summary": "Display, backlight, panel, touch, and blank-screen context with official board source pointers.",
+      "triggers": [
+        "display",
+        "screen",
+        "lcd",
+        "touch",
+        "blank",
+        "backlight",
+        "amoled"
+      ],
+      "aliases": [],
+      "priority": 60,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-lora",
+      "kind": "peripheral",
+      "path": "skills/periph-lora/SKILL.md",
+      "summary": "LoRa, SX126x/SX127x, region, antenna, and Meshtastic-style context.",
+      "triggers": [
+        "lora",
+        "sx1262",
+        "sx1268",
+        "sx1276",
+        "sx1278",
+        "sx1280",
+        "meshtastic"
+      ],
+      "aliases": [],
+      "priority": 60,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-power",
+      "kind": "peripheral",
+      "path": "skills/periph-power/SKILL.md",
+      "summary": "Battery, PMU, charging, sleep, and power rail context for LilyGO boards.",
+      "triggers": [
+        "battery",
+        "pmu",
+        "power",
+        "charging",
+        "sleep"
+      ],
+      "aliases": [],
+      "priority": 58,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-input",
+      "kind": "peripheral",
+      "path": "skills/periph-input/SKILL.md",
+      "summary": "Touch, buttons, keyboard, encoder, and input event context.",
+      "triggers": [
+        "touch",
+        "button",
+        "keyboard",
+        "encoder",
+        "input"
+      ],
+      "aliases": [],
+      "priority": 58,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-storage",
+      "kind": "peripheral",
+      "path": "skills/periph-storage/SKILL.md",
+      "summary": "SD, SPIFFS, LittleFS, partition, and asset storage context.",
+      "triggers": [
+        "sd",
+        "tf",
+        "spiffs",
+        "littlefs",
+        "storage",
+        "partition"
+      ],
+      "aliases": [],
+      "priority": 58,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-audio",
+      "kind": "peripheral",
+      "path": "skills/periph-audio/SKILL.md",
+      "summary": "I2S microphone, speaker, codec, and audio pipeline context.",
+      "triggers": [
+        "audio",
+        "i2s",
+        "microphone",
+        "speaker",
+        "codec"
+      ],
+      "aliases": [],
+      "priority": 58,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-axp2101",
+      "kind": "chip",
+      "path": "skills/chip-axp2101/SKILL.md",
+      "summary": "AXP2101 chip context from source pack periph-pack-t-watch-ultra-power-axp2101.",
+      "triggers": [
+        "axp2101"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-bhi260ap",
+      "kind": "chip",
+      "path": "skills/chip-bhi260ap/SKILL.md",
+      "summary": "Bosch BHI260AP chip context from source pack periph-pack-t-watch-ultra-imu-bhi260ap.",
+      "triggers": [
+        "bosch bhi260ap",
+        "bhi260ap"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-co5300",
+      "kind": "chip",
+      "path": "skills/chip-co5300/SKILL.md",
+      "summary": "CO5300 chip context from source pack periph-pack-t-watch-ultra-display-co5300.",
+      "triggers": [
+        "co5300"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-cst9217",
+      "kind": "chip",
+      "path": "skills/chip-cst9217/SKILL.md",
+      "summary": "CST9217 chip context from source pack periph-pack-t-watch-ultra-touch-cst9217.",
+      "triggers": [
+        "cst9217"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-drv2605",
+      "kind": "chip",
+      "path": "skills/chip-drv2605/SKILL.md",
+      "summary": "DRV2605 chip context from source pack periph-pack-t-watch-ultra-haptic-drv2605.",
+      "triggers": [
+        "drv2605"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-max98357a",
+      "kind": "chip",
+      "path": "skills/chip-max98357a/SKILL.md",
+      "summary": "MAX98357A chip context from source pack periph-pack-t-watch-ultra-audio-max98357a.",
+      "triggers": [
+        "max98357a"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-mia-m10q",
+      "kind": "chip",
+      "path": "skills/chip-mia-m10q/SKILL.md",
+      "summary": "u-blox MIA-M10Q chip context from source pack periph-pack-t-watch-ultra-gnss-mia-m10q.",
+      "triggers": [
+        "u-blox mia-m10q",
+        "mia-m10q"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-pcf85063a",
+      "kind": "chip",
+      "path": "skills/chip-pcf85063a/SKILL.md",
+      "summary": "PCF85063A chip context from source pack periph-pack-t-watch-ultra-rtc-pcf85063a.",
+      "triggers": [
+        "pcf85063a"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-st25r3916",
+      "kind": "chip",
+      "path": "skills/chip-st25r3916/SKILL.md",
+      "summary": "ST25R3916 chip context from source pack periph-pack-t-watch-ultra-nfc-st25r3916.",
+      "triggers": [
+        "st25r3916"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-tdk-t3902",
+      "kind": "chip",
+      "path": "skills/chip-tdk-t3902/SKILL.md",
+      "summary": "TDK T3902 chip context from source pack periph-pack-t-watch-ultra-audio-tdk-t3902.",
+      "triggers": [
+        "tdk t3902",
+        "tdk-t3902"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "chip-xl9555",
+      "kind": "chip",
+      "path": "skills/chip-xl9555/SKILL.md",
+      "summary": "XL9555 chip context from source pack periph-pack-t-watch-ultra-input-xl9555.",
+      "triggers": [
+        "xl9555"
+      ],
+      "aliases": [],
+      "priority": 73,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "feature-raise-to-wake",
+      "kind": "feature",
+      "path": "skills/feature-raise-to-wake/SKILL.md",
+      "summary": "raise-to-wake feature guidance for board-t-watch-ultra using Bosch BHI260AP context.",
+      "triggers": [
+        "raise-to-wake",
+        "tilt-to-wake",
+        "wrist raise",
+        "抬腕"
+      ],
+      "aliases": [],
+      "priority": 64,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    },
+    {
+      "id": "periph-imu",
+      "kind": "peripheral",
+      "path": "skills/periph-imu/SKILL.md",
+      "summary": "imu peripheral source-pack context with ranked board, chip, and framework references.",
+      "triggers": [
+        "imu",
+        "6dof",
+        "accelerometer",
+        "gyroscope",
+        "gesture"
+      ],
+      "aliases": [],
+      "priority": 74,
+      "verification_level": "context-injection",
+      "family_id": null,
+      "product": false
+    }
+  ],
+  "route_fixtures": [
+    {
+      "id": "display-idf-lvgl",
+      "prompt": "T-Display-S3 ESP-IDF LVGL screen is blank",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-display-s3",
+        "fw-esp-idf",
+        "fw-lvgl",
+        "periph-display",
+        "debug-lvgl-loop"
+      ]
+    },
+    {
+      "id": "beam-arduino-lora",
+      "prompt": "LilyGO T-Beam Arduino LoRa GPS example",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-beam",
+        "fw-arduino",
+        "periph-lora",
+        "periph-gps"
+      ]
+    },
+    {
+      "id": "beam-sx1262-lora",
+      "prompt": "LilyGO T-Beam SX1262 range test",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-beam",
+        "periph-lora"
+      ]
+    },
+    {
+      "id": "plain-report",
+      "prompt": "Python script for a desktop CSV report",
+      "expect_decision": "no-op",
+      "expect_skills": []
+    },
+    {
+      "id": "generated-dongle",
+      "prompt": "LilyGO T-Dongle-S3 Arduino USB display",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-dongle-s3",
+        "fw-arduino",
+        "periph-display"
+      ]
+    },
+    {
+      "id": "generic-s3-lvgl",
+      "prompt": "LilyGO ESP32-S3 LVGL touch input does not move",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "series-esp32-s3",
+        "fw-lvgl",
+        "periph-display",
+        "debug-lvgl-loop"
+      ]
+    },
+    {
+      "id": "product-t-watch-ultra-lvgl",
+      "prompt": "T-Watch Ultra ESP-IDF LVGL serial demo",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-watch-ultra",
+        "fw-esp-idf",
+        "fw-lvgl",
+        "periph-display",
+        "debug-lvgl-loop",
+        "debug-flash-serial"
+      ]
+    },
+    {
+      "id": "t-watch-ultra-raise-to-wake",
+      "prompt": "T-Watch Ultra Arduino IMU 抬腕检测怎么做",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-watch-ultra",
+        "periph-imu",
+        "chip-bhi260ap",
+        "fw-arduino",
+        "feature-raise-to-wake"
+      ]
+    },
+    {
+      "id": "t-watch-ultra-bhi260ap-source",
+      "prompt": "T-Watch Ultra BHI260AP driver source Arduino example",
+      "expect_decision": "inject",
+      "expect_skills": [
+        "board-t-watch-ultra",
+        "periph-imu",
+        "chip-bhi260ap",
+        "fw-arduino"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "skills": [
+    {
+      "id": "app-meshtastic",
+      "kind": "app",
+      "source_path": "data/skills/reference/app-meshtastic.md"
+    },
+    {
+      "id": "app-ota",
+      "kind": "app",
+      "source_path": "data/skills/reference/app-ota.md"
+    },
+    {
+      "id": "app-smart-display",
+      "kind": "app",
+      "source_path": "data/skills/reference/app-smart-display.md"
+    },
+    {
+      "id": "app-watch-ui-lvgl",
+      "kind": "app",
+      "source_path": "data/skills/reference/app-watch-ui-lvgl.md"
+    },
+    {
+      "id": "debug-flash-serial",
+      "kind": "debug",
+      "source_path": "data/skills/reference/debug-flash-serial.md"
+    },
+    {
+      "id": "debug-lvgl-loop",
+      "kind": "debug",
+      "source_path": "data/skills/reference/debug-lvgl-loop.md"
+    },
+    {
+      "id": "fw-arduino",
+      "kind": "framework",
+      "source_path": "data/skills/reference/fw-arduino.md"
+    },
+    {
+      "id": "fw-esp-idf",
+      "kind": "framework",
+      "source_path": "data/skills/reference/fw-esp-idf.md"
+    },
+    {
+      "id": "fw-lvgl",
+      "kind": "framework",
+      "source_path": "data/skills/reference/fw-lvgl.md"
+    },
+    {
+      "id": "fw-platformio",
+      "kind": "framework",
+      "source_path": "data/skills/reference/fw-platformio.md"
+    },
+    {
+      "id": "fw-rust",
+      "kind": "framework",
+      "source_path": "data/skills/reference/fw-rust.md"
+    },
+    {
+      "id": "periph-audio",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-audio.md"
+    },
+    {
+      "id": "periph-cellular",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-cellular.md"
+    },
+    {
+      "id": "periph-display",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-display.md"
+    },
+    {
+      "id": "periph-gps",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-gps.md"
+    },
+    {
+      "id": "periph-input",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-input.md"
+    },
+    {
+      "id": "periph-lora",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-lora.md"
+    },
+    {
+      "id": "periph-power",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-power.md"
+    },
+    {
+      "id": "periph-storage",
+      "kind": "peripheral",
+      "source_path": "data/skills/reference/periph-storage.md"
+    },
+    {
+      "id": "tool-arduino-cli",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-arduino-cli.md"
+    },
+    {
+      "id": "tool-embedded-debugger",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-embedded-debugger.md"
+    },
+    {
+      "id": "tool-espressif-doc-mcp",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-espressif-doc-mcp.md"
+    },
+    {
+      "id": "tool-lvgl-simulator",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-lvgl-simulator.md"
+    },
+    {
+      "id": "tool-platformio-cli",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-platformio-cli.md"
+    },
+    {
+      "id": "tool-serial-debug",
+      "kind": "tool",
+      "source_path": "data/skills/reference/tool-serial-debug.md"
+    }
+  ]
+}

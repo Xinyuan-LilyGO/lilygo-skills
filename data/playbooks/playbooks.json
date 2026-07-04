@@ -1,0 +1,556 @@
+{
+  "schema_version": 1,
+  "playbooks": [
+    {
+      "id": "playbook-source-discovery",
+      "title": "Source discovery playbook",
+      "summary": "Find official board code, examples, headers, docs, datasheets, and framework references before precise implementation.",
+      "domains": [
+        "source",
+        "official",
+        "documentation",
+        "fact-check"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf",
+        "rust"
+      ],
+      "trigger_terms": [
+        "source",
+        "official",
+        "documentation",
+        "datasheet",
+        "pinout",
+        "wiki"
+      ],
+      "load_when": "implementation_or_debug_when_exact facts are needed",
+      "authority": "source-navigation",
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO",
+        "https://github.com/Xinyuan-LilyGO/documentation",
+        "https://wiki.lilygo.cc/",
+        "https://docs.espressif.com/projects/esp-idf/",
+        "https://docs.lvgl.io/8.3/"
+      ],
+      "required_board_facts": [
+        "board id",
+        "framework",
+        "chip or peripheral topic",
+        "source authority for each fact"
+      ],
+      "diagnostic_axes": [
+        "official source present",
+        "example path present",
+        "header or variant present",
+        "fact conflict or unknown_with_sources",
+        "topic completeness"
+      ],
+      "steps": [
+        "Classify board, framework, peripheral, and evidence target.",
+        "Read official board repository examples and headers before lower-authority notes.",
+        "Use documentation repo and wiki as navigation, not as a replacement for code/header facts.",
+        "Run source query or source completeness when pins, buses, drivers, or demos are missing.",
+        "Return unknown_with_sources or needs_source_ingestion when exact facts are absent."
+      ],
+      "failure_classes": [
+        "missing-official-source",
+        "conflicting-board-fact",
+        "stale-source-pack",
+        "unsupported-non-esp32"
+      ],
+      "evidence_targets": [
+        "source_refs with authority rank",
+        "source query command",
+        "source completeness status",
+        "update board-facts dry-run command"
+      ],
+      "anti_claims": [
+        "Source links cannot prove the user's firmware builds or runs.",
+        "Do not claim pins, buses, rails, or demos without source-backed facts."
+      ],
+      "resource_hints": [
+        "Use project references for public extra sources with explanations.",
+        "Keep private logs, hosts, ports, and credentials in ignored local evidence."
+      ],
+      "benchmark_prompts": [
+        "T-Display-S3 PlatformIO Arduino add LVGL sensor page",
+        "T-Watch Ultra add display driver BSP status action smoke"
+      ]
+    },
+    {
+      "id": "playbook-build-flash-serial",
+      "title": "Build, flash, and serial evidence playbook",
+      "summary": "Run a bounded build/upload/monitor loop with explicit permissions, bounded logs, and failure classification.",
+      "domains": [
+        "build",
+        "flash",
+        "serial",
+        "debug"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf",
+        "rust"
+      ],
+      "trigger_terms": [
+        "build",
+        "flash",
+        "upload",
+        "serial",
+        "monitor",
+        "boot log"
+      ],
+      "load_when": "implementation_or_debug",
+      "authority": "operating-pattern",
+      "source_refs": [
+        "https://github.com/Adancurusul/serial-mcp-server",
+        "https://docs.arduino.cc/arduino-cli/",
+        "https://docs.platformio.org/en/latest/core/index.html",
+        "https://docs.espressif.com/projects/esp-idf/"
+      ],
+      "required_board_facts": [
+        "framework",
+        "board package or target",
+        "safe upload command",
+        "serial observation method"
+      ],
+      "diagnostic_axes": [
+        "toolchain readiness",
+        "board target or FQBN",
+        "library roots",
+        "port/reset policy",
+        "bounded serial output",
+        "exit status"
+      ],
+      "steps": [
+        "Plan commands first and keep start dry-run unless explicit build/flash/serial permissions exist.",
+        "Build before upload and preserve the exact framework target used.",
+        "Open serial only after permission and capture bounded output.",
+        "Classify failures by build, upload, port, reset, no-log, or runtime panic.",
+        "Store large/raw logs in local evidence, not public context."
+      ],
+      "failure_classes": [
+        "toolchain-missing",
+        "wrong-board-target",
+        "upload-port-unavailable",
+        "runtime-timeout-no-observation",
+        "serial-contention"
+      ],
+      "evidence_targets": [
+        "build command and exit code",
+        "upload command and exit code",
+        "bounded serial excerpt",
+        "local evidence path"
+      ],
+      "anti_claims": [
+        "A generated command cannot prove flash success until the command runs.",
+        "Do not publish private serial ports, raw logs, or host paths."
+      ],
+      "resource_hints": [
+        "serial-mcp-server can be recorded as a public serial-debug reference.",
+        "Use project-local preferences when the user prefers binflow or another transfer/debug tool."
+      ],
+      "benchmark_prompts": [
+        "T-Watch Ultra Arduino build upload serial monitor debug",
+        "T-Display-S3 PlatformIO upload boot log fails"
+      ]
+    },
+    {
+      "id": "playbook-lvgl-debug",
+      "title": "LVGL display and touch debug playbook",
+      "summary": "Diagnose LVGL blank screen, flush, tick, draw buffer, touch, rotation, heap, simulator, and page-data loops without claiming rendered pixels.",
+      "domains": [
+        "lvgl",
+        "display",
+        "touch",
+        "ui"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf"
+      ],
+      "trigger_terms": [
+        "lvgl",
+        "display",
+        "screen",
+        "touch",
+        "flush",
+        "blank",
+        "page-data"
+      ],
+      "load_when": "implementation_or_debug",
+      "authority": "operating-pattern",
+      "source_refs": [
+        "https://docs.lvgl.io/8.3/",
+        "https://github.com/Xinyuan-LilyGO"
+      ],
+      "required_board_facts": [
+        "display controller",
+        "touch controller",
+        "bus and rotation",
+        "LVGL version",
+        "framework display driver"
+      ],
+      "diagnostic_axes": [
+        "display init",
+        "LVGL tick",
+        "flush callback",
+        "draw buffer size and heap",
+        "color order and rotation",
+        "touch read callback",
+        "simulator or page-data proof"
+      ],
+      "steps": [
+        "Confirm board display and touch facts from official examples before changing LVGL code.",
+        "Check tick, flush, invalidation, draw buffer, color order, and rotation in order.",
+        "For touch, separate controller probe from LVGL indev callback behavior.",
+        "Use simulator or page-data where available before claiming UI behavior.",
+        "Escalate to hardware or simulator evidence for rendered-pixel claims."
+      ],
+      "failure_classes": [
+        "display-init-missing",
+        "lvgl-tick-stalled",
+        "flush-not-called",
+        "touch-controller-no-data",
+        "heap-or-buffer-too-small"
+      ],
+      "evidence_targets": [
+        "display/touch source facts",
+        "LVGL log or page-data",
+        "simulator screenshot or hardware capture",
+        "bounded serial/status output"
+      ],
+      "anti_claims": [
+        "Source and route context cannot prove pixels rendered.",
+        "Do not claim touch works without callback or device evidence."
+      ],
+      "resource_hints": [
+        "Read LVGL official docs first for core API behavior."
+      ],
+      "benchmark_prompts": [
+        "T-Watch Ultra LVGL blank screen touch debug",
+        "T-Display-S3 PlatformIO Arduino add LVGL sensor page"
+      ]
+    },
+    {
+      "id": "playbook-ota-debug",
+      "title": "OTA manifest and rollback debug playbook",
+      "summary": "Diagnose OTA partition tables, manifests, digests, versions, transport, reboot, rollback, and project-local runners with evidence classification.",
+      "domains": [
+        "ota",
+        "firmware",
+        "partition",
+        "rollback"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf"
+      ],
+      "trigger_terms": [
+        "ota",
+        "firmware update",
+        "manifest",
+        "partition",
+        "rollback"
+      ],
+      "load_when": "implementation_or_debug",
+      "authority": "operating-pattern",
+      "source_refs": [
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/system/ota.html",
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-guides/partition-tables.html",
+        "https://docs.arduino.cc/"
+      ],
+      "required_board_facts": [
+        "flash size",
+        "partition table",
+        "framework OTA API",
+        "status or serial observation path",
+        "project OTA runner or enough source references to create one"
+      ],
+      "diagnostic_axes": [
+        "partition layout",
+        "manifest URL and digest",
+        "firmware version metadata",
+        "transport reachability",
+        "rollback state",
+        "post-reboot status"
+      ],
+      "steps": [
+        "Read framework OTA docs and project partition table before changing OTA code.",
+        "Validate manifest fields, digest, version, and binary target.",
+        "Resolve the project OTA runner from manifests, scripts, references, or ignored local state; ask only for private target details that cannot be inferred.",
+        "Observe reboot and rollback state through serial or project status endpoints.",
+        "Classify failures by manifest, transport, digest, partition, reboot, or rollback."
+      ],
+      "failure_classes": [
+        "ota-partition-manifest",
+        "ota-transport-unreachable",
+        "ota-digest-mismatch",
+        "ota-reboot-not-observed",
+        "ota-rollback-invalid"
+      ],
+      "evidence_targets": [
+        "partition table or config",
+        "manifest metadata",
+        "OTA command status",
+        "post-reboot status or serial output",
+        "rollback state"
+      ],
+      "anti_claims": [
+        "Treat source links and manifests as planning evidence until build, transport, or status evidence exists.",
+        "Keep Wi-Fi credentials, LAN hosts, OTA URLs, and private runner argv in local evidence."
+      ],
+      "resource_hints": [
+        "Store resolved private OTA runner argv in .lilygo-skills/local.json.",
+        "Pair with build/flash/serial playbook for reboot observation."
+      ],
+      "benchmark_prompts": [
+        "T-Watch Ultra ESP-IDF OTA rollback manifest debug",
+        "LilyGO ESP32-S3 OTA partition update fails"
+      ]
+    },
+    {
+      "id": "playbook-bsp-driver",
+      "title": "BSP peripheral driver playbook",
+      "summary": "Wrap board peripherals behind source-backed BSP capability, status, action, smoke, and evidence contracts.",
+      "domains": [
+        "bsp",
+        "driver",
+        "peripheral",
+        "chip"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf",
+        "rust"
+      ],
+      "trigger_terms": [
+        "bsp",
+        "driver",
+        "peripheral driver",
+        "capability",
+        "status action smoke"
+      ],
+      "load_when": "implementation_or_debug",
+      "authority": "operating-pattern",
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO",
+        "https://github.com/Xinyuan-LilyGO/documentation",
+        "https://docs.espressif.com/projects/esp-idf/"
+      ],
+      "required_board_facts": [
+        "chip id",
+        "bus address or pins",
+        "power rail or enable pin",
+        "official example or driver",
+        "safe smoke action"
+      ],
+      "diagnostic_axes": [
+        "probe",
+        "power",
+        "bus transaction",
+        "capability record",
+        "status readback",
+        "action side effect",
+        "smoke evidence"
+      ],
+      "steps": [
+        "Query board facts and preserve unknown_with_sources when exact IO is absent.",
+        "Read official example, chip datasheet, and framework driver before writing wrapper code.",
+        "Expose capability and status before action commands.",
+        "Make smoke checks bounded and non-destructive by default.",
+        "Record evidence level for each probe or action."
+      ],
+      "failure_classes": [
+        "missing-board-fact",
+        "driver-probe-failed",
+        "power-rail-unknown",
+        "unsafe-action-requested",
+        "smoke-no-observation"
+      ],
+      "evidence_targets": [
+        "source-backed board fact table",
+        "capability record",
+        "status payload",
+        "action result",
+        "smoke report"
+      ],
+      "anti_claims": [
+        "Driver patterns cannot create missing pin, bus, or power facts.",
+        "Do not claim a peripheral works without status/action/smoke evidence."
+      ],
+      "resource_hints": [
+        "Use source completeness before guessing expander channels or rails."
+      ],
+      "benchmark_prompts": [
+        "T-Watch Ultra add display driver BSP status action smoke",
+        "LilyGO ESP32-S3 add peripheral driver capability status"
+      ]
+    },
+    {
+      "id": "playbook-radio-gnss",
+      "title": "Radio and GNSS source navigation playbook",
+      "summary": "Navigate LoRa, radio, GNSS, RadioLib, Meshtastic-style references, regional settings, antennas, and RF/GNSS evidence boundaries.",
+      "domains": [
+        "lora",
+        "radio",
+        "gnss",
+        "gps"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf"
+      ],
+      "trigger_terms": [
+        "lora",
+        "radio",
+        "gnss",
+        "gps",
+        "meshtastic"
+      ],
+      "load_when": "implementation_or_debug",
+      "authority": "operating-pattern",
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO",
+        "https://github.com/jgromes/RadioLib",
+        "https://meshtastic.org/docs/",
+        "https://github.com/Xinyuan-LilyGO/documentation"
+      ],
+      "required_board_facts": [
+        "radio chip",
+        "GNSS chip",
+        "SPI/UART pins or bus",
+        "region/frequency",
+        "antenna and power constraints"
+      ],
+      "diagnostic_axes": [
+        "chip identification",
+        "bus pins",
+        "library example selection",
+        "region and frequency",
+        "antenna path",
+        "RF packet or GNSS fix evidence"
+      ],
+      "steps": [
+        "Read official LilyGO board examples before choosing RadioLib or Meshtastic references.",
+        "Confirm chip and pin facts; do not merge LoRa and GNSS into one generic fact.",
+        "Check regional frequency and antenna requirements before radio tests.",
+        "For GNSS, separate UART/NMEA visibility from actual fix acquisition.",
+        "Treat Meshtastic references as application guidance only when requested."
+      ],
+      "failure_classes": [
+        "radio-chip-unknown",
+        "gnss-chip-unknown",
+        "region-frequency-missing",
+        "rf-no-packet",
+        "gnss-no-fix"
+      ],
+      "evidence_targets": [
+        "radio/GNSS source facts",
+        "library example path",
+        "bounded serial output",
+        "RF packet log or GNSS fix report"
+      ],
+      "anti_claims": [
+        "Source refs cannot prove RF links or GNSS fixes.",
+        "Do not claim legal region/frequency correctness without user/project facts."
+      ],
+      "resource_hints": [
+        "RadioLib is a library reference, not a board fact source.",
+        "Meshtastic is application guidance only when the user asks for it."
+      ],
+      "benchmark_prompts": [
+        "T-Beam Arduino LoRa GNSS RadioLib debug",
+        "LilyGO Meshtastic LoRa GPS source navigation"
+      ]
+    },
+    {
+      "id": "playbook-setup-toolchain",
+      "title": "Setup and toolchain readiness playbook",
+      "summary": "Plan blank-machine setup for Rust, Node, Arduino CLI, PlatformIO, ESP-IDF, esp-rs, serial, and flash tools without silently installing anything.",
+      "domains": [
+        "setup",
+        "install",
+        "toolchain",
+        "environment"
+      ],
+      "applies_to": [
+        "arduino",
+        "platformio",
+        "esp-idf",
+        "rust"
+      ],
+      "trigger_terms": [
+        "setup",
+        "install",
+        "toolchain",
+        "blank machine",
+        "rustup",
+        "node"
+      ],
+      "load_when": "setup_or_first_use",
+      "authority": "toolchain-readiness",
+      "source_refs": [
+        "https://docs.arduino.cc/arduino-cli/",
+        "https://docs.platformio.org/en/latest/core/index.html",
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/",
+        "https://docs.esp-rs.org/book/",
+        "https://www.rust-lang.org/tools/install",
+        "https://nodejs.org/en/download"
+      ],
+      "required_board_facts": [
+        "selected framework",
+        "host OS",
+        "board package or target",
+        "project-local preferences"
+      ],
+      "diagnostic_axes": [
+        "Git availability",
+        "Rust/Cargo availability",
+        "Node availability",
+        "selected firmware toolchain",
+        "serial/flash tool availability",
+        "no-mutation plan"
+      ],
+      "steps": [
+        "Check prerequisites and report missing tools before install.",
+        "Ask or use project context for framework selection when absent.",
+        "Use setup plan dry-run to list commands and private inputs.",
+        "Install only after user authorization and keep logs bounded.",
+        "Record preferences for framework order or debug tools when the user requests them."
+      ],
+      "failure_classes": [
+        "missing-rust",
+        "missing-node",
+        "missing-framework-toolchain",
+        "missing-board-package",
+        "installation-permission-required"
+      ],
+      "evidence_targets": [
+        "setup plan dry-run",
+        "tool version checks",
+        "framework package check",
+        "explicit install authorization"
+      ],
+      "anti_claims": [
+        "Do not silently install Rust, Node, firmware toolchains, or drivers.",
+        "A setup plan cannot prove a firmware build until the build command runs."
+      ],
+      "resource_hints": [
+        "Respect project preferences for framework order and debug tools.",
+        "Use public project references for extra setup docs; keep private machine facts local."
+      ],
+      "benchmark_prompts": [
+        "LilyGO T-Display-S3 blank machine setup PlatformIO Arduino",
+        "LilyGO ESP32-S3 install ESP-IDF Rust serial tools"
+      ]
+    }
+  ]
+}

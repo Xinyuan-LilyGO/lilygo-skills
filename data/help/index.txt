@@ -1,0 +1,5 @@
+lilygo-skills index list --json
+lilygo-skills index query <skill-id> --json
+lilygo-skills index query <playbook-id> --json
+Lists the registered skill catalog or returns one skill/playbook entry as JSON.
+Playbook ids (playbook-*) resolve to embedded playbook source models.

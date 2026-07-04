@@ -1,0 +1,532 @@
+//! Builds compact goal capsules from facts, source refs, readiness,
+//! preferences, and lookup commands while keeping full sources behind queries.
+use super::*;
+
+pub(super) fn compose_context_capsule(
+    root: &Path,
+    prompt: &str,
+    route: &RouteResult,
+    goal_route: &GoalRoute,
+    project_start: Option<&Path>,
+) -> Result<GoalContextCapsule, String> {
+    let mut budget = ContextBudget::default();
+    let mut facts = Vec::new();
+    let fact_tables = Vec::new();
+    let mut demo_refs = Vec::new();
+    let mut source_refs = Vec::new();
+    let preferences = preference_hints_for_prompt(root, project_start, prompt);
+    let reference_hints = reference_hints_for_prompt(root, project_start, prompt);
+    let mut playbook_hints = crate::playbooks::playbook_hints_for_prompt(prompt, &route.skills);
+    let Some(board_id) = &goal_route.board else {
+        budget.overflow_count += playbook_hints
+            .len()
+            .saturating_sub(budget.max_playbook_hints_inline);
+        playbook_hints.truncate(budget.max_playbook_hints_inline);
+        return Ok(GoalContextCapsule {
+            summary: context_summary(route, goal_route),
+            facts,
+            fact_tables,
+            completeness: BTreeMap::new(),
+            readiness: Vec::new(),
+            demo_refs,
+            source_refs,
+            preferences,
+            reference_hints,
+            playbook_hints,
+            discovery_hints: discovery_hints_for_goal(None, prompt),
+            budget,
+            boundary: boundary(route, "No board-specific evidence was composed."),
+        });
+    };
+    let board_index = load_board_index(root)?;
+    let board = board_index
+        .boards
+        .iter()
+        .find(|board| board.id == *board_id)
+        .ok_or_else(|| format!("board record not found for {board_id}"))?;
+    add_fact(&mut facts, "board", &board.display_name, board_id);
+    add_fact(&mut facts, "mcu", &board.mcu, board_id);
+    add_fact(
+        &mut facts,
+        "frameworks",
+        &board.frameworks.join(","),
+        board_id,
+    );
+    add_arduino_toolchain_facts(&mut facts, board, goal_route);
+    add_private_local_state_hint(&mut facts, project_start, prompt);
+    add_board_sources(&mut source_refs, board);
+    add_documentation_repo(&mut source_refs);
+    add_relevant_peripherals(
+        &mut facts,
+        &mut source_refs,
+        board,
+        goal_route,
+        prompt,
+        root,
+    )?;
+    demo_refs.extend(sorted_demo_refs(board, goal_route, prompt));
+    let fact_tables = fact_tables_for_goal(root, board_id, prompt)?;
+    add_fact_table_sources(&mut source_refs, &fact_tables);
+    dedup_sources(&mut source_refs);
+    budget.overflow_count += source_refs
+        .len()
+        .saturating_sub(budget.max_source_refs_inline);
+    cap_source_refs(&mut source_refs, budget.max_source_refs_inline);
+    budget.overflow_count += fact_tables
+        .iter()
+        .map(|table| table.overflow_count)
+        .sum::<usize>();
+    let readiness = completeness_signals_for_prompt(root, Some(board_id), prompt);
+    let completeness = readiness
+        .iter()
+        .map(|signal| (signal.topic.clone(), signal.completeness.clone()))
+        .collect::<BTreeMap<_, _>>();
+    let mut discovery_hints = discovery_hints_for_goal(Some(board_id), prompt);
+    discovery_hints.extend(readiness.iter().filter_map(readiness_discovery_hint));
+    budget.overflow_count += discovery_hints
+        .len()
+        .saturating_sub(budget.max_discovery_hints_inline);
+    discovery_hints.truncate(budget.max_discovery_hints_inline);
+    let mut reference_hints = reference_hints;
+    budget.overflow_count += reference_hints
+        .len()
+        .saturating_sub(budget.max_reference_hints_inline);
+    reference_hints.truncate(budget.max_reference_hints_inline);
+    budget.overflow_count += playbook_hints
+        .len()
+        .saturating_sub(budget.max_playbook_hints_inline);
+    playbook_hints.truncate(budget.max_playbook_hints_inline);
+    Ok(GoalContextCapsule {
+        summary: context_summary(route, goal_route),
+        facts,
+        fact_tables,
+        completeness,
+        readiness,
+        demo_refs,
+        source_refs,
+        preferences,
+        reference_hints,
+        playbook_hints,
+        discovery_hints,
+        budget,
+        boundary: boundary(
+            route,
+            "Goal planning is source/context evidence only until build, simulator, or hardware commands run.",
+        ),
+    })
+}
+
+fn add_arduino_toolchain_facts(
+    facts: &mut Vec<GoalFact>,
+    board: &BoardRecord,
+    goal_route: &GoalRoute,
+) {
+    if goal_route.framework.as_deref() != Some("fw-arduino") {
+        return;
+    }
+    if board.id == "board-t-watch-ultra" {
+        // The T-Watch Ultra Arduino menu uses board-specific option names; the
+        // generated command must mirror `arduino-cli board details`.
+        add_fact(
+            facts,
+            "arduino.fqbn",
+            "esp32:esp32:twatch_ultra:UploadSpeed=921600,USBMode=hwcdc,CDCOnBoot=default,UploadMode=default,CPUFreq=240,PartitionScheme=app3M_fat9M_16MB,LoopCore=1,EventsCore=1,Revision=Radio_SX1262",
+            "arduino-cli board details esp32:esp32:twatch_ultra",
+        );
+        add_fact(
+            facts,
+            "arduino.library_roots",
+            ".,../LilyGoLib-ThirdParty",
+            "official LilyGoLib checkout layout",
+        );
+    }
+}
+
+fn add_private_local_state_hint(
+    facts: &mut Vec<GoalFact>,
+    project_start: Option<&Path>,
+    prompt: &str,
+) {
+    let prompt = prompt.to_lowercase();
+    if !contains_any(
+        &prompt,
+        &[
+            "ota", "wifi", "wi-fi", "serial", "flash", "monitor", "upload", "network", "port",
+            "串口", "无线",
+        ],
+    ) || !has_private_local_config(project_start)
+    {
+        return;
+    }
+    add_fact(
+        facts,
+        "private.local_state",
+        "present; read ignored .lilygo-skills/local.json only at execution time for ports, Wi-Fi, OTA targets, and evidence paths; never quote values",
+        crate::project_context::LOCAL_FILE,
+    );
+}
+
+fn has_private_local_config(project_start: Option<&Path>) -> bool {
+    let Some(mut cursor) = project_start.map(Path::to_path_buf) else {
+        return false;
+    };
+    loop {
+        if cursor.join(crate::project_context::LOCAL_FILE).is_file() {
+            return true;
+        }
+        if !cursor.pop() {
+            return false;
+        }
+    }
+}
+
+fn add_relevant_peripherals(
+    facts: &mut Vec<GoalFact>,
+    source_refs: &mut Vec<GoalSourceRef>,
+    board: &BoardRecord,
+    goal_route: &GoalRoute,
+    prompt: &str,
+    root: &Path,
+) -> Result<(), String> {
+    let requested = requested_peripherals(goal_route, prompt);
+    for peripheral in &board.peripheral_matrix {
+        let normalized = normalized_peripheral(peripheral);
+        if !requested.contains(normalized) {
+            continue;
+        }
+        add_fact(facts, "peripheral", normalized, &peripheral.source_url);
+        add_fact(facts, "chip", &peripheral.chip, &peripheral.source_url);
+        add_fact(facts, "bus", &peripheral.bus, &peripheral.source_url);
+        add_fact(facts, "driver", &peripheral.driver, &peripheral.source_url);
+        source_refs.push(source_ref(
+            "lilygo-hardware",
+            source_authority_rank("lilygo-hardware"),
+            &peripheral.source_url,
+            &peripheral.source_status,
+            false,
+        ));
+    }
+    let packs = load_source_pack_index(root)?;
+    for pack in packs
+        .packs
+        .iter()
+        .filter(|pack| pack.board_id == board.id)
+        .filter(|pack| requested.contains(pack.peripheral.as_str()))
+    {
+        for source in &pack.sources {
+            source_refs.push(GoalSourceRef {
+                kind: source.kind.clone(),
+                authority_rank: source.authority_rank,
+                url: source.url.clone(),
+                status: source.status.clone(),
+                stale: source.stale,
+                evidence_level: source.evidence_level.clone(),
+            });
+        }
+    }
+    Ok(())
+}
+
+fn requested_peripherals(route: &GoalRoute, prompt: &str) -> BTreeSet<&'static str> {
+    let normalized = prompt.to_lowercase();
+    let mut requested = BTreeSet::new();
+    for skill in &route.peripherals {
+        match skill.as_str() {
+            "periph-imu" => {
+                requested.insert("imu");
+            }
+            "periph-display" => {
+                requested.insert("display");
+                requested.insert("touch");
+            }
+            "periph-input" => {
+                requested.insert("input");
+                requested.insert("touch");
+            }
+            "periph-power" => {
+                requested.insert("power");
+            }
+            "periph-storage" => {
+                requested.insert("storage");
+                requested.insert("memory");
+            }
+            "periph-lora" => {
+                requested.insert("lora");
+            }
+            "periph-gps" => {
+                requested.insert("gnss");
+            }
+            _ => {}
+        }
+    }
+    if route.chips.iter().any(|chip| chip == "chip-bhi260ap")
+        || contains_any(&normalized, &["imu", "bhi260ap", "gesture", "抬腕"])
+    {
+        requested.insert("imu");
+    }
+    if route.chips.iter().any(|chip| chip == "chip-st25r3916")
+        || contains_any(&normalized, &["nfc", "st25r3916"])
+    {
+        requested.insert("nfc");
+    }
+    if contains_any(&normalized, &["lvgl", "touch", "display", "screen"]) {
+        requested.insert("display");
+        requested.insert("touch");
+        requested.insert("power");
+    }
+    if contains_any(&normalized, &["ota", "flash", "partition", "manifest"]) {
+        requested.insert("memory");
+        requested.insert("storage");
+    }
+    if route.chips.iter().any(|chip| chip == "chip-xl9555")
+        || contains_any(
+            &normalized,
+            &["xl9555", "gpio", "io", "pinout", "引脚", "外设"],
+        )
+    {
+        requested.insert("input");
+    }
+    requested
+}
+
+fn sorted_demo_refs(board: &BoardRecord, route: &GoalRoute, prompt: &str) -> Vec<GoalDemoRef> {
+    let mut demos = board.demo_refs.clone();
+    demos.sort_by_key(|demo| std::cmp::Reverse(demo_score(demo, route, prompt)));
+    demos.into_iter().map(goal_demo_ref).collect()
+}
+
+fn demo_score(demo: &DemoRef, route: &GoalRoute, prompt: &str) -> i32 {
+    let normalized = prompt.to_lowercase();
+    let target = demo.target.to_lowercase();
+    let mut score = 0;
+    if route.framework.as_deref() == Some("fw-arduino") && demo.framework == "arduino" {
+        score += 10;
+    }
+    if target == "imu" && contains_any(&normalized, &["imu", "bhi260ap", "gesture", "抬腕"]) {
+        score += 50;
+    }
+    if target == "nfc" && contains_any(&normalized, &["nfc", "st25r3916"]) {
+        score += 50;
+    }
+    if target.contains("lvgl") && contains_any(&normalized, &["lvgl", "touch", "display"]) {
+        score += 45;
+    }
+    if target.contains("factory") {
+        score += 5;
+    }
+    score
+}
+
+fn add_board_sources(source_refs: &mut Vec<GoalSourceRef>, board: &BoardRecord) {
+    for source in &board.source_urls {
+        source_refs.push(source_ref_from_board(source));
+    }
+}
+
+fn add_documentation_repo(source_refs: &mut Vec<GoalSourceRef>) {
+    // Search target, ranked below board headers, hardware docs, and examples.
+    source_refs.push(source_ref(
+        "documentation-repo",
+        65,
+        DOCUMENTATION_REPO,
+        "versioned-wiki-source",
+        false,
+    ));
+}
+
+fn source_ref_from_board(source: &SourceUrl) -> GoalSourceRef {
+    source_ref(
+        source.kind.as_str(),
+        board_source_rank(source.kind.as_str()),
+        source.url.as_str(),
+        source.status.as_str(),
+        false,
+    )
+}
+
+fn source_ref(
+    kind: &str,
+    authority_rank: u32,
+    url: &str,
+    status: &str,
+    stale: bool,
+) -> GoalSourceRef {
+    GoalSourceRef {
+        kind: kind.to_string(),
+        authority_rank,
+        url: url.to_string(),
+        status: status.to_string(),
+        stale,
+        evidence_level: "V3-source-reference".to_string(),
+    }
+}
+
+fn board_source_rank(kind: &str) -> u32 {
+    match kind {
+        "driver-header" | "arduino-pins" => 95,
+        "hardware-doc" | "quick-start" | "github-repo" => 90,
+        "wiki" => 55,
+        _ => 50,
+    }
+}
+
+fn goal_demo_ref(demo: DemoRef) -> GoalDemoRef {
+    GoalDemoRef {
+        framework: demo.framework,
+        target: demo.target,
+        path: demo.path,
+        source_url: demo.source_url,
+        evidence_level: demo.evidence_level,
+        stale: demo.stale,
+    }
+}
+
+fn dedup_sources(source_refs: &mut Vec<GoalSourceRef>) {
+    // Authority rank decides which refs survive compact context caps.
+    source_refs.sort_by(|left, right| {
+        right
+            .authority_rank
+            .cmp(&left.authority_rank)
+            .then_with(|| left.kind.cmp(&right.kind))
+            .then_with(|| left.url.cmp(&right.url))
+    });
+    let mut seen = BTreeSet::new();
+    source_refs.retain(|source| seen.insert((source.kind.clone(), source.url.clone())));
+}
+
+fn add_fact_table_sources(source_refs: &mut Vec<GoalSourceRef>, tables: &[FactTablePreview]) {
+    for source in tables
+        .iter()
+        .flat_map(|table| table.rows.iter().map(|fact| &fact.source))
+    {
+        source_refs.push(goal_source_ref_from_fact_source(source));
+    }
+}
+
+fn readiness_discovery_hint(signal: &CompletenessSignal) -> Option<DiscoveryHint> {
+    if signal.completeness == "complete" {
+        return None;
+    }
+    Some(DiscoveryHint {
+        when: format!(
+            "{} {} completeness is {}",
+            signal.board_id, signal.topic, signal.completeness
+        ),
+        action: "run_command".to_string(),
+        command: signal
+            .update_command
+            .clone()
+            .or_else(|| Some(signal.source_query_command.clone())),
+        reference_id: None,
+        reason: "Resolve topic readiness before claiming quick-start implementation details."
+            .to_string(),
+    })
+}
+
+fn cap_source_refs(source_refs: &mut Vec<GoalSourceRef>, max_inline: usize) {
+    if source_refs.len() <= max_inline {
+        return;
+    }
+    // Preserve one documentation repo pointer as the next-search breadcrumb.
+    let documentation_repo = source_refs
+        .iter()
+        .find(|source| source.url == DOCUMENTATION_REPO)
+        .cloned();
+    source_refs.truncate(max_inline);
+    if let Some(documentation_repo) = documentation_repo
+        && !source_refs
+            .iter()
+            .any(|source| source.url == DOCUMENTATION_REPO)
+        && !source_refs.is_empty()
+    {
+        source_refs.pop();
+        source_refs.push(documentation_repo);
+    }
+}
+
+fn goal_source_ref_from_fact_source(source: &SourceFactSource) -> GoalSourceRef {
+    GoalSourceRef {
+        kind: source.kind.clone(),
+        authority_rank: board_source_rank(&source.kind),
+        url: source.path_or_url.clone(),
+        status: source.hash.clone(),
+        stale: false,
+        evidence_level: "V3-source-reference".to_string(),
+    }
+}
+
+fn add_fact(facts: &mut Vec<GoalFact>, key: &str, value: &str, source: &str) {
+    if value.is_empty() {
+        return;
+    }
+    let exists = facts
+        .iter()
+        .any(|fact| fact.key == key && fact.value == value && fact.source == source);
+    if !exists {
+        facts.push(GoalFact {
+            key: key.to_string(),
+            value: value.to_string(),
+            source: source.to_string(),
+            evidence_level: "V3-source-reference".to_string(),
+        });
+    }
+}
+
+fn normalized_peripheral(peripheral: &PeripheralRecord) -> &'static str {
+    let chip = peripheral.chip.to_lowercase();
+    let name = peripheral.name.to_lowercase();
+    if chip.contains("bhi260ap") || name.contains("imu") {
+        "imu"
+    } else if chip.contains("st25r3916") || peripheral.category == "nfc" {
+        "nfc"
+    } else if peripheral.category == "radio" {
+        "lora"
+    } else if peripheral.category == "gnss" {
+        "gnss"
+    } else if peripheral.category == "io" {
+        "input"
+    } else if peripheral.category == "touch" {
+        "touch"
+    } else if peripheral.category == "display" {
+        "display"
+    } else if peripheral.category == "memory" {
+        "memory"
+    } else if peripheral.category == "storage" {
+        "storage"
+    } else if peripheral.category == "power" {
+        "power"
+    } else {
+        "other"
+    }
+}
+
+fn boundary(route: &RouteResult, reason: &str) -> GoalBoundary {
+    GoalBoundary {
+        verification_level: if route.decision == "inject" {
+            "V3".to_string()
+        } else {
+            "none".to_string()
+        },
+        hardware_verified: false,
+        reason: reason.to_string(),
+    }
+}
+
+fn context_summary(route: &RouteResult, goal_route: &GoalRoute) -> String {
+    if route.decision != "inject" {
+        return route.notes.join(" ");
+    }
+    format!(
+        "Goal capsule for board={}, framework={}, skills=[{}]",
+        goal_route.board.as_deref().unwrap_or("unknown"),
+        goal_route.framework.as_deref().unwrap_or("unspecified"),
+        goal_route.skills.join(",")
+    )
+}
+
+pub(super) fn primary_framework(skill: &str) -> bool {
+    matches!(
+        skill,
+        "fw-arduino" | "fw-esp-idf" | "fw-platformio" | "fw-rust"
+    )
+}

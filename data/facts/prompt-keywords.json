@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "fact_prompt": ["io", "gpio", "pinout", "pin map", "bus", "i2c", "spi", "uart", "connector", "expander", "xl9555", "外设", "引脚", "口", "哪些"],
+  "implementation_or_debug": ["implement", "debug", "build", "flash", "upload", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "调试", "实现", "怎么做"],
+  "topic_order": ["display", "imu", "lora", "gnss", "power", "input"],
+  "topics": {
+    "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示"],
+    "imu": ["imu", "bhi260ap", "gesture", "抬腕"],
+    "lora": ["lora", "radio", "sx1262", "sx1268", "sx1276", "sx1278", "sx1280"],
+    "gnss": ["gnss", "gps"],
+    "power": ["power", "battery", "pmu", "电源"],
+    "input": ["input", "keyboard", "button", "touch", "按键"]
+  }
+}

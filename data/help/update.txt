@@ -1,0 +1,3 @@
+lilygo-skills update sources|boards|skills|source-packs|fact-packs|board-facts|peripheral-skills|runtime [--board <board-id> --topic <topic>] [--out <generated-root>] [--dry-run] [--home <dir>] --json
+For generated runtime skills, update skills/peripheral-skills writes only to .lilygo-skills/generated-skills or --out <generated-root>; it never writes generated SKILL.md files into the source skills/ tree.
+For board readiness enrichment, use: lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json

@@ -1,0 +1,7 @@
+{
+  "board": "board-t-display-s3",
+  "framework": "esp-idf",
+  "capabilities": ["flash", "serial", "lvgl"],
+  "verification_level": "V5",
+  "notes": "V5 real-hardware request with no attached port: must report BOUNDARY, never success, until a real board path provides command output."
+}

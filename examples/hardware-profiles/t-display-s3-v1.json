@@ -1,0 +1,7 @@
+{
+  "board": "board-t-display-s3",
+  "framework": "esp-idf",
+  "capabilities": ["lvgl"],
+  "verification_level": "V1",
+  "notes": "V1 context/static evidence: routing + registry + board contract only, no port-requiring capability. Expected status: PASS."
+}

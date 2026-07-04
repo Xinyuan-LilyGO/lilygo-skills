@@ -1,0 +1,2 @@
+lilygo-skills setup plan --framework <arduino|platformio|esp-idf|rust> [--project <dir>] --json
+Returns a no-mutation blank-machine setup/readiness plan.

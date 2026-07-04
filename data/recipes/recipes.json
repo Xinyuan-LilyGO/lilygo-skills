@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "recipes": [
+    {
+      "id": "recipe-run-official-demo",
+      "purpose": "select and run the closest official LilyGO example before writing custom code",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "select-demo",
+          "title": "Select the closest source-backed demo from the board capsule",
+          "command": "read goal.context_capsule.demo_refs and choose the highest-match path",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "map-dependencies",
+          "title": "Map demo includes, driver wrappers, and board variant assumptions",
+          "command": "read goal.context_capsule.source_refs and selected demo source",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        }
+      ],
+      "expected_observations": [
+        "selected demo path is source-backed",
+        "driver and bus facts are visible before custom implementation"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "selected_demo_path",
+        "source_reference_list"
+      ],
+      "required_permissions": [
+        "read-only"
+      ],
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO/documentation"
+      ]
+    },
+    {
+      "id": "recipe-build-upload-monitor",
+      "purpose": "compile, optionally upload, then observe the firmware with explicit hardware permission",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "check-toolchain",
+          "title": "Check selected framework toolchain availability",
+          "command": "framework-specific version command",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "build",
+          "title": "Build the selected project or official demo",
+          "command": "framework-specific build command",
+          "permission": "allow-build",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "upload",
+          "title": "Upload only to the explicitly selected serial port",
+          "command": "framework-specific upload command with --port",
+          "permission": "allow-flash:port",
+          "evidence_level": "V5"
+        },
+        {
+          "id": "monitor",
+          "title": "Capture runtime output from the explicitly selected serial port",
+          "command": "framework-specific serial monitor command",
+          "permission": "allow-serial:port",
+          "evidence_level": "V5"
+        }
+      ],
+      "expected_observations": [
+        "build produces a firmware artifact",
+        "upload records target port and exit status in local evidence",
+        "monitor produces local evidence without committing raw logs"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "build_log",
+        "firmware_artifact",
+        "upload_log",
+        "serial_log_private"
+      ],
+      "required_permissions": [
+        "allow-build",
+        "allow-flash:port",
+        "allow-serial:port"
+      ],
+      "source_refs": [
+        "https://docs.arduino.cc/arduino-cli/"
+      ]
+    },
+    {
+      "id": "recipe-serial-debug",
+      "purpose": "normalize port discovery, reset, baud, and boot-log evidence collection",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "list-ports",
+          "title": "List candidate USB serial ports without opening them",
+          "command": "serial-port discovery command",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "capture-log",
+          "title": "Open only the explicitly selected port and capture a bounded local log",
+          "command": "serial capture command with --port and baud",
+          "permission": "allow-serial:port",
+          "evidence_level": "V5"
+        }
+      ],
+      "expected_observations": [
+        "one explicit port is selected before serial I/O",
+        "baud and reset policy are recorded in local evidence"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "serial_log_private",
+        "port_selection"
+      ],
+      "required_permissions": [
+        "allow-serial:port"
+      ],
+      "source_refs": [
+        "https://docs.espressif.com/projects/esp-idf/"
+      ]
+    },
+    {
+      "id": "recipe-lvgl-simulator",
+      "purpose": "prove LVGL page-data, simulator, or screenshot state before claiming board pixels",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio"
+      ],
+      "steps": [
+        {
+          "id": "page-data",
+          "title": "Collect LVGL object tree, invalidation, input state, and timing data",
+          "command": "project LVGL page-data command",
+          "permission": "allow-simulator",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "simulator-render",
+          "title": "Render the same page in a simulator or host harness",
+          "command": "LVGL simulator command",
+          "permission": "allow-simulator",
+          "evidence_level": "V4"
+        }
+      ],
+      "expected_observations": [
+        "touch/input read callback updates page-data",
+        "flush/tick timing is visible before hardware-pixel claims"
+      ],
+      "failure_patterns": [
+        {
+          "class": "lvgl-input-or-flush",
+          "signals": [
+            "input callback idle",
+            "flush not complete",
+            "tick stalled"
+          ],
+          "next_action": "instrument LVGL tick, flush, and input callbacks before retrying"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "no frames",
+            "timeout",
+            "no page-data"
+          ],
+          "next_action": "reduce to simulator/page-data before attached-board evidence"
+        }
+      ],
+      "artifacts": [
+        "page_data",
+        "simulator_screenshot"
+      ],
+      "required_permissions": [
+        "allow-simulator"
+      ],
+      "source_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lv_port_pc_vscode"
+      ]
+    },
+    {
+      "id": "recipe-ota-debug",
+      "purpose": "debug OTA partition, manifest, transport, rollback, and serial status evidence",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio"
+      ],
+      "steps": [
+        {
+          "id": "partition-check",
+          "title": "Inspect partition table and rollback configuration",
+          "command": "framework-specific partition inspection",
+          "permission": "allow-build",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "manifest-check",
+          "title": "Validate OTA manifest URL, firmware size, version, and digest",
+          "command": "OTA manifest validation command",
+          "permission": "allow-network+allow-ota",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "ota-observe",
+          "title": "Observe update, reboot, rollback, and serial status through the project runner",
+          "command": "OTA transport plus serial status command",
+          "permission": "allow-network+allow-ota+allow-serial:port",
+          "evidence_level": "V5"
+        }
+      ],
+      "expected_observations": [
+        "partition and rollback policy are known before OTA",
+        "manifest digest and version are recorded",
+        "serial status confirms reboot or rollback"
+      ],
+      "failure_patterns": [
+        {
+          "class": "ota-partition-manifest",
+          "signals": [
+            "manifest",
+            "rollback",
+            "partition",
+            "digest mismatch"
+          ],
+          "next_action": "fix manifest or partition state before retrying OTA transport"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "no serial",
+            "permission denied"
+          ],
+          "next_action": "select the concrete project port and retry with bounded observation"
+        }
+      ],
+      "artifacts": [
+        "partition_report",
+        "manifest_report",
+        "ota_transport_log_private",
+        "serial_status_private"
+      ],
+      "required_permissions": [
+        "allow-build",
+        "allow-network",
+        "allow-ota",
+        "allow-serial:port"
+      ],
+      "source_refs": [
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/ota.html"
+      ]
+    },
+    {
+      "id": "recipe-lora-gnss-source",
+      "purpose": "navigate LoRa radio and GNSS source, config, and evidence without claiming RF link or fix",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "radio-source",
+          "title": "Map the board LoRa radio chip, bus wiring, and RadioLib driver entry points",
+          "command": "read board capsule chip/bus facts and RadioLib example source",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "gnss-source",
+          "title": "Map the GNSS module, UART wiring, and NMEA/config source before any fix claim",
+          "command": "read board capsule GNSS facts and official GNSS example source",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "radio-config-check",
+          "title": "Validate frequency, bandwidth, spreading factor, and region config against datasheet",
+          "command": "compare project radio config with chip datasheet and board example",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "link-observe",
+          "title": "Observe TX/RX or GNSS fix over serial with explicit port approval, never claimed without evidence",
+          "command": "serial capture of radio/GNSS telemetry with --port",
+          "permission": "allow-serial:port",
+          "evidence_level": "V5"
+        }
+      ],
+      "expected_observations": [
+        "radio chip, bus, and RadioLib driver entry points are source-backed",
+        "GNSS module, UART, and config are source-backed before any fix claim",
+        "region/frequency config matches datasheet before transmit"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "bind the LilyGO LoRa board example and RadioLib source before retrying"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before radio/GNSS observation"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "no packet",
+            "timeout",
+            "no fix",
+            "no data"
+          ],
+          "next_action": "confirm config and antenna assumptions in source before claiming RF or GNSS success"
+        }
+      ],
+      "artifacts": [
+        "radio_source_matrix",
+        "gnss_source_matrix",
+        "radio_config_report",
+        "telemetry_log_private"
+      ],
+      "required_permissions": [
+        "read-only",
+        "allow-serial:port"
+      ],
+      "source_refs": [
+        "https://github.com/jgromes/RadioLib"
+      ]
+    },
+    {
+      "id": "recipe-bsp-chip-driver",
+      "purpose": "connect board source, chip driver, capability matrix, and framework wrapper",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "source-matrix",
+          "title": "Build a board, chip, driver, framework, and demo source matrix",
+          "command": "read goal context capsule and source packs",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "capability-matrix",
+          "title": "Record capability, bus, address, init, polling, and interrupt assumptions",
+          "command": "read driver header and demo code",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        }
+      ],
+      "expected_observations": [
+        "official code and headers outrank documentation text",
+        "driver wrapper and bus facts are attached to feature guidance"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "source_matrix",
+        "capability_matrix"
+      ],
+      "required_permissions": [
+        "read-only"
+      ],
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO/documentation"
+      ]
+    }
+  ],
+  "source_packs": [
+    {
+      "id": "recipe-pack-watch-flash-debug",
+      "recipe_ids": [
+        "recipe-build-upload-monitor",
+        "recipe-serial-debug"
+      ],
+      "source_refs": [
+        "https://docs.espressif.com/projects/esptool/en/latest/esp32/"
+      ],
+      "source_hashes": {},
+      "authority": "local-operating-recipe"
+    },
+    {
+      "id": "recipe-pack-lvgl-ui-debug-loop",
+      "recipe_ids": [
+        "recipe-lvgl-simulator"
+      ],
+      "source_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lvgl/tree/master/examples"
+      ],
+      "official_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lvgl/tree/master/examples",
+        "https://github.com/lvgl/lv_port_pc_vscode"
+      ],
+      "source_hashes": {},
+      "authority": "official-docs-over-operating-recipe"
+    },
+    {
+      "id": "recipe-pack-ota-debug",
+      "recipe_ids": [
+        "recipe-ota-debug"
+      ],
+      "source_refs": [
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/ota.html"
+      ],
+      "official_refs": [
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/ota.html",
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/partition-tables.html",
+        "https://github.com/espressif/arduino-esp32/tree/master/libraries/Update"
+      ],
+      "source_hashes": {},
+      "authority": "official-docs-over-operating-recipe"
+    },
+    {
+      "id": "recipe-pack-lora-gnss-source",
+      "recipe_ids": [
+        "recipe-lora-gnss-source"
+      ],
+      "source_refs": [
+        "https://github.com/jgromes/RadioLib"
+      ],
+      "official_refs": [
+        "https://github.com/jgromes/RadioLib",
+        "https://jgromes.github.io/RadioLib/",
+        "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series"
+      ],
+      "source_hashes": {},
+      "authority": "official-docs-over-operating-recipe"
+    },
+    {
+      "id": "recipe-pack-bsp-chip-driver",
+      "recipe_ids": [
+        "recipe-bsp-chip-driver"
+      ],
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO/documentation"
+      ],
+      "source_hashes": {},
+      "authority": "local-operating-recipe"
+    }
+  ]
+}

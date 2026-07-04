@@ -1,0 +1,2 @@
+lilygo-skills preference show [--project <dir>] --json
+Resolves built-in, repo, and .lilygo-skills/preferences.json preferences without private local evidence.

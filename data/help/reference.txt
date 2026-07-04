@@ -1,0 +1,2 @@
+lilygo-skills reference list [--project <dir>] --json
+Lists read hints and workflow references; references do not override official source facts.

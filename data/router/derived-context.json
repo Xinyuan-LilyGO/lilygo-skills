@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "skill_id": "periph-display",
+      "kind": "derived",
+      "value": "display/LVGL loop",
+      "needles": ["lvgl", "screen", "display", "lcd", "amoled", "blank"]
+    },
+    {
+      "skill_id": "debug-lvgl-loop",
+      "kind": "derived",
+      "value": "LVGL debug loop",
+      "needles": ["lvgl", "touch", "rotation", "refresh", "heap", "flush"]
+    },
+    {
+      "skill_id": "debug-flash-serial",
+      "kind": "derived",
+      "value": "OTA debug evidence",
+      "needles": ["ota", "firmware update", "manifest", "partition"]
+    },
+    {
+      "skill_id": "app-watch-ui-lvgl",
+      "kind": "derived",
+      "value": "watch UI LVGL workflow",
+      "needles": ["watch ui", "watchos", "page loop"]
+    },
+    {
+      "skill_id": "app-smart-display",
+      "kind": "derived",
+      "value": "smart display application",
+      "needles": ["smart display", "dashboard", "kiosk"]
+    },
+    {
+      "skill_id": "app-meshtastic",
+      "kind": "derived",
+      "value": "Meshtastic-style LoRa workflow",
+      "needles": ["meshtastic"]
+    },
+    {
+      "skill_id": "tool-arduino-cli",
+      "kind": "tool",
+      "value": "Arduino CLI requested",
+      "needles": ["arduino-cli", "arduino cli", "board manager", "library manager"]
+    },
+    {
+      "skill_id": "tool-serial-debug",
+      "kind": "tool",
+      "value": "serial evidence requested",
+      "needles": ["serial", "boot log", "serial port", "rts", "dtr"]
+    },
+    {
+      "skill_id": "tool-embedded-debugger",
+      "kind": "tool",
+      "value": "probe debugger requested",
+      "needles": ["probe", "jtag", "debugger", "breakpoint"]
+    }
+  ]
+}

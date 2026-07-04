@@ -1,0 +1,8 @@
+{
+  "board": "board-t-display-s3",
+  "framework": "esp-idf",
+  "port": "/dev/tty.usbmodem-REPLACE-WITH-DISCOVERED-PORT",
+  "capabilities": ["serial", "flash"],
+  "verification_level": "V5",
+  "notes": "V5 attached-board path: replace the port with the real discovered serial port. With a port declared, the profile contract verifies PASS. Real flash/serial command output is still required before claiming V5 hardware success."
+}

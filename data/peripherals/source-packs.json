@@ -1,0 +1,848 @@
+{
+  "schema_version": 1,
+  "packs": [
+    {
+      "id": "periph-pack-t-watch-ultra-audio-max98357a",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "audio",
+      "chip": "MAX98357A",
+      "aliases": [
+        "audio",
+        "class-d amplifier",
+        "lilygolib audio",
+        "max98357a"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for MAX98357A; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-audio-tdk-t3902",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "audio",
+      "chip": "TDK T3902",
+      "aliases": [
+        "audio",
+        "lilygolib pdm",
+        "pdm microphone",
+        "tdk t3902",
+        "tdk-t3902"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for TDK T3902; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-display-co5300",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "display",
+      "chip": "CO5300",
+      "aliases": [
+        "amoled panel",
+        "co5300",
+        "display",
+        "lilygo display interface"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/DisplayBrightness/DisplayBrightness.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "display-brightness",
+          "path": "examples/peripheral/DisplayBrightness/DisplayBrightness.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/DisplayBrightness/DisplayBrightness.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for CO5300; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-gnss-mia-m10q",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "gnss",
+      "chip": "u-blox MIA-M10Q",
+      "aliases": [
+        "gnss",
+        "gnss receiver",
+        "lilygolib gps",
+        "mia-m10q",
+        "u-blox mia-m10q"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/GPSFullExample/GPSFullExample.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "gnss",
+          "path": "examples/peripheral/GPSFullExample/GPSFullExample.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/GPSFullExample/GPSFullExample.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for u-blox MIA-M10Q; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-haptic-drv2605",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "haptic",
+      "chip": "DRV2605",
+      "aliases": [
+        "drv2605",
+        "haptic",
+        "haptic driver",
+        "sensordrv2605"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for DRV2605; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-imu-bhi260ap",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "imu",
+      "chip": "Bosch BHI260AP",
+      "aliases": [
+        "6dof",
+        "bhi260ap",
+        "bosch bhi260ap",
+        "gesture",
+        "imu",
+        "raise-to-wake",
+        "sensor",
+        "sensorbhi260ap",
+        "smart imu",
+        "tilt-to-wake",
+        "抬腕"
+      ],
+      "sources": [
+        {
+          "kind": "chip-vendor",
+          "authority_rank": 100,
+          "url": "https://www.bosch-sensortec.com/products/smart-sensor-systems/bhi260ap/",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "official-vendor-reference"
+        },
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/sensor/BHI260AP_6DoF/BHI260AP_6DoF.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "framework-official",
+          "authority_rank": 70,
+          "url": "https://docs.espressif.com/projects/arduino-esp32/en/latest/",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "official-framework-reference"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "imu",
+          "path": "examples/sensor/BHI260AP_6DoF/BHI260AP_6DoF.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/sensor/BHI260AP_6DoF/BHI260AP_6DoF.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [
+        {
+          "feature": "raise-to-wake",
+          "guidance_level": "algorithmic-starting-point",
+          "requires_calibration": true,
+          "hardware_verified": false,
+          "evidence_level": "V3-source-reference"
+        }
+      ],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-input-xl9555",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "input",
+      "chip": "XL9555",
+      "aliases": [
+        "extensionioxl9555",
+        "gpio expander",
+        "input",
+        "io",
+        "xl9555"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/hw_sx1262.cpp",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "radio-factory",
+          "path": "examples/factory/hw_sx1262.cpp",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/hw_sx1262.cpp",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "platformio",
+          "target": "platformio-port",
+          "path": "LilyGoLib-PlatformIO",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for XL9555; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-lora-sx1262-or-sx1280",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "lora",
+      "chip": "SX1262 or SX1280",
+      "aliases": [
+        "lora",
+        "lora radio option",
+        "radio",
+        "radiolib/lilygolib radio",
+        "sx1262 or sx1280",
+        "sx1262-or-sx1280"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/hw_sx1262.cpp",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "radio-factory",
+          "path": "examples/factory/hw_sx1262.cpp",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/hw_sx1262.cpp",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for SX1262 or SX1280; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-memory-16mb-flash-8mb-psram",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "memory",
+      "chip": "16MB flash + 8MB PSRAM",
+      "aliases": [
+        "16mb flash + 8mb psram",
+        "16mb-flash-8mb-psram",
+        "esp32-s3 external memory",
+        "external flash and psram",
+        "memory"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for 16MB flash + 8MB PSRAM; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-nfc-st25r3916",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "nfc",
+      "chip": "ST25R3916",
+      "aliases": [
+        "nfc",
+        "nfc reader",
+        "rfal nfc",
+        "st25r3916"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/NFC_Reader/NFC_Reader.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "nfc",
+          "path": "examples/peripheral/NFC_Reader/NFC_Reader.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/peripheral/NFC_Reader/NFC_Reader.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for ST25R3916; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-power-axp2101",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "power",
+      "chip": "AXP2101",
+      "aliases": [
+        "axp2101",
+        "power",
+        "power manager",
+        "xpowersaxp2101"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/power/PowerManageMonitor/PowerManageMonitor.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        },
+        {
+          "framework": "arduino",
+          "target": "power-monitor",
+          "path": "examples/power/PowerManageMonitor/PowerManageMonitor.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/power/PowerManageMonitor/PowerManageMonitor.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for AXP2101; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-rtc-pcf85063a",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "rtc",
+      "chip": "PCF85063A",
+      "aliases": [
+        "pcf85063a",
+        "real-time clock",
+        "rtc",
+        "sensorpcf85063"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for PCF85063A; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-storage-microsd-up-to-32gb-fat32",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "storage",
+      "chip": "microSD up to 32GB FAT32",
+      "aliases": [
+        "arduino sd / lilygolib installsd",
+        "microsd socket",
+        "microsd up to 32gb fat32",
+        "microsd-up-to-32gb-fat32",
+        "storage"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for microSD up to 32GB FAT32; LilyGO source remains authoritative for board integration."
+      ]
+    },
+    {
+      "id": "periph-pack-t-watch-ultra-touch-cst9217",
+      "board_id": "board-t-watch-ultra",
+      "peripheral": "touch",
+      "chip": "CST9217",
+      "aliases": [
+        "capacitive touch",
+        "cst9217",
+        "touch",
+        "touchdrvcst92xx"
+      ],
+      "sources": [
+        {
+          "kind": "lilygo-hardware",
+          "authority_rank": 90,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "lilygo-driver",
+          "authority_rank": 85,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        },
+        {
+          "kind": "arduino-example",
+          "authority_rank": 80,
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "status": "github-live-verified"
+        }
+      ],
+      "framework_refs": [
+        {
+          "framework": "arduino",
+          "target": "factory-peripheral-test",
+          "path": "examples/factory/factory.ino",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
+          "evidence_level": "V3-source-reference",
+          "stale": false
+        }
+      ],
+      "feature_refs": [],
+      "warnings": [
+        "Source pack is context evidence, not build, flash, serial, OTA, LVGL render, or physical behavior evidence.",
+        "No chip-vendor source registered for CST9217; LilyGO source remains authoritative for board integration."
+      ]
+    }
+  ]
+}

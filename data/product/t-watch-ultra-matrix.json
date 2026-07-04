@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {"category": "display", "name": "AMOLED panel", "chip": "CO5300", "bus": "QSPI", "driver": "LilyGo display interface", "source": "hardware"},
+    {"category": "touch", "name": "Capacitive touch", "chip": "CST9217", "bus": "I2C 0x1A", "driver": "TouchDrvCST92xx", "source": "header"},
+    {"category": "gnss", "name": "GNSS receiver", "chip": "u-blox MIA-M10Q", "bus": "UART", "driver": "LilyGoLib GPS", "source": "hardware"},
+    {"category": "radio", "name": "LoRa radio option", "chip": "SX1262 or SX1280", "bus": "SPI", "driver": "RadioLib/LilyGoLib radio", "source": "header"},
+    {"category": "nfc", "name": "NFC reader", "chip": "ST25R3916", "bus": "SPI", "driver": "RFAL NFC", "source": "header"},
+    {"category": "sensor", "name": "Smart IMU", "chip": "Bosch BHI260AP", "bus": "I2C 0x28", "driver": "SensorBHI260AP", "source": "header"},
+    {"category": "power", "name": "Power manager", "chip": "AXP2101", "bus": "I2C 0x34", "driver": "XPowersAXP2101", "source": "header"},
+    {"category": "rtc", "name": "Real-time clock", "chip": "PCF85063A", "bus": "I2C 0x51", "driver": "SensorPCF85063", "source": "header"},
+    {"category": "audio", "name": "PDM microphone", "chip": "TDK T3902", "bus": "PDM", "driver": "LilyGoLib PDM", "source": "hardware"},
+    {"category": "audio", "name": "Class-D amplifier", "chip": "MAX98357A", "bus": "I2S", "driver": "LilyGoLib audio", "source": "hardware"},
+    {"category": "haptic", "name": "Haptic driver", "chip": "DRV2605", "bus": "I2C 0x5A", "driver": "SensorDRV2605", "source": "header"},
+    {"category": "io", "name": "GPIO expander", "chip": "XL9555", "bus": "I2C 0x20", "driver": "ExtensionIOXL9555", "source": "header"},
+    {"category": "storage", "name": "MicroSD socket", "chip": "microSD up to 32GB FAT32", "bus": "SPI", "driver": "Arduino SD / LilyGoLib installSD", "source": "hardware"},
+    {"category": "memory", "name": "External flash and PSRAM", "chip": "16MB flash + 8MB PSRAM", "bus": "QSPI", "driver": "ESP32-S3 external memory", "source": "hardware"}
+  ]
+}

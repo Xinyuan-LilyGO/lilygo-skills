@@ -1,0 +1,25 @@
+lilygo-skills route|hook|index|generate|verify|benchmark|goal|source|preference|reference|setup|profile|project|sync-boards|update
+Commands:
+route [--project <dir>] --json <prompt>
+hook <codex|claude>
+index list --json
+index query <skill-id> --json
+generate skills --out <dir> --json
+verify [--generated-root <dir>] --json
+benchmark [--generated-root <dir>] [--iterations <n>] [--max-ns-per-route <n>] --json
+goal plan [--project <dir>] --json <prompt>
+goal start --plan <file> [--project <dir>] [--dry-run] [--allow-build] [--allow-flash --port <port>] [--allow-serial --port <port>] [--allow-network --allow-ota] [--allow-simulator] [--source-root <dir>] --json
+goal status|evidence|cancel --id <goal-id> [--project <dir>] --json
+source query --board <board-id> --topic <io|pinout|bus|expander|connector|peripheral|display|imu|power|lora|gnss|input> --json
+source completeness --board <board-id> --topic <display|imu|power|lora|gnss|input> --json
+preference show [--project <dir>] --json
+reference list [--project <dir>] --json
+setup plan --framework <arduino|platformio|esp-idf|rust> [--project <dir>] --json
+profile set --board <skill-id> [--framework <skill-id>] --json
+profile clear --json
+project init --board <skill-id> [--framework <skill-id>] [--feature <skill-id>...] [--project <dir>] --json
+project show [--project <dir>] --json
+project clear [--project <dir>] --json
+verify-hardware --profile <file> --json
+sync-boards [--dry-run] --json
+update sources|boards|skills|source-packs|fact-packs|board-facts|peripheral-skills|runtime [--board <board-id> --topic <topic>] [--dry-run] [--home <dir>] --json

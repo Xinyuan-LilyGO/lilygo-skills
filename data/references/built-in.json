@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "entries": [
+    {
+      "id": "ref-serial-mcp-server",
+      "title": "serial-mcp-server UART workflow",
+      "kind": "tool",
+      "applies_to": [
+        "serial",
+        "debug",
+        "log"
+      ],
+      "path_or_url": "https://github.com/Adancurusul/serial-mcp-server",
+      "authority": "operating-pattern",
+      "summary": "Use as the serial observation loop when firmware emits UART logs.",
+      "read_when": "User asks to serial debug, collect logs, or inspect boot output.",
+      "inject_triggers": [
+        "serial",
+        "uart",
+        "log",
+        "monitor",
+        "串口"
+      ]
+    },
+    {
+      "id": "ref-binflow-transfer",
+      "title": "binflow transfer/debug preference",
+      "kind": "tool",
+      "applies_to": [
+        "transfer",
+        "debug",
+        "artifact"
+      ],
+      "path_or_url": "binflow://local-tool-reference",
+      "authority": "operating-pattern",
+      "summary": "Use when the user prefers binflow for transfer or debug artifact movement.",
+      "read_when": "User asks to use binflow or transfer firmware/debug artifacts.",
+      "inject_triggers": [
+        "binflow",
+        "transfer",
+        "传输"
+      ]
+    },
+    {
+      "id": "ref-lilygo-documentation-repo",
+      "title": "LilyGO versioned documentation repo",
+      "kind": "official-doc",
+      "applies_to": [
+        "documentation",
+        "wiki",
+        "source"
+      ],
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+      "authority": "source-navigation",
+      "summary": "Versioned documentation source behind wiki.lilygo.cc; lower authority than code/header facts.",
+      "read_when": "User asks where to look up LilyGO docs or wiki-backed board pages.",
+      "inject_triggers": [
+        "documentation",
+        "wiki",
+        "docs",
+        "source"
+      ]
+    },
+    {
+      "id": "ref-arduino-cli-esp32",
+      "title": "Arduino CLI ESP32 setup",
+      "kind": "official-doc",
+      "applies_to": [
+        "arduino",
+        "setup"
+      ],
+      "path_or_url": "https://docs.arduino.cc/arduino-cli/",
+      "authority": "toolchain-doc",
+      "summary": "Read for arduino-cli installation, board manager, and library manager commands.",
+      "read_when": "User sets up Arduino or needs a blank-machine plan.",
+      "inject_triggers": [
+        "arduino",
+        "arduino-cli",
+        "setup",
+        "install"
+      ]
+    },
+    {
+      "id": "ref-platformio-core",
+      "title": "PlatformIO Core setup",
+      "kind": "official-doc",
+      "applies_to": [
+        "platformio",
+        "setup"
+      ],
+      "path_or_url": "https://docs.platformio.org/en/latest/core/index.html",
+      "authority": "toolchain-doc",
+      "summary": "Read for PlatformIO Core installation, pio run, upload, and monitor commands.",
+      "read_when": "User asks for PlatformIO setup or build/debug flow.",
+      "inject_triggers": [
+        "platformio",
+        "pio",
+        "setup",
+        "install"
+      ]
+    },
+    {
+      "id": "ref-esp-idf-setup",
+      "title": "ESP-IDF setup",
+      "kind": "official-doc",
+      "applies_to": [
+        "esp-idf",
+        "setup"
+      ],
+      "path_or_url": "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/",
+      "authority": "toolchain-doc",
+      "summary": "Read for idf.py installation and ESP32-S3 setup.",
+      "read_when": "User asks for ESP-IDF setup, build, flash, or monitor flow.",
+      "inject_triggers": [
+        "esp-idf",
+        "idf.py",
+        "setup",
+        "install"
+      ]
+    },
+    {
+      "id": "ref-esp-rs-setup",
+      "title": "Rust esp-rs setup",
+      "kind": "official-doc",
+      "applies_to": [
+        "rust",
+        "esp-rs",
+        "setup"
+      ],
+      "path_or_url": "https://docs.esp-rs.org/book/",
+      "authority": "toolchain-doc",
+      "summary": "Read for Rust on ESP32, espup, espflash, targets, and cargo flow.",
+      "read_when": "User asks for Rust or esp-rs setup.",
+      "inject_triggers": [
+        "rust",
+        "esp-rs",
+        "espup",
+        "espflash"
+      ]
+    }
+  ]
+}

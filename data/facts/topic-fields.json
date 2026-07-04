@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "generic_required": ["{topic}.chip", "{topic}.bus_or_interface", "framework.demo_refs", "source_refs"],
+  "generic_preferred": ["{topic}.demo_refs"],
+  "required": {
+    "display": [
+      "display.panel_or_chip",
+      "display.bus_or_interface",
+      "display.backlight_or_power",
+      "framework.demo_refs",
+      "framework.build_hint",
+      "debug.blank_screen_hints",
+      "source_refs"
+    ]
+  },
+  "preferred": {
+    "display": ["display.resolution", "display.touch"]
+  }
+}

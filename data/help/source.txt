@@ -1,0 +1,3 @@
+lilygo-skills source query --board <board-id> --topic <io|pinout|bus|expander|connector|peripheral|display|imu|power|lora|gnss|input> --json
+lilygo-skills source completeness --board <board-id> --topic <display|imu|power|lora|gnss|input> --json
+Returns source-backed facts and topic readiness with unknown_with_sources when exact values are not proven.

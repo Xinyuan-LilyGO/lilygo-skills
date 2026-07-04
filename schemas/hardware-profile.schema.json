@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LilyGO hardware evidence profile",
+  "type": "object",
+  "required": ["board", "framework", "capabilities", "verification_level"],
+  "additionalProperties": false,
+  "properties": {
+    "board": { "type": "string" },
+    "framework": { "enum": ["arduino", "esp-idf", "rust", "platformio"] },
+    "port": { "type": "string" },
+    "simulator": { "type": "string" },
+    "capabilities": {
+      "type": "array",
+      "items": { "enum": ["flash", "serial", "lvgl", "ota", "power", "radio"] }
+    },
+    "verification_level": { "enum": ["V1", "V4", "V5"] },
+    "notes": { "type": "string" }
+  }
+}

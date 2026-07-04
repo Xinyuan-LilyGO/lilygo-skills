@@ -1,0 +1,2 @@
+lilygo-skills profile set --board <skill-id> [--framework <skill-id>] --json
+lilygo-skills profile clear --json
