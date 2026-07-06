@@ -29,6 +29,12 @@ printf '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2
   | LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >.tmp/context-budget-session-full-hook.json
 printf '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m23-budget-session"}' \
   | LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >.tmp/context-budget-session-incremental-hook.json
+printf '{"prompt":"T-Display-S3 debug an SPI sensor and UART module","session_id":"m23-budget-session"}' \
+  | LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >.tmp/context-budget-session-spi-uart-full-hook.json
+printf '{"prompt":"T-Display-S3 debug an SPI sensor and UART module","session_id":"m23-budget-session"}' \
+  | LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >.tmp/context-budget-session-spi-uart-incremental-hook.json
+printf '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m23-budget-session"}' \
+  | LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >.tmp/context-budget-session-return-hook.json
 
 node <<'NODE'
 const fs = require("fs");
@@ -52,6 +58,9 @@ const implHook = read(".tmp/context-budget-impl-hook.json").hookSpecificOutput?.
 const lookupHook = read(".tmp/context-budget-lookup-hook.json").hookSpecificOutput?.additionalContext || "";
 const sessionFullHook = read(".tmp/context-budget-session-full-hook.json").hookSpecificOutput?.additionalContext || "";
 const sessionIncrementalHook = read(".tmp/context-budget-session-incremental-hook.json").hookSpecificOutput?.additionalContext || "";
+const sessionSpiUartFullHook = read(".tmp/context-budget-session-spi-uart-full-hook.json").hookSpecificOutput?.additionalContext || "";
+const sessionSpiUartIncrementalHook = read(".tmp/context-budget-session-spi-uart-incremental-hook.json").hookSpecificOutput?.additionalContext || "";
+const sessionReturnHook = read(".tmp/context-budget-session-return-hook.json").hookSpecificOutput?.additionalContext || "";
 const lookupCapsuleBytes = bytes(lookup.context_capsule);
 const implCapsuleBytes = bytes(impl.context_capsule);
 const repeatActionIds = (repeat.context_capsule.next_actions || []).map((action) => action.id);
@@ -75,6 +84,10 @@ check("incremental hook is at most twenty percent of full hook", bytes(sessionIn
   incremental: bytes(sessionIncrementalHook),
   sessionIncrementalHook
 });
+check("different same-session signature gets a first full hook", sessionSpiUartFullHook.includes("goal-plan-bridge:none"), sessionSpiUartFullHook);
+check("multi-bus repeat keeps all source expansions", sessionSpiUartIncrementalHook.includes("source-query-spi:none") && sessionSpiUartIncrementalHook.includes("source-query-uart:none"), sessionSpiUartIncrementalHook);
+check("multi-bus repeat does not keep unrelated i2c critical fact", !sessionSpiUartIncrementalHook.includes("pin.i2c.sda"), sessionSpiUartIncrementalHook);
+check("returning to an older same-session signature compacts", sessionReturnHook.includes("LilyGO incremental"), sessionReturnHook);
 process.stdout.write(JSON.stringify({
   status: "PASS",
   bytes: {
@@ -83,7 +96,10 @@ process.stdout.write(JSON.stringify({
     lookup_hook: bytes(lookupHook),
     implementation_hook: bytes(implHook),
     session_full_hook: bytes(sessionFullHook),
-    session_incremental_hook: bytes(sessionIncrementalHook)
+    session_incremental_hook: bytes(sessionIncrementalHook),
+    session_spi_uart_full_hook: bytes(sessionSpiUartFullHook),
+    session_spi_uart_incremental_hook: bytes(sessionSpiUartIncrementalHook),
+    session_return_hook: bytes(sessionReturnHook)
   },
   repeated_actions: repeatActionIds
 }, null, 2) + "\n");

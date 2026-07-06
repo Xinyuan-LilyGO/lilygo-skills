@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "fact_prompt": ["io", "gpio", "pin", "pins", "pinout", "pin map", "used by", "occupied", "which", "list", "query", "bus", "address", "addresses", "i2c", "spi", "uart", "connector", "expander", "xl9555", "外设", "引脚", "口", "哪些", "被占用", "占用", "查一下", "列出", "地址", "引脚表"],
-  "implementation_or_debug": ["implement", "debug", "build", "run", "read", "flash", "upload", "monitor", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "bring-up", "quickstart", "first screen", "hello", "blank", "fails", "failed", "not working", "does not", "tft", "tft_espi", "tft-espi", "调试", "实现", "怎么做", "读取", "运行", "跑", "点亮", "亮起来", "烧录", "修复", "失败", "不亮", "不工作", "无显示"],
+  "fact_prompt": ["io", "gpio", "pin", "pins", "pinout", "pin map", "docs", "documentation", "used by", "occupied", "which", "list", "query", "bus", "address", "addresses", "i2c", "spi", "uart", "connector", "expander", "xl9555", "外设", "引脚", "口", "哪些", "被占用", "占用", "查一下", "列出", "地址", "引脚表"],
+  "implementation_or_debug": ["implement", "debug", "build", "run", "flash", "upload", "monitor", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "bring-up", "quickstart", "first screen", "hello", "blank", "fails", "failed", "not working", "does not", "read sensor", "read sensors", "sensor data", "read serial", "read log", "read logs", "read register", "read registers", "read imu", "read battery", "read voltage", "read current", "read temperature", "tft", "tft_espi", "tft-espi", "调试", "实现", "怎么做", "读取", "运行", "跑", "点亮", "亮起来", "烧录", "修复", "失败", "不亮", "不工作", "无显示"],
   "bus_topic_order": ["i2c", "spi", "uart", "i2s", "gpio"],
   "bus_topics": {
     "i2c": ["i2c", "iic", "qwiic", "stemma"],

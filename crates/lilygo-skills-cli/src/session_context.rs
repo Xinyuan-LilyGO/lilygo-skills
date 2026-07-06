@@ -20,16 +20,11 @@ pub(crate) fn maybe_compact_hook_context(
         return full_context;
     };
     let signature = crate::facts::stable_hash(&full_context);
-    let cache_path = cache_dir.join(format!(
-        "{}.txt",
-        crate::facts::stable_hash(&(host, session_id.as_str(), env!("CARGO_PKG_VERSION")))
-    ));
-    let unchanged = cache_fresh(&cache_path)
-        && fs::read_to_string(&cache_path)
-            .ok()
-            .is_some_and(|cached| cached == signature);
+    let cache_key = [host, &session_id, env!("CARGO_PKG_VERSION"), &signature].join("|");
+    let cache_path = cache_dir.join(format!("{}.txt", crate::facts::stable_hash(&cache_key)));
+    let unchanged = cache_fresh(&cache_path);
     if fs::create_dir_all(&cache_dir).is_ok() {
-        let _ = fs::write(&cache_path, signature);
+        let _ = fs::write(&cache_path, "seen");
     }
     if unchanged && let Some(plan) = plan {
         compact_context(plan)
@@ -61,26 +56,22 @@ fn incremental_disabled() -> bool {
 fn session_id(input: &str) -> Option<String> {
     env_value("LILYGO_SKILLS_SESSION_ID").or_else(|| {
         let value = serde_json::from_str::<serde_json::Value>(input).ok()?;
-        SESSION_KEYS.split('|').find_map(|key| {
-            value
-                .get(key)?
-                .as_str()
-                .map(str::trim)
-                .filter(|value| !value.is_empty())
-                .map(str::to_string)
-        })
+        SESSION_KEYS
+            .split('|')
+            .filter_map(|key| value.get(key)?.as_str())
+            .map(str::trim)
+            .find(|value| !value.is_empty())
+            .map(str::to_string)
     })
 }
 
 fn cache_dir() -> Option<PathBuf> {
-    env_value("LILYGO_SKILLS_CACHE_DIR")
+    if let Some(path) = env_value("LILYGO_SKILLS_CACHE_DIR") {
+        return Some(PathBuf::from(path).join("session-context"));
+    }
+    std::env::var_os("HOME")
         .map(PathBuf::from)
-        .map(|path| path.join("session-context"))
-        .or_else(|| {
-            std::env::var_os("HOME")
-                .map(PathBuf::from)
-                .map(|home| home.join(".cache/lilygo-skills/session-context"))
-        })
+        .map(|home| home.join(".cache/lilygo-skills/session-context"))
 }
 
 fn ttl_seconds() -> u64 {
@@ -91,20 +82,31 @@ fn ttl_seconds() -> u64 {
 }
 
 fn compact_context(plan: &GoalPlan) -> String {
-    let mut critical = Vec::new();
-    for fact in plan.context_capsule.critical_facts.iter().take(2) {
-        let value = fact.value.rsplit('=').next().unwrap_or(fact.value.as_str());
-        critical.push(format!("{}={value}", fact.key));
-    }
-    let mut next = Vec::new();
-    for action in &plan.context_capsule.next_actions {
-        if action.id == "source-query-io" || action.id.starts_with("source-query-") {
-            next.push(format!("{}:{}", action.id, action.permission));
-        }
-        if next.len() == 2 {
-            break;
-        }
-    }
+    let topics = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .filter_map(|action| action.id.strip_prefix("source-query-"))
+        .filter(|topic| *topic != "io")
+        .collect::<Vec<_>>();
+    let critical = plan
+        .context_capsule
+        .critical_facts
+        .iter()
+        .filter(|fact| topics.is_empty() || topics.iter().any(|topic| fact.key.contains(*topic)))
+        .take(2)
+        .map(|fact| {
+            let value = fact.value.rsplit('=').next().unwrap_or(fact.value.as_str());
+            format!("{}={value}", fact.key)
+        })
+        .collect::<Vec<_>>();
+    let next = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .filter(|action| action.id == "source-query-io" || action.id.starts_with("source-query-"))
+        .map(|action| format!("{}:{}", action.id, action.permission))
+        .collect::<Vec<_>>();
     format!(
         "LilyGO incremental: critical=[{}]; next=[{}]; expand=goal plan; evidence_boundary={}/hardware_verified={}",
         critical.join(","),
@@ -139,16 +141,38 @@ mod tests {
             std::env::remove_var("LILYGO_SKILLS_DISABLE_INCREMENTAL");
         }
         let prompt = "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor";
-        let plan = plan(prompt);
-        let full = crate::goal::render_hook_goal_summary(&plan);
+        let first_plan = plan(prompt);
+        let full = crate::goal::render_hook_goal_summary(&first_plan);
+        let spi_uart = plan("T-Display-S3 debug an SPI sensor and UART module");
+        let spi_uart_full = crate::goal::render_hook_goal_summary(&spi_uart);
         let input = r#"{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"session-a"}"#;
-        let first = maybe_compact_hook_context("claude", input, full.clone(), Some(&plan));
-        let second = maybe_compact_hook_context("claude", input, full.clone(), Some(&plan));
+        let spi_uart_input = r#"{"prompt":"T-Display-S3 debug an SPI sensor and UART module","session_id":"session-a"}"#;
+        let first = maybe_compact_hook_context("claude", input, full.clone(), Some(&first_plan));
+        let second = maybe_compact_hook_context("claude", input, full.clone(), Some(&first_plan));
+        let first_spi_uart = maybe_compact_hook_context(
+            "claude",
+            spi_uart_input,
+            spi_uart_full.clone(),
+            Some(&spi_uart),
+        );
+        let second_spi_uart = maybe_compact_hook_context(
+            "claude",
+            spi_uart_input,
+            spi_uart_full.clone(),
+            Some(&spi_uart),
+        );
+        let third = maybe_compact_hook_context("claude", input, full.clone(), Some(&first_plan));
         assert_eq!(first, full);
+        assert_eq!(first_spi_uart, spi_uart_full);
         assert!(second.contains("LilyGO incremental"));
         assert!(second.contains("pin.i2c.sda"));
         assert!(second.contains("source-query-i2c:none"));
         assert!(second.contains("evidence_boundary=V3/hardware_verified=false"));
+        assert!(second_spi_uart.contains("LilyGO incremental"));
+        assert!(second_spi_uart.contains("source-query-spi:none"));
+        assert!(second_spi_uart.contains("source-query-uart:none"));
+        assert!(!second_spi_uart.contains("pin.i2c.sda"));
+        assert!(third.contains("LilyGO incremental"));
         assert!(
             second.len() * 5 <= full.len(),
             "second={second}\nfull={full}"

@@ -1636,6 +1636,9 @@ fn demo_intent_chinese_minimal_display_demo() {
 fn intent_classification_lookup_prompts_are_read_only() {
     for prompt in [
         "T-Display-S3 which pins are used by the screen?",
+        "T-Display-S3 read pinout docs",
+        "T-Display-S3 inspect docs",
+        "T-Display-S3 locate docs",
         "T-Display-S3 哪些引脚被屏幕占用了?",
         "T-Display-S3 先看一下屏幕占用了哪些 IO",
     ] {
@@ -1677,8 +1680,8 @@ fn intent_classification_lookup_prompts_are_read_only() {
 
 #[test]
 fn intent_classification_mixed_prompt_prefers_action() {
-    let plan = plan("T-Display-S3 查一下引脚，然后帮我点亮屏幕");
-    let actions = &plan.context_capsule.next_actions;
+    let mixed_plan = plan("T-Display-S3 查一下引脚，然后帮我点亮屏幕");
+    let actions = &mixed_plan.context_capsule.next_actions;
     assert!(
         actions.iter().any(|action| action.id == "goal-plan-bridge"),
         "{actions:?}"
@@ -1688,12 +1691,24 @@ fn intent_classification_mixed_prompt_prefers_action() {
         "{actions:?}"
     );
     assert!(
-        plan.context_capsule
+        mixed_plan
+            .context_capsule
             .demo_refs
             .iter()
             .any(|demo| demo.path == "examples/tft/tft.ino"),
         "{:?}",
-        plan.context_capsule.demo_refs
+        mixed_plan.context_capsule.demo_refs
+    );
+
+    let read_sensor_plan = plan("T-Display-S3 read I2C sensor data");
+    assert!(
+        read_sensor_plan
+            .context_capsule
+            .next_actions
+            .iter()
+            .any(|action| action.id == "goal-plan-bridge"),
+        "{:?}",
+        read_sensor_plan.context_capsule.next_actions
     );
 }
 

@@ -17,6 +17,8 @@ BIN="$ROOT/target/debug/lilygo-skills"
   >.tmp/pure-query-plan.json
 "$BIN" goal plan --json "T-Display-S3 which pins are used by the screen?" \
   >.tmp/pure-query-plan-english-screen.json
+"$BIN" goal plan --json "T-Display-S3 read pinout docs" \
+  >.tmp/pure-query-plan-read-pinout-docs.json
 "$BIN" goal plan --json "T-Display-S3 哪些引脚被屏幕占用了?" \
   >.tmp/pure-query-plan-chinese-screen.json
 printf '{"prompt":"T-Display-S3 的 I2C 引脚和外设地址有哪些?"}' \
@@ -36,9 +38,10 @@ function check(name, ok, detail) {
 }
 const plan = read(".tmp/pure-query-plan.json");
 const englishScreen = read(".tmp/pure-query-plan-english-screen.json");
+const readPinoutDocs = read(".tmp/pure-query-plan-read-pinout-docs.json");
 const chineseScreen = read(".tmp/pure-query-plan-chinese-screen.json");
 const hook = read(".tmp/pure-query-hook.json");
-const lookupPlans = [plan, englishScreen, chineseScreen];
+const lookupPlans = [plan, englishScreen, readPinoutDocs, chineseScreen];
 const forbiddenIds = /^(goal-plan-bridge|goal-start-dry-run|goal-build|goal-flash|goal-serial|goal-ota)/;
 for (const current of lookupPlans) {
   const capsule = current.context_capsule;

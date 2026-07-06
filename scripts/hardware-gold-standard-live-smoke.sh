@@ -66,6 +66,19 @@ sha_file() {
   fi
 }
 
+emit_artifact_report() {
+  local hash
+  hash="$(sha_file "$REPORT_FILE")"
+  REPORT_FILE="$REPORT_FILE" node - "$hash" <<'NODE'
+const fs = require("fs");
+const hash = process.argv[2];
+const path = process.env.REPORT_FILE;
+const report = JSON.parse(fs.readFileSync(path, "utf8"));
+report.artifacts = [{ kind: "public-report", path, sha256: hash }];
+process.stdout.write(JSON.stringify(report, null, 2) + "\n");
+NODE
+}
+
 write_report() {
   local status="$1"
   local mode="$2"
@@ -94,16 +107,7 @@ process.stdout.write(JSON.stringify({
   writes: []
 }, null, 2) + "\n");
 NODE
-  local hash
-  hash="$(sha_file "$REPORT_FILE")"
-  REPORT_FILE="$REPORT_FILE" node - "$hash" <<'NODE'
-const fs = require("fs");
-const hash = process.argv[2];
-const path = process.env.REPORT_FILE;
-const report = JSON.parse(fs.readFileSync(path, "utf8"));
-report.artifacts = [{ kind: "public-report", path, sha256: hash }];
-process.stdout.write(JSON.stringify(report, null, 2) + "\n");
-NODE
+  emit_artifact_report
   exit "$exit_code"
 }
 
@@ -131,4 +135,9 @@ if [[ -z "$PORT" ]]; then
   write_report "BOUNDARY" "no-device" "no --port was supplied for permissioned live validation" 2
 fi
 
-bash scripts/goal-hardware-smoke.sh --port "$PORT"
+set +e
+bash scripts/goal-hardware-smoke.sh --port "$PORT" >"$REPORT_FILE"
+CHILD_EXIT=$?
+set -e
+emit_artifact_report
+exit "$CHILD_EXIT"
