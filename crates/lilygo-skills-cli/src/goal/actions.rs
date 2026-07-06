@@ -44,7 +44,7 @@ pub(super) fn next_actions_for_goal(
             "Read exact pins, buses, expanders, connectors, and source refs before assigning GPIO.",
         ));
     }
-    if let Some(topic) = bus_topic_for_prompt(&normalized) {
+    for topic in crate::facts::bus_topics_for_prompt(prompt) {
         actions.push(next_action(
             &format!("source-query-{topic}"),
             &format!("Check {topic} bus facts"),
@@ -54,7 +54,7 @@ pub(super) fn next_actions_for_goal(
         ));
     }
     if fact_only {
-        return dedup_next_actions(actions, 4);
+        return dedup_next_actions(actions, 6);
     }
     if let Some(demo) = demo_refs.first() {
         actions.push(next_action(
@@ -96,7 +96,7 @@ pub(super) fn next_actions_for_goal(
             "Device mutation and serial observation require explicit user permission.",
         ));
     }
-    dedup_next_actions(actions, 6)
+    dedup_next_actions(actions, 8)
 }
 
 fn next_action(
@@ -126,34 +126,6 @@ fn dedup_next_actions(actions: Vec<GoalNextAction>, max: usize) -> Vec<GoalNextA
 
 fn needs_io_expansion(normalized: &str, fact_tables: &[FactTablePreview]) -> bool {
     !fact_tables.is_empty()
-        || contains_any(
-            normalized,
-            &[
-                "sensor",
-                "sensors",
-                "i2c",
-                "spi",
-                "uart",
-                "i2s",
-                "gpio",
-                "pin",
-                "io",
-                "bus",
-                "传感器",
-                "引脚",
-                "外设",
-            ],
-        )
-}
-
-fn bus_topic_for_prompt(normalized: &str) -> Option<&'static str> {
-    [
-        ("i2c", ["i2c", "iic", "qwiic", "stemma"].as_slice()),
-        ("spi", ["spi", "mosi", "miso", "sclk"].as_slice()),
-        ("uart", ["uart", "serial", "tx", "rx", "串口"].as_slice()),
-        ("i2s", ["i2s", "audio", "bclk", "lrclk"].as_slice()),
-        ("gpio", ["gpio", "pin", "io", "引脚", "外设"].as_slice()),
-    ]
-    .into_iter()
-    .find_map(|(topic, needles)| contains_any(normalized, needles).then_some(topic))
+        || !crate::facts::bus_topics_for_prompt(normalized).is_empty()
+        || contains_any(normalized, &["sensor", "sensors", "bus", "传感器"])
 }

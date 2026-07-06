@@ -1569,6 +1569,19 @@ fn goal_next_actions_are_permission_aware() {
             .all(|action| !action.command.contains("/Users/"))
     );
 
+    let multi_bus_plan = plan("T-Display-S3 debug an SPI sensor and UART module");
+    let multi_bus_actions = &multi_bus_plan.context_capsule.next_actions;
+    assert!(
+        multi_bus_actions
+            .iter()
+            .any(|action| action.id == "source-query-spi")
+    );
+    assert!(
+        multi_bus_actions
+            .iter()
+            .any(|action| action.id == "source-query-uart")
+    );
+
     let fact_lookup = plan("T-Display-S3 Arduino IO口怎么用? 哪些GPIO接了外设?");
     assert!(
         fact_lookup

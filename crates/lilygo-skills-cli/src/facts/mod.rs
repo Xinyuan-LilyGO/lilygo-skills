@@ -25,6 +25,8 @@ const PROMPT_KEYWORDS_JSON: &str = include_str!("../../../../data/facts/prompt-k
 pub(crate) struct PromptKeywords {
     pub fact_prompt: Vec<String>,
     pub implementation_or_debug: Vec<String>,
+    pub bus_topic_order: Vec<String>,
+    pub bus_topics: BTreeMap<String, Vec<String>>,
     pub topic_order: Vec<String>,
     pub topics: BTreeMap<String, Vec<String>>,
 }
@@ -239,28 +241,32 @@ pub(crate) fn fact_tables_for_goal(
     .collect())
 }
 
-fn is_bus_or_sensor_prompt(prompt: &str) -> bool {
+pub(crate) fn bus_topics_for_prompt(prompt: &str) -> Vec<String> {
     let normalized = prompt.to_lowercase();
-    is_implementation_or_debug_prompt(prompt)
-        && contains_any(
-            &normalized,
-            &[
-                "sensor",
-                "sensors",
-                "i2c",
-                "iic",
-                "spi",
-                "uart",
-                "i2s",
-                "gpio",
-                "pin",
-                "bus",
-                "io",
-                "传感器",
-                "引脚",
-                "外设",
-            ],
-        )
+    let keywords = prompt_keywords();
+    let mut seen = BTreeSet::new();
+    keywords
+        .bus_topic_order
+        .iter()
+        .filter(|topic| {
+            keywords.bus_topics.get(*topic).is_some_and(|needles| {
+                let needles = needles.iter().map(String::as_str).collect::<Vec<_>>();
+                contains_any(&normalized, &needles)
+            })
+        })
+        .filter(|topic| seen.insert((*topic).clone()))
+        .cloned()
+        .collect()
+}
+
+fn has_bus_or_sensor_terms(prompt: &str) -> bool {
+    let normalized = prompt.to_lowercase();
+    !bus_topics_for_prompt(prompt).is_empty()
+        || contains_any(&normalized, &["sensor", "sensors", "bus", "传感器"])
+}
+
+fn is_bus_or_sensor_prompt(prompt: &str) -> bool {
+    is_implementation_or_debug_prompt(prompt) && has_bus_or_sensor_terms(prompt)
 }
 
 pub(crate) fn discovery_hints_for_goal(board_id: Option<&str>, prompt: &str) -> Vec<DiscoveryHint> {
@@ -280,26 +286,7 @@ pub(crate) fn discovery_hints_for_goal(board_id: Option<&str>, prompt: &str) -> 
         return discovery_hints(board_id, "io", true);
     }
     if is_implementation_or_debug_prompt(prompt) {
-        let normalized = prompt.to_lowercase();
-        if contains_any(
-            &normalized,
-            &[
-                "sensor",
-                "sensors",
-                "i2c",
-                "iic",
-                "spi",
-                "uart",
-                "i2s",
-                "gpio",
-                "pin",
-                "bus",
-                "io",
-                "传感器",
-                "引脚",
-                "外设",
-            ],
-        ) {
+        if has_bus_or_sensor_terms(prompt) {
             return discovery_hints(board_id, "io", true);
         }
         return discovery_hints(board_id, "peripheral", false);
@@ -430,6 +417,14 @@ mod tests {
                 .iter()
                 .any(|fact| fact.confidence == "unknown_with_sources")
         );
+        for topic in ["uart", "i2s", "gpio"] {
+            let report =
+                source_query(root().as_path(), "board-t-display-s3", topic).expect("bus topic");
+            assert_eq!(report.topic, topic);
+            assert!(!report.facts.is_empty() || !report.unknowns.is_empty());
+        }
+        let topics = bus_topics_for_prompt("debug SPI sensor and UART module over I2S audio");
+        assert_eq!(topics, vec!["spi", "uart", "i2s"]);
     }
 
     #[test]

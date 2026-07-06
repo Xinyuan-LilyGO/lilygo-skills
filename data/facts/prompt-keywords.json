@@ -2,6 +2,14 @@
   "schema_version": 1,
   "fact_prompt": ["io", "gpio", "pinout", "pin map", "bus", "i2c", "spi", "uart", "connector", "expander", "xl9555", "外设", "引脚", "口", "哪些"],
   "implementation_or_debug": ["implement", "debug", "build", "flash", "upload", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "tft", "tft_espi", "tft-espi", "screen", "sensor", "调试", "实现", "怎么做", "显示", "屏幕", "传感器"],
+  "bus_topic_order": ["i2c", "spi", "uart", "i2s", "gpio"],
+  "bus_topics": {
+    "i2c": ["i2c", "iic", "qwiic", "stemma"],
+    "spi": ["spi", "mosi", "miso", "sclk"],
+    "uart": ["uart", "serial", "tx", "rx", "串口"],
+    "i2s": ["i2s", "audio", "bclk", "lrclk"],
+    "gpio": ["gpio", "pin", "io", "引脚", "外设"]
+  },
   "topic_order": ["display", "imu", "lora", "gnss", "power", "input"],
   "topics": {
     "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示"],
