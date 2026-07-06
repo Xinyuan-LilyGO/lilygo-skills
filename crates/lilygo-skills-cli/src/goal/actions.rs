@@ -80,7 +80,10 @@ pub(super) fn next_actions_for_goal(
     actions.push(next_action(
         "goal-start-dry-run",
         "Preview build/upload/monitor plan",
-        "lilygo-skills goal start --plan <saved-plan.json> --dry-run --json",
+        format!(
+            "lilygo-skills goal complete --dry-run --json {}",
+            shell_quote(prompt)
+        ),
         "none",
         "Confirm the execution plan and required permissions before mutating a project or device.",
     ));
@@ -88,7 +91,10 @@ pub(super) fn next_actions_for_goal(
         actions.push(next_action(
             "goal-build",
             "Run the build step after approval",
-            "lilygo-skills goal start --plan <saved-plan.json> --allow-build --json",
+            format!(
+                "lilygo-skills goal complete --allow-build --json {}",
+                shell_quote(prompt)
+            ),
             "allow-build",
             "A compiled artifact is the first evidence level above source/context planning.",
         ));
@@ -100,7 +106,10 @@ pub(super) fn next_actions_for_goal(
         actions.push(next_action(
             "goal-flash-monitor",
             "Flash and observe after approval",
-            "lilygo-skills goal start --plan <saved-plan.json> --allow-build --allow-flash --allow-serial --json",
+            format!(
+                "lilygo-skills goal complete --allow-build --allow-flash --allow-serial --json {}",
+                shell_quote(prompt)
+            ),
             "allow-flash",
             "Device mutation and serial observation require explicit user permission.",
         ));

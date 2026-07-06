@@ -42,8 +42,12 @@ for (const id of ["goal-plan-bridge", "goal-start-dry-run", "source-query-io", "
   check(`implementation action ${id}`, actionIds.has(id), implActions);
 }
 const bridge = implActions.find((action) => action.id === "goal-plan-bridge");
+const dryRun = implActions.find((action) => action.id === "goal-start-dry-run");
 check("bridge is read-only", bridge.permission === "none", bridge);
 check("bridge points to goal plan", /goal plan --json/.test(bridge.command), bridge);
+check("dry-run is read-only", dryRun.permission === "none", dryRun);
+check("dry-run is directly executable", /goal complete --dry-run --json/.test(dryRun.command), dryRun);
+check("dry-run has no saved-plan placeholder", !dryRun.command.includes("<saved-plan.json>"), dryRun);
 check("lookup has no goal bridge", !lookupActions.some((action) => action.id === "goal-plan-bridge"), lookupActions);
 check("lookup has no dry-run start", !lookupActions.some((action) => action.id === "goal-start-dry-run"), lookupActions);
 const context = hook.hookSpecificOutput?.additionalContext || "";

@@ -1669,7 +1669,10 @@ fn goal_bridge_actions_for_implementation_prompts() {
         .find(|action| action.id == "goal-start-dry-run")
         .expect("goal-start dry-run action");
     assert_eq!(dry_run.permission, "none");
+    assert!(dry_run.command.contains("goal complete --dry-run --json"));
     assert!(dry_run.command.contains("--dry-run"));
+    assert!(dry_run.command.contains("T-Display-S3"));
+    assert!(!dry_run.command.contains("<saved-plan.json>"));
     let summary = render_hook_goal_summary(&plan);
     assert!(summary.contains("goal-plan-bridge:none"));
     assert!(summary.contains("source-query-i2c:none"));
