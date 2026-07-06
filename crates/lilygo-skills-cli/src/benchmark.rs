@@ -870,16 +870,34 @@ fn goal_cases() -> Vec<GoalCase> {
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
+        GoalCase {
+            name: "goal:t-display-s3-tft-i2c-source-recovery",
+            prompt: "T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[("display", "complete")],
+            required_facts: &["PIN_IIC_SDA=GPIO18", "PIN_IIC_SCL=GPIO17"],
+            required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
+            required_demos: &["examples/tft/tft.ino"],
+            required_recipes: &["recipe-run-official-demo", "recipe-build-upload-monitor"],
+            expect_no_preferences: false,
+            expect_no_reference_hints: false,
+        },
     ]
 }
 
 fn validate_goal_case(case: &GoalCase, plan: &GoalPlan) -> Vec<GoalBenchmarkFailure> {
-    let facts = plan
+    let mut facts = plan
         .context_capsule
         .facts
         .iter()
         .map(|fact| fact.value.as_str())
         .collect::<BTreeSet<_>>();
+    facts.extend(
+        plan.context_capsule
+            .critical_facts
+            .iter()
+            .map(|fact| fact.value.as_str()),
+    );
     let demos = plan
         .context_capsule
         .demo_refs

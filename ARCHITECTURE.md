@@ -4,7 +4,8 @@ Chinese version: [ARCHITECTURE.zh-CN.md](ARCHITECTURE.zh-CN.md). Related
 docs: [Context layers](docs/CONTEXT_LAYER.md) /
 [中文](docs/CONTEXT_LAYER.zh-CN.md), [Skill generation](docs/SKILL_GENERATION.md)
 / [中文](docs/SKILL_GENERATION.zh-CN.md), [Board facts](docs/BOARD_FACTS.md) /
-[中文](docs/BOARD_FACTS.zh-CN.md), and
+[中文](docs/BOARD_FACTS.zh-CN.md), [Source recovery](docs/SOURCE_RECOVERY.md) /
+[中文](docs/SOURCE_RECOVERY.zh-CN.md), and
 [Verification levels](docs/VERIFICATION_LEVELS.md) /
 [中文](docs/VERIFICATION_LEVELS.zh-CN.md).
 
@@ -91,6 +92,11 @@ commands that the AI can call when the user actually needs them. Embedded
 playbooks follow the same rule: route and hook inject ids and short hints;
 `index query playbook-* --json` expands the full generated playbook only for
 implementation, setup, debug, or evidence work.
+
+Source recovery is a cross-layer output rather than a separate command family.
+For implementation and debug prompts, `goal plan`, hook context, `source query`,
+and generated board skills converge on the same official-demo-first context:
+demo path, board-owned headers, critical facts, and recovery commands.
 
 The public source tree is meta-only. The only committed Skill is
 `skills/lilygo-router/SKILL.md`, the meta router. Board, series, framework,

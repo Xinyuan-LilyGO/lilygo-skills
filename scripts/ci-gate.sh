@@ -27,6 +27,7 @@ GATES=(
   "setup-plan-smoke.sh --dry-run"
   "source-completeness-smoke.sh --dry-run"
   "source-fact-smoke.sh --dry-run"
+  "source-recovery-smoke.sh"
   "code-size-boundary-smoke.sh"
   "meta-only-source-smoke.sh"
   "rust-module-doc-smoke.sh"

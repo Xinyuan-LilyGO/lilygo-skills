@@ -125,6 +125,9 @@ The board Skill is the compact generated snapshot. The richer task-time context
 is in `goal plan.context_capsule`, `source query`, and `source completeness`,
 which keep default injection small while still giving the agent source-backed
 facts and official demo references when implementation or debug work needs them.
+For example, generated `board-t-display-s3` includes a `Source-Backed Board
+Facts` section with official I2C pins from `pin_config.h` and official TFT demo
+references.
 
 ## Template-Driven Renderers
 

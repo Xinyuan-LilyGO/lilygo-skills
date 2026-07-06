@@ -87,6 +87,13 @@ Full fact packs, reference docs, and templates are not injected by default. The
 agent reads those files only for implementation, debug, setup, generation, or
 verification work.
 
+Implementation and debug prompts also receive a compact source recovery capsule:
+the nearest official demo path, board-owned source headers, a few critical
+facts, and expansion commands. For example, a T-Display-S3 TFT_eSPI + I2C
+prompt can surface `examples/tft/tft.ino`, Setup206, `pin_config.h`,
+`PIN_IIC_SDA=GPIO18`, `PIN_IIC_SCL=GPIO17`, and a `source query` command without
+injecting the whole fact pack.
+
 ## Preferences And References
 
 Preferences are public behavior choices such as framework order, serial debug

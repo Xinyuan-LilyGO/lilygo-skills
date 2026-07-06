@@ -424,6 +424,46 @@ fn goal_discovery_enrichment_hints() {
 }
 
 #[test]
+fn source_recovery_capsule_t_display_s3() {
+    let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen");
+    let capsule = &plan.context_capsule;
+    let rendered = serde_json::to_string(capsule).expect("capsule json");
+
+    assert_eq!(plan.route.board.as_deref(), Some("board-t-display-s3"));
+    assert!(
+        capsule
+            .demo_refs
+            .iter()
+            .any(|demo| demo.path == "examples/tft/tft.ino")
+    );
+    assert!(rendered.contains("implementation_start"));
+    assert!(rendered.contains("official-demo-first"));
+    assert!(rendered.contains("Setup206_LilyGo_T_Display_S3.h"));
+    assert!(rendered.contains("pin_config.h"));
+    assert!(rendered.contains("critical_facts"));
+    assert!(rendered.contains("PIN_IIC_SDA=GPIO18"));
+    assert!(rendered.contains("PIN_IIC_SCL=GPIO17"));
+    assert!(rendered.contains("recovery_actions"));
+    assert!(rendered.contains("source query --board board-t-display-s3 --topic io --json"));
+    assert!(rendered.contains("internal_skill_hints"));
+    assert!(rendered.contains("playbook-source-discovery"));
+}
+
+#[test]
+fn source_recovery_hook_summary_t_display_s3() {
+    let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen");
+    let summary = render_hook_goal_summary(&plan);
+
+    assert!(summary.contains("examples/tft/tft.ino"));
+    assert!(summary.contains("Setup206_LilyGo_T_Display_S3.h"));
+    assert!(summary.contains("pin_config.h"));
+    assert!(summary.contains("PIN_IIC_SDA=GPIO18"));
+    assert!(summary.contains("PIN_IIC_SCL=GPIO17"));
+    assert!(summary.contains("index query playbook-source-discovery --json"));
+    assert!(summary.contains("source query --board board-t-display-s3 --topic io --json"));
+}
+
+#[test]
 fn project_board_readiness() {
     let profile = ActiveProfile {
         board: "board-t-display-s3".to_string(),

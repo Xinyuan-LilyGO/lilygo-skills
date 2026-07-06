@@ -34,10 +34,14 @@ confidence.
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic io --json
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic expander --json
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic peripheral --json
+lilygo-skills source query --board board-t-display-s3 --topic i2c --json
 ```
 
 Valid topics include IO, pinout, bus, expander, connector, peripheral, display,
 IMU, power, LoRa, GNSS, and input topics exposed by the CLI.
+
+For T-Display-S3, the I2C topic returns official factory `pin_config.h` facts
+such as `PIN_IIC_SDA=GPIO18` and `PIN_IIC_SCL=GPIO17`.
 
 ## Confidence Values
 

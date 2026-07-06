@@ -25,6 +25,10 @@ pub(super) fn compose_context_capsule(
         return Ok(GoalContextCapsule {
             summary: context_summary(route, goal_route),
             facts,
+            implementation_start: None,
+            critical_facts: Vec::new(),
+            recovery_actions: Vec::new(),
+            internal_skill_hints: Vec::new(),
             fact_tables,
             completeness: BTreeMap::new(),
             readiness: Vec::new(),
@@ -96,9 +100,18 @@ pub(super) fn compose_context_capsule(
         .len()
         .saturating_sub(budget.max_playbook_hints_inline);
     playbook_hints.truncate(budget.max_playbook_hints_inline);
+    let implementation_start =
+        implementation_start_for_goal(prompt, &demo_refs, &source_refs, &fact_tables);
+    let critical_facts = critical_facts_for_goal(prompt, &fact_tables);
+    let recovery_actions = recovery_actions_for_goal(board_id, prompt, &fact_tables);
+    let internal_skill_hints = internal_skill_hints_for_goal(prompt, &playbook_hints);
     Ok(GoalContextCapsule {
         summary: context_summary(route, goal_route),
         facts,
+        implementation_start,
+        critical_facts,
+        recovery_actions,
+        internal_skill_hints,
         fact_tables,
         completeness,
         readiness,
@@ -308,6 +321,14 @@ fn demo_score(demo: &DemoRef, route: &GoalRoute, prompt: &str) -> i32 {
     if target == "nfc" && contains_any(&normalized, &["nfc", "st25r3916"]) {
         score += 50;
     }
+    if (target.contains("tft") || demo.path.to_lowercase().contains("/tft/"))
+        && contains_any(
+            &normalized,
+            &["tft", "tft_espi", "tft-espi", "tftespi", "tft_e"],
+        )
+    {
+        score += 80;
+    }
     if target.contains("lvgl") && contains_any(&normalized, &["lvgl", "touch", "display"]) {
         score += 45;
     }
@@ -441,6 +462,197 @@ fn cap_source_refs(source_refs: &mut Vec<GoalSourceRef>, max_inline: usize) {
     {
         source_refs.pop();
         source_refs.push(documentation_repo);
+    }
+}
+
+fn implementation_start_for_goal(
+    prompt: &str,
+    demo_refs: &[GoalDemoRef],
+    source_refs: &[GoalSourceRef],
+    fact_tables: &[FactTablePreview],
+) -> Option<GoalImplementationStart> {
+    if !is_source_recovery_prompt(prompt, fact_tables) {
+        return None;
+    }
+    let official_demo = demo_refs.first();
+    let source_headers = source_refs
+        .iter()
+        .filter(|source| {
+            matches!(
+                source.kind.as_str(),
+                "driver-header" | "arduino-pins" | "official-code" | "hardware-doc"
+            )
+        })
+        .map(|source| source.url.clone())
+        .take(4)
+        .collect::<Vec<_>>();
+    Some(GoalImplementationStart {
+        strategy: "official-demo-first".to_string(),
+        reason: "Start from the closest official example and verify board pins in source headers before writing custom code.".to_string(),
+        official_demo_path: official_demo.map(|demo| demo.path.clone()),
+        official_demo_url: official_demo.map(|demo| demo.source_url.clone()),
+        source_headers,
+        next_steps: vec![
+            "read the official demo path first".to_string(),
+            "check driver headers and pin_config before assigning GPIO".to_string(),
+            "query source facts again when a pin, bus, or driver is missing".to_string(),
+        ],
+    })
+}
+
+fn critical_facts_for_goal(
+    prompt: &str,
+    fact_tables: &[FactTablePreview],
+) -> Vec<GoalCriticalFact> {
+    if !is_source_recovery_prompt(prompt, fact_tables) {
+        return Vec::new();
+    }
+    let mut critical = Vec::new();
+    let mut seen = BTreeSet::new();
+    for fact in fact_tables.iter().flat_map(|table| table.rows.iter()) {
+        if !is_critical_source_fact(fact) {
+            continue;
+        }
+        push_critical_fact(
+            &mut critical,
+            &mut seen,
+            &fact.key,
+            &fact.value,
+            &fact.source.path_or_url,
+            &fact.evidence_level,
+        );
+    }
+    critical.truncate(8);
+    critical
+}
+
+fn recovery_actions_for_goal(
+    board_id: &str,
+    prompt: &str,
+    fact_tables: &[FactTablePreview],
+) -> Vec<GoalRecoveryAction> {
+    if !is_source_recovery_prompt(prompt, fact_tables) {
+        return Vec::new();
+    }
+    vec![
+        recovery_action(
+            "source-query",
+            format!("lilygo-skills source query --board {board_id} --topic io --json"),
+            "Expand exact board pins, buses, connectors, and known unknowns before assigning GPIO.",
+        ),
+        recovery_action(
+            "playbook",
+            "lilygo-skills index query playbook-source-discovery --json",
+            "Load the source-discovery playbook when official facts are absent or ambiguous.",
+        ),
+    ]
+}
+
+fn internal_skill_hints_for_goal(
+    prompt: &str,
+    playbook_hints: &[PlaybookHint],
+) -> Vec<GoalInternalSkillHint> {
+    if !is_source_recovery_prompt(prompt, &[]) {
+        return Vec::new();
+    }
+    let mut hints = playbook_hints
+        .iter()
+        .map(|hint| GoalInternalSkillHint {
+            skill_id: hint.playbook_id.clone(),
+            kind: "playbook".to_string(),
+            expand_command: hint.expand_command.clone(),
+            reason: hint.reason.clone(),
+        })
+        .collect::<Vec<_>>();
+    if !hints
+        .iter()
+        .any(|hint| hint.skill_id == "playbook-source-discovery")
+    {
+        hints.push(GoalInternalSkillHint {
+            skill_id: "playbook-source-discovery".to_string(),
+            kind: "playbook".to_string(),
+            expand_command: "lilygo-skills index query playbook-source-discovery --json"
+                .to_string(),
+            reason: "Use the source model before guessing pins, drivers, demos, or setup files."
+                .to_string(),
+        });
+    }
+    hints.truncate(5);
+    hints
+}
+
+fn is_source_recovery_prompt(prompt: &str, fact_tables: &[FactTablePreview]) -> bool {
+    let normalized = prompt.to_lowercase();
+    !fact_tables.is_empty()
+        || contains_any(
+            &normalized,
+            &[
+                "implement",
+                "debug",
+                "build",
+                "flash",
+                "upload",
+                "demo",
+                "example",
+                "driver",
+                "setup",
+                "tft",
+                "tft_espi",
+                "tft-espi",
+                "i2c",
+                "gpio",
+                "pinout",
+                "sensor",
+                "screen",
+                "display",
+                "实现",
+                "调试",
+                "引脚",
+                "外设",
+            ],
+        )
+}
+
+fn is_critical_source_fact(fact: &SourceFact) -> bool {
+    fact.confidence != "unknown_with_sources"
+        && fact.value != "unknown_with_sources"
+        && is_critical_text(&fact.key, &fact.value)
+}
+
+fn is_critical_text(key: &str, value: &str) -> bool {
+    let haystack = format!("{key} {value}").to_lowercase();
+    contains_any(
+        &haystack,
+        &[
+            "pin_iic", "iic", "i2c", "display", "tft", "lcd", "touch", "button", "bat_volt", "sd_",
+            "gpio38", "gpio15",
+        ],
+    )
+}
+
+fn push_critical_fact(
+    facts: &mut Vec<GoalCriticalFact>,
+    seen: &mut BTreeSet<(String, String)>,
+    key: &str,
+    value: &str,
+    source: &str,
+    evidence_level: &str,
+) {
+    if seen.insert((key.to_string(), value.to_string())) {
+        facts.push(GoalCriticalFact {
+            key: key.to_string(),
+            value: value.to_string(),
+            source: source.to_string(),
+            evidence_level: evidence_level.to_string(),
+        });
+    }
+}
+
+fn recovery_action(kind: &str, command: impl Into<String>, reason: &str) -> GoalRecoveryAction {
+    GoalRecoveryAction {
+        kind: kind.to_string(),
+        command: command.into(),
+        reason: reason.to_string(),
     }
 }
 

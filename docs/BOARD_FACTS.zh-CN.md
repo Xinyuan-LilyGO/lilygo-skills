@@ -32,10 +32,14 @@ reference、source hash、authority rank、evidence level、stale flag 和 confi
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic io --json
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic expander --json
 cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic peripheral --json
+lilygo-skills source query --board board-t-display-s3 --topic i2c --json
 ```
 
 有效 topic 包括 IO、pinout、bus、expander、connector、peripheral、display、IMU、
 power、LoRa、GNSS 和 input。
+
+对 T-Display-S3，I2C topic 会返回官方 factory `pin_config.h` 里的事实，例如
+`PIN_IIC_SDA=GPIO18` 和 `PIN_IIC_SCL=GPIO17`。
 
 ## Confidence Values
 

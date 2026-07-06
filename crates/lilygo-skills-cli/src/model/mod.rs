@@ -434,6 +434,14 @@ pub struct GoalRoute {
 pub struct GoalContextCapsule {
     pub summary: String,
     pub facts: Vec<GoalFact>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub implementation_start: Option<GoalImplementationStart>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub critical_facts: Vec<GoalCriticalFact>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub recovery_actions: Vec<GoalRecoveryAction>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub internal_skill_hints: Vec<GoalInternalSkillHint>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fact_tables: Vec<FactTablePreview>,
     #[serde(default, skip_serializing_if = "BTreeMap::is_empty")]
@@ -453,6 +461,43 @@ pub struct GoalContextCapsule {
     #[serde(default)]
     pub budget: ContextBudget,
     pub boundary: GoalBoundary,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GoalImplementationStart {
+    pub strategy: String,
+    pub reason: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub official_demo_path: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub official_demo_url: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub source_headers: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub next_steps: Vec<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GoalCriticalFact {
+    pub key: String,
+    pub value: String,
+    pub source: String,
+    pub evidence_level: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GoalRecoveryAction {
+    pub kind: String,
+    pub command: String,
+    pub reason: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GoalInternalSkillHint {
+    pub skill_id: String,
+    pub kind: String,
+    pub expand_command: String,
+    pub reason: String,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

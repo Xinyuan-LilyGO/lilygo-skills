@@ -80,6 +80,12 @@ lilygo-skills source query --board board-t-watch-ultra --topic io --json
 完整 fact pack、reference 文档和模板不会默认注入。只有实现、调试、setup、生成或
 验证任务需要时，Agent 才读取对应文件。
 
+实现和调试类 prompt 还会得到一个紧凑的 source recovery capsule：最近的官方 demo
+路径、板子自己的源码 header、少量关键事实和扩展命令。比如 T-Display-S3 的
+TFT_eSPI + I2C prompt 可以暴露 `examples/tft/tft.ino`、Setup206、
+`pin_config.h`、`PIN_IIC_SDA=GPIO18`、`PIN_IIC_SCL=GPIO17` 和 `source query`
+命令，而不是把整个 fact pack 注入 prompt。
+
 ## Preferences 和 References
 
 Preferences 是公开行为偏好，例如框架顺序、串口调试工具、代码行数限制和安全默认。

@@ -12,4 +12,4 @@
 - Pair framework-specific prompts with `fw-arduino`, `fw-esp-idf`, `fw-rust`, or `fw-platformio`.
 - Pair LVGL prompts with `fw-lvgl` and `debug-lvgl-loop`; pair OTA prompts with `app-ota` and `debug-flash-serial` as recipe/evidence context only.
 - Keep claims at context injection unless `verify-hardware` or an evidence smoke reaches V4/V5.
-{{source_urls}}{{peripheral_matrix}}{{demo_refs}}{{warnings}}
+{{source_urls}}{{source_backed_facts}}{{peripheral_matrix}}{{demo_refs}}{{warnings}}

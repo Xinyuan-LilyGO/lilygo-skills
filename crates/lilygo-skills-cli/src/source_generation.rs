@@ -1,5 +1,6 @@
 //! Generated board skill renderer for compact source-backed board summaries
 //! used by install and generated-cache workflows.
+use crate::facts::load_fact_pack_index;
 use crate::model::BoardRecord;
 use crate::source::load_board_index;
 use crate::templates::render_template;
@@ -14,7 +15,7 @@ pub(crate) fn board_skill_files(root: &Path) -> Result<Vec<(String, String)>, St
         .boards
         .iter()
         .filter(|board| board.supported)
-        .map(|board| (board.id.clone(), render_board_skill(board)))
+        .map(|board| (board.id.clone(), render_board_skill(root, board)))
         .collect())
 }
 
@@ -48,7 +49,7 @@ pub(crate) fn install_runtime(root: &Path, home: Option<&Path>) -> Result<Vec<St
         .unwrap_or_default())
 }
 
-fn render_board_skill(board: &BoardRecord) -> String {
+fn render_board_skill(root: &Path, board: &BoardRecord) -> String {
     let title = if board.product {
         "Product Board"
     } else if board.id.starts_with("series-") {
@@ -62,6 +63,7 @@ fn render_board_skill(board: &BoardRecord) -> String {
         .map(|family| format!("- Family fallback: `{family}`.\n"))
         .unwrap_or_default();
     let source_urls = render_source_urls(board);
+    let source_backed_facts = render_source_backed_facts(root, board);
     let matrix = render_peripheral_matrix(board);
     let demos = render_demo_refs(board);
     let warnings = if board.warnings.is_empty() {
@@ -86,11 +88,60 @@ fn render_board_skill(board: &BoardRecord) -> String {
             ("wiki_url", board.wiki_url.clone()),
             ("source_status", board.source_status.clone()),
             ("source_urls", source_urls),
+            ("source_backed_facts", source_backed_facts),
             ("peripheral_matrix", matrix),
             ("demo_refs", demos),
             ("warnings", warnings),
         ],
     )
+}
+
+fn render_source_backed_facts(root: &Path, board: &BoardRecord) -> String {
+    let Ok(index) = load_fact_pack_index(root) else {
+        return String::new();
+    };
+    let Some(pack) = index.packs.iter().find(|pack| pack.board_id == board.id) else {
+        return String::new();
+    };
+    let body = pack
+        .pin_matrix
+        .iter()
+        .chain(pack.bus_matrix.iter())
+        .chain(pack.peripheral_table.iter())
+        .filter(|fact| {
+            fact.confidence != "unknown_with_sources"
+                && matches_source_backed_fact(&fact.key, &fact.value)
+        })
+        .take(14)
+        .map(|fact| {
+            format!(
+                "- `{}` = `{}` [{}] {}\n",
+                fact.key, fact.value, fact.evidence_level, fact.source.path_or_url
+            )
+        })
+        .collect::<String>();
+    if body.is_empty() {
+        String::new()
+    } else {
+        format!("\n## Source-Backed Board Facts\n\n{body}")
+    }
+}
+
+fn matches_source_backed_fact(key: &str, value: &str) -> bool {
+    let text = format!("{key} {value}").to_lowercase();
+    [
+        "pin.i2c",
+        "bus.i2c",
+        "display.",
+        "pin.touch",
+        "pin.button",
+        "pin.sd",
+        "pin.battery",
+        "pin_lcd",
+        "pin_power",
+    ]
+    .iter()
+    .any(|needle| text.contains(needle))
 }
 
 fn render_source_urls(board: &BoardRecord) -> String {

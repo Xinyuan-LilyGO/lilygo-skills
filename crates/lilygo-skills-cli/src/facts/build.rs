@@ -42,7 +42,6 @@ pub(crate) fn fact_pack_from_board(board: &BoardRecord) -> BoardFactPack {
             "unknown_with_sources",
         ));
     }
-
     for peripheral in &board.peripheral_matrix {
         let source = peripheral_source(peripheral);
         bus_matrix.push(peripheral_fact(

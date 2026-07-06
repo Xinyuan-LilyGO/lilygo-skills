@@ -92,6 +92,8 @@ lilygo-skills source query --board board-t-watch-ultra --topic io --json
 Board Skill 是紧凑快照。更丰富的任务上下文在 `goal plan.context_capsule`、
 `source query` 和 `source completeness` 中，这样默认注入保持小，但实现或调试时仍能获取
 source-backed facts 和官方 demo references。
+例如生成的 `board-t-display-s3` 会包含 `Source-Backed Board Facts` 小节，
+里面有来自 `pin_config.h` 的官方 I2C 引脚和官方 TFT demo 引用。
 
 ## Template-Driven Renderers
 

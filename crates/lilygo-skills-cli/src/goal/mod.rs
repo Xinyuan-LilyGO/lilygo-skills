@@ -9,9 +9,10 @@ use crate::facts::{
 };
 use crate::model::{
     BoardRecord, CompletenessSignal, ContextBudget, DemoRef, DiscoveryHint, FactTablePreview,
-    GoalBoundary, GoalContextCapsule, GoalDemoRef, GoalEvidence, GoalFact, GoalPlan, GoalPrivacy,
-    GoalRoute, GoalSourceRef, GoalStartResult, PeripheralRecord, Recipe, Registry, RouteResult,
-    SkillKind, SourceFactSource, SourceUrl,
+    GoalBoundary, GoalContextCapsule, GoalCriticalFact, GoalDemoRef, GoalEvidence, GoalFact,
+    GoalImplementationStart, GoalInternalSkillHint, GoalPlan, GoalPrivacy, GoalRecoveryAction,
+    GoalRoute, GoalSourceRef, GoalStartResult, PeripheralRecord, PlaybookHint, Recipe, Registry,
+    RouteResult, SkillKind, SourceFact, SourceFactSource, SourceUrl,
 };
 use crate::peripheral_source::{load_source_pack_index, source_authority_rank};
 use crate::preferences::preference_hints_for_prompt;
@@ -438,17 +439,78 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         .map(|hint| hint.playbook_id.as_str())
         .collect::<Vec<_>>()
         .join(",");
+    let source_recovery = render_compact_source_recovery(plan);
     format!(
-        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}]; facts=[{}]; completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
+        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}];{} facts=[{}]; completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
         plan.goal_id,
         plan.recipe_ids.join(","),
         playbooks,
+        source_recovery,
         facts,
         completeness,
         plan.context_capsule.fact_tables.len(),
         plan.context_capsule.discovery_hints.len(),
         plan.context_capsule.boundary.verification_level,
         plan.context_capsule.boundary.hardware_verified
+    )
+}
+
+fn render_compact_source_recovery(plan: &GoalPlan) -> String {
+    if plan.context_capsule.critical_facts.is_empty() {
+        return String::new();
+    }
+    let demo = plan
+        .context_capsule
+        .implementation_start
+        .as_ref()
+        .and_then(|start| start.official_demo_path.as_deref())
+        .or_else(|| {
+            plan.context_capsule
+                .demo_refs
+                .first()
+                .map(|demo| demo.path.as_str())
+        })
+        .unwrap_or("none");
+    let headers = plan
+        .context_capsule
+        .implementation_start
+        .as_ref()
+        .map(|start| {
+            start
+                .source_headers
+                .iter()
+                .take(2)
+                .map(|source| source.rsplit('/').next().unwrap_or(source.as_str()))
+                .collect::<Vec<_>>()
+                .join(",")
+        })
+        .unwrap_or_default();
+    let critical = plan
+        .context_capsule
+        .critical_facts
+        .iter()
+        .take(4)
+        .map(|fact| format!("{}={}", fact.key, fact.value))
+        .collect::<Vec<_>>()
+        .join(",");
+    let recovery = plan
+        .context_capsule
+        .recovery_actions
+        .iter()
+        .take(2)
+        .map(|action| action.command.as_str())
+        .collect::<Vec<_>>()
+        .join(" | ");
+    let internal = plan
+        .context_capsule
+        .internal_skill_hints
+        .iter()
+        .take(2)
+        .map(|hint| hint.expand_command.as_str())
+        .collect::<Vec<_>>()
+        .join(" | ");
+    format!(
+        " demo={demo}; headers=[{headers}]; critical=[{critical}]; recovery=[{recovery}]; internal=[{internal}];"
     )
 }
 

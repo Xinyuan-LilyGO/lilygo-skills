@@ -685,6 +685,186 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "PIN_IIC_SDA=GPIO18",
+          "claim": "Primary I2C SDA pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "PIN_IIC_SCL=GPIO17",
+          "claim": "Primary I2C SCL pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "PIN_TOUCH_INT=GPIO16",
+          "claim": "Touch interrupt pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.touch.reset",
+          "value": "PIN_TOUCH_RES=GPIO21",
+          "claim": "Touch reset pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.button.1",
+          "value": "PIN_BUTTON_1=GPIO0",
+          "claim": "Button 1 pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.button.2",
+          "value": "PIN_BUTTON_2=GPIO14",
+          "claim": "Button 2 pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.battery.voltage",
+          "value": "PIN_BAT_VOLT=GPIO4",
+          "claim": "Battery voltage ADC pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.sd.cmd",
+          "value": "PIN_SD_CMD=GPIO13",
+          "claim": "SD command pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.sd.clk",
+          "value": "PIN_SD_CLK=GPIO11",
+          "claim": "SD clock pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.sd.d0",
+          "value": "PIN_SD_D0=GPIO12",
+          "claim": "SD data pin from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
       "bus_matrix": [
@@ -700,6 +880,24 @@
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
             "line_range": "1-38",
             "hash": "sha256:809949416716286a5b2db0821608251a1d69463ceea5721ccc5598a7fd841a5c"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "bus",
+          "key": "bus.i2c.primary",
+          "value": "PIN_IIC_SDA=GPIO18; PIN_IIC_SCL=GPIO17",
+          "claim": "Primary I2C pins from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
           },
           "authority_rank": 95,
           "evidence_level": "V3-source-reference",
