@@ -32,7 +32,7 @@ done
 cargo build -q -p lilygo-skills-cli
 BIN="$ROOT/target/debug/lilygo-skills"
 
-"$BIN" goal plan --json "T-Watch Ultra Arduino IMU 抬腕检测怎么做" \
+"$BIN" goal plan --json "T-Watch Ultra Arduino BHI260AP IMU demo build flash monitor" \
   >.tmp/goal-hardware-plan.json
 
 if [[ -z "$PORT" ]]; then

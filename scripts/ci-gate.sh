@@ -18,14 +18,15 @@ GATES=(
   "goal-complete-smoke.sh --dry-run"
   "goal-complete-permission-smoke.sh --dry-run"
   "goal-context-smoke.sh --dry-run"
-  "goal-bridge-smoke.sh --dry-run"
+  "goal-bridge-smoke.sh"
   "goal-hardware-smoke.sh --dry-run"
-  "hardware-gold-standard-smoke.sh --dry-run"
+  "hardware-gold-standard-smoke.sh"
+  "hardware-gold-standard-live-smoke.sh --dry-run"
   "board-completeness-smoke.sh --dry-run"
-  "board-data-expansion-smoke.sh --dry-run"
+  "board-data-expansion-smoke.sh"
   "product-board-smoke.sh --dry-run"
-  "pure-query-compact-smoke.sh --dry-run"
-  "context-budget-smoke.sh --dry-run"
+  "pure-query-compact-smoke.sh"
+  "context-budget-smoke.sh"
   "project-context-smoke.sh --dry-run"
   "playbook-quality-smoke.sh --dry-run"
   "preference-reference-smoke.sh --dry-run"
@@ -51,13 +52,22 @@ GATES=(
 )
 
 failed=()
+skipped=()
 for gate in "${GATES[@]}"; do
   # shellcheck disable=SC2086
   set -- $gate
   script="scripts/$1"
   shift
   echo "== ci-gate: $script $* =="
-  if ! bash "$script" "$@"; then
+  set +e
+  bash "$script" "$@"
+  code=$?
+  set -e
+  if [[ "$code" -eq 2 && "$script" =~ hardware|goal-hardware ]]; then
+    skipped+=("$script")
+    continue
+  fi
+  if [[ "$code" -ne 0 ]]; then
     failed+=("$script")
   fi
 done
@@ -67,4 +77,4 @@ if [[ ${#failed[@]} -gt 0 ]]; then
   exit 1
 fi
 
-echo "{\"status\":\"PASS\",\"gates\":${#GATES[@]}}"
+echo "{\"status\":\"PASS\",\"gates\":${#GATES[@]},\"boundary_skips\":${#skipped[@]}}"

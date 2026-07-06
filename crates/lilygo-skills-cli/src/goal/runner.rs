@@ -15,6 +15,8 @@ use std::time::{Duration, Instant};
 
 const DEFAULT_COMMAND_TIMEOUT_SECS: u64 = 300;
 const OBSERVATION_COMMAND_TIMEOUT_SECS: u64 = 10;
+const PRIVATE_TARGET_WORDS: &str = "/dev/cu|/dev/tty|usbmodem|usbserial|usb id|vid:|pid:|.local";
+const SENSITIVE_OUTPUT_WORDS: &str = "access_token|auth_token|authorization|bearer |token=|password|passwd|psk|private_key|secret|ssid|wifi_ssid|wifi_password";
 
 #[derive(serde::Deserialize)]
 struct LocalOtaCommands {
@@ -665,54 +667,26 @@ fn excerpt(value: &str) -> String {
 
 pub(super) fn redact_sensitive(value: &str, options: &GoalStartOptions) -> String {
     let mut redacted = value.to_string();
+    let project_root = options.project_root.display().to_string();
+    let source_root = options
+        .source_root
+        .as_ref()
+        .map_or(String::new(), |path| path.display().to_string());
     for (needle, replacement) in [
-        (
-            options.project_root.display().to_string(),
-            "<redacted-project-root>".to_string(),
-        ),
-        (
-            options
-                .source_root
-                .as_ref()
-                .map(|path| path.display().to_string())
-                .unwrap_or_default(),
-            "<redacted-source-root>".to_string(),
-        ),
-        (
-            options.port.clone().unwrap_or_default(),
-            "<redacted-port>".to_string(),
-        ),
-        (
-            env::var("HOME").unwrap_or_default(),
-            "<redacted-home>".to_string(),
-        ),
+        (project_root, "<redacted-project-root>"),
+        (source_root, "<redacted-source-root>"),
+        (options.port.clone().unwrap_or_default(), "<redacted-port>"),
+        (env::var("HOME").unwrap_or_default(), "<redacted-home>"),
     ] {
         if !needle.is_empty() {
-            redacted = redacted.replace(&needle, &replacement);
+            redacted = redacted.replace(&needle, replacement);
         }
     }
     redacted
         .lines()
         .map(|line| {
             let lower = line.to_lowercase();
-            if contains_any(
-                &lower,
-                &[
-                    "access_token",
-                    "auth_token",
-                    "authorization",
-                    "bearer ",
-                    "token=",
-                    "password",
-                    "passwd",
-                    "psk",
-                    "private_key",
-                    "secret",
-                    "ssid",
-                    "wifi_ssid",
-                    "wifi_password",
-                ],
-            ) {
+            if contains_any(&lower, SENSITIVE_OUTPUT_WORDS) {
                 "[redacted sensitive output line]".to_string()
             } else if contains_private_target(&lower) {
                 "[redacted private output line]".to_string()
@@ -724,48 +698,24 @@ pub(super) fn redact_sensitive(value: &str, options: &GoalStartOptions) -> Strin
         .join("\n")
 }
 
-fn contains_any(value: &str, needles: &[&str]) -> bool {
-    needles.iter().any(|needle| value.contains(needle))
+fn contains_any(value: &str, needles: &str) -> bool {
+    needles.split('|').any(|needle| value.contains(needle))
 }
 
 fn contains_private_target(value: &str) -> bool {
-    contains_any(
-        value,
-        &[
-            "/dev/cu",
-            "/dev/tty",
-            "usbmodem",
-            "usbserial",
-            "usb id",
-            "vid:",
-            "pid:",
-            ".local",
-        ],
-    ) || contains_private_ipv4(value)
+    contains_any(value, PRIVATE_TARGET_WORDS)
+        || contains_private_ipv4(value)
         || contains_mac_address(value)
 }
 
 fn contains_private_ipv4(value: &str) -> bool {
     value
         .split(|ch: char| !(ch.is_ascii_digit() || ch == '.'))
-        .any(is_private_ipv4)
-}
-
-fn is_private_ipv4(candidate: &str) -> bool {
-    let octets = candidate
-        .split('.')
-        .map(str::parse::<u8>)
-        .collect::<Result<Vec<_>, _>>();
-    let Ok(octets) = octets else {
-        return false;
-    };
-    if octets.len() != 4 {
-        return false;
-    }
-    octets[0] == 10
-        || (octets[0] == 172 && (16..=31).contains(&octets[1]))
-        || (octets[0] == 192 && octets[1] == 168)
-        || (octets[0] == 169 && octets[1] == 254)
+        .any(|candidate| {
+            candidate
+                .parse::<std::net::Ipv4Addr>()
+                .is_ok_and(|ip| ip.is_private() || ip.is_link_local())
+        })
 }
 
 fn contains_mac_address(value: &str) -> bool {
@@ -775,15 +725,9 @@ fn contains_mac_address(value: &str) -> bool {
 }
 
 fn is_mac_address(candidate: &str) -> bool {
-    let separator = if candidate.contains(':') {
-        ':'
-    } else if candidate.contains('-') {
-        '-'
-    } else {
-        return false;
-    };
-    let parts = candidate.split(separator).collect::<Vec<_>>();
-    parts.len() == 6
+    let parts = candidate.split([':', '-']).collect::<Vec<_>>();
+    (candidate.contains(':') || candidate.contains('-'))
+        && parts.len() == 6
         && parts
             .iter()
             .all(|part| part.len() == 2 && part.chars().all(|ch| ch.is_ascii_hexdigit()))

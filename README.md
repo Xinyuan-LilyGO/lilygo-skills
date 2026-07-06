@@ -188,8 +188,10 @@ lilygo-skills doctor --json --home "$HOME"
 `doctor` checks runtime data, generated skill availability, one LilyGO sample
 injection, one no-op sample, and the active `$HOME` Codex/Claude wiring by
 default. Missing host integration is reported as a warning; malformed LilyGO
-hook wiring fails. It does not claim hardware, OTA, serial, RF, display, or
-sensor success.
+hook wiring fails. When both Codex and Claude runtimes exist, `doctor` also
+checks whether their installed binary/data mirrors have drifted. Drift is a
+warning with a reinstall command; broken hook wiring remains a failure. It does
+not claim hardware, OTA, serial, RF, display, or sensor success.
 
 Setup is routed through the Skill before any installer is run. For machine
 readiness, use the read-only setup planner:
@@ -235,6 +237,15 @@ tells the agent to inspect the goal plan before editing firmware or touching
 hardware. Build, flash, serial, network, and OTA actions are still shown only as
 permissioned next steps. Display bring-up prompts prefer small official demos;
 factory examples remain available for full-board or multi-peripheral debugging.
+Mixed prompts prefer action when the user asks the agent to do something, for
+example "check the pins, then bring up the display". Pure lookup wording such as
+"which pins are used by the screen?" stays read-only in English and Chinese.
+
+Inside one AI session, repeated identical board/topic hook context can collapse
+to a short incremental capsule. Critical pins, evidence boundaries, and
+expansion commands stay visible; bulky repeated facts, demos, recipes, and
+generated skill lists are trimmed. The agent can always expand again with
+`source query`, `index query`, generated skill reads, or `goal plan`.
 
 Common tasks can be requested directly:
 
@@ -249,6 +260,7 @@ Common tasks can be requested directly:
 | "Verify this to V3/V4/V5 and show the evidence." | The matching route/source/build/flash/serial/OTA/display evidence path |
 | "This repo has its own LVGL or serial debug checklist. Add it as local context." | `.lilygo-skills/skills/index.json` plus a project `SKILL.md` routed as supplemental context |
 | "Confirm the installed injection chain is alive." | `doctor --json` |
+| "Check the hardware evidence harness without touching my board." | `scripts/hardware-gold-standard-live-smoke.sh --dry-run` |
 
 These natural-language prompts map to explicit runtime paths. Ordinary Q&A does
 not write files implicitly; install, project init, generation, update,

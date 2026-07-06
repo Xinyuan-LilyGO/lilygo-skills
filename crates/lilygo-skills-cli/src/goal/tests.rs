@@ -1603,6 +1603,101 @@ fn demo_intent_minimal_display_demo() {
 }
 
 #[test]
+fn demo_intent_chinese_minimal_display_demo() {
+    let display_plan = plan("T-Display-S3 Arduino 帮我让屏幕先亮起来，跑个最简单的显示例程");
+    assert_eq!(
+        display_plan
+            .context_capsule
+            .demo_refs
+            .first()
+            .map(|demo| demo.path.as_str()),
+        Some("examples/tft/tft.ino")
+    );
+    assert!(
+        display_plan
+            .context_capsule
+            .next_actions
+            .iter()
+            .any(|action| action.id == "goal-plan-bridge")
+    );
+
+    let factory_plan = plan("T-Display-S3 Arduino 跑完整出厂测试");
+    assert_eq!(
+        factory_plan
+            .context_capsule
+            .demo_refs
+            .first()
+            .map(|demo| demo.path.as_str()),
+        Some("examples/factory/factory.ino")
+    );
+}
+
+#[test]
+fn intent_classification_lookup_prompts_are_read_only() {
+    for prompt in [
+        "T-Display-S3 which pins are used by the screen?",
+        "T-Display-S3 哪些引脚被屏幕占用了?",
+        "T-Display-S3 先看一下屏幕占用了哪些 IO",
+    ] {
+        let plan = plan(prompt);
+        let actions = &plan.context_capsule.next_actions;
+        assert!(
+            actions.iter().all(|action| !action.id.starts_with("goal-")),
+            "{prompt}: {actions:?}"
+        );
+        assert!(
+            actions.iter().all(|action| action.permission == "none"),
+            "{prompt}: {actions:?}"
+        );
+        assert!(
+            plan.context_capsule.demo_refs.is_empty(),
+            "{prompt}: {:?}",
+            plan.context_capsule.demo_refs
+        );
+        assert!(
+            plan.recipe_ids.is_empty(),
+            "{prompt}: {:?}",
+            plan.recipe_ids
+        );
+        assert!(
+            plan.context_capsule.implementation_start.is_none(),
+            "{prompt}: {:?}",
+            plan.context_capsule.implementation_start
+        );
+        assert!(
+            plan.context_capsule
+                .fact_tables
+                .iter()
+                .any(|table| table.query_command.contains("source query")),
+            "{prompt}: {:?}",
+            plan.context_capsule.fact_tables
+        );
+    }
+}
+
+#[test]
+fn intent_classification_mixed_prompt_prefers_action() {
+    let plan = plan("T-Display-S3 查一下引脚，然后帮我点亮屏幕");
+    let actions = &plan.context_capsule.next_actions;
+    assert!(
+        actions.iter().any(|action| action.id == "goal-plan-bridge"),
+        "{actions:?}"
+    );
+    assert!(
+        actions.iter().any(|action| action.id == "source-query-io"),
+        "{actions:?}"
+    );
+    assert!(
+        plan.context_capsule
+            .demo_refs
+            .iter()
+            .any(|demo| demo.path == "examples/tft/tft.ino"),
+        "{:?}",
+        plan.context_capsule.demo_refs
+    );
+}
+
+#[test]
 fn goal_next_actions_are_permission_aware() {
     let implementation_plan =
         plan("T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor");

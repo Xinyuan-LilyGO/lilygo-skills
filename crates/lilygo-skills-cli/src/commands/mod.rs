@@ -127,41 +127,43 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
         Ok(cwd) => cwd,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let route = match resolve_project_context(&hook_cwd) {
-        Ok(Some(project)) => {
-            let registry =
-                match registry_with_project_skills(&registry, Some(project.project_root.as_path()))
-                {
-                    Ok(registry) => registry,
-                    Err(error) => return print_hook_fail_open(host, &error),
-                };
-            let profile = project.context.active_profile();
-            let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
-            attach_route_readiness(&root, &registry, &prompt, &mut route);
-            route
-        }
-        Ok(None) => {
-            let profile = load_profile(&root);
-            let mut route =
-                route_with_profile_or_clarification(&registry, &prompt, profile.as_ref());
-            attach_route_readiness(&root, &registry, &prompt, &mut route);
-            route
-        }
+    let project = match resolve_project_context(&hook_cwd) {
+        Ok(project) => project,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let mut content = render_context(&route);
-    let cwd = current_dir().ok();
-    let plan_registry = match resolve_project_context(cwd.as_deref().unwrap_or(Path::new("."))) {
-        Ok(Some(project)) => {
-            registry_with_project_skills(&registry, Some(project.project_root.as_path()))
-                .unwrap_or_else(|_| registry.clone())
+    let route_registry = match project.as_ref() {
+        Some(project) => {
+            match registry_with_project_skills(&registry, Some(project.project_root.as_path())) {
+                Ok(registry) => registry,
+                Err(error) => return print_hook_fail_open(host, &error),
+            }
         }
-        _ => registry.clone(),
+        None => registry.clone(),
     };
-    if let Ok(plan) = plan_goal_with_project(&root, &plan_registry, &prompt, &route, cwd.as_deref())
-    {
+    let profile = project
+        .as_ref()
+        .map(|project| project.context.active_profile())
+        .or_else(|| load_profile(&root));
+    let mut route = route_with_profile_or_clarification(&route_registry, &prompt, profile.as_ref());
+    attach_route_readiness(&root, &route_registry, &prompt, &mut route);
+    let mut content = render_context(&route);
+    let mut goal_plan = None;
+    if let Ok(plan) = plan_goal_with_project(
+        &root,
+        &route_registry,
+        &prompt,
+        &route,
+        Some(hook_cwd.as_path()),
+    ) {
         content.push_str(&render_hook_goal_summary(&plan));
+        goal_plan = Some(plan);
     }
+    let content = crate::session_context::maybe_compact_hook_context(
+        host,
+        &input,
+        content,
+        goal_plan.as_ref(),
+    );
     print_json(&hook_envelope(host, &route, content))
 }
 
@@ -261,11 +263,9 @@ fn generate_command(root: &Path, args: &[String]) -> Result<(), String> {
             };
             let report = crate::generate::generate_skills(root, &out)?;
             print_json(&report)?;
-            if report.status == "FAIL" {
-                Err("skill generation failed".to_string())
-            } else {
-                Ok(())
-            }
+            (report.status != "FAIL")
+                .then_some(())
+                .ok_or_else(|| "skill generation failed".to_string())
         }
         other => Err(format!("unknown generate subcommand: {other}")),
     }
@@ -282,21 +282,15 @@ fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
             current_dir()?.join(generated)
         };
         let report = crate::generate::verify_generated_root(root, &generated_root);
-        print_json(&report)?;
-        return if report.status == "PASS" {
-            Ok(())
-        } else {
-            Err("generated-root verification failed".to_string())
-        };
+        return print_status_json(
+            &report,
+            &report.status,
+            "generated-root verification failed",
+        );
     }
     require_json(args)?;
     let report = verify(root);
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("verification failed".to_string())
-    }
+    print_status_json(&report, &report.status, "verification failed")
 }
 
 fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
@@ -311,12 +305,7 @@ fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
     require_json(args)?;
     let home = option_value(args, "--home").map(PathBuf::from);
     let report = doctor_report(root, home.as_deref());
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("doctor check failed".to_string())
-    }
+    print_status_json(&report, &report.status, "doctor check failed")
 }
 
 fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
@@ -348,12 +337,7 @@ fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
     };
     let registry = registry_with_project_skills(&registry, project_root.as_deref())?;
     let report = run_benchmark(&source_root, &registry, iterations, max_ns_per_route);
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("benchmark failed".to_string())
-    }
+    print_status_json(&report, &report.status, "benchmark failed")
 }
 
 fn goal(root: &Path, args: &[String]) -> Result<(), String> {
@@ -373,8 +357,7 @@ fn goal(root: &Path, args: &[String]) -> Result<(), String> {
         "plan" => goal_plan(root, &args[1..]),
         "complete" => goal_complete(root, &args[1..]),
         "start" => goal_start(&args[1..]),
-        "status" => goal_status(&args[1..]),
-        "evidence" => goal_evidence(&args[1..]),
+        "status" | "evidence" => goal_status(&args[1..]),
         "cancel" => goal_cancel(&args[1..]),
         other => Err(format!("unknown goal subcommand: {other}")),
     }
@@ -477,12 +460,7 @@ fn goal_start(args: &[String]) -> Result<(), String> {
         source_root: option_value(args, "--source-root").map(PathBuf::from),
     };
     let result = start_goal(&plan, &options)?;
-    print_json(&result)?;
-    if result.status == "PASS" {
-        Ok(())
-    } else {
-        Err("goal start blocked".to_string())
-    }
+    print_status_json(&result, &result.status, "goal start blocked")
 }
 
 fn goal_status(args: &[String]) -> Result<(), String> {
@@ -491,10 +469,6 @@ fn goal_status(args: &[String]) -> Result<(), String> {
         option_value(args, "--id").ok_or_else(|| "--id <goal-id> is required".to_string())?;
     let project_root = project_start_arg(args)?;
     print_json(&load_goal_evidence(project_root.as_path(), goal_id)?)
-}
-
-fn goal_evidence(args: &[String]) -> Result<(), String> {
-    goal_status(args)
 }
 
 fn goal_cancel(args: &[String]) -> Result<(), String> {

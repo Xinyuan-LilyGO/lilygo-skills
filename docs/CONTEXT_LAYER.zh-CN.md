@@ -85,6 +85,20 @@ refs 和 `source query` 命令就足够。实现/调试 prompt 可以增加
 `goal-plan-bridge`、精选 demo 和带权限的 next actions，但重复的 board、framework、
 demo、project-skill 和 topic 细节会折叠成短的增量提示，并保留展开命令。
 
+增量 hook context 是按 session 隔离的。只有 hook event 带稳定 session id，或测试设置了
+`LILYGO_SKILLS_SESSION_ID` 时才启用。Cache 会按 TTL 和 runtime 版本失效；
+`LILYGO_SKILLS_DISABLE_INCREMENTAL=1` 可以强制回到完整 capsule。增量 capsule 仍保留
+关键引脚、source-query 展开和 evidence boundary；被裁掉的只是重复的大块 facts、
+demo、recipe、generated skills 和 playbook 摘要。
+
+稳定展开命令会一直保留：
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+```
+
 不完整的 starter board pack 也遵循这个规则。它可以暴露 `unknown_with_sources` 或
 `needs_source_ingestion` 加官方 reference，让 Agent 知道下一步去哪查；但不能为了填满
 capsule 而编造引脚、外设或运行行为。
@@ -111,6 +125,10 @@ mount-only 模式：接好 Codex/Claude 入口，复制 meta router、source dat
 注入需要后续 `node install.js --all --build` 或 `--bin /path/to/lilygo-skills`。
 安装态 Agent 因此至少能查看和源码 checkout 一致的上下文契约，并能通过 setup plan
 继续配置 Rust/Cargo、Arduino、PlatformIO、ESP-IDF 或 Rust esp-rs 工具链。
+
+`doctor --json` 会从被检查的 HOME 验证安装态 runtime。除了 route 和 hook 样例，它还会
+在 Codex 与 Claude 两端 runtime 都存在时比较镜像。一端存在时通过；两端一致时通过；
+两端漂移时报告 warning，并给出重跑安装命令。
 
 支持模型按 board family 扩展。当前已验证 runtime 覆盖从 LilyGO ESP32 系列开始。
 没有对应 V4/V5 证据时，不把 source/context 结果表述成已经完成的硬件行为。

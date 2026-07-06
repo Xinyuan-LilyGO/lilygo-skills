@@ -82,6 +82,7 @@ user-approved step outside the setup-plan command.
 | L10 | Completion coordinator | Route, generated-root, source, setup, permissions, and evidence state |
 | L11 | Action routing | Intent-ranked demos, generic bus lookup, project custom skills, and doctor |
 | L12 | Experience patch | Context budgets, goal bridge, active doctor wiring, starter board refs |
+| L13 | Intent/session evidence loop | Lookup/action split, session incremental context, runtime parity, hardware harness |
 
 The committed router Skill is the embedded-development control plane. It tells
 the agent how to classify a LilyGO task, read official sources, plan a bounded
@@ -114,6 +115,17 @@ add a `goal-plan-bridge` and selected expansion commands so the agent sees the
 next path without receiving every fact pack. Repeated board/topic content is
 deduped into incremental hints, and `doctor --json` checks active installed
 Codex/Claude wiring by default.
+
+The intent/session evidence loop tightens that behavior. Pure lookup prompts in
+English and Chinese stay read-only. Mixed prompts prefer implementation/debug
+when the user asks the agent to act, while still keeping source-query expansion
+visible. Hook context can use a session-scoped cache to emit a compact
+incremental capsule on repeated same-board/topic prompts; critical pins,
+evidence boundaries, and expansion commands are never dropped. `doctor --json`
+also compares Codex and Claude runtime mirrors when both exist and reports
+drift as a warning with a reinstall command. The live hardware harness is a
+repeatable evidence path: it defaults to dry-run or boundary results until the
+user grants the required build, flash, serial, network, or OTA permissions.
 
 The public source tree is meta-only. The only committed Skill is
 `skills/lilygo-router/SKILL.md`, the meta router. Board, series, framework,
@@ -149,6 +161,16 @@ or over-confident:
 - **Context budget**: route, hook, and goal capsules are bounded. When detail is
   omitted, the output must keep a stable expansion command such as `source
   query`, `index query`, generated skill reads, or `goal plan`.
+- **Intent-shaped actions**: lookup wording suppresses demos, recipes, goal
+  bridges, build, flash, serial, network, and OTA actions. Implementation and
+  debug wording may expose those paths only as compact, permission-labelled
+  next actions.
+- **Session cache safety**: incremental hook context requires a stable session
+  id, TTL, runtime-version invalidation, and a kill switch. It is a token
+  reduction path, not a source of board truth.
+- **Split-host parity**: Codex and Claude installed runtimes are allowed to be
+  installed independently, but `doctor` must make drift visible when both
+  mirrors exist.
 
 ## Meta-Only Release Boundary And Generation Pipeline
 

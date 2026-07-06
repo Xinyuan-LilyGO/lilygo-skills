@@ -293,6 +293,17 @@ pub(crate) fn print_json(value: &impl Serialize) -> Result<(), String> {
     Ok(())
 }
 
+pub(crate) fn print_status_json(
+    value: &impl Serialize,
+    status: &str,
+    failure: &str,
+) -> Result<(), String> {
+    print_json(value)?;
+    (status == "PASS")
+        .then_some(())
+        .ok_or_else(|| failure.to_string())
+}
+
 // CLI help text is embedded from data/help so command documentation can be
 // reviewed as content instead of being interleaved with command dispatch code.
 pub(crate) fn print_help() {

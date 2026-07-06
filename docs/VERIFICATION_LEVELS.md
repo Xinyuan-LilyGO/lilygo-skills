@@ -58,6 +58,19 @@ The current release does not claim:
 - OTA transported to a device.
 - IMU, touch, LoRa, GNSS, power, or display behavior was physically verified.
 
+The hardware gold-standard harness is part of the verification surface, but its
+default run is still V3:
+
+```bash
+bash scripts/hardware-gold-standard-live-smoke.sh --dry-run
+```
+
+Dry-run proves the permission model, redaction shape, failure-mode reporting,
+and artifact hashing without touching hardware. Boundary modes such as no
+device, wrong port, or flash timeout are expected to return a boundary result
+instead of pretending success. They are useful evidence that the harness fails
+closed; they are not V4/V5 success.
+
 ## When To Claim Hardware Success
 
 Only claim V5 when there is live evidence tied to the requested task, such as:
@@ -93,3 +106,13 @@ cargo run -p lilygo-skills-cli -- goal start --plan .tmp/goal-plan.json --allow-
 
 If no execution permission is given, `goal start` should remain a dry-run or
 no-write planning surface.
+
+For live hardware harness work, the permission shape is explicit:
+
+```bash
+bash scripts/hardware-gold-standard-live-smoke.sh --dry-run
+bash scripts/hardware-gold-standard-live-smoke.sh --port <port> --allow-build --allow-flash --allow-serial
+```
+
+The second form may produce V4/V5 evidence only when the requested operation
+actually runs and writes redacted artifacts tied to that operation.

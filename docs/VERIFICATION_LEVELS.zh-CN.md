@@ -53,6 +53,16 @@ live transport 已经跑通。
 - OTA 已传输到设备。
 - IMU、touch、LoRa、GNSS、power 或 display 行为已物理验证。
 
+Hardware gold-standard harness 是验证 surface 的一部分，但默认运行仍是 V3：
+
+```bash
+bash scripts/hardware-gold-standard-live-smoke.sh --dry-run
+```
+
+Dry-run 只证明权限模型、脱敏输出形态、失败模式报告和 artifact hash，不接触硬件。
+无设备、串口选错或烧录超时这类 boundary mode 应返回 boundary 结果，而不是宣称成功。
+这些结果证明 harness 会 fail closed；它们不是 V4/V5 成功。
+
 ## 何时声明硬件成功
 
 只有存在和请求任务绑定的 live evidence 时，才能声明 V5，例如：
@@ -86,3 +96,13 @@ cargo run -p lilygo-skills-cli -- goal start --plan .tmp/goal-plan.json --allow-
 ```
 
 如果没有 execution permission，`goal start` 应保持 dry-run 或 no-write planning surface。
+
+真实硬件 harness 的权限形态是显式的：
+
+```bash
+bash scripts/hardware-gold-standard-live-smoke.sh --dry-run
+bash scripts/hardware-gold-standard-live-smoke.sh --port <port> --allow-build --allow-flash --allow-serial
+```
+
+第二种形式只有在请求的操作真实执行、并写出和该操作绑定的脱敏 artifact 后，才可能产生
+V4/V5 证据。

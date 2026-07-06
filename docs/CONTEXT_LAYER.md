@@ -94,6 +94,22 @@ selected demos, and permissioned next actions, but repeated board, framework,
 demo, project-skill, and topic details collapse into short incremental hints
 with expansion commands.
 
+Incremental hook context is session-scoped. It activates only when the hook
+event carries a stable session id, or when tests set `LILYGO_SKILLS_SESSION_ID`.
+The cache expires by TTL and runtime version; set
+`LILYGO_SKILLS_DISABLE_INCREMENTAL=1` to force full capsules. An incremental
+capsule still includes critical pins, source-query expansion, and evidence
+boundaries. It trims only repeated bulky lists such as facts, demos, recipes,
+generated skills, and playbook summaries.
+
+Useful expansion commands remain stable:
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+```
+
 Incomplete starter board packs follow the same rule. They may expose
 `unknown_with_sources` or `needs_source_ingestion` plus official references so
 the agent knows where to inspect next; they do not invent pins, peripherals, or
@@ -126,6 +142,11 @@ copied, and a setup-only launcher is installed. Full dynamic injection is enable
 later with `node install.js --all --build` or `--bin /path/to/lilygo-skills`.
 The installed agent can still inspect the same context contracts and use setup
 plans to configure Rust/Cargo, Arduino, PlatformIO, ESP-IDF, or Rust esp-rs.
+
+`doctor --json` validates the installed runtime from the checked home. Besides
+route and hook samples, it compares Codex and Claude runtime mirrors when both
+exist. Matching mirrors pass, a single installed host passes, and drift is a
+warning with a reinstall command.
 
 The support model is board-family extensible. Current verified runtime coverage
 starts with the LilyGO ESP32 family. Without matching V4/V5 evidence,
