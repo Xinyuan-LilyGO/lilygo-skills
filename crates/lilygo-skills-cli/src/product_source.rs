@@ -522,6 +522,11 @@ fn t_watch_ultra_demo_refs() -> Vec<DemoRef> {
         stale: false,
         source_status: "github-cache".to_string(),
         evidence_level: "V3-source-reference".to_string(),
+        intents: Vec::new(),
+        complexity: None,
+        dependencies: Vec::new(),
+        preferred_for: Vec::new(),
+        avoid_for: Vec::new(),
     });
     demos
 }
@@ -542,6 +547,11 @@ fn generic_demo_refs(slug: &str, repo: &RepoRecord) -> Vec<DemoRef> {
         stale: false,
         source_status: "github-cache".to_string(),
         evidence_level: "V3-source-reference".to_string(),
+        intents: Vec::new(),
+        complexity: None,
+        dependencies: Vec::new(),
+        preferred_for: Vec::new(),
+        avoid_for: Vec::new(),
     }]
 }
 
@@ -554,6 +564,11 @@ fn demo(framework: &str, target: &str, path: &str) -> DemoRef {
         stale: false,
         source_status: "github-live-verified".to_string(),
         evidence_level: "V3-source-reference".to_string(),
+        intents: Vec::new(),
+        complexity: None,
+        dependencies: Vec::new(),
+        preferred_for: Vec::new(),
+        avoid_for: Vec::new(),
     }
 }
 

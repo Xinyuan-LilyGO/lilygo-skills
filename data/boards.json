@@ -513,7 +513,12 @@
           "path": "examples/factory/factory.ino",
           "stale": false,
           "source_status": "github-live-verified",
-          "evidence_level": "V3-source-reference"
+          "evidence_level": "V3-source-reference",
+          "intents": ["full-factory", "multi-peripheral-debug", "lvgl"],
+          "complexity": "full",
+          "dependencies": ["TFT_eSPI", "LVGL", "factory peripherals"],
+          "preferred_for": ["factory", "full test", "multi peripheral"],
+          "avoid_for": ["minimal-display", "first-run"]
         },
         {
           "framework": "arduino",
@@ -522,7 +527,12 @@
           "path": "examples/tft/tft.ino",
           "stale": false,
           "source_status": "github-live-verified",
-          "evidence_level": "V3-source-reference"
+          "evidence_level": "V3-source-reference",
+          "intents": ["minimal-display", "first-run"],
+          "complexity": "minimal",
+          "dependencies": ["TFT_eSPI"],
+          "preferred_for": ["display", "tft", "screen"],
+          "avoid_for": ["full-factory", "multi-peripheral-debug"]
         }
       ],
       "warnings": [

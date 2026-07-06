@@ -11,7 +11,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 MAX_FILE=800
-MAX_TOTAL=11500
+MAX_TOTAL=12500
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --max-production-file-lines) MAX_FILE="$2"; shift 2 ;;

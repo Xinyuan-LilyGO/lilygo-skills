@@ -903,6 +903,42 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "bus",
+          "key": "i2c.primary.sda",
+          "value": "GPIO18",
+          "claim": "Primary I2C SDA from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "bus",
+          "key": "i2c.primary.scl",
+          "value": "GPIO17",
+          "claim": "Primary I2C SCL from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "21-58",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
       "expander_matrix": [],

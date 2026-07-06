@@ -224,6 +224,8 @@ pub(crate) fn facts_for_topic(pack: &BoardFactPack, topic: &str) -> Vec<SourceFa
         .collect(),
         "pinout" => pack.pin_matrix.clone(),
         "bus" => pack.bus_matrix.clone(),
+        "i2c" | "spi" | "uart" | "i2s" => bus_topic_facts(pack, topic),
+        "gpio" => gpio_facts(pack),
         "expander" => pack.expander_matrix.clone(),
         "connector" => pack.connector_matrix.clone(),
         "peripheral" => pack.peripheral_table.clone(),
@@ -247,6 +249,29 @@ pub(crate) fn facts_for_topic(pack: &BoardFactPack, topic: &str) -> Vec<SourceFa
             .then_with(|| left.key.cmp(&right.key))
     });
     facts
+}
+
+fn bus_topic_facts(pack: &BoardFactPack, topic: &str) -> Vec<SourceFact> {
+    topic_facts(pack, &[topic])
+        .into_iter()
+        .filter(|fact| {
+            let haystack = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
+            haystack.contains(topic)
+        })
+        .collect()
+}
+
+fn gpio_facts(pack: &BoardFactPack) -> Vec<SourceFact> {
+    pack.pin_matrix
+        .iter()
+        .chain(pack.expander_matrix.iter())
+        .chain(pack.connector_matrix.iter())
+        .filter(|fact| {
+            let haystack = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
+            contains_any(&haystack, &["gpio", "pin", "io", "xl9555", "connector"])
+        })
+        .cloned()
+        .collect()
 }
 
 pub(crate) fn topic_facts(pack: &BoardFactPack, needles: &[&str]) -> Vec<SourceFact> {
@@ -287,9 +312,14 @@ pub(crate) fn table_preview(
 
 pub(crate) fn normalize_topic(topic: &str) -> Result<&'static str, String> {
     match topic {
-        "io" | "gpio" => Ok("io"),
+        "io" => Ok("io"),
+        "gpio" => Ok("gpio"),
         "pinout" | "pin" | "pins" => Ok("pinout"),
-        "bus" | "i2c" | "spi" | "uart" => Ok("bus"),
+        "bus" => Ok("bus"),
+        "i2c" | "iic" => Ok("i2c"),
+        "spi" => Ok("spi"),
+        "uart" | "serial-bus" => Ok("uart"),
+        "i2s" => Ok("i2s"),
         "expander" | "xl9555" => Ok("expander"),
         "connector" | "socket" => Ok("connector"),
         "peripheral" | "peripherals" => Ok("peripheral"),

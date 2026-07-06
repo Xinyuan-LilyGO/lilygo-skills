@@ -1,6 +1,7 @@
 //! CLI command dispatcher for route, generation, source, project, setup, and
 //! goal surfaces; handlers keep public JSON contracts stable.
 use crate::benchmark::run_benchmark;
+use crate::doctor::doctor_report;
 use crate::facts::{
     board_fact_enrichment_apply, board_fact_enrichment_preview, completeness_signals_for_prompt,
     fact_pack_apply, fact_pack_preview, source_completeness, source_query,
@@ -18,6 +19,7 @@ use crate::preferences::resolve_preferences;
 use crate::project_context::{
     clear_project_context, new_project_context, resolve_project_context, write_project_context,
 };
+use crate::project_skills::registry_with_project_skills;
 use crate::reference_catalog::list_references;
 use crate::registry::{ensure_skill_files, load_registry, verify};
 use crate::router::{
@@ -56,6 +58,7 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
         "generate" => generate_command(&root, &args[1..]),
         "verify" => verify_command(&root, &args[1..]),
         "benchmark" => benchmark(&root, &args[1..]),
+        "doctor" => doctor(&root, &args[1..]),
         "goal" => goal(&root, &args[1..]),
         "source" => source_command(&root, &args[1..]),
         "preference" => preference_command(&root, &args[1..]),
@@ -77,6 +80,8 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
     ensure_skill_files(root, &registry)?;
     let project_start = project_start_arg(args)?;
     if let Some(project) = resolve_project_context(project_start.as_path())? {
+        let registry =
+            registry_with_project_skills(&registry, Some(project.project_root.as_path()))?;
         let profile = project.context.active_profile();
         let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
         attach_route_readiness(root, &registry, &prompt, &mut route);
@@ -124,6 +129,12 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
     };
     let route = match resolve_project_context(&hook_cwd) {
         Ok(Some(project)) => {
+            let registry =
+                match registry_with_project_skills(&registry, Some(project.project_root.as_path()))
+                {
+                    Ok(registry) => registry,
+                    Err(error) => return print_hook_fail_open(host, &error),
+                };
             let profile = project.context.active_profile();
             let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
             attach_route_readiness(&root, &registry, &prompt, &mut route);
@@ -140,7 +151,15 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
     };
     let mut content = render_context(&route);
     let cwd = current_dir().ok();
-    if let Ok(plan) = plan_goal_with_project(&root, &registry, &prompt, &route, cwd.as_deref()) {
+    let plan_registry = match resolve_project_context(cwd.as_deref().unwrap_or(Path::new("."))) {
+        Ok(Some(project)) => {
+            registry_with_project_skills(&registry, Some(project.project_root.as_path()))
+                .unwrap_or_else(|_| registry.clone())
+        }
+        _ => registry.clone(),
+    };
+    if let Ok(plan) = plan_goal_with_project(&root, &plan_registry, &prompt, &route, cwd.as_deref())
+    {
         content.push_str(&render_hook_goal_summary(&plan));
     }
     print_json(&hook_envelope(host, &route, content))
@@ -280,6 +299,26 @@ fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
     }
 }
 
+fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
+    if has_flag(args, "--help") || has_flag(args, "-h") {
+        println!("Usage: lilygo-skills doctor --json [--home <dir>]");
+        println!();
+        println!(
+            "Checks runtime data, skill availability, sample injection, no-op routing, and optional host install files."
+        );
+        return Ok(());
+    }
+    require_json(args)?;
+    let home = option_value(args, "--home").map(PathBuf::from);
+    let report = doctor_report(root, home.as_deref());
+    print_json(&report)?;
+    if report.status == "PASS" {
+        Ok(())
+    } else {
+        Err("doctor check failed".to_string())
+    }
+}
+
 fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
     require_json(args)?;
     let iterations = usize_option(args, "--iterations", 1000)?;
@@ -300,6 +339,14 @@ fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
     };
     let registry = load_registry(&registry_root)?;
     ensure_skill_files(&registry_root, &registry)?;
+    let project_start = optional_project_arg(args)?;
+    let project_root = match project_start {
+        Some(start) => resolve_project_context(start.as_path())?
+            .map(|project| project.project_root)
+            .or(Some(start)),
+        None => None,
+    };
+    let registry = registry_with_project_skills(&registry, project_root.as_deref())?;
     let report = run_benchmark(&source_root, &registry, iterations, max_ns_per_route);
     print_json(&report)?;
     if report.status == "PASS" {
@@ -336,6 +383,12 @@ fn goal_complete(root: &Path, args: &[String]) -> Result<(), String> {
     ensure_skill_files(root, &registry)?;
     let project_start = project_start_arg(args)?;
     let resolved_project = resolve_project_context(project_start.as_path())?;
+    let registry = registry_with_project_skills(
+        &registry,
+        resolved_project
+            .as_ref()
+            .map(|project| project.project_root.as_path()),
+    )?;
     let project_root = resolved_project
         .as_ref()
         .map(|project| project.project_root.clone())
@@ -375,13 +428,21 @@ fn goal_plan(root: &Path, args: &[String]) -> Result<(), String> {
     let registry = load_registry(root)?;
     ensure_skill_files(root, &registry)?;
     let project_start = project_start_arg(args)?;
-    let route = if let Some(project) = resolve_project_context(project_start.as_path())? {
+    let resolved_project = resolve_project_context(project_start.as_path())?;
+    let registry = registry_with_project_skills(
+        &registry,
+        resolved_project
+            .as_ref()
+            .map(|project| project.project_root.as_path()),
+    )?;
+    let mut route = if let Some(project) = resolved_project {
         let profile = project.context.active_profile();
         route_with_profile_or_clarification(&registry, &prompt, Some(&profile))
     } else {
         let profile = load_profile(root);
         route_with_profile_or_clarification(&registry, &prompt, profile.as_ref())
     };
+    attach_route_readiness(root, &registry, &prompt, &mut route);
     let plan = plan_goal_with_project(
         root,
         &registry,

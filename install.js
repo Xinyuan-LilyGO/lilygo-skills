@@ -12,6 +12,7 @@ function parseArgs(argv) {
     "--all",
     "--dry-run",
     "--build",
+    "--no-self-test",
   ]);
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -55,6 +56,7 @@ function parseArgs(argv) {
     home: optionValue("--home") ?? os.homedir(),
     profile,
     bin: optionValue("--bin"),
+    selfTest: !args.has("--no-self-test"),
   };
 }
 
@@ -506,17 +508,26 @@ if (args[0] === "route") {
   } : { decision: "no-op", skills: [], missing: [], questions: [] }, null, 2));
   process.exit(0);
 }
-if (args[0] === "verify") {
+if (args[0] === "verify" || args[0] === "doctor") {
   console.log(JSON.stringify({
     status: "PASS",
     runtime_mode: "mount-only",
     full_runtime_available: false,
+    checks: [
+      { id: "mount-only", status: "WARN", summary: runtimeMissingContext() }
+    ],
+    sample_injection: {
+      status: "WARN",
+      prompt: "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen",
+      matched_skills: ["lilygo-router"],
+      no_op_status: "not_checked"
+    },
     warnings: [runtimeMissingContext()]
   }, null, 2));
   process.exit(0);
 }
 if (args.length === 0 || args[0] === "--help" || args[0] === "help") {
-  console.log("lilygo-skills mount-only launcher: setup|hook|route|verify. Build the Rust runtime for full dynamic context.");
+  console.log("lilygo-skills mount-only launcher: setup|hook|route|verify|doctor. Build the Rust runtime for full dynamic context.");
   process.exit(0);
 }
 console.log(JSON.stringify({ status: "FAIL", runtime_mode: "mount-only", errors: [runtimeMissingContext()] }, null, 2));
@@ -640,6 +651,37 @@ function validateHost(plan) {
     }
   }
   return errors;
+}
+
+function runSelfTest(plan) {
+  const bin = path.join(plan.runtime_root, "bin", runtimeBinaryName());
+  if (!fs.existsSync(bin)) {
+    return {
+      host: plan.host,
+      status: "FAIL",
+      command: "lilygo-skills doctor --json --home <home>",
+      summary: "installed runtime binary is missing",
+    };
+  }
+  const result = cp.spawnSync(bin, ["doctor", "--json", "--home", plan.home], {
+    cwd: plan.runtime_root,
+    encoding: "utf8",
+  });
+  let parsed = null;
+  try {
+    parsed = JSON.parse(result.stdout || "{}");
+  } catch (_) {}
+  const passed = result.status === 0 && parsed?.status === "PASS";
+  return {
+    host: plan.host,
+    status: passed ? "PASS" : "FAIL",
+    command: "lilygo-skills doctor --json --home <home>",
+    summary:
+      parsed?.sample_injection?.status === "PASS"
+        ? "injection chain self-test passed"
+        : "doctor did not report a passing sample injection",
+    runtime_mode: parsed?.runtime_mode || "unknown",
+  };
 }
 
 function resolveBinary(repoRoot, options) {
@@ -770,6 +812,7 @@ function main() {
   const writes = [];
   const errors = [];
   const verified_writes = [];
+  const self_tests = [];
   let build_result = null;
   if (!options.dryRun) {
     build_result = runBuild(build, repoRoot);
@@ -802,6 +845,15 @@ function main() {
           ...plan.planned_writes.filter((target) => fs.existsSync(target))
         );
       }
+      if (options.selfTest && errors.length === 0) {
+        for (const plan of plans) {
+          const selfTest = runSelfTest(plan);
+          self_tests.push(selfTest);
+          if (selfTest.status !== "PASS") {
+            errors.push(`${plan.host}: install self-test failed: ${selfTest.summary}`);
+          }
+        }
+      }
     }
   }
   const warningsAllowed = options.dryRun || mountOnly;
@@ -830,6 +882,7 @@ function main() {
               exit_code: build_result.exit_code,
             }
           : null,
+        self_tests,
         generate_plans: plans.map((plan) => publicPlan(plan, options.home, repoRoot)),
         planned_writes: plans.flatMap((plan) =>
           plan.planned_writes.map((target) => displayPath(target, options.home, repoRoot))

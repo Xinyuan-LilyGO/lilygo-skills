@@ -10,9 +10,9 @@ use crate::facts::{
 use crate::model::{
     BoardRecord, CompletenessSignal, ContextBudget, DemoRef, DiscoveryHint, FactTablePreview,
     GoalBoundary, GoalContextCapsule, GoalCriticalFact, GoalDemoRef, GoalEvidence, GoalFact,
-    GoalImplementationStart, GoalInternalSkillHint, GoalPlan, GoalPrivacy, GoalRecoveryAction,
-    GoalRoute, GoalSourceRef, GoalStartResult, PeripheralRecord, PlaybookHint, Recipe, Registry,
-    RouteResult, SkillKind, SourceFact, SourceFactSource, SourceUrl,
+    GoalImplementationStart, GoalInternalSkillHint, GoalNextAction, GoalPlan, GoalPrivacy,
+    GoalRecoveryAction, GoalRoute, GoalSourceRef, GoalStartResult, PeripheralRecord, PlaybookHint,
+    Recipe, Registry, RouteResult, SkillKind, SourceFact, SourceFactSource, SourceUrl,
 };
 use crate::peripheral_source::{load_source_pack_index, source_authority_rank};
 use crate::preferences::preference_hints_for_prompt;
@@ -31,7 +31,9 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
 use std::path::{Path, PathBuf};
 
+mod actions;
 mod complete;
+mod demo;
 mod evidence;
 mod observation;
 mod runner;
@@ -439,12 +441,21 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         .map(|hint| hint.playbook_id.as_str())
         .collect::<Vec<_>>()
         .join(",");
+    let next = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| format!("{}:{}", action.id, action.permission))
+        .take(3)
+        .collect::<Vec<_>>()
+        .join(",");
     let source_recovery = render_compact_source_recovery(plan);
     format!(
-        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}];{} facts=[{}]; completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
+        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}]; next=[{}];{} facts=[{}]; completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
         plan.goal_id,
         plan.recipe_ids.join(","),
         playbooks,
+        next,
         source_recovery,
         facts,
         completeness,

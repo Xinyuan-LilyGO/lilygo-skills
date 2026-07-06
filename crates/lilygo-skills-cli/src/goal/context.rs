@@ -25,6 +25,7 @@ pub(super) fn compose_context_capsule(
         return Ok(GoalContextCapsule {
             summary: context_summary(route, goal_route),
             facts,
+            next_actions: Vec::new(),
             implementation_start: None,
             critical_facts: Vec::new(),
             recovery_actions: Vec::new(),
@@ -68,7 +69,7 @@ pub(super) fn compose_context_capsule(
         prompt,
         root,
     )?;
-    demo_refs.extend(sorted_demo_refs(board, goal_route, prompt));
+    demo_refs.extend(super::demo::sorted_demo_refs(board, goal_route, prompt));
     let fact_tables = fact_tables_for_goal(root, board_id, prompt)?;
     add_fact_table_sources(&mut source_refs, &fact_tables);
     dedup_sources(&mut source_refs);
@@ -104,10 +105,14 @@ pub(super) fn compose_context_capsule(
         implementation_start_for_goal(prompt, &demo_refs, &source_refs, &fact_tables);
     let critical_facts = critical_facts_for_goal(prompt, &fact_tables);
     let recovery_actions = recovery_actions_for_goal(board_id, prompt, &fact_tables);
-    let internal_skill_hints = internal_skill_hints_for_goal(prompt, &playbook_hints);
+    let mut internal_skill_hints = internal_skill_hints_for_goal(prompt, &playbook_hints);
+    super::actions::add_project_skill_hints(&mut internal_skill_hints, route);
+    let next_actions =
+        super::actions::next_actions_for_goal(board_id, prompt, &demo_refs, &fact_tables, route);
     Ok(GoalContextCapsule {
         summary: context_summary(route, goal_route),
         facts,
+        next_actions,
         implementation_start,
         critical_facts,
         recovery_actions,
@@ -302,42 +307,6 @@ fn requested_peripherals(route: &GoalRoute, prompt: &str) -> BTreeSet<&'static s
     requested
 }
 
-fn sorted_demo_refs(board: &BoardRecord, route: &GoalRoute, prompt: &str) -> Vec<GoalDemoRef> {
-    let mut demos = board.demo_refs.clone();
-    demos.sort_by_key(|demo| std::cmp::Reverse(demo_score(demo, route, prompt)));
-    demos.into_iter().map(goal_demo_ref).collect()
-}
-
-fn demo_score(demo: &DemoRef, route: &GoalRoute, prompt: &str) -> i32 {
-    let normalized = prompt.to_lowercase();
-    let target = demo.target.to_lowercase();
-    let mut score = 0;
-    if route.framework.as_deref() == Some("fw-arduino") && demo.framework == "arduino" {
-        score += 10;
-    }
-    if target == "imu" && contains_any(&normalized, &["imu", "bhi260ap", "gesture", "抬腕"]) {
-        score += 50;
-    }
-    if target == "nfc" && contains_any(&normalized, &["nfc", "st25r3916"]) {
-        score += 50;
-    }
-    if (target.contains("tft") || demo.path.to_lowercase().contains("/tft/"))
-        && contains_any(
-            &normalized,
-            &["tft", "tft_espi", "tft-espi", "tftespi", "tft_e"],
-        )
-    {
-        score += 80;
-    }
-    if target.contains("lvgl") && contains_any(&normalized, &["lvgl", "touch", "display"]) {
-        score += 45;
-    }
-    if target.contains("factory") {
-        score += 5;
-    }
-    score
-}
-
 fn add_board_sources(source_refs: &mut Vec<GoalSourceRef>, board: &BoardRecord) {
     for source in &board.source_urls {
         source_refs.push(source_ref_from_board(source));
@@ -388,17 +357,6 @@ fn board_source_rank(kind: &str) -> u32 {
         "hardware-doc" | "quick-start" | "github-repo" => 90,
         "wiki" => 55,
         _ => 50,
-    }
-}
-
-fn goal_demo_ref(demo: DemoRef) -> GoalDemoRef {
-    GoalDemoRef {
-        framework: demo.framework,
-        target: demo.target,
-        path: demo.path,
-        source_url: demo.source_url,
-        evidence_level: demo.evidence_level,
-        stale: demo.stale,
     }
 }
 

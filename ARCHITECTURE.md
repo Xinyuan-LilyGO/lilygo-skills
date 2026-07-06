@@ -5,7 +5,8 @@ docs: [Context layers](docs/CONTEXT_LAYER.md) /
 [中文](docs/CONTEXT_LAYER.zh-CN.md), [Skill generation](docs/SKILL_GENERATION.md)
 / [中文](docs/SKILL_GENERATION.zh-CN.md), [Board facts](docs/BOARD_FACTS.md) /
 [中文](docs/BOARD_FACTS.zh-CN.md), [Source recovery](docs/SOURCE_RECOVERY.md) /
-[中文](docs/SOURCE_RECOVERY.zh-CN.md), and
+[中文](docs/SOURCE_RECOVERY.zh-CN.md), [Action routing](docs/ACTION_ROUTING.md) /
+[中文](docs/ACTION_ROUTING.zh-CN.md), and
 [Verification levels](docs/VERIFICATION_LEVELS.md) /
 [中文](docs/VERIFICATION_LEVELS.zh-CN.md).
 
@@ -49,6 +50,7 @@ Main surfaces:
 - `update board-facts`: explicit enrichment surface for one board/topic.
 - `setup plan`: read-only toolchain setup planning for blank machines.
 - `verify` and `benchmark`: integrity and route quality gates.
+- `doctor --json`: installed runtime and injection-chain health check.
 
 - `generate skills --out <dir>`: generate every runtime skill into a generated
   cache; reports skill count, source-pack ids, source hashes, warnings, and
@@ -78,6 +80,7 @@ user-approved step outside the setup-plan command.
 | L8 | Source completeness | Topic status and enrichment next actions |
 | L9 | Embedded playbooks | Source-first operating patterns and evidence checklists |
 | L10 | Completion coordinator | Route, generated-root, source, setup, permissions, and evidence state |
+| L11 | Action routing | Intent-ranked demos, generic bus lookup, project custom skills, and doctor |
 
 The committed router Skill is the embedded-development control plane. It tells
 the agent how to classify a LilyGO task, read official sources, plan a bounded
@@ -97,6 +100,12 @@ Source recovery is a cross-layer output rather than a separate command family.
 For implementation and debug prompts, `goal plan`, hook context, `source query`,
 and generated board skills converge on the same official-demo-first context:
 demo path, board-owned headers, critical facts, and recovery commands.
+
+Action routing is the next cross-layer output. It does not expand default
+context; it adds compact `next_actions` to implementation/debug capsules:
+minimal official demo selection, IO/bus source-query commands, project-local
+custom skill hints, and permission-marked build/flash/serial/network/OTA paths.
+Pure fact lookup remains compact and read-only.
 
 The public source tree is meta-only. The only committed Skill is
 `skills/lilygo-router/SKILL.md`, the meta router. Board, series, framework,

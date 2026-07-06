@@ -1525,6 +1525,61 @@ fn public_recipe_source_pack() {
     }));
 }
 
+#[test]
+fn demo_intent_minimal_display_demo() {
+    let display_plan =
+        plan("T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor");
+    let demos = &display_plan.context_capsule.demo_refs;
+    assert_eq!(
+        demos.first().map(|demo| demo.path.as_str()),
+        Some("examples/tft/tft.ino")
+    );
+    assert!(
+        demos
+            .iter()
+            .any(|demo| demo.path == "examples/factory/factory.ino")
+    );
+
+    let factory = plan("T-Display-S3 Arduino factory full peripheral test");
+    assert_eq!(
+        factory
+            .context_capsule
+            .demo_refs
+            .first()
+            .map(|demo| demo.path.as_str()),
+        Some("examples/factory/factory.ino")
+    );
+}
+
+#[test]
+fn goal_next_actions_are_permission_aware() {
+    let implementation_plan =
+        plan("T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor");
+    let actions = &implementation_plan.context_capsule.next_actions;
+    assert!(actions.iter().any(|action| action.id == "source-query-io"));
+    assert!(actions.iter().any(|action| action.id == "source-query-i2c"));
+    assert!(
+        actions
+            .iter()
+            .any(|action| action.permission == "allow-build")
+    );
+    assert!(
+        actions
+            .iter()
+            .all(|action| !action.command.contains("/Users/"))
+    );
+
+    let fact_lookup = plan("T-Display-S3 Arduino IO口怎么用? 哪些GPIO接了外设?");
+    assert!(
+        fact_lookup
+            .context_capsule
+            .next_actions
+            .iter()
+            .all(|action| action.permission == "none")
+    );
+    assert!(fact_lookup.context_capsule.demo_refs.is_empty());
+}
+
 fn rust_build_plan() -> GoalPlan {
     let mut plan = plan("T-Watch Ultra Rust build firmware");
     plan.route.framework = Some("fw-rust".to_string());

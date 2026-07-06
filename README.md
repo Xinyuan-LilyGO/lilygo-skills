@@ -24,6 +24,7 @@ Documentation:
 | Skill generation | [docs/SKILL_GENERATION.md](docs/SKILL_GENERATION.md) | [docs/SKILL_GENERATION.zh-CN.md](docs/SKILL_GENERATION.zh-CN.md) |
 | Board facts | [docs/BOARD_FACTS.md](docs/BOARD_FACTS.md) | [docs/BOARD_FACTS.zh-CN.md](docs/BOARD_FACTS.zh-CN.md) |
 | Source recovery | [docs/SOURCE_RECOVERY.md](docs/SOURCE_RECOVERY.md) | [docs/SOURCE_RECOVERY.zh-CN.md](docs/SOURCE_RECOVERY.zh-CN.md) |
+| Action routing | [docs/ACTION_ROUTING.md](docs/ACTION_ROUTING.md) | [docs/ACTION_ROUTING.zh-CN.md](docs/ACTION_ROUTING.zh-CN.md) |
 | Verification levels | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | Board contribution | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
 
@@ -78,6 +79,7 @@ git clone https://github.com/Xinyuan-LilyGO/lilygo-skills.git
 cd lilygo-skills
 node install.js --all --dry-run
 node install.js --all
+lilygo-skills doctor --json
 ```
 
 The installer writes an agent runtime under:
@@ -176,6 +178,17 @@ again.
 The installer also does not silently install Arduino CLI, PlatformIO, ESP-IDF,
 esp-rs, board cores, firmware libraries, or LoRa/GNSS dependencies.
 
+Full installs run a `doctor` self-test by default. You can rerun it any time:
+
+```bash
+lilygo-skills doctor --json
+lilygo-skills doctor --json --home "$HOME"
+```
+
+`doctor` checks runtime data, generated skill availability, one LilyGO sample
+injection, one no-op sample, and installed host files where present. It does
+not claim hardware, OTA, serial, RF, display, or sensor success.
+
 Setup is routed through the Skill before any installer is run. For machine
 readiness, use the read-only setup planner:
 
@@ -212,6 +225,12 @@ The agent uses this Skill to decide which compact context to inject, which
 official examples or source files to inspect, and which setup/debug commands are
 safe to run.
 
+For implementation and debug prompts, the capsule also carries compact
+`next_actions`. Read-only actions point at `source query` or `index query`.
+Build, flash, serial, network, and OTA actions are shown with explicit
+permissions. Display bring-up prompts prefer small official demos; factory
+examples remain available for full-board or multi-peripheral debugging.
+
 Common tasks can be requested directly:
 
 | User can say | Agent should trigger |
@@ -223,6 +242,8 @@ Common tasks can be requested directly:
 | "Help me implement this feature and tell me what is still missing first." | `goal complete --dry-run` or `goal plan` |
 | "Run the benchmark and confirm context injection did not regress." | `benchmark --generated-root ...` or the default registry benchmark |
 | "Verify this to V3/V4/V5 and show the evidence." | The matching route/source/build/flash/serial/OTA/display evidence path |
+| "This repo has its own LVGL or serial debug checklist. Add it as local context." | `.lilygo-skills/skills/index.json` plus a project `SKILL.md` routed as supplemental context |
+| "Confirm the installed injection chain is alive." | `doctor --json` |
 
 These natural-language prompts map to explicit runtime paths. Ordinary Q&A does
 not write files implicitly; install, project init, generation, update,

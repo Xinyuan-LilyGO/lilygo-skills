@@ -46,7 +46,10 @@ pub(crate) fn source_query(
         .into_iter()
         .find(|pack| pack.board_id == board_id)
         .ok_or_else(|| format!("unknown board fact pack: {board_id}"))?;
-    let facts = facts_for_topic(&pack, topic);
+    let mut facts = facts_for_topic(&pack, topic);
+    if facts.is_empty() && is_bus_topic(topic) {
+        facts.push(unknown_topic_fact(&pack, topic));
+    }
     let unknowns = facts
         .iter()
         .filter(|fact| fact.confidence == "unknown_with_sources")
@@ -75,6 +78,38 @@ pub(crate) fn source_query(
         discovery_hints: discovery_hints(board_id, topic, true),
         warnings: query_warnings(&pack),
     })
+}
+
+fn is_bus_topic(topic: &str) -> bool {
+    matches!(topic, "i2c" | "spi" | "uart" | "i2s" | "gpio")
+}
+
+fn unknown_topic_fact(pack: &BoardFactPack, topic: &str) -> SourceFact {
+    let source = pack
+        .source_refs
+        .first()
+        .cloned()
+        .unwrap_or_else(|| SourceFactSource {
+            kind: "documentation-repo".to_string(),
+            path_or_url: DOCUMENTATION_REPO.to_string(),
+            line_range: None,
+            hash: "sha256:unknown".to_string(),
+        });
+    SourceFact {
+        schema_version: 1,
+        board_id: pack.board_id.clone(),
+        topic: topic.to_string(),
+        key: format!("{topic}.unknown"),
+        value: "unknown_with_sources".to_string(),
+        claim: format!(
+            "Current source fact pack has no exact {topic} mapping; inspect source refs before assigning pins."
+        ),
+        authority_rank: source_authority_rank(&source.kind),
+        evidence_level: "V3-source-reference".to_string(),
+        stale: false,
+        confidence: "unknown_with_sources".to_string(),
+        source,
+    }
 }
 
 pub(crate) fn source_completeness(
@@ -170,7 +205,7 @@ pub(crate) fn fact_tables_for_goal(
     board_id: &str,
     prompt: &str,
 ) -> Result<Vec<FactTablePreview>, String> {
-    if !is_fact_prompt(prompt) {
+    if !is_fact_prompt(prompt) && !is_bus_or_sensor_prompt(prompt) {
         return Ok(Vec::new());
     }
     let report = source_query(root, board_id, "io")?;
@@ -204,6 +239,30 @@ pub(crate) fn fact_tables_for_goal(
     .collect())
 }
 
+fn is_bus_or_sensor_prompt(prompt: &str) -> bool {
+    let normalized = prompt.to_lowercase();
+    is_implementation_or_debug_prompt(prompt)
+        && contains_any(
+            &normalized,
+            &[
+                "sensor",
+                "sensors",
+                "i2c",
+                "iic",
+                "spi",
+                "uart",
+                "i2s",
+                "gpio",
+                "pin",
+                "bus",
+                "io",
+                "传感器",
+                "引脚",
+                "外设",
+            ],
+        )
+}
+
 pub(crate) fn discovery_hints_for_goal(board_id: Option<&str>, prompt: &str) -> Vec<DiscoveryHint> {
     if board_id.is_none() && is_embedded_fact_or_impl_prompt(prompt) {
         return vec![DiscoveryHint {
@@ -221,6 +280,28 @@ pub(crate) fn discovery_hints_for_goal(board_id: Option<&str>, prompt: &str) -> 
         return discovery_hints(board_id, "io", true);
     }
     if is_implementation_or_debug_prompt(prompt) {
+        let normalized = prompt.to_lowercase();
+        if contains_any(
+            &normalized,
+            &[
+                "sensor",
+                "sensors",
+                "i2c",
+                "iic",
+                "spi",
+                "uart",
+                "i2s",
+                "gpio",
+                "pin",
+                "bus",
+                "io",
+                "传感器",
+                "引脚",
+                "外设",
+            ],
+        ) {
+            return discovery_hints(board_id, "io", true);
+        }
         return discovery_hints(board_id, "peripheral", false);
     }
     Vec::new()
@@ -333,6 +414,22 @@ mod tests {
                 .any(|fact| fact.key == "expander.xl9555.channel-map")
         );
         assert!(!report.discovery_hints.is_empty());
+    }
+
+    #[test]
+    fn bus_facts_are_data_driven() {
+        let i2c = source_query(root().as_path(), "board-t-display-s3", "i2c").expect("i2c");
+        assert_eq!(i2c.topic, "i2c");
+        assert!(i2c.facts.iter().any(|fact| fact.key == "i2c.primary.sda"));
+        assert!(i2c.facts.iter().any(|fact| fact.value == "GPIO17"));
+
+        let spi = source_query(root().as_path(), "board-t-display-s3", "spi").expect("spi");
+        assert_eq!(spi.topic, "spi");
+        assert!(
+            spi.unknowns
+                .iter()
+                .any(|fact| fact.confidence == "unknown_with_sources")
+        );
     }
 
     #[test]

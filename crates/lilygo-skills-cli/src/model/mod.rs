@@ -107,6 +107,31 @@ pub struct VerifyReport {
 }
 
 #[derive(Debug, Clone, Serialize)]
+pub struct DoctorReport {
+    pub schema_version: u32,
+    pub status: String,
+    pub runtime_mode: String,
+    pub checks: Vec<DoctorCheck>,
+    pub sample_injection: DoctorSampleInjection,
+    pub warnings: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct DoctorCheck {
+    pub id: String,
+    pub status: String,
+    pub summary: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct DoctorSampleInjection {
+    pub status: String,
+    pub prompt: String,
+    pub matched_skills: Vec<String>,
+    pub no_op_status: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
 pub struct ReferenceSkillReport {
     pub required: usize,
     pub present: usize,
@@ -184,6 +209,16 @@ pub struct DemoRef {
     pub stale: bool,
     pub source_status: String,
     pub evidence_level: String,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub intents: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub complexity: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub dependencies: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub preferred_for: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub avoid_for: Vec<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -206,6 +241,27 @@ pub struct ProjectContext {
     pub features: Vec<String>,
     #[serde(default)]
     pub notes: Option<String>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct ProjectSkillIndex {
+    pub schema_version: u32,
+    #[serde(default)]
+    pub skills: Vec<ProjectSkillEntry>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct ProjectSkillEntry {
+    pub id: String,
+    pub kind: String,
+    pub path: String,
+    pub summary: String,
+    #[serde(default)]
+    pub triggers: Vec<String>,
+    #[serde(default)]
+    pub authority: Option<String>,
+    #[serde(default)]
+    pub read_when: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -434,6 +490,8 @@ pub struct GoalRoute {
 pub struct GoalContextCapsule {
     pub summary: String,
     pub facts: Vec<GoalFact>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub next_actions: Vec<GoalNextAction>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub implementation_start: Option<GoalImplementationStart>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -509,6 +567,15 @@ pub struct GoalFact {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct GoalNextAction {
+    pub id: String,
+    pub label: String,
+    pub command: String,
+    pub permission: String,
+    pub reason: String,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct PlaybookCatalog {
     pub schema_version: u32,
     pub playbooks: Vec<Playbook>,
@@ -553,6 +620,10 @@ pub struct GoalDemoRef {
     pub source_url: String,
     pub evidence_level: String,
     pub stale: bool,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub intents: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub complexity: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

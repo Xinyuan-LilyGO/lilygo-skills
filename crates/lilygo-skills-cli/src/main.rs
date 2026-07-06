@@ -3,6 +3,7 @@ mod benchmark;
 #[cfg(test)]
 mod benchmark_tests;
 mod commands;
+mod doctor;
 mod facts;
 mod generate;
 mod goal;
@@ -13,6 +14,7 @@ mod playbooks;
 mod preferences;
 mod product_source;
 mod project_context;
+mod project_skills;
 mod recipes;
 mod reference_catalog;
 mod registry;
