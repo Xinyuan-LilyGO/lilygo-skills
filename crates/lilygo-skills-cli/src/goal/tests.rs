@@ -572,6 +572,35 @@ fn no_over_injection_for_fact_lookup() {
 }
 
 #[test]
+fn fact_lookup_does_not_emit_implementation_recovery_context() {
+    let plan = plan("T-Display-S3 Arduino IO口怎么用? 哪些GPIO接了外设?");
+    assert_eq!(plan.route.board.as_deref(), Some("board-t-display-s3"));
+    assert!(
+        plan.context_capsule
+            .fact_tables
+            .iter()
+            .any(|table| { table.table == "pin_matrix" || table.table == "peripheral_table" })
+    );
+    assert!(plan.context_capsule.implementation_start.is_none());
+    assert!(plan.context_capsule.critical_facts.is_empty());
+    assert!(plan.context_capsule.recovery_actions.is_empty());
+    assert!(plan.context_capsule.internal_skill_hints.is_empty());
+    for forbidden in [
+        "recipe-run-official-demo",
+        "recipe-build-upload-monitor",
+        "recipe-lvgl-simulator",
+    ] {
+        assert!(
+            !plan.recipe_ids.contains(&forbidden.to_string()),
+            "fact lookup selected {forbidden}"
+        );
+    }
+    let summary = render_hook_goal_summary(&plan);
+    assert!(!summary.contains("examples/tft/tft.ino"));
+    assert!(!summary.contains("source_recovery="));
+}
+
+#[test]
 fn context_budget_caps() {
     let plan = plan("T-Watch Ultra Arduino IO口怎么用? 哪些GPIO接了外设?");
     let budget = &plan.context_capsule.budget;

@@ -63,6 +63,16 @@ check("fact lookup avoids preference/reference over-injection",
   preferences.length === 0 &&
   referenceHints.length === 0,
   goal.context_capsule);
+check("fact lookup avoids implementation recipe over-injection",
+  (goal.recipe_ids || []).every((id) => ![
+    "recipe-run-official-demo",
+    "recipe-build-upload-monitor",
+    "recipe-lvgl-simulator"
+  ].includes(id)) &&
+  !goal.context_capsule.implementation_start &&
+  (goal.context_capsule.critical_facts || []).length === 0 &&
+  (goal.context_capsule.recovery_actions || []).length === 0,
+  { recipe_ids: goal.recipe_ids, context_capsule: goal.context_capsule });
 
 process.stdout.write(JSON.stringify({
   status: "PASS",

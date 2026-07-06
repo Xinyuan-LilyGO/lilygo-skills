@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "fact_prompt": ["io", "gpio", "pinout", "pin map", "bus", "i2c", "spi", "uart", "connector", "expander", "xl9555", "外设", "引脚", "口", "哪些"],
-  "implementation_or_debug": ["implement", "debug", "build", "flash", "upload", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "调试", "实现", "怎么做"],
+  "implementation_or_debug": ["implement", "debug", "build", "flash", "upload", "serial", "ota", "lvgl", "demo", "example", "driver", "setup", "tft", "tft_espi", "tft-espi", "screen", "sensor", "调试", "实现", "怎么做", "显示", "屏幕", "传感器"],
   "topic_order": ["display", "imu", "lora", "gnss", "power", "input"],
   "topics": {
     "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示"],

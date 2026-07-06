@@ -582,35 +582,12 @@ fn internal_skill_hints_for_goal(
 }
 
 fn is_source_recovery_prompt(prompt: &str, fact_tables: &[FactTablePreview]) -> bool {
-    let normalized = prompt.to_lowercase();
-    !fact_tables.is_empty()
-        || contains_any(
-            &normalized,
-            &[
-                "implement",
-                "debug",
-                "build",
-                "flash",
-                "upload",
-                "demo",
-                "example",
-                "driver",
-                "setup",
-                "tft",
-                "tft_espi",
-                "tft-espi",
-                "i2c",
-                "gpio",
-                "pinout",
-                "sensor",
-                "screen",
-                "display",
-                "实现",
-                "调试",
-                "引脚",
-                "外设",
-            ],
-        )
+    let has_source_facts = !fact_tables.is_empty();
+    let implementation_or_debug = crate::facts::is_implementation_or_debug_prompt(prompt);
+    if has_source_facts && crate::facts::is_fact_prompt(prompt) && !implementation_or_debug {
+        return false;
+    }
+    implementation_or_debug
 }
 
 fn is_critical_source_fact(fact: &SourceFact) -> bool {

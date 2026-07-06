@@ -7,6 +7,7 @@ use crate::model::{
     PeripheralRecord, SourceFact, SourceFactSource, SourceUrl,
 };
 use crate::source::{load_board_index, write_if_changed};
+use crate::text_match::contains_any;
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
@@ -227,18 +228,24 @@ pub(crate) fn discovery_hints_for_goal(board_id: Option<&str>, prompt: &str) -> 
 
 pub(crate) fn is_fact_prompt(prompt: &str) -> bool {
     let normalized = prompt.to_lowercase();
-    prompt_keywords()
+    let keywords = prompt_keywords();
+    let needles = keywords
         .fact_prompt
         .iter()
-        .any(|keyword| normalized.contains(keyword))
+        .map(String::as_str)
+        .collect::<Vec<_>>();
+    contains_any(&normalized, &needles)
 }
 
 pub(crate) fn is_implementation_or_debug_prompt(prompt: &str) -> bool {
     let normalized = prompt.to_lowercase();
-    prompt_keywords()
+    let keywords = prompt_keywords();
+    let needles = keywords
         .implementation_or_debug
         .iter()
-        .any(|keyword| normalized.contains(keyword))
+        .map(String::as_str)
+        .collect::<Vec<_>>();
+    contains_any(&normalized, &needles)
 }
 
 pub(crate) fn source_authority_rank(kind: &str) -> u32 {

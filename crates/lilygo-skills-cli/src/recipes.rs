@@ -37,7 +37,10 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
     let normalized = prompt.to_lowercase();
     let mut selected = BTreeSet::new();
     let has_board = route.board.is_some();
+    let pure_fact_lookup = crate::facts::is_fact_prompt(prompt)
+        && !crate::facts::is_implementation_or_debug_prompt(prompt);
     let has_demo_target = has_board
+        && !pure_fact_lookup
         && (contains_any(
             &normalized,
             &["demo", "example", "official", "示例", "例程"],
@@ -49,6 +52,7 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
         selected.insert("recipe-run-official-demo");
     }
     if has_board
+        && !pure_fact_lookup
         && (contains_any(
             &normalized,
             &[
@@ -67,6 +71,7 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
         selected.insert("recipe-build-upload-monitor");
     }
     if has_board
+        && !pure_fact_lookup
         && (contains_any(
             &normalized,
             &[
@@ -88,32 +93,40 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
     {
         selected.insert("recipe-serial-debug");
     }
-    if contains_any(
-        &normalized,
-        &["lvgl", "touch", "page-data", "screen", "display"],
-    ) {
+    if !pure_fact_lookup
+        && contains_any(
+            &normalized,
+            &["lvgl", "touch", "page-data", "screen", "display"],
+        )
+    {
         selected.insert("recipe-lvgl-simulator");
     }
-    if contains_any(
-        &normalized,
-        &["ota", "manifest", "partition", "rollback", "rebooted"],
-    ) {
+    if !pure_fact_lookup
+        && contains_any(
+            &normalized,
+            &["ota", "manifest", "partition", "rollback", "rebooted"],
+        )
+    {
         selected.insert("recipe-ota-debug");
     }
-    if contains_any(
-        &normalized,
-        &[
-            "lora",
-            "gnss",
-            "gps",
-            "radio",
-            "meshtastic",
-            "telemetry",
-            "radiolib",
-        ],
-    ) || route.peripherals.iter().any(|peripheral| {
-        peripheral == "periph-lora" || peripheral == "periph-lora-gps" || peripheral == "periph-gps"
-    }) {
+    if !pure_fact_lookup
+        && (contains_any(
+            &normalized,
+            &[
+                "lora",
+                "gnss",
+                "gps",
+                "radio",
+                "meshtastic",
+                "telemetry",
+                "radiolib",
+            ],
+        ) || route.peripherals.iter().any(|peripheral| {
+            peripheral == "periph-lora"
+                || peripheral == "periph-lora-gps"
+                || peripheral == "periph-gps"
+        }))
+    {
         selected.insert("recipe-lora-gnss-source");
     }
     let asks_for_bsp_source = contains_any(
@@ -122,7 +135,7 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
     );
     let routed_chip_source_request =
         !route.chips.is_empty() && contains_any(&normalized, &["driver", "source", "datasheet"]);
-    if asks_for_bsp_source || routed_chip_source_request {
+    if !pure_fact_lookup && (asks_for_bsp_source || routed_chip_source_request) {
         selected.insert("recipe-bsp-chip-driver");
     }
     selected
