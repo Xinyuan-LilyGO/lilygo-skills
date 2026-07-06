@@ -74,6 +74,10 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
 }
 
 fn route(root: &Path, args: &[String]) -> Result<(), String> {
+    if has_flag(args, "--help") || has_flag(args, "-h") {
+        println!("Usage: lilygo-skills route [--project <dir>] --json <prompt>");
+        return Ok(());
+    }
     require_json(args)?;
     let prompt = prompt_arg(args)?;
     let registry = load_registry(root)?;
@@ -96,11 +100,9 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
 fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
     let host = args.first().map(String::as_str).unwrap_or("codex");
     if matches!(host, "--help" | "-h") {
-        println!("Usage: lilygo-skills hook <claude|codex>");
-        println!();
-        println!("Reads a prompt JSON object ({{\"prompt\":\"...\"}}) from stdin.");
-        println!("claude: emits the UserPromptSubmit hookSpecificOutput envelope.");
-        println!("codex: emits the diagnostic routing envelope for manual use.");
+        println!(
+            "Usage: lilygo-skills hook <claude|codex>\n\nReads a prompt JSON object ({{\"prompt\":\"...\"}}) from stdin.\nclaude: emits the UserPromptSubmit hookSpecificOutput envelope.\ncodex: emits the diagnostic routing envelope for manual use."
+        );
         return Ok(());
     }
     if !matches!(host, "codex" | "claude") {
@@ -295,10 +297,8 @@ fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
 
 fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
     if has_flag(args, "--help") || has_flag(args, "-h") {
-        println!("Usage: lilygo-skills doctor --json [--home <dir>]");
-        println!();
         println!(
-            "Checks runtime data, skill availability, sample injection, no-op routing, and optional host install files."
+            "Usage: lilygo-skills doctor --json [--home <dir>]\n\nChecks runtime data, skill availability, sample injection, no-op routing, and optional host install files."
         );
         return Ok(());
     }
@@ -939,12 +939,16 @@ mod tests {
     }
 
     #[test]
-    fn goal_subcommand_help_does_not_require_json() {
-        let result = run(
-            ["goal", "plan", "--help"].into_iter().map(str::to_string),
-            std::io::empty(),
-        );
-        assert!(result.is_ok());
+    fn help_surfaces_do_not_require_json() {
+        for args in [
+            vec!["goal", "plan", "--help"],
+            vec!["route", "--help"],
+            vec!["hook", "--help"],
+            vec!["doctor", "--help"],
+        ] {
+            let result = run(args.into_iter().map(str::to_string), std::io::empty());
+            assert!(result.is_ok());
+        }
     }
 
     #[test]
