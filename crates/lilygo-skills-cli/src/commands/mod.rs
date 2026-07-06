@@ -366,6 +366,10 @@ fn goal(root: &Path, args: &[String]) -> Result<(), String> {
             print_goal_help();
             Ok(())
         }
+        _ if has_flag(&args[1..], "--help") || has_flag(&args[1..], "-h") => {
+            print_goal_help();
+            Ok(())
+        }
         "plan" => goal_plan(root, &args[1..]),
         "complete" => goal_complete(root, &args[1..]),
         "start" => goal_start(&args[1..]),
@@ -958,6 +962,15 @@ mod tests {
     #[test]
     fn source_completeness_help() {
         print_source_help();
+    }
+
+    #[test]
+    fn goal_subcommand_help_does_not_require_json() {
+        let result = run(
+            ["goal", "plan", "--help"].into_iter().map(str::to_string),
+            std::io::empty(),
+        );
+        assert!(result.is_ok());
     }
 
     #[test]
