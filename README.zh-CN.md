@@ -167,7 +167,9 @@ lilygo-skills doctor --json --home "$HOME"
 ```
 
 `doctor` 会检查 runtime data、生成 skill 可用性、一个 LilyGO 样例注入、一个 no-op
-样例，以及已存在的宿主安装文件。它不宣称硬件、OTA、串口、RF、显示或传感器成功。
+样例，并默认检查当前 `$HOME` 下 Codex/Claude 的接线状态。缺少宿主集成会报告为
+warning；存在 LilyGO hook 但命令畸形会失败。它不宣称硬件、OTA、串口、RF、显示或
+传感器成功。
 
 Setup 会先通过 Skill 路由，而不是直接运行安装器。机器 readiness 由只读 setup
 planner 处理：
@@ -204,9 +206,12 @@ lilygo-skills setup plan --framework rust --json
 Agent 会用这个 Skill 判断应该注入哪些紧凑上下文、读哪些官方示例或源码、以及
 哪些 setup/debug 命令可以安全执行。
 
-对于实现和调试 prompt，capsule 还会带紧凑的 `next_actions`。只读动作会指向
-`source query` 或 `index query`；build、flash、serial、network、OTA 会标出显式权限。
-显示 bring-up 会优先给最小官方 demo；factory 示例仍保留给全板或多外设调试。
+默认注入会尽量小。查询类 prompt 只拿 matched ids、关键事实和展开命令，不注入
+demo、recipe、build、flash、serial、network 或 OTA 动作。实现和调试 prompt 会多拿
+紧凑的 `next_actions`，其中包括只读的 `goal-plan-bridge`，用于提醒 Agent 先查看
+goal plan，再编辑固件或接触硬件。build、flash、serial、network、OTA 仍然只作为
+需要显式权限的下一步出现。显示 bring-up 会优先给最小官方 demo；factory 示例仍保留
+给全板或多外设调试。
 
 常见任务可以直接这样说：
 
@@ -288,6 +293,8 @@ Runtime 采用分层设计，避免一次性把所有文档塞进上下文。
 | L8 | 资料不完整 | Completeness 状态和 enrichment 下一步 |
 | L9 | 需要可复用实现/调试模式 | 生成的 playbook hint 和展开命令 |
 | L10 | Agent 需要完成任务 | `goal complete` 状态、计划、权限和证据摘要 |
+| L11 | 需要实现或调试路径 | 按意图选择 demo 和带权限的 `next_actions` |
+| L12 | prompt budget 需要保持小 | 去重、增量提示和明确展开命令 |
 
 默认注入很小：id、摘要、top facts、readiness status 和查询命令。完整 fact pack、
 官方源码和长参考文档只在任务需要时再读取。Playbook 也遵循同样规则：route 和 hook

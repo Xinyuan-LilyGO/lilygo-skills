@@ -81,6 +81,7 @@ user-approved step outside the setup-plan command.
 | L9 | Embedded playbooks | Source-first operating patterns and evidence checklists |
 | L10 | Completion coordinator | Route, generated-root, source, setup, permissions, and evidence state |
 | L11 | Action routing | Intent-ranked demos, generic bus lookup, project custom skills, and doctor |
+| L12 | Experience patch | Context budgets, goal bridge, active doctor wiring, starter board refs |
 
 The committed router Skill is the embedded-development control plane. It tells
 the agent how to classify a LilyGO task, read official sources, plan a bounded
@@ -106,6 +107,13 @@ context; it adds compact `next_actions` to implementation/debug capsules:
 minimal official demo selection, IO/bus source-query commands, project-local
 custom skill hints, and permission-marked build/flash/serial/network/OTA paths.
 Pure fact lookup remains compact and read-only.
+
+The experience patch makes compactness explicit. Lookup capsules must avoid
+demos, recipes, and mutation-oriented actions. Implementation/debug capsules
+add a `goal-plan-bridge` and selected expansion commands so the agent sees the
+next path without receiving every fact pack. Repeated board/topic content is
+deduped into incremental hints, and `doctor --json` checks active installed
+Codex/Claude wiring by default.
 
 The public source tree is meta-only. The only committed Skill is
 `skills/lilygo-router/SKILL.md`, the meta router. Board, series, framework,
@@ -138,6 +146,9 @@ or over-confident:
 - **Gate inventory**: every deterministic smoke that protects a release
   boundary must be visible in `scripts/ci-gate.sh`, even when another smoke also
   runs it transitively.
+- **Context budget**: route, hook, and goal capsules are bounded. When detail is
+  omitted, the output must keep a stable expansion command such as `source
+  query`, `index query`, generated skill reads, or `goal plan`.
 
 ## Meta-Only Release Boundary And Generation Pipeline
 

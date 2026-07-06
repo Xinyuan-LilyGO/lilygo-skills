@@ -601,6 +601,31 @@ fn fact_lookup_does_not_emit_implementation_recovery_context() {
 }
 
 #[test]
+fn pure_query_capsules_trim_mutating_context() {
+    let plan = plan("T-Display-S3 的 I2C 引脚和外设地址有哪些?");
+    let action_ids = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| action.id.as_str())
+        .collect::<BTreeSet<_>>();
+    assert!(action_ids.contains("source-query-io"));
+    assert!(action_ids.contains("source-query-i2c"));
+    assert!(!action_ids.contains("goal-plan-bridge"));
+    assert!(!action_ids.contains("goal-start-dry-run"));
+    assert!(plan.context_capsule.demo_refs.is_empty());
+    assert!(plan.recipe_ids.is_empty());
+    assert!(plan.context_capsule.implementation_start.is_none());
+    assert!(plan.context_capsule.critical_facts.is_empty());
+    assert!(
+        plan.context_capsule
+            .next_actions
+            .iter()
+            .all(|action| action.permission == "none")
+    );
+}
+
+#[test]
 fn context_budget_caps() {
     let plan = plan("T-Watch Ultra Arduino IO口怎么用? 哪些GPIO接了外设?");
     let budget = &plan.context_capsule.budget;
@@ -806,6 +831,32 @@ fn compact_injection_overflow_refs() {
             .iter()
             .any(|table| table.overflow_count > 0 && table.query_command.contains("source query"))
     );
+}
+
+#[test]
+fn context_budget_dedupes_repeated_capsules() {
+    let plan = plan("T-Display-S3 debug I2C I2C I2C sensor screen screen screen");
+    let action_ids = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| action.id.as_str())
+        .collect::<Vec<_>>();
+    let unique = action_ids.iter().copied().collect::<BTreeSet<_>>();
+    assert_eq!(action_ids.len(), unique.len());
+    assert!(
+        plan.context_capsule
+            .next_actions
+            .iter()
+            .any(|action| action.id == "source-query-i2c")
+    );
+    assert!(
+        plan.context_capsule
+            .fact_tables
+            .iter()
+            .any(|table| table.query_command.contains("source query"))
+    );
+    assert!(render_hook_goal_summary(&plan).len() < 1400);
 }
 
 #[test]
@@ -1556,6 +1607,12 @@ fn goal_next_actions_are_permission_aware() {
     let implementation_plan =
         plan("T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor");
     let actions = &implementation_plan.context_capsule.next_actions;
+    assert!(actions.iter().any(|action| action.id == "goal-plan-bridge"));
+    assert!(
+        actions
+            .iter()
+            .any(|action| action.id == "goal-start-dry-run")
+    );
     assert!(actions.iter().any(|action| action.id == "source-query-io"));
     assert!(actions.iter().any(|action| action.id == "source-query-i2c"));
     assert!(
@@ -1591,6 +1648,85 @@ fn goal_next_actions_are_permission_aware() {
             .all(|action| action.permission == "none")
     );
     assert!(fact_lookup.context_capsule.demo_refs.is_empty());
+}
+
+#[test]
+fn goal_bridge_actions_for_implementation_prompts() {
+    let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor");
+    let bridge = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .find(|action| action.id == "goal-plan-bridge")
+        .expect("goal-plan bridge action");
+    assert_eq!(bridge.permission, "none");
+    assert!(bridge.command.contains("goal plan --json"));
+    assert!(bridge.command.contains("T-Display-S3"));
+    let dry_run = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .find(|action| action.id == "goal-start-dry-run")
+        .expect("goal-start dry-run action");
+    assert_eq!(dry_run.permission, "none");
+    assert!(dry_run.command.contains("--dry-run"));
+    let summary = render_hook_goal_summary(&plan);
+    assert!(summary.contains("goal-plan-bridge:none"));
+    assert!(summary.contains("source-query-i2c:none"));
+}
+
+#[test]
+fn starter_board_data_is_source_backed() {
+    let root = root();
+    let beam_lora =
+        crate::facts::source_query(root.as_path(), "board-t-beam", "lora").expect("beam lora");
+    assert!(
+        beam_lora
+            .source_refs
+            .iter()
+            .any(|source| source.path_or_url.contains("LilyGo-LoRa-Series"))
+    );
+    assert!(
+        beam_lora
+            .facts
+            .iter()
+            .any(|fact| fact.confidence == "unknown_with_sources")
+    );
+    assert_ne!(
+        crate::facts::source_completeness(root.as_path(), "board-t-beam", "lora")
+            .expect("beam lora completeness")
+            .completeness,
+        "complete"
+    );
+    let deck_display = crate::facts::source_query(root.as_path(), "board-t-deck", "display")
+        .expect("deck display");
+    assert!(
+        deck_display
+            .source_refs
+            .iter()
+            .any(|source| source.path_or_url.contains("T-Deck"))
+    );
+    assert!(
+        deck_display
+            .facts
+            .iter()
+            .any(|fact| fact.confidence == "unknown_with_sources")
+    );
+    assert_ne!(
+        crate::facts::source_completeness(root.as_path(), "board-t-deck", "input")
+            .expect("deck input completeness")
+            .completeness,
+        "complete"
+    );
+    let amoled_input =
+        crate::facts::source_query(root.as_path(), "board-t-display-s3-amoled", "input")
+            .expect("amoled input");
+    assert!(
+        amoled_input
+            .facts
+            .iter()
+            .any(|fact| fact.confidence == "unknown_with_sources")
+    );
 }
 
 fn rust_build_plan() -> GoalPlan {

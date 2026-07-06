@@ -27,11 +27,32 @@
       "repo_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
       "wiki_url": "https://wiki.lilygo.cc/products/t-beam-series/t-beam/",
       "source_status": "github-cache+wiki-cache",
-      "source_urls": [],
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-beam-series/t-beam/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+          "status": "github-cache"
+        }
+      ],
       "source_hashes": {},
       "stale": false,
       "peripheral_matrix": [],
-      "demo_refs": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "radio-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
       "warnings": [
         "Series repository covers multiple LoRa products; board aliases should be confirmed during live Wiki refresh."
       ]
@@ -235,11 +256,32 @@
       "repo_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
       "wiki_url": "https://wiki.lilygo.cc/products/t-deck-series/t-deck/",
       "source_status": "github-cache+wiki-cache",
-      "source_urls": [],
+      "source_urls": [
+        {
+          "kind": "wiki",
+          "url": "https://wiki.lilygo.cc/products/t-deck-series/t-deck/",
+          "status": "wiki-cache"
+        },
+        {
+          "kind": "github-repo",
+          "url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+          "status": "github-cache"
+        }
+      ],
       "source_hashes": {},
       "stale": false,
       "peripheral_matrix": [],
-      "demo_refs": [],
+      "demo_refs": [
+        {
+          "framework": "source",
+          "target": "display-input-radio-examples",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+          "path": "examples/ or docs/ in official repository",
+          "stale": false,
+          "source_status": "github-cache",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
       "warnings": []
     },
     {

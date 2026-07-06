@@ -6,6 +6,8 @@ use crate::router::route_prompt;
 use std::fs;
 use std::path::{Path, PathBuf};
 
+const AGENTS_SECTION_START: &str = "<!-- lilygo-skills:start -->";
+const AGENTS_SECTION_END: &str = "<!-- lilygo-skills:end -->";
 const SAMPLE_PROMPT: &str = "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen";
 const NO_OP_PROMPT: &str = "tomato soup recipe";
 
@@ -34,13 +36,18 @@ pub(crate) fn doctor_report(root: &Path, home: Option<&Path>) -> DoctorReport {
         },
         Err(error) => checks.push(check("skills", "FAIL", sanitize(error))),
     }
-    if let Some(home) = home {
-        checks.extend(host_checks(home));
+    let active_home = home
+        .map(Path::to_path_buf)
+        .or_else(|| std::env::var_os("HOME").map(PathBuf::from));
+    if let Some(home) = active_home.as_deref() {
+        let host = host_checks(home);
+        checks.push(active_wiring_check(&host));
+        checks.extend(host);
     } else {
         checks.push(check(
-            "host-install",
+            "active_wiring",
             "WARN",
-            "host integration not checked; pass --home <dir> to validate installed hooks",
+            "active host wiring not checked because HOME is unavailable",
         ));
     }
     let sample_injection = sample_injection(root, registry.ok());
@@ -85,11 +92,7 @@ fn path_check(id: &str, path: PathBuf, summary: &str) -> DoctorCheck {
 
 fn host_checks(home: &Path) -> Vec<DoctorCheck> {
     vec![
-        optional_path_check(
-            "codex-agents",
-            home.join(".codex/AGENTS.md"),
-            "Codex AGENTS.md integration file is present",
-        ),
+        codex_agents_check(home),
         optional_path_check(
             "claude-skill",
             home.join(".claude/skills/lilygo-skills/SKILL.md"),
@@ -97,6 +100,60 @@ fn host_checks(home: &Path) -> Vec<DoctorCheck> {
         ),
         claude_settings_check(home),
     ]
+}
+
+fn active_wiring_check(host: &[DoctorCheck]) -> DoctorCheck {
+    if host.iter().any(|check| check.status == "FAIL") {
+        return check(
+            "active_wiring",
+            "FAIL",
+            "active host wiring has malformed LilyGO integration",
+        );
+    }
+    if host.iter().any(|check| check.status == "PASS") {
+        return check(
+            "active_wiring",
+            "PASS",
+            "active host wiring includes at least one LilyGO integration",
+        );
+    }
+    check(
+        "active_wiring",
+        "WARN",
+        "active host wiring is not installed; run install.js for Codex or Claude integration",
+    )
+}
+
+fn codex_agents_check(home: &Path) -> DoctorCheck {
+    let path = home.join(".codex/AGENTS.md");
+    let Ok(data) = fs::read_to_string(path) else {
+        return check(
+            "codex-agents",
+            "WARN",
+            "Codex AGENTS.md integration file is not installed",
+        );
+    };
+    let starts = data.matches(AGENTS_SECTION_START).count();
+    let ends = data.matches(AGENTS_SECTION_END).count();
+    if starts != ends {
+        return check(
+            "codex-agents",
+            "FAIL",
+            "Codex AGENTS.md has unbalanced LilyGO section markers",
+        );
+    }
+    if starts > 0 && data.contains("lilygo-skills") {
+        return check(
+            "codex-agents",
+            "PASS",
+            "Codex AGENTS.md LilyGO section is wired",
+        );
+    }
+    check(
+        "codex-agents",
+        "WARN",
+        "Codex AGENTS.md exists but has no LilyGO section",
+    )
 }
 
 fn claude_settings_check(home: &Path) -> DoctorCheck {
@@ -115,37 +172,49 @@ fn claude_settings_check(home: &Path) -> DoctorCheck {
             "Claude settings.json is not valid JSON",
         );
     };
-    let has_hook = value
+    let Some(entries) = value
         .pointer("/hooks/UserPromptSubmit")
         .and_then(|value| value.as_array())
-        .is_some_and(|entries| {
-            entries.iter().any(|entry| {
-                entry
-                    .get("hooks")
-                    .and_then(|hooks| hooks.as_array())
-                    .is_some_and(|hooks| {
-                        hooks.iter().any(|hook| {
-                            hook.get("command")
-                                .and_then(|command| command.as_str())
-                                .is_some_and(|command| {
-                                    command.contains("lilygo-skills")
-                                        && command.contains("hook claude")
-                                })
-                        })
-                    })
-            })
-        });
-    if has_hook {
+    else {
+        return check(
+            "claude-hook",
+            "WARN",
+            "Claude UserPromptSubmit hook is not installed",
+        );
+    };
+    let mut saw_lilygo = false;
+    for entry in entries {
+        let Some(hooks) = entry.get("hooks").and_then(|hooks| hooks.as_array()) else {
+            continue;
+        };
+        for hook in hooks {
+            let Some(command) = hook.get("command").and_then(|command| command.as_str()) else {
+                continue;
+            };
+            if !command.contains("lilygo-skills") {
+                continue;
+            }
+            saw_lilygo = true;
+            if command.contains("hook claude") {
+                return check(
+                    "claude-hook",
+                    "PASS",
+                    "Claude UserPromptSubmit hook is wired",
+                );
+            }
+        }
+    }
+    if saw_lilygo {
         check(
             "claude-hook",
-            "PASS",
-            "Claude UserPromptSubmit hook is wired",
+            "FAIL",
+            "Claude LilyGO hook command is malformed",
         )
     } else {
         check(
             "claude-hook",
-            "FAIL",
-            "Claude UserPromptSubmit hook is not wired",
+            "WARN",
+            "Claude UserPromptSubmit hook is not installed",
         )
     }
 }
@@ -217,7 +286,11 @@ mod tests {
 
     #[test]
     fn doctor_reports_installed_injection_health() {
-        let report = doctor_report(root().as_path(), None);
+        let temp =
+            std::env::temp_dir().join(format!("lilygo-doctor-uninstalled-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp);
+        fs::create_dir_all(&temp).expect("home");
+        let report = doctor_report(root().as_path(), Some(temp.as_path()));
         assert_eq!(report.status, "PASS");
         assert_eq!(report.sample_injection.status, "PASS");
         assert!(
@@ -227,5 +300,78 @@ mod tests {
                 .iter()
                 .any(|skill| skill == "board-t-display-s3")
         );
+        assert!(
+            report
+                .checks
+                .iter()
+                .any(|check| check.id == "active_wiring" && check.status == "WARN")
+        );
+        let _ = fs::remove_dir_all(&temp);
+    }
+
+    #[test]
+    fn doctor_reports_active_hook_wiring() {
+        let temp = std::env::temp_dir().join(format!("lilygo-doctor-wired-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp);
+        let codex = temp.join(".codex");
+        let claude_skill = temp.join(".claude/skills/lilygo-skills");
+        fs::create_dir_all(&codex).expect("codex");
+        fs::create_dir_all(&claude_skill).expect("claude skill");
+        fs::write(
+            codex.join("AGENTS.md"),
+            format!("{AGENTS_SECTION_START}\nLilyGO lilygo-skills\n{AGENTS_SECTION_END}\n"),
+        )
+        .expect("agents");
+        fs::write(
+            claude_skill.join("SKILL.md"),
+            "---\nname: lilygo-skills\n---\n",
+        )
+        .expect("skill");
+        fs::create_dir_all(temp.join(".claude")).expect("claude");
+        fs::write(
+            temp.join(".claude/settings.json"),
+            r#"{"hooks":{"UserPromptSubmit":[{"hooks":[{"type":"command","command":"lilygo-skills hook claude"}]}]}}"#,
+        )
+        .expect("settings");
+        let report = doctor_report(root().as_path(), Some(temp.as_path()));
+        assert_eq!(report.status, "PASS");
+        for id in [
+            "active_wiring",
+            "codex-agents",
+            "claude-skill",
+            "claude-hook",
+        ] {
+            assert!(
+                report
+                    .checks
+                    .iter()
+                    .any(|check| check.id == id && check.status == "PASS"),
+                "{id}: {:?}",
+                report.checks
+            );
+        }
+        let _ = fs::remove_dir_all(&temp);
+    }
+
+    #[test]
+    fn doctor_fails_malformed_lilygo_hook() {
+        let temp =
+            std::env::temp_dir().join(format!("lilygo-doctor-malformed-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp);
+        fs::create_dir_all(temp.join(".claude")).expect("claude");
+        fs::write(
+            temp.join(".claude/settings.json"),
+            r#"{"hooks":{"UserPromptSubmit":[{"hooks":[{"type":"command","command":"lilygo-skills route"}]}]}}"#,
+        )
+        .expect("settings");
+        let report = doctor_report(root().as_path(), Some(temp.as_path()));
+        assert_eq!(report.status, "FAIL");
+        assert!(
+            report
+                .checks
+                .iter()
+                .any(|check| check.id == "claude-hook" && check.status == "FAIL")
+        );
+        let _ = fs::remove_dir_all(&temp);
     }
 }

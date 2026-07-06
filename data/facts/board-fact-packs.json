@@ -62,8 +62,53 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "lora",
+          "key": "lora.radio",
+          "value": "unknown_with_sources",
+          "claim": "LoRa radio details require official LoRa Series source inspection before selecting a driver or pins",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+            "hash": "sha256:2e3b58611432ba429b774b3d6441fe08d4f963440b866fdb0ca98a0b0705231b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "gnss",
+          "key": "gnss.receiver",
+          "value": "unknown_with_sources",
+          "claim": "GNSS receiver details require official T-Beam source inspection before selecting UART, power, or driver assumptions",
+          "source": {
+            "kind": "wiki",
+            "path_or_url": "https://wiki.lilygo.cc/products/t-beam-series/t-beam/",
+            "hash": "sha256:8cf4d8c3f7bf75e6c07d1c68ac2873b30c5a6494e905b868775ea434a1f47f6f"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+          "hash": "sha256:2e3b58611432ba429b774b3d6441fe08d4f963440b866fdb0ca98a0b0705231b"
+        },
+        {
+          "kind": "wiki",
+          "path_or_url": "https://wiki.lilygo.cc/products/t-beam-series/t-beam/",
+          "hash": "sha256:8cf4d8c3f7bf75e6c07d1c68ac2873b30c5a6494e905b868775ea434a1f47f6f"
+        },
         {
           "kind": "documentation-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
@@ -376,8 +421,70 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel, bus, and init details require official T-Deck source inspection before implementation",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+            "hash": "sha256:65309fa5382b1122f3e2d08af9c8f22568b9b13be5f757fed13f05451bd74e23"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "input",
+          "key": "input.keyboard",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard/input details require official T-Deck source inspection before selecting GPIO, I2C, or driver assumptions",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+            "hash": "sha256:65309fa5382b1122f3e2d08af9c8f22568b9b13be5f757fed13f05451bd74e23"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "lora",
+          "key": "lora.radio",
+          "value": "unknown_with_sources",
+          "claim": "LoRa radio details require official T-Deck source inspection before selecting a driver or pins",
+          "source": {
+            "kind": "wiki",
+            "path_or_url": "https://wiki.lilygo.cc/products/t-deck-series/t-deck/",
+            "hash": "sha256:12a8aa582d2fb4dcc7592ebe55b0305cd93d3a56be5eeeab05523977af06346e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+          "hash": "sha256:65309fa5382b1122f3e2d08af9c8f22568b9b13be5f757fed13f05451bd74e23"
+        },
+        {
+          "kind": "wiki",
+          "path_or_url": "https://wiki.lilygo.cc/products/t-deck-series/t-deck/",
+          "hash": "sha256:12a8aa582d2fb4dcc7592ebe55b0305cd93d3a56be5eeeab05523977af06346e"
+        },
         {
           "kind": "documentation-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
@@ -1109,7 +1216,42 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "AMOLED panel, bus, and init details require official repository inspection before implementation",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "input",
+          "key": "input.touch",
+          "value": "unknown_with_sources",
+          "claim": "Touch/input details require official repository inspection before selecting driver or bus assumptions",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",

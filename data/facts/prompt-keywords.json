@@ -17,6 +17,6 @@
     "lora": ["lora", "radio", "sx1262", "sx1268", "sx1276", "sx1278", "sx1280"],
     "gnss": ["gnss", "gps"],
     "power": ["power", "battery", "pmu", "电源"],
-    "input": ["input", "keyboard", "button", "touch", "按键"]
+    "input": ["input", "keyboard", "button", "touch", "xl9555", "io", "expander", "按键"]
   }
 }

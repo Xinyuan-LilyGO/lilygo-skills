@@ -73,7 +73,7 @@ Those surfaces load display, touch, OTA, IMU, source refs, demo refs,
 permission, and evidence boundaries for the task without putting the entire fact
 pack into the default prompt.
 
-## Default Injection
+## Default Injection And Budget
 
 Default injection contains:
 
@@ -86,6 +86,18 @@ Default injection contains:
 Full fact packs, reference docs, and templates are not injected by default. The
 agent reads those files only for implementation, debug, setup, generation, or
 verification work.
+
+The runtime treats prompt budget as part of correctness. Pure lookup prompts
+stay read-only and compact: fact tables, source refs, and `source query`
+commands are enough. Implementation/debug prompts can add `goal-plan-bridge`,
+selected demos, and permissioned next actions, but repeated board, framework,
+demo, project-skill, and topic details collapse into short incremental hints
+with expansion commands.
+
+Incomplete starter board packs follow the same rule. They may expose
+`unknown_with_sources` or `needs_source_ingestion` plus official references so
+the agent knows where to inspect next; they do not invent pins, peripherals, or
+runtime behavior to fill the capsule.
 
 Implementation and debug prompts also receive a compact source recovery capsule:
 the nearest official demo path, board-owned source headers, a few critical

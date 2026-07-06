@@ -186,8 +186,10 @@ lilygo-skills doctor --json --home "$HOME"
 ```
 
 `doctor` checks runtime data, generated skill availability, one LilyGO sample
-injection, one no-op sample, and installed host files where present. It does
-not claim hardware, OTA, serial, RF, display, or sensor success.
+injection, one no-op sample, and the active `$HOME` Codex/Claude wiring by
+default. Missing host integration is reported as a warning; malformed LilyGO
+hook wiring fails. It does not claim hardware, OTA, serial, RF, display, or
+sensor success.
 
 Setup is routed through the Skill before any installer is run. For machine
 readiness, use the read-only setup planner:
@@ -225,11 +227,14 @@ The agent uses this Skill to decide which compact context to inject, which
 official examples or source files to inspect, and which setup/debug commands are
 safe to run.
 
-For implementation and debug prompts, the capsule also carries compact
-`next_actions`. Read-only actions point at `source query` or `index query`.
-Build, flash, serial, network, and OTA actions are shown with explicit
-permissions. Display bring-up prompts prefer small official demos; factory
-examples remain available for full-board or multi-peripheral debugging.
+Default injection is intentionally small. Lookup prompts receive matched ids,
+critical facts, and expansion commands; they do not receive demos, recipes,
+build, flash, serial, network, or OTA actions. Implementation and debug prompts
+receive compact `next_actions`, including a read-only `goal-plan-bridge` that
+tells the agent to inspect the goal plan before editing firmware or touching
+hardware. Build, flash, serial, network, and OTA actions are still shown only as
+permissioned next steps. Display bring-up prompts prefer small official demos;
+factory examples remain available for full-board or multi-peripheral debugging.
 
 Common tasks can be requested directly:
 
@@ -322,6 +327,8 @@ The runtime is intentionally layered so it does not flood the model context.
 | L8 | Facts are incomplete | Completeness status and enrichment next actions |
 | L9 | Reusable implementation/debug pattern is needed | Generated playbook hints and expansion commands |
 | L10 | Agent needs to finish a task | `goal complete` state, plan, permissions, and evidence summary |
+| L11 | Implementation or debug path is needed | Intent-ranked demos and permission-aware `next_actions` |
+| L12 | Prompt budget must stay small | Dedupe, incremental hints, and explicit expansion commands |
 
 Route and hook output stay small: ids, summaries, top facts, readiness status,
 and lookup commands. Full fact packs, official source files, and long reference

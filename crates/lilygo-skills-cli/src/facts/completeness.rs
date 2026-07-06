@@ -274,10 +274,23 @@ pub(crate) fn add_generic_topic_fields(
     facts: &[SourceFact],
     present: &mut BTreeSet<String>,
 ) {
-    if facts.iter().any(is_known_fact) {
+    if facts.iter().any(|fact| is_known_topic_fact(topic, fact)) {
         present.insert(format!("{topic}.chip"));
         present.insert(format!("{topic}.bus_or_interface"));
     }
+}
+
+fn is_known_topic_fact(topic: &str, fact: &SourceFact) -> bool {
+    if !is_known_fact(fact) || fact.key.starts_with("framework.") {
+        return false;
+    }
+    let haystack = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
+    let keywords = prompt_keywords();
+    keywords
+        .topics
+        .get(topic)
+        .is_some_and(|needles| needles.iter().any(|needle| haystack.contains(needle)))
+        || haystack.contains(topic)
 }
 
 pub(crate) fn completeness_facts(

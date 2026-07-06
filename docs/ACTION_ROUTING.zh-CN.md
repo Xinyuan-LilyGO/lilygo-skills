@@ -11,11 +11,17 @@ Action routing 的目标是让 LilyGO 上下文保持紧凑，同时把“下一
   `i2s`、`gpio`；
 - 带权限的 `next_actions`，区分只读 source lookup 和 build、flash、serial、
   network、OTA；
+- `goal-plan-bridge`，一个只读 next action，让 Agent 在改代码或接触硬件前先查看
+  `goal plan`；
 - 来自 `.lilygo-skills/skills/index.json` 的项目本地 custom skill hint；
 - 通过 `doctor --json` 自检安装链路。
 
 纯事实查询仍然保持紧凑。用户只问“哪些引脚或总线被占用”时，runtime 返回 fact table
 和 source-query 命令，不注入 build、flash、serial、OTA 或 demo 动作。
+
+这也是 token budget 规则：默认 capsule 要告诉 Agent “从哪里继续展开”，而不是把
+全部 source 或生成 Skill 正文直接塞进 prompt。需要更多细节时，再用 `source query`、
+`index query`、项目生成 skills 或 `goal plan` 展开。
 
 ## 自然语言使用
 
@@ -34,6 +40,14 @@ lilygo-skills goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first s
 
 返回的 capsule 应该把最小 TFT demo 排在第一，给出 IO/I2C 的 `source query`，
 并把 build 或设备操作标成需要权限的下一步。
+
+如果只是查询，同一块板子的输出应该更小：
+
+```bash
+lilygo-skills route --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?"
+```
+
+这个输出应该保留 fact/source-query 上下文，并省略 demo、recipe 和偏 mutation 的动作。
 
 ## Project Custom Skills
 
@@ -66,5 +80,6 @@ lilygo-skills doctor --json
 lilygo-skills doctor --json --home "$HOME"
 ```
 
-`doctor` 会验证 runtime data、生成 skills、route 样例、no-op 样例，以及已存在的
-宿主安装文件。它不证明硬件行为成功。
+`doctor` 会验证 runtime data、生成 skills、route 样例、no-op 样例，以及当前检查的
+HOME 下 Codex/Claude 的接线状态。缺少集成是 warning；LilyGO hook 存在但命令畸形是
+failure。它不证明硬件行为成功。

@@ -446,7 +446,7 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         .next_actions
         .iter()
         .map(|action| format!("{}:{}", action.id, action.permission))
-        .take(3)
+        .take(4)
         .collect::<Vec<_>>()
         .join(",");
     let source_recovery = render_compact_source_recovery(plan);

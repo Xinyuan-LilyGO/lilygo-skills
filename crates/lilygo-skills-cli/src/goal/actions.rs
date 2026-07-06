@@ -35,6 +35,15 @@ pub(super) fn next_actions_for_goal(
     let implementation_or_debug = crate::facts::is_implementation_or_debug_prompt(prompt);
     let fact_only = crate::facts::is_fact_prompt(prompt) && !implementation_or_debug;
     let mut actions = Vec::new();
+    if implementation_or_debug {
+        actions.push(next_action(
+            "goal-plan-bridge",
+            "Read the compact goal plan",
+            format!("lilygo-skills goal plan --json {}", shell_quote(prompt)),
+            "none",
+            "Use the planner as the next read-only step before editing firmware or touching hardware.",
+        ));
+    }
     if fact_only || needs_io_expansion(&normalized, fact_tables) {
         actions.push(next_action(
             "source-query-io",
@@ -128,4 +137,8 @@ fn needs_io_expansion(normalized: &str, fact_tables: &[FactTablePreview]) -> boo
     !fact_tables.is_empty()
         || !crate::facts::bus_topics_for_prompt(normalized).is_empty()
         || contains_any(normalized, &["sensor", "sensors", "bus", "传感器"])
+}
+
+fn shell_quote(value: &str) -> String {
+    format!("'{}'", value.replace('\'', "'\"'\"'"))
 }

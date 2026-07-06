@@ -12,12 +12,19 @@ hook context can expose:
   `uart`, `i2s`, and `gpio`;
 - permission-aware `next_actions` that distinguish read-only source lookup
   from build, flash, serial, network, or OTA work;
+- `goal-plan-bridge`, a read-only next action that points the agent at
+  `goal plan` before code edits or hardware actions;
 - project-local custom skill hints from `.lilygo-skills/skills/index.json`;
 - install health through `doctor --json`.
 
 Pure fact lookup remains compact. If the user asks "which pins or buses are
 used?", the runtime returns fact tables and source-query commands, not build,
 flash, serial, OTA, or demo actions.
+
+This is also the token-budget rule. The default capsule should expose the path
+to more context, not paste every source or generated Skill body into the prompt.
+When more detail is needed, the agent expands with `source query`, `index
+query`, generated project skills, or `goal plan`.
 
 ## Natural-Language Use
 
@@ -36,6 +43,15 @@ lilygo-skills goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first s
 
 The capsule should rank the minimal TFT demo first, expose `source query`
 commands for IO/I2C, and show permission-gated build or device steps.
+
+For lookup-only wording, the same board prompt should stay smaller:
+
+```bash
+lilygo-skills route --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?"
+```
+
+That output should keep fact/source-query context and omit demos, recipes, and
+mutation-oriented actions.
 
 ## Project Custom Skills
 
@@ -70,4 +86,6 @@ lilygo-skills doctor --json --home "$HOME"
 ```
 
 `doctor` proves the runtime data, generated skills, route sample, no-op sample,
-and installed host files where present. It does not prove hardware behavior.
+and active Codex/Claude wiring for the checked home. Missing integrations are
+warnings; malformed LilyGO hook wiring is a failure. It does not prove hardware
+behavior.

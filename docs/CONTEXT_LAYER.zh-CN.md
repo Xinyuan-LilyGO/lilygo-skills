@@ -67,7 +67,7 @@ lilygo-skills source query --board board-t-watch-ultra --topic io --json
 这三类输出会按任务加载 display/touch/OTA/IMU/source refs/demo refs/权限和证据边界，
 不会把全部 fact pack 默认塞进 prompt。
 
-## 默认注入
+## 默认注入和预算
 
 默认只注入：
 
@@ -79,6 +79,15 @@ lilygo-skills source query --board board-t-watch-ultra --topic io --json
 
 完整 fact pack、reference 文档和模板不会默认注入。只有实现、调试、setup、生成或
 验证任务需要时，Agent 才读取对应文件。
+
+prompt budget 是正确性的一部分。纯查询 prompt 保持只读和紧凑：fact table、source
+refs 和 `source query` 命令就足够。实现/调试 prompt 可以增加
+`goal-plan-bridge`、精选 demo 和带权限的 next actions，但重复的 board、framework、
+demo、project-skill 和 topic 细节会折叠成短的增量提示，并保留展开命令。
+
+不完整的 starter board pack 也遵循这个规则。它可以暴露 `unknown_with_sources` 或
+`needs_source_ingestion` 加官方 reference，让 Agent 知道下一步去哪查；但不能为了填满
+capsule 而编造引脚、外设或运行行为。
 
 实现和调试类 prompt 还会得到一个紧凑的 source recovery capsule：最近的官方 demo
 路径、板子自己的源码 header、少量关键事实和扩展命令。比如 T-Display-S3 的
