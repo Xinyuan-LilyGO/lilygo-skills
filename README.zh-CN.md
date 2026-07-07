@@ -32,6 +32,63 @@ templates、references、schemas 和发布门禁。
 未来资料候选，但在完成设计和验证前，runtime 必须对 build、flash、OTA、硬件调试
 返回 unsupported。
 
+## 架构如何工作
+
+lilygo-skills 不是一组静态 prompt 片段，而是一个 context harness。安装后的 Skill
+只是一个很小的入口，真正判断 prompt 是否和 LilyGO 有关、应该选哪块板子和框架、
+哪些 source facts 可以安全注入、下一步应该给哪些展开命令，都是由 Rust runtime
+完成。
+
+这个架构由五个实际部件组成：
+
+1. **Meta Skill 入口**：`skills/lilygo-router/SKILL.md` 是唯一提交的 routed
+   Skill。它告诉 Codex 或 Claude Code 如何调用安装态 runtime，以及生成上下文在哪。
+2. **Source model**：`data/**`、`index/**`、schema、recipe、playbook 和官方
+   references 是板子、外设、示例、setup 路径和调试指导的 source truth。
+3. **生成层**：板子、框架、外设、芯片、功能、debug、app、playbook 等 Skill 会生成到
+   安装目录或项目 cache。它们是 runtime artifact，不是提交到仓库里的静态快照。
+4. **紧凑 capsule**：route 和 hook 输出默认很小。查询类 prompt 只拿 id、关键事实、
+   readiness 和展开命令；实现或调试类 prompt 才增加精选 demo、`next_actions` 和
+   带权限边界的 goal 步骤。
+5. **项目记忆**：`.lilygo-skills/project.json` 保存公开的板子/框架默认值；project
+   ledger 可以记录 prompt-safe 的 context digest 和曾验证 capability 摘要。代码或
+   source 变化、runtime 升级、TTL 过期，或用户要求重新验证时，这些记忆会变成 stale。
+
+所以默认体验是渐进式披露。Agent 不需要每次都把整份板级手册塞进 prompt，而是先拿到
+最小可用 capsule，再通过稳定命令展开：
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+lilygo-skills goal complete --dry-run --json "<prompt>"
+```
+
+接触硬件的动作仍然是显式的。`goal complete` 是 coordinator：它可以返回 readiness、
+缺失的 source data、需要的 setup、权限、计划中的 build/flash/serial 步骤和证据边界。
+它不会静默烧录开发板、打开串口、运行 OTA，也不会把上下文资料包装成硬件已经成功。
+
+## 相比早期版本好在哪里
+
+早期版本已经能路由有用上下文，但有几个问题：默认 capsule 偏大、板级数据覆盖稀疏、
+测试更多证明“能路由到”，而不是证明 Agent 会拿到正确的下一步。当前 runtime 在四个
+地方明显改进：
+
+- **默认上下文更小**：当前 gate 把纯查询 hook context 控制在约 `793` bytes，实现类
+  hook context 约 `1487` bytes，同一 session 重复上下文约 `183` bytes；同时保留关键
+  引脚、证据边界和展开命令。
+- **板级事实更有来源**：official-source pipeline 现在检查 26 个 board fact pack，
+  `fields_missing_source=0`；资料不完整的 topic 返回 `unknown_with_sources` 或
+  `needs_source_ingestion`，不会编造 facts。
+- **行动路径更清楚**：实现类 prompt 会给精选官方 demo、source query 和带权限的
+  `next_actions`；纯查询 prompt 保持只读，不注入 build、flash、serial、network 或
+  OTA 动作。
+- **回归门禁更硬**：byte-for-byte capsule fixture、板级三问测试、scorecard grading、
+  install/doctor smoke、94-case benchmark 会持续检查有用上下文和安全边界是否还成立。
+
+这样扩展新板子或刷新资料时，不需要把默认 prompt 变大：补 source data，重新生成
+runtime Skills，跑 gate，Agent 就能看到更好的板级上下文。
+
 ## 安装到 AI Agent
 
 推荐方式是直接让 AI 安装这个 Skill：

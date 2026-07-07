@@ -37,6 +37,78 @@ ESP32-S3, ESP32-C3, and ESP32-P4. Other LilyGO products can be recorded as
 future source candidates, but the runtime must report unsupported build, flash,
 OTA, or hardware-debug guidance until that support is designed and verified.
 
+## How The Architecture Works
+
+lilygo-skills is a context harness, not a directory of static prompt snippets.
+The installed Skill is a small front door that lets the agent call a Rust
+runtime. That runtime decides whether a prompt is about LilyGO work, which board
+and framework are likely involved, what source facts are safe to inject, and
+which expansion commands should be shown next.
+
+The architecture has five practical parts:
+
+1. **Meta Skill entry**: `skills/lilygo-router/SKILL.md` is the only committed
+   routed Skill. It tells Codex or Claude Code how to call the installed
+   runtime and where generated context lives.
+2. **Source model**: `data/**`, `index/**`, schemas, recipes, playbooks, and
+   official references are the source of truth for boards, peripherals,
+   examples, setup paths, and debug guidance.
+3. **Generated layers**: board, framework, peripheral, chip, feature, debug,
+   app, and playbook Skills are generated into the install root or project
+   cache. They are runtime artifacts, not committed snapshots.
+4. **Compact capsules**: route and hook output starts small. Lookup prompts get
+   ids, critical facts, readiness, and expansion commands. Implementation or
+   debug prompts add selected demos, `next_actions`, and permission-aware goal
+   steps.
+5. **Project memory**: `.lilygo-skills/project.json` records public
+   board/framework defaults, while the project ledger can remember prompt-safe
+   context digests and previously verified capability summaries. Code/source
+   drift, runtime upgrades, TTL, or explicit re-verify wording makes that memory
+   stale.
+
+The result is progressive disclosure by default. The agent does not need to
+paste a full board manual into every prompt. It starts with the smallest useful
+capsule, then expands through stable commands such as:
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+lilygo-skills goal complete --dry-run --json "<prompt>"
+```
+
+Hardware-facing work is still explicit. `goal complete` is a coordinator: it can
+report readiness, missing source data, required setup, permissions, planned
+build/flash/serial steps, and evidence boundaries. It does not silently flash a
+board, open serial ports, run OTA, or claim hardware success from context alone.
+
+## Why This Is Better Than The Earlier Shape
+
+Earlier versions could route useful context, but too much behavior depended on
+large eager capsules, sparse board data, and tests that proved the route existed
+more than they proved the agent would receive the right next step. The current
+runtime improves that in four concrete ways:
+
+- **Less context by default**: current gates keep pure lookup hook context around
+  `793` bytes, implementation hook context around `1487` bytes, and repeated
+  same-session context around `183` bytes while preserving critical pins,
+  evidence boundaries, and expansion commands.
+- **More source-backed board coverage**: the official-source pipeline now checks
+  26 board fact packs with `fields_missing_source=0`; incomplete topics return
+  `unknown_with_sources` or `needs_source_ingestion` rather than invented facts.
+- **Better action guidance**: implementation prompts surface selected official
+  demos, source queries, and permission-aware `next_actions`; pure lookup
+  prompts stay read-only and do not receive build, flash, serial, network, or
+  OTA actions.
+- **Stronger regression gates**: byte-for-byte capsule fixtures, board
+  triple-question tests, scorecard grading, install/doctor smokes, and the
+  94-case benchmark check that the useful context and safety boundaries keep
+  working as the source model grows.
+
+This makes the Skill easier to extend and easier to trust: add or refresh source
+data, regenerate runtime Skills, run the gates, and the agent sees better board
+context without expanding the default prompt budget.
+
 ## Install Into Your AI Agent
 
 Give your agent the repo link and ask it to install the Skill:
