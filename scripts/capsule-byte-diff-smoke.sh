@@ -45,6 +45,12 @@ run_hook() {
   printf '%s' "$payload" | "$BIN" hook claude >"$CURRENT_DIR/$name.json"
 }
 
+run_hook_with_cache() {
+  local name="$1"
+  local payload="$2"
+  printf '%s' "$payload" | env LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" "$BIN" hook claude >"$CURRENT_DIR/$name.json"
+}
+
 run_json "route-display-lookup-zh" "$BIN" route --json "T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?"
 run_json "goal-display-first-run" "$BIN" goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"
 run_json "goal-factory-demo" "$BIN" goal plan --json "T-Display-S3 Arduino factory full peripheral test"
@@ -52,8 +58,8 @@ run_json "goal-flash-serial" "$BIN" goal complete --dry-run --json "T-Display-S3
 run_json "source-t-watch-imu" "$BIN" source query --board board-t-watch-ultra --topic imu --json
 run_hook "hook-display-impl" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"}'
 run_hook "hook-lookup-zh" '{"prompt":"T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?"}'
-LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" run_hook "hook-session-full" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m25-byte-diff-session"}'
-LILYGO_SKILLS_CACHE_DIR="$CACHE_DIR" run_hook "hook-session-incremental" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m25-byte-diff-session"}'
+run_hook_with_cache "hook-session-full" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m25-byte-diff-session"}'
+run_hook_with_cache "hook-session-incremental" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"m25-byte-diff-session"}'
 
 node - "$FIXTURE_DIR" "$CURRENT_DIR" "$UPDATE" "$ALLOW_WPD_UPDATE" <<'NODE'
 const fs = require("fs");

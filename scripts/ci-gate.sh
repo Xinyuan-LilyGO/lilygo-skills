@@ -25,6 +25,10 @@ GATES=(
   "hardware-gold-standard-live-smoke.sh --dry-run"
   "board-completeness-smoke.sh --dry-run"
   "board-data-expansion-smoke.sh"
+  "../pipeline/run-official-source-pipeline.js --gold-only --json"
+  "../pipeline/diff-gold-fact-packs.js --json"
+  "../pipeline/run-official-source-pipeline.js --all-boards --json"
+  "../eval/run-board-triple-questions.js --boards all --json"
   "product-board-smoke.sh --dry-run"
   "pure-query-compact-smoke.sh"
   "context-budget-smoke.sh"
@@ -62,7 +66,11 @@ for gate in "${GATES[@]}"; do
   shift
   echo "== ci-gate: $script $* =="
   set +e
-  bash "$script" "$@"
+  if [[ "$script" == scripts/../pipeline/*.js || "$script" == scripts/../eval/*.js ]]; then
+    node "${script#scripts/../}" "$@"
+  else
+    bash "$script" "$@"
+  fi
   code=$?
   set -e
   if [[ "$code" -eq 2 && "$script" =~ hardware|goal-hardware ]]; then
