@@ -119,4 +119,5 @@ lilygo-skills doctor --json --home "$HOME"
 `doctor` 会验证 runtime data、生成 skills、route 样例、no-op 样例，以及当前检查的
 HOME 下 Codex/Claude 的接线状态。缺少集成是 warning；LilyGO hook 存在但命令畸形是
 failure。当两端 host runtime 都存在时，`doctor` 还会检查二进制或数据镜像是否不同；
-漂移会报告 warning，并打印重跑安装命令。它不证明硬件行为成功。
+漂移会报告 warning，并打印重跑安装命令。硬件行为通过任务对应的 goal evidence path
+验证。

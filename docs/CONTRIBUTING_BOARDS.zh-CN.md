@@ -6,8 +6,7 @@ English version: [CONTRIBUTING_BOARDS.md](CONTRIBUTING_BOARDS.md)。
 
 ## Support Boundary
 
-支持模型目标是逐步覆盖 LilyGO boards。当前已验证 runtime 覆盖从 LilyGO ESP32
-系列产品开始：
+支持模型会逐步覆盖 LilyGO boards。Runtime 覆盖从 LilyGO ESP32 系列产品开始：
 
 - ESP32
 - ESP32-S2
@@ -15,8 +14,9 @@ English version: [CONTRIBUTING_BOARDS.md](CONTRIBUTING_BOARDS.md)。
 - ESP32-C3
 - ESP32-P4
 
-其他 LilyGO 产品可以记录为 source candidate，但在完成设计和验证前，build、flash、
-OTA 和 hardware-debug guidance 必须保持 unsupported。
+其他 LilyGO 产品先进入 source candidate flow。补充公开资料、board-family metadata
+和 evidence requirements 后，build、flash、OTA 和硬件调试指导会通过同一套
+source-backed support flow 展开。
 
 ## Add Or Improve A Board
 

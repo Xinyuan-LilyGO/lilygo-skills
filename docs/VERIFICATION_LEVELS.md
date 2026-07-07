@@ -31,10 +31,9 @@ Users can ask for the evidence level directly:
 | "The board is plugged in. Flash it and watch the serial log." | Request serial/flash permission, collect flash success and serial app log, target V5 |
 | "Verify that OTA really reaches the device." | Request network/OTA permission, use the project-private runner, collect transfer and device-side confirmation, target V5 |
 
-If the user is only asking for documentation or implementation guidance, the
-agent should not claim V4/V5. Build, flash, serial, OTA, or display evidence
-paths start only when the user asks for execution and grants the needed device
-or network access.
+Documentation and implementation guidance stay in the source/context levels.
+Build, flash, serial, OTA, and display evidence paths begin when the user asks
+for execution and grants the needed device or network access.
 
 ## Current Release Claim
 
@@ -49,14 +48,9 @@ Verified means:
 - Unsupported enrichment apply fails closed.
 - Benchmarks, smokes, installer dry-runs, and installed runtime probes pass.
 
-The current release does not claim:
-
-- Firmware built for every board.
-- Firmware was flashed to every board.
-- Serial app logs were observed for every demo.
-- LVGL pixels rendered on a screen.
-- OTA transported to a device.
-- IMU, touch, LoRa, GNSS, power, or display behavior was physically verified.
+V4/V5 evidence is task-scoped. When requested and authorized, the goal flow
+records the relevant build artifact, flash result, serial log, display
+artifact, OTA transfer, or peripheral measurement for that task.
 
 The hardware gold-standard harness is part of the verification surface, but its
 default run is still V3:
@@ -65,15 +59,14 @@ default run is still V3:
 bash scripts/hardware-gold-standard-live-smoke.sh --dry-run
 ```
 
-Dry-run proves the permission model, redaction shape, failure-mode reporting,
+Dry-run validates the permission model, redaction shape, failure-mode reporting,
 and artifact hashing without touching hardware. Boundary modes such as no
-device, wrong port, or flash timeout are expected to return a boundary result
-instead of pretending success. They are useful evidence that the harness fails
-closed; they are not V4/V5 success.
+device, wrong port, or flash timeout return structured boundary results; live
+device evidence upgrades the task to V4/V5.
 
 ## When To Claim Hardware Success
 
-Only claim V5 when there is live evidence tied to the requested task, such as:
+Use V5 when there is live evidence tied to the requested task, such as:
 
 - Build plus flash command success for the target board.
 - Serial monitor output from the expected firmware.

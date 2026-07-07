@@ -31,11 +31,12 @@ Documentation:
 The public repository is the runtime source: CLI, installer, router Skill,
 source model, templates, references, schemas, and release gates.
 
-The project is intended to grow across LilyGO boards. Current verified runtime
-coverage starts with LilyGO products in the ESP32 family: ESP32, ESP32-S2,
-ESP32-S3, ESP32-C3, and ESP32-P4. Other LilyGO products can be recorded as
-future source candidates, but the runtime must report unsupported build, flash,
-OTA, or hardware-debug guidance until that support is designed and verified.
+The project is designed to grow across LilyGO boards. Runtime coverage starts
+with LilyGO products in the ESP32 family: ESP32, ESP32-S2, ESP32-S3, ESP32-C3,
+and ESP32-P4. Other LilyGO products can enter the same source-candidate flow:
+the agent records public references, routes the request to source discovery,
+and expands build, flash, OTA, or hardware-debug guidance after that board
+family has source-backed support.
 
 ## How The Architecture Works
 
@@ -77,17 +78,15 @@ lilygo-skills goal plan --json "<prompt>"
 lilygo-skills goal complete --dry-run --json "<prompt>"
 ```
 
-Hardware-facing work is still explicit. `goal complete` is a coordinator: it can
-report readiness, missing source data, required setup, permissions, planned
-build/flash/serial steps, and evidence boundaries. It does not silently flash a
-board, open serial ports, run OTA, or claim hardware success from context alone.
+Hardware-facing work is permissioned. `goal complete` is a coordinator: it
+reports readiness, missing source data, required setup, permissions, planned
+build/flash/serial steps, and evidence boundaries. Physical actions run through
+approved goal execution and evidence collection.
 
-## Why This Is Better Than The Earlier Shape
+## What This Runtime Improves
 
-Earlier versions could route useful context, but too much behavior depended on
-large eager capsules, sparse board data, and tests that proved the route existed
-more than they proved the agent would receive the right next step. The current
-runtime improves that in four concrete ways:
+The runtime is designed around four concrete properties that are verified by
+the release gates:
 
 - **Less context by default**: current gates keep pure lookup hook context around
   `819` bytes, implementation hook context around `1381` bytes, and repeated
@@ -98,8 +97,7 @@ runtime improves that in four concrete ways:
   `unknown_with_sources` or `needs_source_ingestion` rather than invented facts.
 - **Better action guidance**: implementation prompts surface selected official
   demos, source queries, and permission-aware `next_actions`; pure lookup
-  prompts stay read-only and do not receive build, flash, serial, network, or
-  OTA actions.
+  prompts stay read-only with facts and expansion commands.
 - **Stronger regression gates**: byte-for-byte capsule fixtures, board
   triple-question tests, scorecard grading, install/doctor smokes, and the
   94-case benchmark check that the useful context and safety boundaries keep
@@ -174,13 +172,12 @@ rustup --version   # only needed before local runtime build
 cargo --version    # only needed before local runtime build
 ```
 
-If Node.js is missing, the agent should explain that the installer cannot run
-yet. If Rust/Cargo is missing, the agent can still mount the Skill first, then
-use the mounted setup guidance to help configure Rust/Cargo or use a prebuilt
-runtime. The Skill installer itself does not silently install host dependencies.
-Framework tools such as Arduino CLI, PlatformIO, ESP-IDF, esp-rs, board cores,
-serial tools, and radio/GNSS libraries are also configured later by the agent
-from `setup plan` and the current firmware task.
+If Node.js is missing, the agent explains that the installer needs Node.js. If
+Rust/Cargo is missing, the agent can mount the Skill first, then use setup
+guidance to configure Rust/Cargo or use a prebuilt runtime. Host dependency
+installation stays in explicit setup plans. Framework tools such as Arduino
+CLI, PlatformIO, ESP-IDF, esp-rs, board cores, serial tools, and radio/GNSS
+libraries are configured from `setup plan` and the current firmware task.
 
 Manual mount after Git and Node.js are present:
 
@@ -273,9 +270,9 @@ or `--build` for source development.
 If no compiled runtime is present and `--build` is not requested, `install.js`
 still succeeds in **mount-only** mode. It wires the Codex/Claude entry points,
 copies the meta router, data, templates, and references, and installs a small
-setup-only launcher. That launcher does not pretend to provide full board fact
-injection; it tells the agent to use setup readiness and then build or install
-the runtime before deeper firmware work.
+setup-only launcher. That launcher reports setup-only mode and points the agent
+to setup readiness, then to runtime build or prebuilt installation before deeper
+firmware work.
 
 Use `--build` when the agent should upgrade the mount into full dynamic context
 in the same step. `install.js --build` runs
@@ -299,8 +296,9 @@ source checkout development and tests. If an agent already has a compiled
 binary, it can install that artifact with `--bin` without building the CLI
 again.
 
-The installer also does not silently install Arduino CLI, PlatformIO, ESP-IDF,
-esp-rs, board cores, firmware libraries, or LoRa/GNSS dependencies.
+The installer keeps host toolchains explicit: Arduino CLI, PlatformIO, ESP-IDF,
+esp-rs, board cores, firmware libraries, and LoRa/GNSS dependencies are handled
+through setup plans and user-approved install steps.
 
 Full installs run a `doctor` self-test by default. You can rerun it any time:
 
@@ -314,8 +312,9 @@ injection, one no-op sample, and the active `$HOME` Codex/Claude wiring by
 default. Missing host integration is reported as a warning; malformed LilyGO
 hook wiring fails. When both Codex and Claude runtimes exist, `doctor` also
 checks whether their installed binary/data mirrors have drifted. Drift is a
-warning with a reinstall command; broken hook wiring remains a failure. It does
-not claim hardware, OTA, serial, RF, display, or sensor success.
+warning with a reinstall command; broken hook wiring remains a failure.
+Hardware, OTA, serial, RF, display, and sensor results are verified through the
+goal evidence flow for the requested task.
 
 Setup is routed through the Skill before any installer is run. For machine
 readiness, use the read-only setup planner:
@@ -327,8 +326,9 @@ lilygo-skills setup plan --framework esp-idf --json
 lilygo-skills setup plan --framework rust --json
 ```
 
-`setup plan` reports checks and install hints with `writes=[]`; it does not
-install packages, edit firmware files, open serial ports, or flash hardware.
+`setup plan` is read-only: it reports checks and install hints with `writes=[]`.
+Package installation, firmware edits, serial access, and flashing stay in
+explicit follow-up steps.
 
 ## Use Natural Language
 
@@ -354,9 +354,10 @@ official examples or source files to inspect, and which setup/debug commands are
 safe to run.
 
 Default injection is intentionally small. Lookup prompts receive matched ids,
-critical facts, and expansion commands; they do not receive demos, recipes,
-build, flash, serial, network, or OTA actions. Implementation and debug prompts
-receive compact `next_actions`, including a read-only `goal-plan-bridge` that
+critical facts, and expansion commands. Demos, recipes, build, flash, serial,
+network, and OTA actions are reserved for implementation and debug prompts.
+Those prompts receive compact `next_actions`, including a read-only
+`goal-plan-bridge` that
 tells the agent to inspect the goal plan before editing firmware or touching
 hardware. Build, flash, serial, network, and OTA actions are still shown only as
 permissioned next steps. Display bring-up prompts prefer small official demos;
@@ -374,9 +375,9 @@ generated skill lists are trimmed. The agent can always expand again with
 Across sessions in a firmware repo, the project ledger applies the same idea to
 public project memory. It stores prompt-safe summaries, source signatures,
 previously verified capability evidence, and context digests under
-`.lilygo-skills/`. It does not store ports, Wi-Fi details, OTA endpoints,
-tokens, raw logs, or private evidence paths, and it never replaces official
-source facts. When the user asks to re-run or re-verify something, the compact
+`.lilygo-skills/`. Ports, Wi-Fi details, OTA endpoints, tokens, raw logs, and
+private evidence paths stay in ignored project-local state. The ledger never
+replaces official source facts. When the user asks to re-run or re-verify something, the compact
 memory is bypassed and the full source/goal path is offered again.
 
 Common tasks can be requested directly:
@@ -423,7 +424,7 @@ If the user names a framework, the agent loads that framework layer. If a
 firmware/build task needs a framework and none is known from the prompt or
 project context, the runtime returns `needs_clarification` with choices such as
 Arduino, PlatformIO, ESP-IDF, and Rust esp-rs. A lightweight context lookup can
-remain framework-unspecified instead of forcing a choice too early.
+remain framework-unspecified until there is enough signal to choose.
 
 ## What The Agent Does
 
@@ -458,6 +459,8 @@ completeness for that board.
 ## Progressive Disclosure
 
 The runtime is intentionally layered so it does not flood the model context.
+The public model is numbered `L0` through `L14`; `L14` is the project ledger
+layer that keeps repeated project context compact.
 
 | Layer | Loaded when needed | Purpose |
 |-------|--------------------|---------|
@@ -567,7 +570,7 @@ lilygo-skills preference show --project /path/to/firmware --json
 Project preferences live in `.lilygo-skills/preferences.json` and can be
 committed when they contain only public behavior choices:
 
-Users do not have to hand-write this file first. They can say:
+Users can create or update this file through natural language:
 
 ```text
 For this firmware repo, prefer PlatformIO, use serial-mcp-server for serial debug, and keep firmware functions under 60 lines.
@@ -643,9 +646,9 @@ datasheets, or project design notes. Preferences do not force references to load
 first. The prompt, project context, route result, and goal type are resolved
 together; `goal plan` then injects only the relevant compact `preferences` and
 `reference_hints`. Source-completeness and board facts still have higher
-priority: if a board/topic is missing required facts, the capsule should first
-surface `needs_source_ingestion` rather than pretending a reference link is
-enough.
+priority: if a board/topic is missing required facts, the capsule surfaces
+`needs_source_ingestion`, then uses references as implementation hints after
+the source facts are ready.
 
 The built-in reference catalog contains only public URLs (official docs,
 tool references), so a fresh public clone resolves every entry;
@@ -660,10 +663,9 @@ first.
 
 Generated playbooks are the operating-pattern layer above recipes and source
 facts. They are built from `data/playbooks/playbooks.json` and generated into
-the runtime like other deep skills. A playbook never creates board facts or
-claims hardware success; it tells the agent what sources to read, what failure
-axes to check, what evidence is required, and what not to claim from context
-alone.
+the runtime like other deep skills. Board facts stay in the source model;
+hardware results come from goal evidence. A playbook tells the agent what
+sources to read, what failure axes to check, and what evidence is required.
 
 ## Updates And Source Refresh
 
@@ -710,10 +712,10 @@ benchmarks routing over that generated skill set.
 `benchmark` is built into this project and into the installed `lilygo-skills`
 binary. It is a routing and injection quality gate: route fixtures, negative
 over-injection cases, registered skill coverage, goal capsules, and goal
-complete state coverage must pass.
-It is not a hardware performance benchmark. Normal users do not need to run it
-for every prompt; agents and maintainers run it after source, skill, router, or
-goal changes and before publishing an updated Skill.
+complete state coverage must pass. Agents and maintainers run it after source,
+skill, router, or goal changes and before publishing an updated Skill. Hardware
+performance uses board-specific build, flash, serial, display, RF, OTA, or
+peripheral evidence.
 
 Remove `--dry-run` only when the planned reads/writes are correct. Route, hook,
 and goal planning never mutate source data by themselves.

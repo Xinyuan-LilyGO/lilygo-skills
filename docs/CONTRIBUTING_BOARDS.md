@@ -6,8 +6,8 @@ This guide is for adding or improving LilyGO board support.
 
 ## Support Boundary
 
-The support model is intended to grow across LilyGO boards. Current verified
-runtime coverage starts with LilyGO products in the ESP32 family:
+The support model grows across LilyGO boards. Runtime coverage starts with
+LilyGO products in the ESP32 family:
 
 - ESP32
 - ESP32-S2
@@ -15,9 +15,10 @@ runtime coverage starts with LilyGO products in the ESP32 family:
 - ESP32-C3
 - ESP32-P4
 
-Other LilyGO products may be recorded as source candidates, but build, flash,
-OTA, and hardware-debug guidance must remain unsupported until support is
-designed and verified.
+Other LilyGO products enter as source candidates first. Add public references,
+board-family metadata, and evidence requirements; build, flash, OTA, and
+hardware-debug guidance then expand through the same source-backed support
+flow.
 
 ## Add Or Improve A Board
 

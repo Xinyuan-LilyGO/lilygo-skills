@@ -21,9 +21,10 @@ the right context and can reproduce the runtime; build, simulator, flash,
 serial, OTA, display, RF, and peripheral behavior are verified only by their own
 V4/V5 evidence artifacts.
 
-The architecture is board-family extensible. Current verified runtime coverage
-starts with LilyGO products in the ESP32 family: ESP32, ESP32-S2, ESP32-S3,
-ESP32-C3, and ESP32-P4.
+The architecture is board-family extensible. Runtime coverage starts with
+LilyGO products in the ESP32 family: ESP32, ESP32-S2, ESP32-S3, ESP32-C3, and
+ESP32-P4. Additional LilyGO product families enter through the same
+source-candidate and evidence flow.
 
 ## Runtime Surfaces
 
@@ -68,6 +69,9 @@ mutation; an agent may later run tool installers only as an explicit
 user-approved step outside the setup-plan command.
 
 ## Layer Model
+
+The public layer model is numbered `L0` through `L14`. This is a 15-level
+progressive-disclosure stack; `L14` is the project ledger layer.
 
 | Layer | Purpose | Default injection |
 |-------|---------|-------------------|
@@ -492,13 +496,13 @@ explicit flags such as `--allow-build`, `--allow-flash --port <port>`,
 
 ## Verification Boundary
 
-The current runtime is verified at V3 for source/context/completeness. That
-means routing, hook output, source facts, completeness status, enrichment
-dry-runs, benchmarks, and installed runtime parity have been tested.
+The current runtime is verified at V3 for source/context/completeness: routing,
+hook output, source facts, completeness status, enrichment dry-runs,
+benchmarks, and installed runtime parity are covered by gates.
 
-It does not mean every board has been physically flashed or that every demo has
-run on hardware. Build, simulator, flash, serial log, OTA, display pixels, and
-peripheral behavior require V4/V5 evidence. See
+Hardware execution is task-scoped evidence. Build artifacts, simulator output,
+flash success, serial logs, OTA transport, display pixels, and peripheral
+behavior move to V4/V5 when the matching evidence artifact exists. See
 [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md).
 
 ## Benchmark Gate
@@ -524,8 +528,9 @@ the evidence pack. Release or publish checks run the longer form:
 lilygo-skills benchmark --json --iterations 5000
 ```
 
-This is still V3 context quality evidence. It does not prove build, flash,
-serial, OTA transport, display pixels, or physical peripheral behavior.
+This is V3 context quality evidence. Build, flash, serial, OTA transport,
+display pixels, and physical peripheral behavior move through the V4/V5 goal
+evidence path.
 
 ## File Map
 

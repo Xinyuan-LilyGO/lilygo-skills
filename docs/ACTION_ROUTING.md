@@ -131,4 +131,5 @@ lilygo-skills doctor --json --home "$HOME"
 and active Codex/Claude wiring for the checked home. Missing integrations are
 warnings; malformed LilyGO hook wiring is a failure. When both host runtimes
 exist, `doctor` also warns if their binary or data mirrors differ and prints the
-reinstall command. It does not prove hardware behavior.
+reinstall command. Hardware behavior is verified through the task's goal
+evidence path.
