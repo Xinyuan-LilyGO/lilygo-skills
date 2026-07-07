@@ -90,8 +90,8 @@ more than they proved the agent would receive the right next step. The current
 runtime improves that in four concrete ways:
 
 - **Less context by default**: current gates keep pure lookup hook context around
-  `793` bytes, implementation hook context around `1487` bytes, and repeated
-  same-session context around `183` bytes while preserving critical pins,
+  `819` bytes, implementation hook context around `1381` bytes, and repeated
+  same-session context around `209` bytes while preserving critical pins,
   evidence boundaries, and expansion commands.
 - **More source-backed board coverage**: the official-source pipeline now checks
   26 board fact packs with `fields_missing_source=0`; incomplete topics return
@@ -471,10 +471,11 @@ The runtime is intentionally layered so it does not flood the model context.
 | L7 | Detail is required | Source facts, preferences, reference read hints |
 | L8 | Facts are incomplete | Completeness status and enrichment next actions |
 | L9 | Reusable implementation/debug pattern is needed | Generated playbook hints and expansion commands |
-| L10 | Agent needs to finish a task | `goal complete` state, plan, permissions, and evidence summary |
-| L11 | Implementation or debug path is needed | Intent-ranked demos and permission-aware `next_actions` |
-| L12 | Prompt budget must stay small | Dedupe, incremental hints, and explicit expansion commands |
-| L13 | Project has already seen or verified context | Project ledger hits, stale markers, and re-verify commands |
+| L10 | Agent needs to finish a task | Completion coordinator state, setup, permissions, and evidence summary |
+| L11 | Implementation or debug path is needed | Action routing, intent-ranked demos, and permission-aware `next_actions` |
+| L12 | Prompt budget must stay small | Goal bridge, active doctor hints, and compact starter-board refs |
+| L13 | Repeated prompt context appears | Lookup/action split, session incremental hints, runtime parity, hardware harness |
+| L14 | Project has already seen or verified context | Project ledger hits, stale markers, and re-verify commands |
 
 Route and hook output stay small: ids, summaries, top facts, readiness status,
 and lookup commands. Full fact packs, official source files, and long reference

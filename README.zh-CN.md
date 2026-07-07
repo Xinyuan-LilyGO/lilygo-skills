@@ -74,8 +74,8 @@ lilygo-skills goal complete --dry-run --json "<prompt>"
 测试更多证明“能路由到”，而不是证明 Agent 会拿到正确的下一步。当前 runtime 在四个
 地方明显改进：
 
-- **默认上下文更小**：当前 gate 把纯查询 hook context 控制在约 `793` bytes，实现类
-  hook context 约 `1487` bytes，同一 session 重复上下文约 `183` bytes；同时保留关键
+- **默认上下文更小**：当前 gate 把纯查询 hook context 控制在约 `819` bytes，实现类
+  hook context 约 `1381` bytes，同一 session 重复上下文约 `209` bytes；同时保留关键
   引脚、证据边界和展开命令。
 - **板级事实更有来源**：official-source pipeline 现在检查 26 个 board fact pack，
   `fields_missing_source=0`；资料不完整的 topic 返回 `unknown_with_sources` 或
@@ -413,10 +413,11 @@ Runtime 采用分层设计，避免一次性把所有文档塞进上下文。
 | L7 | 需要细节 | Source facts、preferences、reference read hints |
 | L8 | 资料不完整 | Completeness 状态和 enrichment 下一步 |
 | L9 | 需要可复用实现/调试模式 | 生成的 playbook hint 和展开命令 |
-| L10 | Agent 需要完成任务 | `goal complete` 状态、计划、权限和证据摘要 |
-| L11 | 需要实现或调试路径 | 按意图选择 demo 和带权限的 `next_actions` |
-| L12 | prompt budget 需要保持小 | 去重、增量提示和明确展开命令 |
-| L13 | 项目已经看过或验证过上下文 | Project ledger hit、stale 标记和重新验证命令 |
+| L10 | Agent 需要完成任务 | Completion coordinator 状态、setup、权限和证据摘要 |
+| L11 | 需要实现或调试路径 | Action routing、按意图选择 demo 和带权限的 `next_actions` |
+| L12 | prompt budget 需要保持小 | Goal bridge、active doctor hint 和紧凑 starter-board refs |
+| L13 | 同一 prompt 上下文重复出现 | 查询/动作拆分、session 增量提示、runtime parity、硬件 harness |
+| L14 | 项目已经看过或验证过上下文 | Project ledger hit、stale 标记和重新验证命令 |
 
 默认注入很小：id、摘要、top facts、readiness status 和查询命令。完整 fact pack、
 官方源码和长参考文档只在任务需要时再读取。Playbook 也遵循同样规则：route 和 hook
