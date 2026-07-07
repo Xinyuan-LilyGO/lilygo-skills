@@ -7,6 +7,7 @@
 use super::{GoalStartOptions, plan_goal_with_project, start_goal};
 use crate::generate::{generate_skills, verify_generated_root};
 use crate::model::{GoalPlan, GoalStartResult, Registry, RouteResult, SetupPlan};
+use crate::project_ledger::{hints_for_route, record_goal_capabilities};
 use crate::setup_plan::setup_plan;
 use crate::text_match::contains_any;
 use serde_json::{Value, json};
@@ -60,6 +61,8 @@ pub fn complete_goal(
     let mut actions = stage_actions(&generated, &source, &setup);
     let mut execution = json!({"attempted": false, "steps": []});
     let mut evidence = plan_evidence(&plan);
+    let mut ledger_writes = Vec::new();
+    let ledger_hints = hints_for_route(options.project_root.as_path(), route, prompt);
     let status = if plan.decision == "needs_clarification" || !plan.missing.is_empty() {
         for question in &plan.questions {
             actions.push(action(
@@ -88,6 +91,16 @@ pub fn complete_goal(
         let result = start_goal(&plan, &options.start_options)?;
         execution = start_execution(&result);
         evidence = start_evidence(&result);
+        if result.status == "PASS" {
+            ledger_writes = record_goal_capabilities(
+                options.project_root.as_path(),
+                prompt,
+                &plan,
+                &result.highest_verification_level,
+                result.hardware_verified,
+                result.evidence_path.as_deref(),
+            )?;
+        }
         start_status(&result)
     };
 
@@ -110,6 +123,10 @@ pub fn complete_goal(
         },
         "execution": execution,
         "evidence": evidence,
+        "project_ledger": {
+            "read": ledger_hints,
+            "writes": ledger_writes
+        },
         "next_actions": actions,
         "privacy": privacy(private)
     }))

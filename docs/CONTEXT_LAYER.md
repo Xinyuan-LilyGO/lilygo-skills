@@ -16,6 +16,7 @@ expands only when the task needs more detail.
 | Templates | `templates/skills/*.md` | Public templates for generated runtime Skill files. |
 | Source model | `data/**`, `index/**` | Board, fact, peripheral, playbook, and route data. |
 | Generated skills | install/cache/project output | Materialized by install, update, or explicit generation. |
+| Project ledger | `.lilygo-skills/ledger.json`, `.lilygo-skills/context-digest.json` | Prompt-safe project memory and repeated-context digests. |
 
 The route layer uses explicit tokens rather than unsafe prefix or substring
 matches. The source model creates chip skills only for real chip identifiers;
@@ -102,12 +103,21 @@ capsule still includes critical pins, source-query expansion, and evidence
 boundaries. It trims only repeated bulky lists such as facts, demos, recipes,
 generated skills, and playbook summaries.
 
+Project ledger context is repo-scoped. After `project init`, the runtime may
+record public context digests and previously verified capability summaries under
+`.lilygo-skills/`. A repeated prompt can then receive a small ledger capsule
+instead of the same full context. The capsule still keeps critical facts,
+evidence boundaries, stale markers, and expansion commands. Ledger entries
+become stale when code, source signatures, runtime version, TTL, or explicit
+re-verify wording says the prior evidence should not be reused.
+
 Useful expansion commands remain stable:
 
 ```bash
 lilygo-skills source query --board <board-id> --topic io --json
 lilygo-skills index query <skill-or-playbook-id> --json
 lilygo-skills goal plan --json "<prompt>"
+lilygo-skills project ledger show --project <project-dir> --json
 ```
 
 Incomplete starter board packs follow the same rule. They may expose

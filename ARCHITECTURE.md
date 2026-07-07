@@ -42,6 +42,8 @@ Main surfaces:
   and tool skills.
 - `hook codex|claude`: installed-runtime context envelope for AI clients.
 - `project init/show/clear`: per-firmware board/framework defaults.
+- `project ledger show/record/clear`: prompt-safe project memory for verified
+  capability summaries and already-injected context digests.
 - `goal complete/plan/start/status/evidence/cancel`: completion state, debug
   and implementation capsules, plus safe evidence execution.
 - `source query`: source-backed IO, pinout, bus, expander, connector, and
@@ -83,6 +85,7 @@ user-approved step outside the setup-plan command.
 | L11 | Action routing | Intent-ranked demos, generic bus lookup, project custom skills, and doctor |
 | L12 | Experience patch | Context budgets, goal bridge, active doctor wiring, starter board refs |
 | L13 | Intent/session evidence loop | Lookup/action split, session incremental context, runtime parity, hardware harness |
+| L14 | Project context ledger | Prompt-safe project memory, context digests, stale markers, and re-verify paths |
 
 The committed router Skill is the embedded-development control plane. It tells
 the agent how to classify a LilyGO task, read official sources, plan a bounded
@@ -127,6 +130,15 @@ drift as a warning with a reinstall command. The live hardware harness is a
 repeatable evidence path: it defaults to dry-run or boundary results until the
 user grants the required build, flash, serial, network, or OTA permissions.
 
+The project context ledger extends compactness across sessions for initialized
+firmware repos. `.lilygo-skills/ledger.json` stores only public, past-tense
+capability summaries and evidence hashes; `.lilygo-skills/context-digest.json`
+stores hashes of context already injected for that project. Route and hook can
+use those records to emit a smaller capsule, but official source facts, prompt
+facts, and fresh evidence remain higher priority. Code drift, source drift,
+runtime upgrades, TTL expiry, or explicit re-run/re-verify wording marks the
+memory stale or bypasses it.
+
 The public source tree is meta-only. The only committed Skill is
 `skills/lilygo-router/SKILL.md`, the meta router. Board, series, framework,
 tool, peripheral, chip, feature, debug, and app skills are not committed; they
@@ -168,6 +180,10 @@ or over-confident:
 - **Session cache safety**: incremental hook context requires a stable session
   id, TTL, runtime-version invalidation, and a kill switch. It is a token
   reduction path, not a source of board truth.
+- **Project ledger safety**: project memory is prompt-safe and public by
+  construction. It may summarize previously verified evidence, but it cannot
+  assert current hardware behavior and cannot hide critical facts or the
+  re-verify path.
 - **Split-host parity**: Codex and Claude installed runtimes are allowed to be
   installed independently, but `doctor` must make drift visible when both
   mirrors exist.

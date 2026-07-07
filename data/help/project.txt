@@ -1,0 +1,7 @@
+lilygo-skills project init --board <skill-id> [--framework <skill-id>] [--feature <skill-id>...] [--project <dir>] --json
+lilygo-skills project show [--project <dir>] --json
+lilygo-skills project clear [--project <dir>] --json
+lilygo-skills project ledger show [--project <dir>] --json
+lilygo-skills project ledger record --project <dir> --input <file> --json
+lilygo-skills project ledger clear [--project <dir>] --json
+Project ledger stores prompt-safe board/framework defaults, verified capability summaries, and context digests under .lilygo-skills/. It never stores private ports, Wi-Fi, tokens, OTA targets, or raw logs.

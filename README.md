@@ -247,6 +247,14 @@ expansion commands stay visible; bulky repeated facts, demos, recipes, and
 generated skill lists are trimmed. The agent can always expand again with
 `source query`, `index query`, generated skill reads, or `goal plan`.
 
+Across sessions in a firmware repo, the project ledger applies the same idea to
+public project memory. It stores prompt-safe summaries, source signatures,
+previously verified capability evidence, and context digests under
+`.lilygo-skills/`. It does not store ports, Wi-Fi details, OTA endpoints,
+tokens, raw logs, or private evidence paths, and it never replaces official
+source facts. When the user asks to re-run or re-verify something, the compact
+memory is bypassed and the full source/goal path is offered again.
+
 Common tasks can be requested directly:
 
 | User can say | Agent should trigger |
@@ -259,6 +267,7 @@ Common tasks can be requested directly:
 | "Run the benchmark and confirm context injection did not regress." | `benchmark --generated-root ...` or the default registry benchmark |
 | "Verify this to V3/V4/V5 and show the evidence." | The matching route/source/build/flash/serial/OTA/display evidence path |
 | "This repo has its own LVGL or serial debug checklist. Add it as local context." | `.lilygo-skills/skills/index.json` plus a project `SKILL.md` routed as supplemental context |
+| "We already verified the display bring-up here; remember that for this repo." | `project ledger record` through a redacted evidence summary, then compact future injections |
 | "Confirm the installed injection chain is alive." | `doctor --json` |
 | "Check the hardware evidence harness without touching my board." | `scripts/hardware-gold-standard-live-smoke.sh --dry-run` |
 
@@ -341,6 +350,7 @@ The runtime is intentionally layered so it does not flood the model context.
 | L10 | Agent needs to finish a task | `goal complete` state, plan, permissions, and evidence summary |
 | L11 | Implementation or debug path is needed | Intent-ranked demos and permission-aware `next_actions` |
 | L12 | Prompt budget must stay small | Dedupe, incremental hints, and explicit expansion commands |
+| L13 | Project has already seen or verified context | Project ledger hits, stale markers, and re-verify commands |
 
 Route and hook output stay small: ids, summaries, top facts, readiness status,
 and lookup commands. Full fact packs, official source files, and long reference
@@ -390,6 +400,33 @@ explicit prompt > project context > global profile > needs_clarification > no-op
 
 If the board or framework is missing, the agent receives structured questions
 instead of silently guessing.
+
+The project ledger is a separate memory layer under the same directory:
+
+```text
+.lilygo-skills/
+  project.json            public board/framework defaults
+  ledger.json             public summaries of previously verified capabilities
+  context-digest.json     public hashes of context already injected here
+  local.json              ignored private runner details
+  evidence/               ignored private or raw evidence
+```
+
+Agents normally maintain the ledger through `goal complete` after evidence
+exists, or through a structured redacted record when the user explicitly asks
+them to remember a verified project capability. Future prompts receive compact
+past-tense hints such as "previously verified" plus expansion commands. If the
+project source changes, source signatures change, the runtime version changes,
+the digest expires, or the user asks to re-run/re-verify, the entry becomes
+stale or is bypassed. To inspect or reset this public memory:
+
+```bash
+lilygo-skills project ledger show --project /path/to/firmware --json
+lilygo-skills project ledger clear --project /path/to/firmware --json
+```
+
+Set `LILYGO_SKILLS_DISABLE_PROJECT_LEDGER=1` to force full non-ledger behavior
+while debugging the runtime.
 
 ## Preferences And References
 

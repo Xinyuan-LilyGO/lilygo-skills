@@ -21,6 +21,7 @@ profile clear --json
 project init --board <skill-id> [--framework <skill-id>] [--feature <skill-id>...] [--project <dir>] --json
 project show [--project <dir>] --json
 project clear [--project <dir>] --json
+project ledger show|record|clear [--project <dir>] [--input <file>] --json
 verify-hardware --profile <file> --json
 sync-boards [--dry-run] --json
 update sources|boards|skills|source-packs|fact-packs|board-facts|peripheral-skills|runtime [--board <board-id> --topic <topic>] [--dry-run] [--home <dir>] --json

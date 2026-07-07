@@ -15,6 +15,9 @@ hook context can expose:
 - `goal-plan-bridge`, a read-only next action that points the agent at
   `goal plan` before code edits or hardware actions;
 - project-local custom skill hints from `.lilygo-skills/skills/index.json`;
+- project ledger hints from `.lilygo-skills/ledger.json` and
+  `.lilygo-skills/context-digest.json` when the repo has already received or
+  verified the same context;
 - install health through `doctor --json`.
 
 Pure fact lookup remains compact. If the user asks "which pins or buses are
@@ -37,6 +40,12 @@ This is also the token-budget rule. The default capsule should expose the path
 to more context, not paste every source or generated Skill body into the prompt.
 When more detail is needed, the agent expands with `source query`, `index
 query`, generated project skills, or `goal plan`.
+
+Project ledger hits follow the same rule. A ledger hit can make repeated prompts
+shorter by saying what was previously verified or already injected, but it does
+not stop an implementation request. Explicit wording such as "re-run",
+"re-verify", or "重新验证" bypasses the compact hit and keeps the full goal path
+visible.
 
 ## Natural-Language Use
 
@@ -74,6 +83,17 @@ lilygo-skills goal plan --json "T-Display-S3 run the full factory test"
 The expected behavior is not "always use the smallest demo"; it is "use the
 smallest demo for first visible output, and keep full factory examples for
 full-board diagnostics."
+
+For repeated project work, the user can ask:
+
+```text
+We already verified this display bring-up in this repo. Remember it, and keep
+future prompts short unless I ask to re-verify.
+```
+
+The agent should store only a redacted public summary and evidence hash. Later
+display prompts may receive a compact `previously_verified` hint plus
+`project ledger show`, `source query`, and `goal evidence` expansion commands.
 
 ## Project Custom Skills
 

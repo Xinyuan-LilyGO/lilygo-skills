@@ -239,6 +239,12 @@ pub struct ProjectContext {
     pub framework: Option<String>,
     #[serde(default)]
     pub features: Vec<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub preferred_tools: Vec<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source_signature: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     #[serde(default)]
     pub notes: Option<String>,
 }

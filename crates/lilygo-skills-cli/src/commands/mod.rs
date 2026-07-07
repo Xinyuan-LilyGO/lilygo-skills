@@ -19,6 +19,10 @@ use crate::preferences::resolve_preferences;
 use crate::project_context::{
     clear_project_context, new_project_context, resolve_project_context, write_project_context,
 };
+use crate::project_ledger::{
+    hints_for_route, maybe_compact_project_hook_context, render_hook_ledger_context,
+    route_json_with_ledger,
+};
 use crate::project_skills::registry_with_project_skills;
 use crate::reference_catalog::list_references;
 use crate::registry::{ensure_skill_files, load_registry, verify};
@@ -89,7 +93,8 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
         let profile = project.context.active_profile();
         let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
         attach_route_readiness(root, &registry, &prompt, &mut route);
-        return print_json(&route);
+        let hints = hints_for_route(project.project_root.as_path(), &route, &prompt);
+        return print_json(&route_json_with_ledger(&route, hints));
     }
     let profile = load_profile(root);
     let mut route = route_with_profile_or_clarification(&registry, &prompt, profile.as_ref());
@@ -149,6 +154,12 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
     let mut route = route_with_profile_or_clarification(&route_registry, &prompt, profile.as_ref());
     attach_route_readiness(&root, &route_registry, &prompt, &mut route);
     let mut content = render_context(&route);
+    let ledger_hints = project
+        .as_ref()
+        .map(|project| hints_for_route(project.project_root.as_path(), &route, &prompt));
+    if let Some(hints) = &ledger_hints {
+        content.push_str(&render_hook_ledger_context(hints));
+    }
     let mut goal_plan = None;
     if let Ok(plan) = plan_goal_with_project(
         &root,
@@ -160,6 +171,18 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
         content.push_str(&render_hook_goal_summary(&plan));
         goal_plan = Some(plan);
     }
+    let content = if let (Some(project), Some(hints)) = (project.as_ref(), ledger_hints.as_ref()) {
+        maybe_compact_project_hook_context(
+            project.project_root.as_path(),
+            &prompt,
+            &route,
+            content,
+            goal_plan.as_ref(),
+            hints,
+        )
+    } else {
+        content
+    };
     let content = crate::session_context::maybe_compact_hook_context(
         host,
         &input,
@@ -587,9 +610,14 @@ fn project(root: &Path, args: &[String]) -> Result<(), String> {
         return Err("missing project subcommand".to_string());
     };
     match subcommand {
+        "--help" | "-h" => {
+            print_project_help();
+            Ok(())
+        }
         "init" => project_init(root, &args[1..]),
         "show" => project_show(&args[1..]),
         "clear" => project_clear(&args[1..]),
+        "ledger" => project_ledger_command(&args[1..]),
         other => Err(format!("unknown project subcommand: {other}")),
     }
 }

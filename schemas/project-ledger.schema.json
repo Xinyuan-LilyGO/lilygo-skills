@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lilygo.cc/schemas/project-ledger.schema.json",
+  "title": "LilyGO Skills project ledger",
+  "type": "object",
+  "required": ["schema_version"],
+  "properties": {
+    "schema_version": { "type": "integer", "minimum": 1 },
+    "capabilities": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/capability" },
+      "default": []
+    },
+    "digests": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/context_digest" },
+      "default": []
+    },
+    "updated_at": { "type": "string" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "capability": {
+      "type": "object",
+      "required": [
+        "entry_id",
+        "board_id",
+        "capability",
+        "verification_level",
+        "status",
+        "summary",
+        "source_signature",
+        "runtime_version",
+        "expand_commands",
+        "verified_at",
+        "updated_at"
+      ],
+      "properties": {
+        "entry_id": { "type": "string" },
+        "board_id": { "type": "string" },
+        "framework": { "type": "string" },
+        "capability": { "type": "string" },
+        "verification_level": { "type": "string" },
+        "status": { "enum": ["source_ready", "verified", "stale", "blocked"] },
+        "summary": { "type": "string" },
+        "source_signature": { "type": "string" },
+        "project_code_signature": { "type": "string" },
+        "runtime_version": { "type": "string" },
+        "public_evidence_hash": { "type": "string" },
+        "expand_commands": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "verified_at": { "type": "string" },
+        "updated_at": { "type": "string" },
+        "expires_at": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "context_digest": {
+      "type": "object",
+      "required": [
+        "digest_id",
+        "route_signature",
+        "context_signature",
+        "critical_fact_signature",
+        "source_signature",
+        "runtime_version",
+        "capsule_class",
+        "emitted_at",
+        "expires_at",
+        "expand_commands"
+      ],
+      "properties": {
+        "digest_id": { "type": "string" },
+        "route_signature": { "type": "string" },
+        "context_signature": { "type": "string" },
+        "critical_fact_signature": { "type": "string" },
+        "source_signature": { "type": "string" },
+        "runtime_version": { "type": "string" },
+        "capsule_class": { "type": "string" },
+        "emitted_at": { "type": "string" },
+        "expires_at": { "type": "string" },
+        "expand_commands": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

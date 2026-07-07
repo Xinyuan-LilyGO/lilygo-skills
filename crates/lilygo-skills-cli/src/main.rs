@@ -14,6 +14,7 @@ mod playbooks;
 mod preferences;
 mod product_source;
 mod project_context;
+mod project_ledger;
 mod project_skills;
 mod recipes;
 mod reference_catalog;

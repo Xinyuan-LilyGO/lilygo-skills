@@ -27,6 +27,7 @@ GATES=(
   "product-board-smoke.sh --dry-run"
   "pure-query-compact-smoke.sh"
   "context-budget-smoke.sh"
+  "project-context-ledger-smoke.sh"
   "project-context-smoke.sh --dry-run"
   "playbook-quality-smoke.sh --dry-run"
   "preference-reference-smoke.sh --dry-run"
