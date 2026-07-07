@@ -62,6 +62,18 @@ pub(super) fn next_actions_for_goal(
             "Sensor and bus prompts need the bus-specific source view before code.",
         ));
     }
+    for topic in crate::facts::topics_for_prompt(prompt) {
+        if !crate::facts::is_readiness_topic(&topic) {
+            continue;
+        }
+        actions.push(next_action(
+            &format!("source-query-{topic}"),
+            &format!("Check {topic} source facts"),
+            format!("lilygo-skills source query --board {board_id} --topic {topic} --json"),
+            "none",
+            "Matched peripheral prompts should expose the narrow official source slice on demand.",
+        ));
+    }
     if fact_only {
         return dedup_next_actions(actions, 6);
     }

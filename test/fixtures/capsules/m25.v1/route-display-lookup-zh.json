@@ -49,13 +49,6 @@
       "completeness": "complete",
       "evidence_level": "V3",
       "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic display --json"
-    },
-    {
-      "board_id": "board-t-display-s3",
-      "topic": "input",
-      "completeness": "complete",
-      "evidence_level": "V3",
-      "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic input --json"
     }
   ],
   "verification_level": "context-injection",

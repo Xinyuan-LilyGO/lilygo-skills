@@ -3376,9 +3376,248 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "BOARD_TFT_MOSI=GPIO13",
+          "claim": "T-Watch S3 ST7789 display MOSI pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.sclk",
+          "value": "BOARD_TFT_SCLK=GPIO18",
+          "claim": "T-Watch S3 ST7789 display SCLK pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "BOARD_TFT_CS=GPIO12",
+          "claim": "T-Watch S3 ST7789 display chip-select pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "BOARD_TFT_DC=GPIO38",
+          "claim": "T-Watch S3 ST7789 display data/command pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.rst",
+          "value": "BOARD_TFT_RST=-1",
+          "claim": "T-Watch S3 ST7789 display reset is not connected in official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.bl",
+          "value": "BOARD_TFT_BL=GPIO45",
+          "claim": "T-Watch S3 display backlight pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.sda",
+          "value": "BOARD_TOUCH_SDA=GPIO39",
+          "claim": "T-Watch S3 touch I2C SDA pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.scl",
+          "value": "BOARD_TOUCH_SCL=GPIO40",
+          "claim": "T-Watch S3 touch I2C SCL pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "BOARD_TOUCH_INT=GPIO16",
+          "claim": "T-Watch S3 touch interrupt pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.main.sda",
+          "value": "BOARD_I2C_SDA=GPIO10",
+          "claim": "T-Watch S3 main I2C SDA for BMA423, PCF8563, AXP2101, and DRV2605L.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.main.scl",
+          "value": "BOARD_I2C_SCL=GPIO11",
+          "claim": "T-Watch S3 main I2C SCL for BMA423, PCF8563, AXP2101, and DRV2605L.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.display.st7789",
+          "value": "ST7789 display SPI: MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, RST=-1, MISO=-1; 240x240 panel",
+          "claim": "T-Watch S3 TFT_eSPI Setup212 and utilities.h define the ST7789 display bus and resolution.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.touch.ft6x36",
+          "value": "FT6X36 touch controller on Wire1: SDA=GPIO39, SCL=GPIO40, INT=GPIO16",
+          "claim": "LilyGoLib initializes TouchDrvFT6X36 on Wire1 with BOARD_TOUCH_SDA and BOARD_TOUCH_SCL.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.i2c.main",
+          "value": "Main I2C bus: SDA=GPIO10, SCL=GPIO11 for BMA423, PCF8563, AXP2101, and DRV2605L",
+          "claim": "T-Watch S3 utilities.h and LilyGoLib initialize main Wire on BOARD_I2C_SDA/BOARD_I2C_SCL.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
@@ -3387,51 +3626,51 @@
           "board_id": "board-t-watch-s3",
           "topic": "display",
           "key": "display.panel_or_chip",
-          "value": "unknown_with_sources",
-          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "value": "ST7789 240x240 TFT",
+          "claim": "T-Watch S3 uses an ST7789 240x240 display per official TFT_eSPI Setup212.",
           "source": {
             "kind": "github-repo",
-            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
           },
           "authority_rank": 85,
           "evidence_level": "V3-source-reference",
           "stale": false,
-          "confidence": "unknown_with_sources"
+          "confidence": "exact"
         },
         {
           "schema_version": 1,
           "board_id": "board-t-watch-s3",
           "topic": "display",
           "key": "display.bus_or_interface",
-          "value": "unknown_with_sources",
-          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "value": "SPI display bus: MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, RST=-1, MISO=-1",
+          "claim": "T-Watch S3 display SPI pins come from official Setup212 and utilities.h.",
           "source": {
             "kind": "github-repo",
-            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
           },
           "authority_rank": 85,
           "evidence_level": "V3-source-reference",
           "stale": false,
-          "confidence": "unknown_with_sources"
+          "confidence": "exact"
         },
         {
           "schema_version": 1,
           "board_id": "board-t-watch-s3",
           "topic": "display",
           "key": "display.backlight_or_power",
-          "value": "unknown_with_sources",
-          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "value": "Backlight BOARD_TFT_BL=GPIO45; AXP2101 ALDO2 controls TFT backlight VDD; ALDO3 controls screen/touch VDD",
+          "claim": "T-Watch S3 utilities.h defines BOARD_TFT_BL and LilyGoLib powerIoctl maps display/touch power domains.",
           "source": {
             "kind": "github-repo",
-            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
           },
           "authority_rank": 85,
           "evidence_level": "V3-source-reference",
           "stale": false,
-          "confidence": "unknown_with_sources"
+          "confidence": "exact"
         },
         {
           "schema_version": 1,
@@ -3455,34 +3694,34 @@
           "board_id": "board-t-watch-s3",
           "topic": "input",
           "key": "input.chip",
-          "value": "unknown_with_sources",
-          "claim": "Primary input controller must be confirmed from official product source.",
+          "value": "FT6X36 capacitive touch controller",
+          "claim": "T-Watch S3 LilyGoLib includes TouchDrvFT6X36 and initializes it for the touch panel.",
           "source": {
             "kind": "github-repo",
-            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
           },
           "authority_rank": 85,
           "evidence_level": "V3-source-reference",
           "stale": false,
-          "confidence": "unknown_with_sources"
+          "confidence": "exact"
         },
         {
           "schema_version": 1,
           "board_id": "board-t-watch-s3",
           "topic": "input",
           "key": "input.bus_or_interface",
-          "value": "unknown_with_sources",
-          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "value": "Touch I2C on Wire1: SDA=GPIO39, SCL=GPIO40, INT=GPIO16",
+          "claim": "T-Watch S3 official utilities.h defines touch SDA/SCL/INT and LilyGoLib begins TouchDrvFT6X36 on Wire1.",
           "source": {
             "kind": "github-repo",
-            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
           },
           "authority_rank": 85,
           "evidence_level": "V3-source-reference",
           "stale": false,
-          "confidence": "unknown_with_sources"
+          "confidence": "exact"
         },
         {
           "schema_version": 1,
@@ -3551,6 +3790,91 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "display.resolution",
+          "value": "240x240",
+          "claim": "T-Watch S3 official TFT_eSPI Setup212 defines TFT_WIDTH=240 and TFT_HEIGHT=240.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "input.touch_interrupt",
+          "value": "BOARD_TOUCH_INT=GPIO16; active state read by isPressed()",
+          "claim": "LilyGoLib reads BOARD_TOUCH_INT to report touch press state.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "framework.demo_refs",
+          "value": "examples/display/; examples/lvgl/; src/LilyGoLib.cpp TouchDrvFT6X36 initialization",
+          "claim": "Official examples plus LilyGoLib touch initialization are the source-backed starting points for input/touch bring-up.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "framework.demo_refs",
+          "value": "examples/display/; examples/lvgl/; extras/Setup212_LilyGo_T_Watch_S3.h",
+          "claim": "Official display and LVGL examples plus TFT_eSPI Setup212 are the source-backed starting points for T-Watch S3 display bring-up.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/examples/display/README.MD",
+            "hash": "sha256:520df807d8402889d229d25d70310b1870dab880ca6bcc29e0e47d4b9026acdf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "framework.build_hint",
+          "value": "Use TTGO_TWatch_Library t-watch-s3 branch; for Arduino use ESP32S3 Dev Module, esp32 core 2.0.9, PSRAM OPI, and TFT_eSPI Setup212_LilyGo_T_Watch_S3.h.",
+          "claim": "Official T-Watch S3 README documents PlatformIO/Arduino quick start and Setup212 selection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/README.md",
+            "hash": "sha256:75c356a3acf2c6a480a731f5acd5306fe12eee021f2075329e6ffcad9dac1b92"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
         }
       ],
       "source_refs": [
@@ -3568,6 +3892,36 @@
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3/",
           "hash": "sha256:5523dc5448f53447ab132020f28c98ebff5e7dbd089293148672ddc59a7974f0"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+          "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+          "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+          "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/README.md",
+          "hash": "sha256:75c356a3acf2c6a480a731f5acd5306fe12eee021f2075329e6ffcad9dac1b92"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/t-watch-s3/examples/display",
+          "hash": "sha256:520df807d8402889d229d25d70310b1870dab880ca6bcc29e0e47d4b9026acdf"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/t-watch-s3/examples/lvgl",
+          "hash": "sha256:0b885c1efee408b924de948c5c9b7ebf62531c339efa6cd1ffc44168be28299c"
         }
       ],
       "conflicts": []

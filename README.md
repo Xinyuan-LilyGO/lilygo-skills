@@ -109,6 +109,44 @@ This makes the Skill easier to extend and easier to trust: add or refresh source
 data, regenerate runtime Skills, run the gates, and the agent sees better board
 context without expanding the default prompt budget.
 
+## 60-Second First Check
+
+From a release bundle that includes a prebuilt runtime, the shortest install and
+self-check is:
+
+```bash
+node install.js --all --prebuilt-only && lilygo-skills doctor --json
+```
+
+From a source checkout without `dist/bin/<platform>/lilygo-skills`, use the same
+path in dry-run mode first:
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+```
+
+Then ask the agent a normal firmware question:
+
+```text
+I am using LilyGO T-Watch S3. Which display and touch pins are already occupied?
+```
+
+The expected capsule is not a long manual. It should identify
+`board-t-watch-s3`, stay at V3 source/context evidence, and expose compact facts
+or expansion commands for the display and touch topics. For the current source
+model, the agent can expand to source-backed facts such as:
+
+```text
+display: ST7789 240x240, MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, BL=GPIO45
+touch: FT6X36 on Wire1, SDA=GPIO39, SCL=GPIO40, INT=GPIO16
+expand: lilygo-skills source query --board board-t-watch-s3 --topic display --json
+expand: lilygo-skills source query --board board-t-watch-s3 --topic input --json
+```
+
+That is the intended first experience: the user speaks normally, the agent gets
+the board-specific facts that are ready, and any deeper work continues through
+explicit source query, goal plan, setup, and permissioned verification commands.
+
 ## Install Into Your AI Agent
 
 Give your agent the repo link and ask it to install the Skill:

@@ -449,6 +449,27 @@ mod tests {
     }
 
     #[test]
+    fn source_query_input_stays_topic_narrow() {
+        let report = source_query(root().as_path(), "board-t-watch-s3", "input").expect("input");
+        let keys = report
+            .facts
+            .iter()
+            .map(|fact| fact.key.as_str())
+            .collect::<Vec<_>>();
+        assert!(keys.contains(&"input.chip"), "{keys:?}");
+        assert!(keys.contains(&"input.bus_or_interface"), "{keys:?}");
+        assert!(keys.contains(&"input.touch_interrupt"), "{keys:?}");
+        assert!(
+            keys.iter().all(|key| {
+                key.starts_with("input.")
+                    || key.starts_with("bus.touch.")
+                    || *key == "framework.demo_refs"
+            }),
+            "{keys:?}"
+        );
+    }
+
+    #[test]
     fn board_prompt_topics_are_data_driven() {
         let topics = topics_for_board_prompt(
             root().as_path(),

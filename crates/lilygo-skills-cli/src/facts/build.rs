@@ -270,7 +270,7 @@ pub(crate) fn topic_facts(pack: &BoardFactPack, needles: &[String]) -> Vec<Sourc
         .chain(pack.expander_matrix.iter())
         .chain(pack.connector_matrix.iter())
         .filter(|fact| {
-            let value = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
+            let value = format!("{} {}", fact.topic, fact.key).to_lowercase();
             needles.iter().any(|needle| value.contains(needle))
         })
         .cloned()

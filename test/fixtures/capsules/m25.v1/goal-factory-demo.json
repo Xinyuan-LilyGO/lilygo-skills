@@ -93,6 +93,13 @@
     ],
     "next_actions": [
       {
+        "id": "source-query-display",
+        "label": "Check display source facts",
+        "command": "lilygo-skills source query --board board-t-display-s3 --topic display --json",
+        "permission": "none",
+        "reason": "Matched peripheral prompts should expose the narrow official source slice on demand."
+      },
+      {
         "id": "expand-board-source",
         "label": "Open selected board source refs",
         "command": "lilygo-skills index query board-t-display-s3 --json",

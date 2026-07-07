@@ -5,10 +5,21 @@ const path = require("path");
 const root = path.resolve(__dirname, "..");
 const args = process.argv.slice(2);
 const boardsArg = valueAfter("--boards") || "all";
+const requiredTopics = valuesAfter("--require-topic");
 
 function valueAfter(flag) {
   const index = args.indexOf(flag);
   return index >= 0 ? args[index + 1] : undefined;
+}
+
+function valuesAfter(flag) {
+  const values = [];
+  args.forEach((arg, index) => {
+    if (arg === flag && args[index + 1]) {
+      values.push(args[index + 1]);
+    }
+  });
+  return values;
 }
 
 function readJson(relative) {
@@ -35,6 +46,10 @@ function factsForTopic(pack, topic) {
 
 function hasSource(fact) {
   return Boolean(fact?.source?.path_or_url && fact?.source?.hash);
+}
+
+function hasActionableSource(fact) {
+  return hasSource(fact) && fact.confidence !== "unknown_with_sources";
 }
 
 function passFact(pack, key) {
@@ -170,6 +185,30 @@ function questionsFor(board, pack) {
   return questions;
 }
 
+function topicReadiness(board, pack) {
+  const peripherals = new Set(board.peripherals || []);
+  const topics = [
+    ["display", peripherals.has("display")],
+    ["input", peripherals.has("input") || peripherals.has("keyboard") || peripherals.has("touch")],
+    ["lora", peripherals.has("lora")],
+    ["gnss", peripherals.has("gnss") || peripherals.has("gps")],
+    ["power", peripherals.has("power")],
+    ["storage", peripherals.has("storage")]
+  ].filter(([, relevant]) => relevant).map(([topic]) => topic);
+  return topics.map((topic) => {
+    const facts = factsForTopic(pack, topic);
+    const unknown = facts.filter((fact) => fact.confidence === "unknown_with_sources").length;
+    const actionable = facts.filter(hasActionableSource).length;
+    return {
+      board_id: board.id,
+      topic,
+      status: actionable > 0 && unknown === 0 ? "complete" : "needs_source_ingestion",
+      actionable_facts: actionable,
+      unknown_with_sources: unknown
+    };
+  });
+}
+
 const boardIndex = readJson("data/boards.json").boards;
 const factIndex = readJson("data/facts/board-fact-packs.json").packs;
 const factByBoard = new Map(factIndex.map((pack) => [pack.board_id, pack]));
@@ -177,10 +216,12 @@ const selected = boardsArg === "all" ? boardIndex : boardIndex.filter((board) =>
 const results = selected.map((board) => {
   const pack = factByBoard.get(board.id);
   const questions = questionsFor(board, pack);
+  const topic_readiness = topicReadiness(board, pack);
   return {
     board_id: board.id,
     primary_kind: primaryKind(board, pack),
     questions,
+    topic_readiness,
     pass: questions.length === 3 && questions.every((question) => question.pass)
   };
 });
@@ -191,12 +232,23 @@ const displayCentricMisapplied = results.filter((result) => {
   const hasDisplay = (board.peripherals || []).includes("display");
   return !hasDisplay && result.questions.some((question) => question.kind === "display");
 });
+const requiredTopicFailures = requiredTopics.flatMap((entry) => {
+  const [boardId, topic] = entry.split(":");
+  const result = results.find((item) => item.board_id === boardId);
+  const readiness = result?.topic_readiness.find((item) => item.topic === topic);
+  return readiness?.status === "complete" ? [] : [{
+    required: entry,
+    status: readiness?.status || "missing",
+    readiness: readiness || null
+  }];
+});
 
-if (failed.length || displayCentricMisapplied.length) {
+if (failed.length || displayCentricMisapplied.length || requiredTopicFailures.length) {
   console.error(JSON.stringify({
     status: "FAIL",
     failed,
-    display_centric_misapplied: displayCentricMisapplied
+    display_centric_misapplied: displayCentricMisapplied,
+    required_topic_failures: requiredTopicFailures
   }, null, 2));
   process.exit(1);
 }
@@ -205,10 +257,20 @@ const kinds = results.reduce((acc, result) => {
   acc[result.primary_kind] = (acc[result.primary_kind] || 0) + 1;
   return acc;
 }, {});
+const topicReadinessRows = results.flatMap((result) => result.topic_readiness);
+const topicReadinessCounts = topicReadinessRows.reduce((acc, item) => {
+  acc[item.status] = (acc[item.status] || 0) + 1;
+  return acc;
+}, {});
 console.log(JSON.stringify({
   status: "PASS",
   boards: results.length,
   questions: results.length * 3,
   kinds,
-  display_centric_misapplied: 0
+  display_centric_misapplied: 0,
+  topic_readiness: {
+    topics: topicReadinessRows.length,
+    counts: topicReadinessCounts,
+    required_complete: requiredTopics
+  }
 }, null, 2));

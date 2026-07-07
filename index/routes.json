@@ -924,7 +924,13 @@
         "touch",
         "blank",
         "backlight",
-        "amoled"
+        "amoled",
+        "屏幕",
+        "显示",
+        "显示屏",
+        "背光",
+        "黑屏",
+        "白屏"
       ],
       "aliases": [],
       "priority": 60,
@@ -980,7 +986,12 @@
         "button",
         "keyboard",
         "encoder",
-        "input"
+        "input",
+        "触摸",
+        "触控",
+        "触摸屏",
+        "按键",
+        "输入"
       ],
       "aliases": [],
       "priority": 58,

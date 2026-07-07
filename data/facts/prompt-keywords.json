@@ -12,12 +12,12 @@
   },
   "topic_order": ["display", "imu", "lora", "gnss", "nfc", "power", "input"],
   "topics": {
-    "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示"],
+    "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示", "屏幕", "显示屏", "背光"],
     "imu": ["imu", "bhi260ap", "gesture", "抬腕"],
     "lora": ["lora", "radio", "sx1262", "sx1268", "sx1276", "sx1278", "sx1280"],
     "gnss": ["gnss", "gps"],
     "nfc": ["nfc", "st25r3916", "rfal", "rfid"],
     "power": ["power", "battery", "pmu", "电源"],
-    "input": ["input", "keyboard", "button", "touch", "xl9555", "io", "expander", "按键"]
+    "input": ["input", "keyboard", "button", "touch", "xl9555", "expander", "按键", "触摸", "触控", "触摸屏"]
   }
 }

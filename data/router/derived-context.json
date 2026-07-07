@@ -5,7 +5,26 @@
       "skill_id": "periph-display",
       "kind": "derived",
       "value": "display/LVGL loop",
-      "needles": ["lvgl", "screen", "display", "lcd", "amoled", "blank"]
+      "needles": [
+        "lvgl",
+        "screen",
+        "display",
+        "lcd",
+        "amoled",
+        "blank",
+        "屏幕",
+        "显示",
+        "显示屏",
+        "背光",
+        "黑屏",
+        "白屏"
+      ]
+    },
+    {
+      "skill_id": "periph-input",
+      "kind": "derived",
+      "value": "touch/input loop",
+      "needles": ["touch", "input", "button", "触摸", "触控", "触摸屏", "按键", "输入"]
     },
     {
       "skill_id": "debug-lvgl-loop",

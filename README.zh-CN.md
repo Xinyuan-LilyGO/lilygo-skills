@@ -89,6 +89,41 @@ lilygo-skills goal complete --dry-run --json "<prompt>"
 这样扩展新板子或刷新资料时，不需要把默认 prompt 变大：补 source data，重新生成
 runtime Skills，跑 gate，Agent 就能看到更好的板级上下文。
 
+## 60 秒上手检查
+
+如果使用包含预编译 runtime 的 release bundle，最短安装和自检是一条命令：
+
+```bash
+node install.js --all --prebuilt-only && lilygo-skills doctor --json
+```
+
+如果是在没有 `dist/bin/<platform>/lilygo-skills` 的源码 checkout 里，先用同一路径
+做 dry-run：
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+```
+
+然后直接用自然语言问 Agent：
+
+```text
+我在用 LilyGO T-Watch S3，屏幕和触摸已经占用了哪些引脚？
+```
+
+预期 capsule 不应该是一整份手册。它应该识别到 `board-t-watch-s3`，保持 V3
+source/context 证据边界，并给出 display/input 的紧凑事实或展开命令。当前 source
+model 可以展开到这些 source-backed facts：
+
+```text
+display: ST7789 240x240, MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, BL=GPIO45
+touch: FT6X36 on Wire1, SDA=GPIO39, SCL=GPIO40, INT=GPIO16
+expand: lilygo-skills source query --board board-t-watch-s3 --topic display --json
+expand: lilygo-skills source query --board board-t-watch-s3 --topic input --json
+```
+
+这就是预期的第一次体验：用户正常描述需求，Agent 拿到当前已经 ready 的板级事实；
+更深的实现继续通过显式 source query、goal plan、setup 和需要权限的验证命令推进。
+
 ## 安装到 AI Agent
 
 推荐方式是直接让 AI 安装这个 Skill：

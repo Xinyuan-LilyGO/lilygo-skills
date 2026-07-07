@@ -1,10 +1,23 @@
 #!/usr/bin/env node
+const fs = require("fs");
 const {
   GENERATED_PATH,
   FACT_PACK_PATH,
   GOLD_BOARDS,
-  readJson
+  generatePacks,
+  readJson,
+  writeJson
 } = require("./official-source-lib");
+
+let generatedCreated = false;
+
+function ensureGeneratedPacks() {
+  if (fs.existsSync(GENERATED_PATH)) {
+    return;
+  }
+  writeJson(GENERATED_PATH, generatePacks({ goldOnly: true }));
+  generatedCreated = true;
+}
 
 function byBoard(index) {
   return new Map(index.packs.map((pack) => [pack.board_id, pack]));
@@ -24,6 +37,8 @@ function entries(pack) {
   }
   return out;
 }
+
+ensureGeneratedPacks();
 
 const current = byBoard(readJson(FACT_PACK_PATH));
 const generated = byBoard(readJson(GENERATED_PATH));
@@ -62,5 +77,7 @@ console.log(JSON.stringify({
   status: "PASS",
   gold_boards: GOLD_BOARDS,
   compared_boards: GOLD_BOARDS.length,
-  mismatches: 0
+  mismatches: 0,
+  generated_created: generatedCreated,
+  generated_path: ".tmp/pipeline/board-fact-packs.generated.json"
 }, null, 2));

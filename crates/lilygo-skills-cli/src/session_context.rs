@@ -106,6 +106,7 @@ fn compact_context(plan: &GoalPlan) -> String {
         .iter()
         .filter(|action| action.id == "source-query-io" || action.id.starts_with("source-query-"))
         .map(|action| format!("{}:{}", action.id, action.permission))
+        .take(3)
         .collect::<Vec<_>>();
     format!(
         "LilyGO incremental: critical=[{}]; next=[{}]; expand=goal plan; evidence_boundary={}/hardware_verified={}",

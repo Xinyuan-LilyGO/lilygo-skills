@@ -183,7 +183,7 @@ pub(crate) fn present_fields(
     if !pack.source_refs.is_empty() {
         present.insert("source_refs".to_string());
     }
-    add_demo_and_hint_fields(board, topic, &mut present);
+    add_demo_and_hint_fields(board, topic, facts, &mut present);
     if topic == "display" {
         add_display_fields(board, facts, &mut present);
     } else {
@@ -195,16 +195,23 @@ pub(crate) fn present_fields(
 pub(crate) fn add_demo_and_hint_fields(
     board: &BoardRecord,
     topic: &str,
+    facts: &[SourceFact],
     present: &mut BTreeSet<String>,
 ) {
     let has_demo = board
         .demo_refs
         .iter()
         .any(|demo| demo_matches_topic(demo, topic));
-    if has_demo {
+    let fact_has_demo = facts
+        .iter()
+        .any(|fact| fact.key == "framework.demo_refs" && is_known_fact(fact));
+    let fact_has_build_hint = facts
+        .iter()
+        .any(|fact| fact.key == "framework.build_hint" && is_known_fact(fact));
+    if has_demo || fact_has_demo {
         present.insert("framework.demo_refs".to_string());
     }
-    if has_demo && !board.frameworks.is_empty() {
+    if (has_demo && !board.frameworks.is_empty()) || fact_has_build_hint {
         present.insert("framework.build_hint".to_string());
     }
     if topic == "display" && !board.source_urls.is_empty() {

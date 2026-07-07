@@ -1706,6 +1706,36 @@ fn intent_classification_lookup_prompts_are_read_only() {
             plan.context_capsule.fact_tables
         );
     }
+
+    let watch_s3 = plan("LilyGO T-Watch S3 屏幕和触摸占用了哪些引脚?");
+    let action_ids = watch_s3
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| action.id.as_str())
+        .collect::<Vec<_>>();
+    assert!(
+        action_ids.contains(&"source-query-display"),
+        "{action_ids:?}"
+    );
+    assert!(action_ids.contains(&"source-query-input"), "{action_ids:?}");
+    assert_eq!(
+        watch_s3.context_capsule.completeness.get("display"),
+        Some(&"complete".to_string())
+    );
+    assert_eq!(
+        watch_s3.context_capsule.completeness.get("input"),
+        Some(&"complete".to_string())
+    );
+    assert!(
+        watch_s3
+            .context_capsule
+            .next_actions
+            .iter()
+            .all(|action| action.permission == "none"),
+        "{:?}",
+        watch_s3.context_capsule.next_actions
+    );
 }
 
 #[test]

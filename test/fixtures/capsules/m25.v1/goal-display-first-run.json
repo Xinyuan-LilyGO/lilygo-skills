@@ -120,6 +120,13 @@
         "reason": "Sensor and bus prompts need the bus-specific source view before code."
       },
       {
+        "id": "source-query-display",
+        "label": "Check display source facts",
+        "command": "lilygo-skills source query --board board-t-display-s3 --topic display --json",
+        "permission": "none",
+        "reason": "Matched peripheral prompts should expose the narrow official source slice on demand."
+      },
+      {
         "id": "expand-board-source",
         "label": "Open selected board source refs",
         "command": "lilygo-skills index query board-t-display-s3 --json",
@@ -538,8 +545,7 @@
       }
     ],
     "completeness": {
-      "display": "complete",
-      "input": "complete"
+      "display": "complete"
     },
     "readiness": [
       {
@@ -548,13 +554,6 @@
         "completeness": "complete",
         "evidence_level": "V3",
         "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic display --json"
-      },
-      {
-        "board_id": "board-t-display-s3",
-        "topic": "input",
-        "completeness": "complete",
-        "evidence_level": "V3",
-        "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic input --json"
       }
     ],
     "demo_refs": [
