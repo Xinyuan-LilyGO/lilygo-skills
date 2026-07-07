@@ -23,22 +23,34 @@ mkdir -p "$PROJECT_ROOT/firmware/src"
   --framework fw-arduino \
   --json >.tmp/project-ledger-init.json
 
-cat >.tmp/project-ledger-record.json <<'JSON'
-{
-  "kind": "capability",
-  "board_id": "board-t-watch-ultra",
-  "framework": "fw-arduino",
-  "capability": "imu.bhi260ap",
-  "verification_level": "V5",
-  "summary": "imu.bhi260ap previously reached V5 build/upload/serial evidence on a redacted public report.",
-  "source_signature": "sha256:source",
-  "public_evidence_hash": "sha256:evidence",
-  "expand_commands": [
+"$BIN" route \
+  --project "$PROJECT_ROOT/firmware/src" \
+  --json "T-Watch Ultra IMU debug" >.tmp/project-ledger-source-route.json
+
+node <<'NODE'
+const crypto = require("crypto");
+const fs = require("fs");
+const route = JSON.parse(fs.readFileSync(".tmp/project-ledger-source-route.json", "utf8"));
+const readiness = route.readiness || [];
+const material = readiness.length
+  ? readiness.map((signal) => `${signal.board_id}:${signal.topic}:${signal.completeness}:${signal.evidence_level}`).join("|")
+  : (route.skills || []).join("|");
+const sourceSignature = crypto.createHash("sha256").update(JSON.stringify(material)).digest("hex");
+fs.writeFileSync(".tmp/project-ledger-record.json", JSON.stringify({
+  kind: "capability",
+  board_id: "board-t-watch-ultra",
+  framework: "fw-arduino",
+  capability: "imu.bhi260ap",
+  verification_level: "V5",
+  summary: "imu.bhi260ap previously reached V5 build/upload/serial evidence on a redacted public report.",
+  source_signature: sourceSignature,
+  public_evidence_hash: "sha256:evidence",
+  expand_commands: [
     "lilygo-skills source query --board board-t-watch-ultra --topic imu --json",
     "lilygo-skills goal evidence --id <goal-id> --json"
   ]
-}
-JSON
+}, null, 2) + "\n");
+NODE
 
 "$BIN" project ledger record \
   --project "$PROJECT_ROOT/firmware/src" \

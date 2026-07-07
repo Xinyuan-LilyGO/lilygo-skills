@@ -1,6 +1,7 @@
 //! Project-local prompt-safe memory for repeated board capability context.
 mod privacy;
 mod signature;
+mod staleness;
 mod time;
 
 use crate::facts::stable_hash;
@@ -15,6 +16,7 @@ use signature::{
     expansion_commands, hash_project_file, project_code_signature, route_dimensions,
     route_signature, source_signature_for_readiness, source_signature_for_route,
 };
+use staleness::{digest_stale, entry_stale};
 use std::collections::BTreeSet;
 use std::fs;
 use std::path::Path;
@@ -178,7 +180,7 @@ pub fn show_project_ledger(
         .capabilities
         .iter()
         .map(|entry| {
-            let stale = entry_stale(entry, code_signature.as_deref());
+            let stale = entry_stale(entry, code_signature.as_deref(), None);
             json!({
                 "entry_id": entry.entry_id,
                 "board_id": entry.board_id,
@@ -439,7 +441,7 @@ fn capability_entry_from_record(
         return Err(format!("unsupported ledger record kind: {}", record.kind));
     }
     let now = current_timestamp();
-    let status = record.status.unwrap_or_else(|| {
+    let mut status = record.status.unwrap_or_else(|| {
         if record.verification_level.starts_with("V4")
             || record.verification_level.starts_with("V5")
         {
@@ -453,6 +455,13 @@ fn capability_entry_from_record(
         }
         .to_string()
     });
+    if status == "verified"
+        && !(record.public_evidence_hash.is_some()
+            && (record.verification_level.starts_with("V4")
+                || record.verification_level.starts_with("V5")))
+    {
+        status = "stale".to_string();
+    }
     let entry = CapabilityEntry {
         entry_id: capability_entry_id(
             &record.board_id,
@@ -624,13 +633,14 @@ fn relevant_entries(
     redo: bool,
 ) -> Vec<ProjectLedgerEntryHint> {
     let dims = route_dimensions(route);
+    let source_signature = source_signature_for_readiness(route);
     ledger
         .capabilities
         .iter()
         .filter(|entry| entry_relevant(entry, prompt, &dims))
         .take(4)
         .map(|entry| {
-            let stale = entry_stale(entry, code_signature);
+            let stale = entry_stale(entry, code_signature, Some(source_signature.as_str()));
             ProjectLedgerEntryHint {
                 capability: entry.capability.clone(),
                 verification_level: entry.verification_level.clone(),
@@ -773,28 +783,6 @@ fn capability_entry_id(
     ))
 }
 
-fn entry_stale(entry: &CapabilityEntry, current_code_signature: Option<&str>) -> bool {
-    if entry.status == "stale" {
-        return true;
-    }
-    if let Some(expires_at) = &entry.expires_at
-        && expires_at.as_str() < current_timestamp().as_str()
-    {
-        return true;
-    }
-    if let (Some(recorded), Some(current)) = (&entry.project_code_signature, current_code_signature)
-        && recorded != current
-    {
-        return true;
-    }
-    false
-}
-
-fn digest_stale(digest: &ContextDigest) -> bool {
-    digest.runtime_version != env!("CARGO_PKG_VERSION")
-        || digest.expires_at.as_str() < current_timestamp().as_str()
-}
-
 fn redo_prompt(prompt: &str) -> bool {
     let lower = prompt.to_lowercase();
     contains_any(
@@ -878,6 +866,7 @@ mod tests {
 
     fn record(dir: &Path, capability: &str) -> PathBuf {
         let path = dir.join("record.json");
+        let source_signature = source_signature_for_readiness(&route());
         fs::write(
             &path,
             format!(
@@ -888,7 +877,7 @@ mod tests {
   "capability":"{capability}",
   "verification_level":"V5",
   "summary":"{capability} previously reached V5 build/upload/serial evidence on a redacted report.",
-  "source_signature":"sha256:source",
+  "source_signature":"{source_signature}",
   "public_evidence_hash":"sha256:evidence",
   "expand_commands":["lilygo-skills source query --board board-t-watch-ultra --topic imu --json"]
 }}"#
@@ -997,6 +986,42 @@ mod tests {
         fs::write(dir.join("main.cpp"), "bbbb").unwrap();
         let hints = hints_for_route(dir.as_path(), &route(), "T-Watch Ultra IMU debug");
         assert!(hints.entries[0].stale);
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn project_ledger_source_signature_mismatch_marks_stale() {
+        let dir = temp_project("source-drift");
+        let path = record(dir.as_path(), "imu.bhi260ap");
+        let mut input = fs::read_to_string(&path).unwrap();
+        input = input.replace(
+            &source_signature_for_readiness(&route()),
+            "sha256:obsolete-source",
+        );
+        fs::write(&path, input).unwrap();
+        record_from_file(dir.as_path(), path.as_path()).unwrap();
+        let hints = hints_for_route(dir.as_path(), &route(), "T-Watch Ultra IMU debug");
+        assert!(hints.entries[0].stale);
+        assert_eq!(hints.entries[0].status, "stale");
+        let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn project_ledger_record_cannot_force_verified_without_evidence() {
+        let dir = temp_project("missing-evidence");
+        let path = record(dir.as_path(), "imu.bhi260ap");
+        let mut input = fs::read_to_string(&path).unwrap();
+        input = input.replace(r#""public_evidence_hash":"sha256:evidence","#, "");
+        input = input.replace(
+            r#""verification_level":"V5","#,
+            r#""verification_level":"V5","status":"verified","#,
+        );
+        fs::write(&path, input).unwrap();
+        record_from_file(dir.as_path(), path.as_path()).unwrap();
+        let project = crate::project_context::resolve_project_context(dir.as_path()).unwrap();
+        let report = show_project_ledger(project.as_ref(), dir.as_path()).unwrap();
+        assert_eq!(report["capabilities"][0]["status"], "stale");
+        assert_eq!(report["capabilities"][0]["stale"], true);
         let _ = fs::remove_dir_all(&dir);
     }
 
