@@ -24,8 +24,9 @@ for arg in "$@"; do
 done
 
 FIXTURE_DIR="$ROOT/test/fixtures/capsules/m25.v1"
-CURRENT_DIR="$ROOT/.tmp/capsule-byte-diff/current"
-CACHE_DIR="$ROOT/.tmp/capsule-byte-diff/cache"
+RUN_DIR="$ROOT/.tmp/capsule-byte-diff/run-$$"
+CURRENT_DIR="$RUN_DIR/current"
+CACHE_DIR="$RUN_DIR/cache"
 mkdir -p "$CURRENT_DIR" "$CACHE_DIR" "$FIXTURE_DIR"
 rm -rf "$CURRENT_DIR" "$CACHE_DIR"
 mkdir -p "$CURRENT_DIR" "$CACHE_DIR"
