@@ -15,6 +15,7 @@ use std::time::{Duration, Instant};
 
 const DEFAULT_COMMAND_TIMEOUT_SECS: u64 = 300;
 const OBSERVATION_COMMAND_TIMEOUT_SECS: u64 = 10;
+const SERIAL_READ_LOOP: &str = "i=0; while [ $i -lt 8 ]; do serial-mcp-server read --port \"$1\" --baud 115200 --timeout-ms 1000 --json; i=$((i+1)); sleep 0.3; done";
 const PRIVATE_TARGET_WORDS: &str = "/dev/cu|/dev/tty|usbmodem|usbserial|usb id|vid:|pid:|.local";
 const SENSITIVE_OUTPUT_WORDS: &str = "access_token|auth_token|authorization|bearer |token=|password|passwd|psk|private_key|secret|ssid|wifi_ssid|wifi_password";
 
@@ -204,16 +205,12 @@ fn upload_argv(plan: &GoalPlan, options: &GoalStartOptions) -> Vec<String> {
 }
 
 fn serial_argv(options: &GoalStartOptions) -> Vec<String> {
-    let port = options.port.as_deref().unwrap_or("<port>");
-    vec![
-        "espflash".to_string(),
-        "monitor".to_string(),
-        format!("--port={port}"),
-        "--non-interactive".to_string(),
-        "--monitor-baud".to_string(),
-        "115200".to_string(),
-        "--skip-update-check".to_string(),
-    ]
+    // Runtime observation should read the app's CDC/UART stream directly.
+    // `espflash monitor` first synchronizes with the ROM bootloader, which is
+    // useful before flashing but unreliable after Arduino has already booted.
+    let mut argv = strings(&["sh", "-c", SERIAL_READ_LOOP, "serial-read"]);
+    argv.push(options.port.as_deref().unwrap_or("<port>").to_string());
+    argv
 }
 
 fn partition_argv(plan: &GoalPlan) -> Vec<String> {
@@ -458,7 +455,11 @@ pub(super) fn command_status(
     timed_out: bool,
     text: &str,
 ) -> String {
-    if exit_success || (timed_out && observation_step(step_id) && observation_payload_seen(text)) {
+    let serial = matches!(step_id, "monitor" | "capture-log");
+    let observed = observation_payload_seen(text);
+    let pass = (serial && observed)
+        || (!serial && (exit_success || (timed_out && observation_step(step_id) && observed)));
+    if pass {
         "PASS".to_string()
     } else {
         "FAIL".to_string()

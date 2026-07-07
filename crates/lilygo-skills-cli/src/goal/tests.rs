@@ -1129,15 +1129,22 @@ fn goal_command_argv_preserves_user_values() {
         .iter()
         .find(|command| command.step_id == "monitor")
         .expect("monitor command");
+    assert_eq!(monitor.argv.first().map(String::as_str), Some("sh"));
     assert!(
         monitor
             .argv
-            .contains(&"--port=/tmp/serial port --erase".to_string()),
+            .iter()
+            .any(|arg| arg.contains("serial-mcp-server read"))
+    );
+    assert!(
+        monitor
+            .argv
+            .contains(&"/tmp/serial port --erase".to_string()),
         "{:?}",
         monitor.argv
     );
     assert!(!monitor.argv.iter().any(|arg| arg == "--erase"));
-    assert!(!monitor.argv.iter().any(|arg| arg == "--no-reset"));
+    assert!(!monitor.argv[2].contains("/tmp/serial port --erase"));
 
     let lvgl_plan = plan("T-Watch Ultra Arduino LVGL touch does not move");
     let commands = super::runner::planned_commands(&lvgl_plan, &options);
@@ -1216,11 +1223,37 @@ fn arduino_watch_ultra_commands_use_verified_board_profile() {
         .iter()
         .find(|command| command.step_id == "monitor")
         .expect("monitor command");
-    assert!(!monitor.argv.iter().any(|arg| arg == "--no-reset"));
+    assert_eq!(monitor.argv.first().map(String::as_str), Some("sh"));
+    assert!(
+        monitor
+            .argv
+            .iter()
+            .any(|arg| arg.contains("--timeout-ms 1000")),
+        "{:?}",
+        monitor.argv
+    );
 }
 
 #[test]
 fn observation_timeout_with_payload_counts_as_pass() {
+    assert_eq!(
+        super::runner::command_status(
+            "monitor",
+            true,
+            false,
+            r#"{"read":{"bytes_read":0,"data":"","status":"ok","timeout_ms":3000}}"#,
+        ),
+        "FAIL"
+    );
+    assert_eq!(
+        super::runner::command_status(
+            "monitor",
+            true,
+            false,
+            r#"{"read":{"bytes_read":78,"data":"[T: 1.0] AX:+0.24 AY:-0.06 AZ:+1.01 GX:-0.43 GY:+0.49 GZ:+0.06\n","status":"ok","timeout_ms":3000}}"#,
+        ),
+        "PASS"
+    );
     assert_eq!(
         super::runner::command_status(
             "monitor",
