@@ -149,7 +149,9 @@ or `unknown_with_sources` instead of treating a reference as ready evidence.
 available, it enters mount-only mode: Codex/Claude entry points are wired, the
 meta router, source data, `skills/references/`, and `templates/skills/` are
 copied, and a setup-only launcher is installed. Full dynamic injection is enabled
-later with `node install.js --all --build` or `--bin /path/to/lilygo-skills`.
+later with a release-bundle prebuilt path
+(`node install.js --all --prebuilt-only`), `node install.js --all --build`, or
+`--bin /path/to/lilygo-skills`.
 The installed agent can still inspect the same context contracts and use setup
 plans to configure Rust/Cargo, Arduino, PlatformIO, ESP-IDF, or Rust esp-rs.
 

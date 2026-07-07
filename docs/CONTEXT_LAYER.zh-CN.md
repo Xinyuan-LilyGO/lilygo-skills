@@ -130,7 +130,8 @@ References 是公开阅读提示，例如官方示例、源码、datasheet、硬
 `node install.js --all` 默认先挂载 Skill。没有编译好的 runtime binary 时，它会进入
 mount-only 模式：接好 Codex/Claude 入口，复制 meta router、source data、
 `skills/references/` 和 `templates/skills/`，并提供 setup-only launcher。完整动态
-注入需要后续 `node install.js --all --build` 或 `--bin /path/to/lilygo-skills`。
+注入可以后续通过 release 包预编译路径（`node install.js --all --prebuilt-only`）、
+`node install.js --all --build` 或 `--bin /path/to/lilygo-skills` 开启。
 安装态 Agent 因此至少能查看和源码 checkout 一致的上下文契约，并能通过 setup plan
 继续配置 Rust/Cargo、Arduino、PlatformIO、ESP-IDF 或 Rust esp-rs 工具链。
 

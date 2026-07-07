@@ -48,6 +48,7 @@ GATES=(
   "code-size-boundary-smoke.sh"
   "meta-only-source-smoke.sh"
   "rust-module-doc-smoke.sh"
+  "router-skill-surface-smoke.sh"
   "source-comment-hygiene-smoke.sh"
   "static-context-template-smoke.sh"
   "install-build-failure-smoke.sh"

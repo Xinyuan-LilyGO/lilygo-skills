@@ -132,10 +132,22 @@ lilygo-skills doctor --json
 安装目录也包含 `skills/references/` 和 `templates/skills/`，因此安装态 Agent
 不需要浏览源码 checkout 也能查看同一套契约。
 
+release 包可以直接使用预编译 runtime，不需要本机 Rust：
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+node install.js --all --prebuilt-only
+```
+
+`--prebuilt-only` 不会退回 Cargo。在没有
+`dist/bin/<platform>/lilygo-skills` 的源码 checkout 里，dry-run 会报告选中的
+平台和 planned writes；真正 apply 会在写 runtime 文件前明确失败。源码开发时使用
+mount-only 或 `--build`。
+
 如果没有编译好的 runtime，且没有显式传 `--build`，`install.js` 仍会以
 **mount-only** 模式成功挂载。它会接好 Codex/Claude 入口，复制 meta router、
 data、templates 和 references，并安装一个很小的 setup-only launcher。这个
-launcher 不会伪装成完整板级事实注入；它会提示 Agent 先运行 `setup plan`，再构建
+launcher 不会伪装成完整板级事实注入；它会提示 Agent 先看 setup readiness，再构建
 或安装 runtime 后继续深入固件开发。
 
 需要在同一步升级为完整动态上下文时，使用 `--build`。
@@ -146,6 +158,7 @@ launcher 不会伪装成完整板级事实注入；它会提示 Agent 先运行 
 ```bash
 node install.js --all --dry-run
 node install.js --all
+node install.js --all --dry-run --prebuilt-only
 node install.js --all --dry-run --build
 node install.js --all --build
 node install.js --all --profile release

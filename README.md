@@ -147,12 +147,25 @@ The install root also contains `skills/references/` and `templates/skills/`, so
 installed agents can inspect the same contracts without reading the source
 checkout.
 
+Release bundles can install without Rust by using the packaged prebuilt
+runtime:
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+node install.js --all --prebuilt-only
+```
+
+`--prebuilt-only` never falls back to Cargo. In a source checkout without
+`dist/bin/<platform>/lilygo-skills`, dry-run reports the selected platform and
+planned writes, while apply fails before writing runtime files. Use mount-only
+or `--build` for source development.
+
 If no compiled runtime is present and `--build` is not requested, `install.js`
 still succeeds in **mount-only** mode. It wires the Codex/Claude entry points,
 copies the meta router, data, templates, and references, and installs a small
 setup-only launcher. That launcher does not pretend to provide full board fact
-injection; it tells the agent to run `setup plan` and then build or install the
-runtime before deeper firmware work.
+injection; it tells the agent to use setup readiness and then build or install
+the runtime before deeper firmware work.
 
 Use `--build` when the agent should upgrade the mount into full dynamic context
 in the same step. `install.js --build` runs
@@ -164,6 +177,7 @@ also install an explicit binary:
 ```bash
 node install.js --all --dry-run
 node install.js --all
+node install.js --all --dry-run --prebuilt-only
 node install.js --all --dry-run --build
 node install.js --all --build
 node install.js --all --profile release
