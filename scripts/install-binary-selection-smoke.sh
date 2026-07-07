@@ -88,4 +88,30 @@ check_profile "custom bin wins" "custom" "<redacted-path>/lilygo-skills" --bin "
 rm -f "$RELEASE" "$DEBUG"
 check_runtime_mode "no binary defaults to mount-only" "mount-only"
 
-echo '{"status":"PASS","cases":7}'
+prebuilt_output="$(run_install --prebuilt-only)"
+node - "$prebuilt_output" <<'NODE'
+const report = JSON.parse(process.argv[2]);
+const ok =
+  report.status === "PASS" &&
+  report.prebuilt_only === true &&
+  report.binary_profile === "prebuilt" &&
+  /^dist\/bin\/(macos|linux)-/.test(report.binary_source);
+if (!ok) {
+  console.error(JSON.stringify({ report }, null, 2));
+  process.exit(1);
+}
+NODE
+
+PREBUILT_HOME="$TMP/prebuilt-missing-home"
+mkdir -p "$PREBUILT_HOME"
+if node "$TMP/install.js" --codex --home "$PREBUILT_HOME" --prebuilt-only \
+  >"$TMP/prebuilt-missing.json" 2>&1; then
+  echo "FAIL missing prebuilt apply must fail" >&2
+  exit 1
+fi
+test ! -e "$PREBUILT_HOME/.codex/lilygo-skills" || {
+  echo "FAIL missing prebuilt wrote runtime files" >&2
+  exit 1
+}
+
+echo '{"status":"PASS","cases":9}'

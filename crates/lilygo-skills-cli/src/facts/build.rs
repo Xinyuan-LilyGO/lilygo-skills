@@ -229,18 +229,7 @@ pub(crate) fn facts_for_topic(pack: &BoardFactPack, topic: &str) -> Vec<SourceFa
         "expander" => pack.expander_matrix.clone(),
         "connector" => pack.connector_matrix.clone(),
         "peripheral" => pack.peripheral_table.clone(),
-        "display" => topic_facts(pack, &["display", "touch"]),
-        "imu" => topic_facts(pack, &["imu", "sensor", "bhi260ap"]),
-        "power" => topic_facts(pack, &["power", "pmu", "axp"]),
-        "lora" => topic_facts(
-            pack,
-            &[
-                "lora", "radio", "sx1262", "sx1268", "sx1276", "sx1278", "sx1280",
-            ],
-        ),
-        "gnss" => topic_facts(pack, &["gnss", "gps", "mia-m10"]),
-        "input" => topic_facts(pack, &["input", "keyboard", "button", "xl9555"]),
-        _ => Vec::new(),
+        topic => topic_facts(pack, &topic_needles(topic)),
     };
     facts.sort_by(|left, right| {
         right
@@ -252,7 +241,7 @@ pub(crate) fn facts_for_topic(pack: &BoardFactPack, topic: &str) -> Vec<SourceFa
 }
 
 fn bus_topic_facts(pack: &BoardFactPack, topic: &str) -> Vec<SourceFact> {
-    topic_facts(pack, &[topic])
+    topic_facts(pack, &[topic.to_string()])
         .into_iter()
         .filter(|fact| {
             let haystack = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
@@ -274,13 +263,14 @@ fn gpio_facts(pack: &BoardFactPack) -> Vec<SourceFact> {
         .collect()
 }
 
-pub(crate) fn topic_facts(pack: &BoardFactPack, needles: &[&str]) -> Vec<SourceFact> {
+pub(crate) fn topic_facts(pack: &BoardFactPack, needles: &[String]) -> Vec<SourceFact> {
     pack.peripheral_table
         .iter()
         .chain(pack.bus_matrix.iter())
         .chain(pack.expander_matrix.iter())
+        .chain(pack.connector_matrix.iter())
         .filter(|fact| {
-            let value = format!("{} {} {}", fact.topic, fact.key, fact.value).to_lowercase();
+            let value = format!("{} {}", fact.topic, fact.key).to_lowercase();
             needles.iter().any(|needle| value.contains(needle))
         })
         .cloned()
@@ -310,37 +300,45 @@ pub(crate) fn table_preview(
     }
 }
 
-pub(crate) fn normalize_topic(topic: &str) -> Result<&'static str, String> {
-    match topic {
-        "io" => Ok("io"),
-        "gpio" => Ok("gpio"),
-        "pinout" | "pin" | "pins" => Ok("pinout"),
-        "bus" => Ok("bus"),
-        "i2c" | "iic" => Ok("i2c"),
-        "spi" => Ok("spi"),
-        "uart" | "serial-bus" => Ok("uart"),
-        "i2s" => Ok("i2s"),
-        "expander" | "xl9555" => Ok("expander"),
-        "connector" | "socket" => Ok("connector"),
-        "peripheral" | "peripherals" => Ok("peripheral"),
-        "display" | "lvgl" | "screen" | "lcd" | "amoled" => Ok("display"),
-        "imu" | "sensor" | "gesture" => Ok("imu"),
-        "power" | "pmu" | "battery" => Ok("power"),
-        "lora" | "radio" => Ok("lora"),
-        "gnss" | "gps" => Ok("gnss"),
-        "input" | "keyboard" | "button" | "touch" => Ok("input"),
-        other => Err(format!("unsupported source topic: {other}")),
+pub(crate) fn normalize_topic(topic: &str) -> Result<String, String> {
+    let normalized = slug(topic);
+    if normalized.is_empty() {
+        return Err("empty source topic".to_string());
     }
+    let canonical = match normalized.as_str() {
+        "pin" | "pins" => "pinout",
+        "iic" => "i2c",
+        "serial-bus" => "uart",
+        "socket" => "connector",
+        "peripherals" => "peripheral",
+        "lvgl" | "screen" | "lcd" | "amoled" => "display",
+        "gesture" => "imu",
+        "pmu" | "battery" => "power",
+        "gps" => "gnss",
+        "rfid" => "nfc",
+        "keyboard" | "button" => "input",
+        _ => normalized.as_str(),
+    };
+    Ok(canonical.to_string())
 }
 
-pub(crate) fn normalize_completeness_topic(topic: &str) -> Result<&'static str, String> {
+pub(crate) fn normalize_completeness_topic(topic: &str) -> Result<String, String> {
     normalize_topic(topic)
 }
 
 pub(crate) fn is_readiness_topic(topic: &str) -> bool {
-    matches!(
+    !matches!(
         topic,
-        "display" | "imu" | "power" | "lora" | "gnss" | "input"
+        "io" | "pinout"
+            | "bus"
+            | "i2c"
+            | "spi"
+            | "uart"
+            | "i2s"
+            | "gpio"
+            | "expander"
+            | "connector"
+            | "peripheral"
     )
 }
 
@@ -364,6 +362,41 @@ pub(crate) fn topics_for_prompt(prompt: &str) -> Vec<String> {
     topics
 }
 
+pub(crate) fn dynamic_topics_for_prompt(pack: &BoardFactPack, prompt: &str) -> Vec<String> {
+    let normalized = prompt.to_lowercase();
+    let mut topics = BTreeSet::new();
+    for fact in &pack.peripheral_table {
+        let mut parts = fact.key.split('.');
+        if parts.next() != Some("peripheral") {
+            continue;
+        };
+        let Some(topic) = parts.next() else {
+            continue;
+        };
+        let haystack = format!("{} {} {}", topic, fact.key, fact.value).to_lowercase();
+        if haystack
+            .split(|ch: char| !ch.is_ascii_alphanumeric())
+            .filter(|part| part.len() >= 3)
+            .any(|part| normalized.contains(part))
+            || normalized.contains(topic)
+        {
+            topics.insert(topic.to_string());
+        }
+    }
+    topics.into_iter().collect()
+}
+
+pub(crate) fn topic_needles(topic: &str) -> Vec<String> {
+    let mut needles = BTreeSet::from([topic.to_string()]);
+    if let Some(extra) = prompt_keywords().topics.get(topic) {
+        needles.extend(extra.iter().map(|needle| slug(needle)));
+    }
+    needles
+        .into_iter()
+        .filter(|needle| !needle.is_empty())
+        .collect()
+}
+
 pub(crate) fn demo_matches_topic(demo: &crate::model::DemoRef, topic: &str) -> bool {
     let target = format!("{} {}", demo.target, demo.path).to_lowercase();
     match topic {
@@ -377,6 +410,7 @@ pub(crate) fn demo_matches_topic(demo: &crate::model::DemoRef, topic: &str) -> b
             ],
         ),
         "gnss" => contains_any(&target, &["gnss", "gps", "mia-m10", "factory"]),
+        "nfc" => contains_any(&target, &["nfc", "st25r3916", "rfal", "factory"]),
         "input" => contains_any(
             &target,
             &["input", "keyboard", "button", "touch", "factory"],

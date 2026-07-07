@@ -1,0 +1,289 @@
+{
+  "schema_version": 1,
+  "suite": "smoke",
+  "pilot": {
+    "date": "2026-07-07",
+    "model_label": "haiku",
+    "task": "T-Display-S3 4-question display/pin/demo task",
+    "with_skill": {
+      "fact_hits": 6,
+      "fact_total": 6,
+      "human_reviewed_score": 6,
+      "forbidden_claims": [],
+      "unverified_success_claims": 0
+    },
+    "bare_model": {
+      "fact_hits": 4,
+      "fact_total": 6,
+      "human_reviewed_score": 2,
+      "forbidden_claims": [
+        "swapped SDA/SCL",
+        "claimed SPI display instead of 8-bit parallel bus",
+        "prescribed Setup25 instead of Setup206"
+      ],
+      "unverified_success_claims": 0
+    }
+  },
+  "results": [
+    {
+      "task_id": "tdisplay-s3-display-minimal",
+      "with_skill": {
+        "expected_hits": ["examples/tft/tft.ino", "Setup206", "ST7789", "8-bit parallel"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["ST7789"],
+        "forbidden_hits": ["Setup25", "SPI display bus"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-i2c-pins",
+      "with_skill": {
+        "expected_hits": ["GPIO18", "GPIO17", "SDA before SCL"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["GPIO17", "GPIO18"],
+        "forbidden_hits": ["SDA=GPIO17", "SCL=GPIO18"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-display-occupied",
+      "with_skill": {
+        "expected_hits": ["GPIO39", "GPIO40", "GPIO41", "GPIO42", "GPIO45", "GPIO46", "GPIO47", "GPIO48"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["GPIO39", "GPIO40"],
+        "forbidden_hits": ["SPI display", "TFT_MOSI", "TFT_SCLK"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-factory-demo",
+      "with_skill": {
+        "expected_hits": ["examples/factory/factory.ino", "full factory"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["full factory"],
+        "forbidden_hits": ["only tft.ino is available"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-flash-troubleshoot",
+      "with_skill": {
+        "expected_hits": ["backlight", "power", "serial", "evidence boundary"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["backlight"],
+        "forbidden_hits": ["fixed without serial log", "hardware verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-tft-espi-pitfall",
+      "with_skill": {
+        "expected_hits": ["arduino-esp32", "2.0.14", "TFT_eSPI"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["TFT_eSPI"],
+        "forbidden_hits": ["latest core always works", "ignore setup file"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "twatch-ultra-imu",
+      "with_skill": {
+        "expected_hits": ["BHI260AP", "I2C 0x28", "SensorBHI260AP"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["IMU"],
+        "forbidden_hits": ["MPU6050", "SPI IMU", "unverified live motion"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "twatch-ultra-nfc",
+      "with_skill": {
+        "expected_hits": ["ST25R3916", "SPI", "RFAL"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["SPI"],
+        "forbidden_hits": ["PN532", "I2C NFC", "hardware verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "twatch-ultra-power",
+      "with_skill": {
+        "expected_hits": ["AXP2101", "I2C 0x34"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["power management"],
+        "forbidden_hits": ["AXP202", "battery charging tested"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "twatch-ultra-haptic",
+      "with_skill": {
+        "expected_hits": ["DRV2605", "I2C 0x5A"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": [],
+        "forbidden_hits": ["GPIO-only motor", "haptic verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tbeam-lora",
+      "with_skill": {
+        "expected_hits": ["LoRa", "SPI", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["LoRa"],
+        "forbidden_hits": ["display pins", "guessed free GPIO"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tbeam-gnss",
+      "with_skill": {
+        "expected_hits": ["GNSS", "UART", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["GNSS"],
+        "forbidden_hits": ["I2C GNSS", "verified fix"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdeck-keyboard",
+      "with_skill": {
+        "expected_hits": ["keyboard", "trackball", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["keyboard"],
+        "forbidden_hits": ["display-only test", "unverified input works"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdeck-lora",
+      "with_skill": {
+        "expected_hits": ["LoRa", "SPI", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["LoRa"],
+        "forbidden_hits": ["guessed SX model", "hardware verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-amoled-display",
+      "with_skill": {
+        "expected_hits": ["AMOLED", "display", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["display"],
+        "forbidden_hits": ["ST7789 without source", "Setup206"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tkeyboard-input",
+      "with_skill": {
+        "expected_hits": ["keyboard", "input", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["keyboard"],
+        "forbidden_hits": ["display-centric test", "unverified typing"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tlora-pager-radio",
+      "with_skill": {
+        "expected_hits": ["LoRa", "display", "official source"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["display"],
+        "forbidden_hits": ["no radio", "hardware verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tcamera-plus-s3-storage-camera",
+      "with_skill": {
+        "expected_hits": ["storage", "official source", "source query"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["storage"],
+        "forbidden_hits": ["free pins known", "camera capture verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdongle-s3-usb",
+      "with_skill": {
+        "expected_hits": ["official source", "source query"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": [],
+        "forbidden_hits": ["guessed pinout", "hardware verified"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "unsupported-rp2040-boundary",
+      "with_skill": {
+        "expected_hits": ["unsupported", "ESP32"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["LilyGO"],
+        "forbidden_hits": ["runnable supported", "deep injection"],
+        "unverified_success_claims": 0
+      }
+    }
+  ]
+}

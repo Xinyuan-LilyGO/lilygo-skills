@@ -37,6 +37,116 @@ ESP32-S3, ESP32-C3, and ESP32-P4. Other LilyGO products can be recorded as
 future source candidates, but the runtime must report unsupported build, flash,
 OTA, or hardware-debug guidance until that support is designed and verified.
 
+## How The Architecture Works
+
+lilygo-skills is a context harness, not a directory of static prompt snippets.
+The installed Skill is a small front door that lets the agent call a Rust
+runtime. That runtime decides whether a prompt is about LilyGO work, which board
+and framework are likely involved, what source facts are safe to inject, and
+which expansion commands should be shown next.
+
+The architecture has five practical parts:
+
+1. **Meta Skill entry**: `skills/lilygo-router/SKILL.md` is the only committed
+   routed Skill. It tells Codex or Claude Code how to call the installed
+   runtime and where generated context lives.
+2. **Source model**: `data/**`, `index/**`, schemas, recipes, playbooks, and
+   official references are the source of truth for boards, peripherals,
+   examples, setup paths, and debug guidance.
+3. **Generated layers**: board, framework, peripheral, chip, feature, debug,
+   app, and playbook Skills are generated into the install root or project
+   cache. They are runtime artifacts, not committed snapshots.
+4. **Compact capsules**: route and hook output starts small. Lookup prompts get
+   ids, critical facts, readiness, and expansion commands. Implementation or
+   debug prompts add selected demos, `next_actions`, and permission-aware goal
+   steps.
+5. **Project memory**: `.lilygo-skills/project.json` records public
+   board/framework defaults, while the project ledger can remember prompt-safe
+   context digests and previously verified capability summaries. Code/source
+   drift, runtime upgrades, TTL, or explicit re-verify wording makes that memory
+   stale.
+
+The result is progressive disclosure by default. The agent does not need to
+paste a full board manual into every prompt. It starts with the smallest useful
+capsule, then expands through stable commands such as:
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+lilygo-skills goal complete --dry-run --json "<prompt>"
+```
+
+Hardware-facing work is still explicit. `goal complete` is a coordinator: it can
+report readiness, missing source data, required setup, permissions, planned
+build/flash/serial steps, and evidence boundaries. It does not silently flash a
+board, open serial ports, run OTA, or claim hardware success from context alone.
+
+## Why This Is Better Than The Earlier Shape
+
+Earlier versions could route useful context, but too much behavior depended on
+large eager capsules, sparse board data, and tests that proved the route existed
+more than they proved the agent would receive the right next step. The current
+runtime improves that in four concrete ways:
+
+- **Less context by default**: current gates keep pure lookup hook context around
+  `819` bytes, implementation hook context around `1381` bytes, and repeated
+  same-session context around `209` bytes while preserving critical pins,
+  evidence boundaries, and expansion commands.
+- **More source-backed board coverage**: the official-source pipeline now checks
+  26 board fact packs with `fields_missing_source=0`; incomplete topics return
+  `unknown_with_sources` or `needs_source_ingestion` rather than invented facts.
+- **Better action guidance**: implementation prompts surface selected official
+  demos, source queries, and permission-aware `next_actions`; pure lookup
+  prompts stay read-only and do not receive build, flash, serial, network, or
+  OTA actions.
+- **Stronger regression gates**: byte-for-byte capsule fixtures, board
+  triple-question tests, scorecard grading, install/doctor smokes, and the
+  94-case benchmark check that the useful context and safety boundaries keep
+  working as the source model grows.
+
+This makes the Skill easier to extend and easier to trust: add or refresh source
+data, regenerate runtime Skills, run the gates, and the agent sees better board
+context without expanding the default prompt budget.
+
+## 60-Second First Check
+
+From a release bundle that includes a prebuilt runtime, the shortest install and
+self-check is:
+
+```bash
+node install.js --all --prebuilt-only && lilygo-skills doctor --json
+```
+
+From a source checkout without `dist/bin/<platform>/lilygo-skills`, use the same
+path in dry-run mode first:
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+```
+
+Then ask the agent a normal firmware question:
+
+```text
+I am using LilyGO T-Watch S3. Which display and touch pins are already occupied?
+```
+
+The expected capsule is not a long manual. It should identify
+`board-t-watch-s3`, stay at V3 source/context evidence, and expose compact facts
+or expansion commands for the display and touch topics. For the current source
+model, the agent can expand to source-backed facts such as:
+
+```text
+display: ST7789 240x240, MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, BL=GPIO45
+touch: FT6X36 on Wire1, SDA=GPIO39, SCL=GPIO40, INT=GPIO16
+expand: lilygo-skills source query --board board-t-watch-s3 --topic display --json
+expand: lilygo-skills source query --board board-t-watch-s3 --topic input --json
+```
+
+That is the intended first experience: the user speaks normally, the agent gets
+the board-specific facts that are ready, and any deeper work continues through
+explicit source query, goal plan, setup, and permissioned verification commands.
+
 ## Install Into Your AI Agent
 
 Give your agent the repo link and ask it to install the Skill:
@@ -147,12 +257,25 @@ The install root also contains `skills/references/` and `templates/skills/`, so
 installed agents can inspect the same contracts without reading the source
 checkout.
 
+Release bundles can install without Rust by using the packaged prebuilt
+runtime:
+
+```bash
+node install.js --all --dry-run --prebuilt-only
+node install.js --all --prebuilt-only
+```
+
+`--prebuilt-only` never falls back to Cargo. In a source checkout without
+`dist/bin/<platform>/lilygo-skills`, dry-run reports the selected platform and
+planned writes, while apply fails before writing runtime files. Use mount-only
+or `--build` for source development.
+
 If no compiled runtime is present and `--build` is not requested, `install.js`
 still succeeds in **mount-only** mode. It wires the Codex/Claude entry points,
 copies the meta router, data, templates, and references, and installs a small
 setup-only launcher. That launcher does not pretend to provide full board fact
-injection; it tells the agent to run `setup plan` and then build or install the
-runtime before deeper firmware work.
+injection; it tells the agent to use setup readiness and then build or install
+the runtime before deeper firmware work.
 
 Use `--build` when the agent should upgrade the mount into full dynamic context
 in the same step. `install.js --build` runs
@@ -164,6 +287,7 @@ also install an explicit binary:
 ```bash
 node install.js --all --dry-run
 node install.js --all
+node install.js --all --dry-run --prebuilt-only
 node install.js --all --dry-run --build
 node install.js --all --build
 node install.js --all --profile release
@@ -188,8 +312,10 @@ lilygo-skills doctor --json --home "$HOME"
 `doctor` checks runtime data, generated skill availability, one LilyGO sample
 injection, one no-op sample, and the active `$HOME` Codex/Claude wiring by
 default. Missing host integration is reported as a warning; malformed LilyGO
-hook wiring fails. It does not claim hardware, OTA, serial, RF, display, or
-sensor success.
+hook wiring fails. When both Codex and Claude runtimes exist, `doctor` also
+checks whether their installed binary/data mirrors have drifted. Drift is a
+warning with a reinstall command; broken hook wiring remains a failure. It does
+not claim hardware, OTA, serial, RF, display, or sensor success.
 
 Setup is routed through the Skill before any installer is run. For machine
 readiness, use the read-only setup planner:
@@ -235,6 +361,23 @@ tells the agent to inspect the goal plan before editing firmware or touching
 hardware. Build, flash, serial, network, and OTA actions are still shown only as
 permissioned next steps. Display bring-up prompts prefer small official demos;
 factory examples remain available for full-board or multi-peripheral debugging.
+Mixed prompts prefer action when the user asks the agent to do something, for
+example "check the pins, then bring up the display". Pure lookup wording such as
+"which pins are used by the screen?" stays read-only in English and Chinese.
+
+Inside one AI session, repeated identical board/topic hook context can collapse
+to a short incremental capsule. Critical pins, evidence boundaries, and
+expansion commands stay visible; bulky repeated facts, demos, recipes, and
+generated skill lists are trimmed. The agent can always expand again with
+`source query`, `index query`, generated skill reads, or `goal plan`.
+
+Across sessions in a firmware repo, the project ledger applies the same idea to
+public project memory. It stores prompt-safe summaries, source signatures,
+previously verified capability evidence, and context digests under
+`.lilygo-skills/`. It does not store ports, Wi-Fi details, OTA endpoints,
+tokens, raw logs, or private evidence paths, and it never replaces official
+source facts. When the user asks to re-run or re-verify something, the compact
+memory is bypassed and the full source/goal path is offered again.
 
 Common tasks can be requested directly:
 
@@ -248,7 +391,9 @@ Common tasks can be requested directly:
 | "Run the benchmark and confirm context injection did not regress." | `benchmark --generated-root ...` or the default registry benchmark |
 | "Verify this to V3/V4/V5 and show the evidence." | The matching route/source/build/flash/serial/OTA/display evidence path |
 | "This repo has its own LVGL or serial debug checklist. Add it as local context." | `.lilygo-skills/skills/index.json` plus a project `SKILL.md` routed as supplemental context |
+| "We already verified the display bring-up here; remember that for this repo." | `project ledger record` through a redacted evidence summary, then compact future injections |
 | "Confirm the installed injection chain is alive." | `doctor --json` |
+| "Check the hardware evidence harness without touching my board." | `scripts/hardware-gold-standard-live-smoke.sh --dry-run` |
 
 These natural-language prompts map to explicit runtime paths. Ordinary Q&A does
 not write files implicitly; install, project init, generation, update,
@@ -326,9 +471,11 @@ The runtime is intentionally layered so it does not flood the model context.
 | L7 | Detail is required | Source facts, preferences, reference read hints |
 | L8 | Facts are incomplete | Completeness status and enrichment next actions |
 | L9 | Reusable implementation/debug pattern is needed | Generated playbook hints and expansion commands |
-| L10 | Agent needs to finish a task | `goal complete` state, plan, permissions, and evidence summary |
-| L11 | Implementation or debug path is needed | Intent-ranked demos and permission-aware `next_actions` |
-| L12 | Prompt budget must stay small | Dedupe, incremental hints, and explicit expansion commands |
+| L10 | Agent needs to finish a task | Completion coordinator state, setup, permissions, and evidence summary |
+| L11 | Implementation or debug path is needed | Action routing, intent-ranked demos, and permission-aware `next_actions` |
+| L12 | Prompt budget must stay small | Goal bridge, active doctor hints, and compact starter-board refs |
+| L13 | Repeated prompt context appears | Lookup/action split, session incremental hints, runtime parity, hardware harness |
+| L14 | Project has already seen or verified context | Project ledger hits, stale markers, and re-verify commands |
 
 Route and hook output stay small: ids, summaries, top facts, readiness status,
 and lookup commands. Full fact packs, official source files, and long reference
@@ -378,6 +525,33 @@ explicit prompt > project context > global profile > needs_clarification > no-op
 
 If the board or framework is missing, the agent receives structured questions
 instead of silently guessing.
+
+The project ledger is a separate memory layer under the same directory:
+
+```text
+.lilygo-skills/
+  project.json            public board/framework defaults
+  ledger.json             public summaries of previously verified capabilities
+  context-digest.json     public hashes of context already injected here
+  local.json              ignored private runner details
+  evidence/               ignored private or raw evidence
+```
+
+Agents normally maintain the ledger through `goal complete` after evidence
+exists, or through a structured redacted record when the user explicitly asks
+them to remember a verified project capability. Future prompts receive compact
+past-tense hints such as "previously verified" plus expansion commands. If the
+project source changes, source signatures change, the runtime version changes,
+the digest expires, or the user asks to re-run/re-verify, the entry becomes
+stale or is bypassed. To inspect or reset this public memory:
+
+```bash
+lilygo-skills project ledger show --project /path/to/firmware --json
+lilygo-skills project ledger clear --project /path/to/firmware --json
+```
+
+Set `LILYGO_SKILLS_DISABLE_PROJECT_LEDGER=1` to force full non-ledger behavior
+while debugging the runtime.
 
 ## Preferences And References
 

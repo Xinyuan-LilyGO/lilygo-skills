@@ -16,6 +16,7 @@ expands only when the task needs more detail.
 | Templates | `templates/skills/*.md` | Public templates for generated runtime Skill files. |
 | Source model | `data/**`, `index/**` | Board, fact, peripheral, playbook, and route data. |
 | Generated skills | install/cache/project output | Materialized by install, update, or explicit generation. |
+| Project ledger | `.lilygo-skills/ledger.json`, `.lilygo-skills/context-digest.json` | Prompt-safe project memory and repeated-context digests. |
 
 The route layer uses explicit tokens rather than unsafe prefix or substring
 matches. The source model creates chip skills only for real chip identifiers;
@@ -94,6 +95,31 @@ selected demos, and permissioned next actions, but repeated board, framework,
 demo, project-skill, and topic details collapse into short incremental hints
 with expansion commands.
 
+Incremental hook context is session-scoped. It activates only when the hook
+event carries a stable session id, or when tests set `LILYGO_SKILLS_SESSION_ID`.
+The cache expires by TTL and runtime version; set
+`LILYGO_SKILLS_DISABLE_INCREMENTAL=1` to force full capsules. An incremental
+capsule still includes critical pins, source-query expansion, and evidence
+boundaries. It trims only repeated bulky lists such as facts, demos, recipes,
+generated skills, and playbook summaries.
+
+Project ledger context is repo-scoped. After `project init`, the runtime may
+record public context digests and previously verified capability summaries under
+`.lilygo-skills/`. A repeated prompt can then receive a small ledger capsule
+instead of the same full context. The capsule still keeps critical facts,
+evidence boundaries, stale markers, and expansion commands. Ledger entries
+become stale when code, source signatures, runtime version, TTL, or explicit
+re-verify wording says the prior evidence should not be reused.
+
+Useful expansion commands remain stable:
+
+```bash
+lilygo-skills source query --board <board-id> --topic io --json
+lilygo-skills index query <skill-or-playbook-id> --json
+lilygo-skills goal plan --json "<prompt>"
+lilygo-skills project ledger show --project <project-dir> --json
+```
+
 Incomplete starter board packs follow the same rule. They may expose
 `unknown_with_sources` or `needs_source_ingestion` plus official references so
 the agent knows where to inspect next; they do not invent pins, peripherals, or
@@ -123,9 +149,16 @@ or `unknown_with_sources` instead of treating a reference as ready evidence.
 available, it enters mount-only mode: Codex/Claude entry points are wired, the
 meta router, source data, `skills/references/`, and `templates/skills/` are
 copied, and a setup-only launcher is installed. Full dynamic injection is enabled
-later with `node install.js --all --build` or `--bin /path/to/lilygo-skills`.
+later with a release-bundle prebuilt path
+(`node install.js --all --prebuilt-only`), `node install.js --all --build`, or
+`--bin /path/to/lilygo-skills`.
 The installed agent can still inspect the same context contracts and use setup
 plans to configure Rust/Cargo, Arduino, PlatformIO, ESP-IDF, or Rust esp-rs.
+
+`doctor --json` validates the installed runtime from the checked home. Besides
+route and hook samples, it compares Codex and Claude runtime mirrors when both
+exist. Matching mirrors pass, a single installed host passes, and drift is a
+warning with a reinstall command.
 
 The support model is board-family extensible. Current verified runtime coverage
 starts with the LilyGO ESP32 family. Without matching V4/V5 evidence,

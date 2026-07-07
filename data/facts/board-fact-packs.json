@@ -178,12 +178,30 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3",
+            "hash": "sha256:d79f7332c02867048cd5b600deb6c70e88aa69ff66e94fa94eac803f59a53f7f"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3",
-          "hash": "sha256:2158f78fbc3436c0b8312e978ffb220f17b4c00b262c5edde82be1d21181de04"
+          "hash": "sha256:d79f7332c02867048cd5b600deb6c70e88aa69ff66e94fa94eac803f59a53f7f"
         },
         {
           "kind": "documentation-repo",
@@ -193,7 +211,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-camera-series/t-camera-plus-s3/",
-          "hash": "sha256:a63cebb553d6bfd02a98c9ec581c9598871e54c30f720e9d33726e8b03a7cf74"
+          "hash": "sha256:5a3aa3acb73db5de14302c69a8d1b52ef06d0a94ce2b5392f43f1bc3170733c5"
         }
       ],
       "conflicts": []
@@ -259,12 +277,30 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3",
+            "hash": "sha256:7656477fc16383296eb87c7a8773c3bb5e40926f3bc929addc4707eeb925f5c5"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3",
-          "hash": "sha256:c1d7d6c931b61a09f56ef27d528101f41092687df8eaecc981cd0880ab0658d8"
+          "hash": "sha256:7656477fc16383296eb87c7a8773c3bb5e40926f3bc929addc4707eeb925f5c5"
         },
         {
           "kind": "documentation-repo",
@@ -274,7 +310,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/other/t-circle-s3/",
-          "hash": "sha256:df7bd5682dffdda047f99d40c64f5fe12d6585fab27d4e36944afcff5610409f"
+          "hash": "sha256:94b76e6b5da53332f6b6390d9040a02802fa94757bbec5eedaf74376da8e3517"
         }
       ],
       "conflicts": []
@@ -340,12 +376,30 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "peripheral",
+          "key": "peripheral.primary",
+          "value": "unknown_with_sources",
+          "claim": "Primary peripheral set requires official product source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
+            "hash": "sha256:d8f859b20b3add07f99ee1ed14d3dd9872fe03c63963097710a494bdb3dbcceb"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
-          "hash": "sha256:1c2a20069d8e3607976520f4ac683ce6db979193c194341b54b3f4f7156e639b"
+          "hash": "sha256:d8f859b20b3add07f99ee1ed14d3dd9872fe03c63963097710a494bdb3dbcceb"
         },
         {
           "kind": "documentation-repo",
@@ -355,7 +409,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-connect-series/t-connect-pro/",
-          "hash": "sha256:63bb683a1f4d83c742e9a42e9f45ff49b7cfe4c1e05d91f2ae6c1fc223a5a2f7"
+          "hash": "sha256:9947a261010199aa9f3e5321ceaac1502e8bcd84325b07f1ef3d5e58fc01416e"
         }
       ],
       "conflicts": []
@@ -554,12 +608,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
+            "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display",
-          "hash": "sha256:24bbb018928242703efe76be661ee0289b293603df2a374f360d940e236e5cc8"
+          "hash": "sha256:953f1e3aad3fbec172a767ef4a68426ce72775ef26b55b5f81ff79ace389aa84"
         },
         {
           "kind": "documentation-repo",
@@ -569,7 +743,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display/",
-          "hash": "sha256:8f7f1863219b756b686839d670eab1368b92d5b44134449f3651bbc5476f02bd"
+          "hash": "sha256:b93ffef7800f2b523d375a9cead11c219e8f9ccd24092305e37435e527200283"
         }
       ],
       "conflicts": []
@@ -635,12 +809,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
+            "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar",
-          "hash": "sha256:aaed7ae78dedd3fd079b1adc227fd9709d9f3bb0cc4f34c72f31069d4cd4f5f0"
+          "hash": "sha256:a5d76b6ddf982135b298ce9b1ad893a133a4a112efa9e72557b74a8b91846216"
         },
         {
           "kind": "documentation-repo",
@@ -650,7 +944,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-bar/",
-          "hash": "sha256:209ee39a9747fe0701e49e312d5fc54653d06ff9e57394000f3af43b157e641b"
+          "hash": "sha256:3ad040b63668023e70e7f853e77321135d98dd4ee08c048f23564361dca53730"
         }
       ],
       "conflicts": []
@@ -716,12 +1010,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
+            "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4",
-          "hash": "sha256:311b09994b7d9af6bbb248b1ec1e00d9e770375f1cf4d76adffa60df192b6839"
+          "hash": "sha256:c6c644451eb5588bff08d95125e7e9226dc3f76ba91f6d19119f7ebf0400c2a9"
         },
         {
           "kind": "documentation-repo",
@@ -731,7 +1145,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-p4/",
-          "hash": "sha256:6eb39272deb9a0ebcaafc1f4d0498c67e50f7fbc45d991ebaea5666e8812f6bd"
+          "hash": "sha256:f652e91436a78635824b83239b00355838ebc39d98f064ce8450203a71c67145"
         }
       ],
       "conflicts": []
@@ -1250,6 +1664,108 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED",
+            "hash": "sha256:75c76a77d0337b2f716624f5b6b405e95a782715f4db7cabd4a48d09d9b5ca57"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
         }
       ],
       "source_refs": [
@@ -1332,12 +1848,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled-1.64",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
+            "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64",
-          "hash": "sha256:786f3d5edf23891bf5bcb49ddf403f7ce44fd9e0bae49d52c4eb51f1a2e83df5"
+          "hash": "sha256:e6c8e7108c0b65296f655e7241ab22b7d405b8c04ca2d3a03c70d5cbb1ca39c7"
         },
         {
           "kind": "documentation-repo",
@@ -1347,7 +1983,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-amoled-1.64/",
-          "hash": "sha256:d831053812f7d60af7f2e493761c7ec7d6714e1aeacd3ee8184c3defbcb81040"
+          "hash": "sha256:79d705bcd18ba180da7dec37023d42dc825bb1d5d0ce241bab0f768e034c20ab"
         }
       ],
       "conflicts": []
@@ -1413,12 +2049,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
+            "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long",
-          "hash": "sha256:5e871c4269a947914ab522f313de21dcf9e8515294a9ee4acaf31e3258f45a95"
+          "hash": "sha256:5a8b329d7b252ee550fcc809976aa80d9ba75716a940290e2b0974df01a73780"
         },
         {
           "kind": "documentation-repo",
@@ -1428,7 +2184,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-long/",
-          "hash": "sha256:1dab9d17833be82b4e54362d7dc65ed170ec90c152184245df4c4be1170809bf"
+          "hash": "sha256:9c44af72fb55f8ac73810054a67a7f8627b7b6eca4bf782ec16ea584b2bae9f6"
         }
       ],
       "conflicts": []
@@ -1494,12 +2250,132 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-pro",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
+            "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Pro",
-          "hash": "sha256:bff0f1953bead08b156dfda60b904e698f918014ae7b59e2bc12d169529b5a5a"
+          "hash": "sha256:9d03d55edff17a55e8fff289b80aaf67de025802b60026706e48edc8c416b522"
         },
         {
           "kind": "documentation-repo",
@@ -1509,7 +2385,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-display-series/t-display-s3-pro/",
-          "hash": "sha256:f21674672cd3d33c6fce2569ed822f212762c0f6ebdf9fe52de3ee66e5cd7e17"
+          "hash": "sha256:4a08ef70c05875efe30ca1d14ed397c5670648fef80596ce20ca6b5699227df8"
         }
       ],
       "conflicts": []
@@ -1575,12 +2451,98 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+            "hash": "sha256:eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+            "hash": "sha256:eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+            "hash": "sha256:eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
+            "hash": "sha256:eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3",
-          "hash": "sha256:52a7c1a92988538ff87ed3c4f28c459eefcaf83aa49c0a6dffd401048a19ad8a"
+          "hash": "sha256:eaf5b5347e0db65a17f4fd7dc8a4529ac4eec0877b7157f3cd29300a78c00de0"
         },
         {
           "kind": "documentation-repo",
@@ -1590,7 +2552,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-dongle-series/t-dongle-s3/",
-          "hash": "sha256:76b5c45c40c278ec530ebb1a9903beca7118bc12aa4005e16dd5a46d4ffd13fb"
+          "hash": "sha256:7fe7f5571daf46d032004a00359a237cd5f7c2c21a5fe5dd089b5259d0aad1f7"
         }
       ],
       "conflicts": []
@@ -1656,12 +2618,47 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
+            "hash": "sha256:aecc90be5534e8bfef6d096ddc0da7d091a7b0eb13c9675aab93c17a8ed00504"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
+            "hash": "sha256:aecc90be5534e8bfef6d096ddc0da7d091a7b0eb13c9675aab93c17a8ed00504"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro",
-          "hash": "sha256:e010b1e6bb14ae359698928e7ece652fda4afa98723fce227504ba2e98316216"
+          "hash": "sha256:aecc90be5534e8bfef6d096ddc0da7d091a7b0eb13c9675aab93c17a8ed00504"
         },
         {
           "kind": "documentation-repo",
@@ -1671,7 +2668,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-encoder-series/t-encoder-pro/",
-          "hash": "sha256:0e110e80bd5e9744c97fd5d98106fc6bcea566d940c727fcc7181c79d60105f7"
+          "hash": "sha256:aba80fe43c9c607f940f71b34c98d810f65cbcadf51ae008a9035a6c1a6bff75"
         }
       ],
       "conflicts": []
@@ -1737,12 +2734,30 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4",
+            "hash": "sha256:d2a3b25353635928e9e44cc5dad2685b32847f98e268ed7cab8a978e892adf47"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4",
-          "hash": "sha256:d02e7e3dcfed47294b4295c4ef16a73f5beda906ffd48f4955e7381338a8cb61"
+          "hash": "sha256:d2a3b25353635928e9e44cc5dad2685b32847f98e268ed7cab8a978e892adf47"
         },
         {
           "kind": "documentation-repo",
@@ -1752,7 +2767,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-halow-series/t-halow-p4/",
-          "hash": "sha256:66935abf7d62a9d46c77bb885e83d355cfe3b8f4a9f35df722efbdb2efb921f7"
+          "hash": "sha256:355592c6d96cb2a98eeca59626835d0c03a0e8400a5ee2856b08d5e80f3e14d2"
         }
       ],
       "conflicts": []
@@ -1818,12 +2833,64 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-keyboard-s3-pro",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+            "hash": "sha256:96485b035ded3d1fc53a0d8a09e78c11a00894c99b585986eef9a0e04ba56862"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-keyboard-s3-pro",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+            "hash": "sha256:96485b035ded3d1fc53a0d8a09e78c11a00894c99b585986eef9a0e04ba56862"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-keyboard-s3-pro",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
+            "hash": "sha256:96485b035ded3d1fc53a0d8a09e78c11a00894c99b585986eef9a0e04ba56862"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro",
-          "hash": "sha256:dac9f442bcf875f412dad2ea6000fb5f4f0d5829e804b9341507f401cb5f8fce"
+          "hash": "sha256:96485b035ded3d1fc53a0d8a09e78c11a00894c99b585986eef9a0e04ba56862"
         },
         {
           "kind": "documentation-repo",
@@ -1833,7 +2900,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/other/t-keyboard-s3-pro/",
-          "hash": "sha256:c75da7f9aec5f5b3a052390a14b97f32360b27d955fe2660afe36def77a5a9de"
+          "hash": "sha256:b855b4a647aad42cd609f8bd7a69ecb8ea789ac835f2a8db7cda44d787412134"
         }
       ],
       "conflicts": []
@@ -1899,12 +2966,64 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "lora",
+          "key": "lora.chip",
+          "value": "unknown_with_sources",
+          "claim": "LoRa chip must be confirmed from official board source before selecting RadioLib parameters.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "lora",
+          "key": "lora.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "LoRa bus and pins must be confirmed from official headers or product docs.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "lora",
+          "key": "lora.antenna",
+          "value": "unknown_with_sources",
+          "claim": "Radio antenna and regional caveats require product documentation before RF assumptions.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-          "hash": "sha256:ca327aed19ec6eb032a129da288e8c48631f2dc9c83b323bf867cc9d02b23240"
+          "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
         },
         {
           "kind": "documentation-repo",
@@ -1914,7 +3033,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-lora-series/t-lora-pager/",
-          "hash": "sha256:7cb39ec78f369554be114fc4805c88e8d83142885dc7cedfc92ce6e1ccab4878"
+          "hash": "sha256:6f4fbd209dda5147be9fc295037ce42d3bb47fe17634aba93e6b3cd043fcaf35"
         }
       ],
       "conflicts": []
@@ -1980,12 +3099,142 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "power",
+          "key": "power.manager",
+          "value": "unknown_with_sources",
+          "claim": "Power manager or battery measurement facts require official source inspection.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "documentation-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
           "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library",
+          "hash": "sha256:8bfa074769d011951f8cb975108783a8eaed4211d5e0c3f24336ba9496098c47"
+        },
+        {
+          "kind": "wiki",
+          "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-2019/",
+          "hash": "sha256:eb6b3b67734065fee2fd7933e3f9bbab81e5eacb166c3c699e2953f773bcfec9"
         }
       ],
       "conflicts": []
@@ -2127,17 +3376,512 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "BOARD_TFT_MOSI=GPIO13",
+          "claim": "T-Watch S3 ST7789 display MOSI pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.sclk",
+          "value": "BOARD_TFT_SCLK=GPIO18",
+          "claim": "T-Watch S3 ST7789 display SCLK pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "BOARD_TFT_CS=GPIO12",
+          "claim": "T-Watch S3 ST7789 display chip-select pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "BOARD_TFT_DC=GPIO38",
+          "claim": "T-Watch S3 ST7789 display data/command pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.rst",
+          "value": "BOARD_TFT_RST=-1",
+          "claim": "T-Watch S3 ST7789 display reset is not connected in official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.display.bl",
+          "value": "BOARD_TFT_BL=GPIO45",
+          "claim": "T-Watch S3 display backlight pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.sda",
+          "value": "BOARD_TOUCH_SDA=GPIO39",
+          "claim": "T-Watch S3 touch I2C SDA pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.scl",
+          "value": "BOARD_TOUCH_SCL=GPIO40",
+          "claim": "T-Watch S3 touch I2C SCL pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "BOARD_TOUCH_INT=GPIO16",
+          "claim": "T-Watch S3 touch interrupt pin from official utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.main.sda",
+          "value": "BOARD_I2C_SDA=GPIO10",
+          "claim": "T-Watch S3 main I2C SDA for BMA423, PCF8563, AXP2101, and DRV2605L.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.main.scl",
+          "value": "BOARD_I2C_SCL=GPIO11",
+          "claim": "T-Watch S3 main I2C SCL for BMA423, PCF8563, AXP2101, and DRV2605L.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+            "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.display.st7789",
+          "value": "ST7789 display SPI: MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, RST=-1, MISO=-1; 240x240 panel",
+          "claim": "T-Watch S3 TFT_eSPI Setup212 and utilities.h define the ST7789 display bus and resolution.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.touch.ft6x36",
+          "value": "FT6X36 touch controller on Wire1: SDA=GPIO39, SCL=GPIO40, INT=GPIO16",
+          "claim": "LilyGoLib initializes TouchDrvFT6X36 on Wire1 with BOARD_TOUCH_SDA and BOARD_TOUCH_SCL.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "bus",
+          "key": "bus.i2c.main",
+          "value": "Main I2C bus: SDA=GPIO10, SCL=GPIO11 for BMA423, PCF8563, AXP2101, and DRV2605L",
+          "claim": "T-Watch S3 utilities.h and LilyGoLib initialize main Wire on BOARD_I2C_SDA/BOARD_I2C_SCL.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "ST7789 240x240 TFT",
+          "claim": "T-Watch S3 uses an ST7789 240x240 display per official TFT_eSPI Setup212.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "SPI display bus: MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, RST=-1, MISO=-1",
+          "claim": "T-Watch S3 display SPI pins come from official Setup212 and utilities.h.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "Backlight BOARD_TFT_BL=GPIO45; AXP2101 ALDO2 controls TFT backlight VDD; ALDO3 controls screen/touch VDD",
+          "claim": "T-Watch S3 utilities.h defines BOARD_TFT_BL and LilyGoLib powerIoctl maps display/touch power domains.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "FT6X36 capacitive touch controller",
+          "claim": "T-Watch S3 LilyGoLib includes TouchDrvFT6X36 and initializes it for the touch panel.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "Touch I2C on Wire1: SDA=GPIO39, SCL=GPIO40, INT=GPIO16",
+          "claim": "T-Watch S3 official utilities.h defines touch SDA/SCL/INT and LilyGoLib begins TouchDrvFT6X36 on Wire1.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "power",
+          "key": "power.manager",
+          "value": "unknown_with_sources",
+          "claim": "Power manager or battery measurement facts require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "audio",
+          "key": "audio.chip",
+          "value": "unknown_with_sources",
+          "claim": "audio chip or controller requires official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "audio",
+          "key": "audio.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "audio bus or pin mapping requires official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "display.resolution",
+          "value": "240x240",
+          "claim": "T-Watch S3 official TFT_eSPI Setup212 defines TFT_WIDTH=240 and TFT_HEIGHT=240.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+            "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "input.touch_interrupt",
+          "value": "BOARD_TOUCH_INT=GPIO16; active state read by isPressed()",
+          "claim": "LilyGoLib reads BOARD_TOUCH_INT to report touch press state.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "input",
+          "key": "framework.demo_refs",
+          "value": "examples/display/; examples/lvgl/; src/LilyGoLib.cpp TouchDrvFT6X36 initialization",
+          "claim": "Official examples plus LilyGoLib touch initialization are the source-backed starting points for input/touch bring-up.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+            "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "framework.demo_refs",
+          "value": "examples/display/; examples/lvgl/; extras/Setup212_LilyGo_T_Watch_S3.h",
+          "claim": "Official display and LVGL examples plus TFT_eSPI Setup212 are the source-backed starting points for T-Watch S3 display bring-up.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/examples/display/README.MD",
+            "hash": "sha256:520df807d8402889d229d25d70310b1870dab880ca6bcc29e0e47d4b9026acdf"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3",
+          "topic": "display",
+          "key": "framework.build_hint",
+          "value": "Use TTGO_TWatch_Library t-watch-s3 branch; for Arduino use ESP32S3 Dev Module, esp32 core 2.0.9, PSRAM OPI, and TFT_eSPI Setup212_LilyGo_T_Watch_S3.h.",
+          "claim": "Official T-Watch S3 README documents PlatformIO/Arduino quick start and Setup212 selection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/README.md",
+            "hash": "sha256:75c356a3acf2c6a480a731f5acd5306fe12eee021f2075329e6ffcad9dac1b92"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-          "hash": "sha256:ca327aed19ec6eb032a129da288e8c48631f2dc9c83b323bf867cc9d02b23240"
+          "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
         },
         {
           "kind": "documentation-repo",
@@ -2147,7 +3891,37 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3/",
-          "hash": "sha256:ef29fd725a7c6f386b0abe1e35c926daf0a31c21a557abd092d3e30be27dd3b3"
+          "hash": "sha256:5523dc5448f53447ab132020f28c98ebff5e7dbd089293148672ddc59a7974f0"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/utilities.h",
+          "hash": "sha256:3d7b76217ca962380f0adb1fab83f437aa2a385916b58cdf9e831030bbb03e4b"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/extras/Setup212_LilyGo_T_Watch_S3.h",
+          "hash": "sha256:19775b8a7dc7797d927ab5ee483188fd48e274f78e47a4cfd4ea021e8280f396"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/src/LilyGoLib.cpp",
+          "hash": "sha256:f3f09229bc6c1be1fce008b6d4d3c1ad30665364515eec3b92e4bf3ab4c5dfcf"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/t-watch-s3/README.md",
+          "hash": "sha256:75c356a3acf2c6a480a731f5acd5306fe12eee021f2075329e6ffcad9dac1b92"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/t-watch-s3/examples/display",
+          "hash": "sha256:520df807d8402889d229d25d70310b1870dab880ca6bcc29e0e47d4b9026acdf"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/tree/t-watch-s3/examples/lvgl",
+          "hash": "sha256:0b885c1efee408b924de948c5c9b7ebf62531c339efa6cd1ffc44168be28299c"
         }
       ],
       "conflicts": []
@@ -2213,12 +3987,183 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "power",
+          "key": "power.manager",
+          "value": "unknown_with_sources",
+          "claim": "Power manager or battery measurement facts require official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "audio",
+          "key": "audio.chip",
+          "value": "unknown_with_sources",
+          "claim": "audio chip or controller requires official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch-s3-plus",
+          "topic": "audio",
+          "key": "audio.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "audio bus or pin mapping requires official source inspection.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+            "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
-          "hash": "sha256:ca327aed19ec6eb032a129da288e8c48631f2dc9c83b323bf867cc9d02b23240"
+          "hash": "sha256:d38ae6bc55a25a018de9636189acdd3fdf0b11853fbdc29c29ad5a347cfda74a"
         },
         {
           "kind": "documentation-repo",
@@ -2228,7 +4173,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-s3-plus/",
-          "hash": "sha256:6d2c552917c14a4ba1e375839ede93fd91f20d0a194f2219adf53f9b76f8e07e"
+          "hash": "sha256:3051b232c0da1eefd3f62a19a10f75a7fcd937313e0547e9bfa40b1ca2648a03"
         }
       ],
       "conflicts": []
@@ -2960,12 +4905,30 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t7-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T7-S3",
+            "hash": "sha256:57d16067b5503f932b1797c305c0fb3f16d72e08b0dea03de64a7b2fb9fa6417"
+          },
+          "authority_rank": 85,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "github-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/T7-S3",
-          "hash": "sha256:8e132570f54a9dc2838048f1deeca8a5bf4206bdbd4388dee35af27512bdd144"
+          "hash": "sha256:57d16067b5503f932b1797c305c0fb3f16d72e08b0dea03de64a7b2fb9fa6417"
         },
         {
           "kind": "documentation-repo",
@@ -2975,7 +4938,7 @@
         {
           "kind": "wiki",
           "path_or_url": "https://wiki.lilygo.cc/products/t7-series/t7-s3/",
-          "hash": "sha256:9ac528f983bb4682383356a08c5d8d1fe2800025d0747caef8fbcc7edc1ea2f2"
+          "hash": "sha256:14a7e7313d79f1616c011a956fe74cde6780f921ebc9cf9945a7bf4ab21ac4d1"
         }
       ],
       "conflicts": []
@@ -3041,12 +5004,142 @@
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],
-      "peripheral_table": [],
+      "peripheral_table": [
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "display",
+          "key": "display.panel_or_chip",
+          "value": "unknown_with_sources",
+          "claim": "Display panel or chip requires official product source inspection before selecting a driver.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "display",
+          "key": "display.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Display bus requires official headers, setup files, or product docs before assigning pins.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "display",
+          "key": "display.backlight_or_power",
+          "value": "unknown_with_sources",
+          "claim": "Backlight or display power GPIO requires official source inspection before writing firmware.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "display",
+          "key": "known-pitfall.arduino-esp32-tft-espi",
+          "value": "arduino-esp32 core >2.0.14 has a reported TFT_eSPI ESP32-S3 regression; verify against official setup and library issue before upgrading.",
+          "claim": "Known display pitfall from upstream TFT_eSPI issue tracker; keep as warning until board-specific sources prove a fix.",
+          "source": {
+            "kind": "github-issue",
+            "path_or_url": "https://github.com/Bodmer/TFT_eSPI/issues/3329",
+            "hash": "sha256:ba4864d532465469328d7998b32c71cf4cc1aeba1b33d697b20cb3712e742e2e"
+          },
+          "authority_rank": 75,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "derived"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "input",
+          "key": "input.chip",
+          "value": "unknown_with_sources",
+          "claim": "Primary input controller must be confirmed from official product source.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "input",
+          "key": "input.bus_or_interface",
+          "value": "unknown_with_sources",
+          "claim": "Keyboard, encoder, trackball, touch, or button bus/pins require official source inspection.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "series-esp32-s3",
+          "topic": "storage",
+          "key": "storage.interface",
+          "value": "unknown_with_sources",
+          "claim": "Storage interface requires official product source inspection before assigning SD/SPI/MMC pins.",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "unknown_with_sources"
+        }
+      ],
       "source_refs": [
         {
           "kind": "documentation-repo",
           "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
           "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+        },
+        {
+          "kind": "github-repo",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO",
+          "hash": "sha256:6f52a4945921368f1dad1005c2eee65101afbb60bd4838aae2b890f4e9bfe498"
+        },
+        {
+          "kind": "wiki",
+          "path_or_url": "https://wiki.lilygo.cc/products/",
+          "hash": "sha256:96b96302de833571a1f863fa7850f329e29827994610d96bad5c2d892f9f9992"
         }
       ],
       "conflicts": []
@@ -3056,7 +5149,25 @@
       "board_id": "future-rp2040-product",
       "mcu_family": "rp2040",
       "supported": false,
-      "pin_matrix": [],
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "future-rp2040-product",
+          "topic": "pinout",
+          "key": "mcu.family",
+          "value": "rp2040",
+          "claim": "MCU family from official board index source",
+          "source": {
+            "kind": "documentation-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+            "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+          },
+          "authority_rank": 70,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "bus_matrix": [],
       "expander_matrix": [],
       "connector_matrix": [],

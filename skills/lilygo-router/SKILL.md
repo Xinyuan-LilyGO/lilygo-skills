@@ -46,34 +46,20 @@ clarification for missing board/framework/private details. Do not guess.
 
 ## Discovery Protocol
 
-When a user asks to implement or debug a feature, do not stop at the injected
-skill names. Use the CLI to discover missing board facts and source pointers:
+When a user asks to implement or debug a feature, keep the default surface to
+four operations. The installed hook performs capsule auto-injection; do not
+re-run maintainer commands unless the capsule asks for an expansion.
 
-- `lilygo-skills route --json "<prompt>"` first, to decide the board,
-  framework, peripheral, and feature context.
-- `lilygo-skills goal complete --dry-run --json "<prompt>"` for implementation,
-  setup, demo, and debug prompts. Use its completion state before deciding
-  whether to ask the user, refresh facts, generate runtime skills, plan setup,
-  request permissions, or run evidence collection.
-- `lilygo-skills goal plan --json "<prompt>"` when the user asks how to build,
-  flash, run a demo, debug, validate LVGL, OTA, serial, or a peripheral.
-- `lilygo-skills index query <skill-id> --json` to inspect a board, chip,
-  framework, or tool skill that was routed.
-- `lilygo-skills index query <playbook-id> --json` to expand a generated
-  playbook when the prompt needs an implementation/debug checklist.
-- `lilygo-skills source query --board <board-id> --topic io|pinout|bus|expander|connector|peripheral|display|imu|power|lora|gnss|input --json`
-  to find source-backed pins, buses, expanders, connectors, and peripheral
-  facts before writing code.
-- `lilygo-skills source completeness --board <board-id> --topic display|imu|power|lora|gnss|input --json`
-  to check whether a quick-start topic is complete, partial,
-  needs_source_ingestion, or unsupported.
+- Capsule auto-injection: let the installed hook decide no-op vs LilyGO context.
+- `lilygo-skills source query --board <board-id> --topic <topic> --json`
+  expands source-backed pins, buses, expanders, connectors, demos, and
+  peripheral facts before writing precise firmware.
+- `lilygo-skills goal complete --dry-run --json "<prompt>"` and
+  `lilygo-skills goal plan --json "<prompt>"` decide completion state, missing
+  inputs, setup readiness, permission needs, demos, and evidence steps for
+  implementation or debug prompts.
 - `lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json`
-  when completeness reports missing required facts and official refs.
-- `lilygo-skills preference show --project <dir> --json` and
-  `lilygo-skills reference list --project <dir> --json` to load user tool
-  preferences and read hints.
-- `lilygo-skills setup plan --framework <arduino|platformio|esp-idf|rust> --json`
-  to route blank-machine toolchain setup without installing or flashing.
+  previews official-source enrichment when a topic reports missing facts.
 
 If the user provides a public reference source, write a structured project
 reference with an AI-added explanation (`summary`, `read_when`, and
@@ -82,8 +68,9 @@ logs, or credentials in references.
 
 Setup planning is not automatic installation. The Skill installer does not
 install Rust, Node, Arduino CLI, PlatformIO, ESP-IDF, esp-rs, board cores,
-firmware libraries, or LoRa/GNSS dependencies. Use setup-plan output as checks
-and install hints, then run real installers only when the user explicitly asks.
+firmware libraries, or LoRa/GNSS dependencies. Use the setup readiness returned
+by `goal complete` or `goal plan` as checks and install hints, then run real
+installers only when the user explicitly asks.
 
 If a fact is missing or ambiguous, report `unknown_with_sources` or ask a
 structured clarification. Peripherals are board facts first: do not guess free
@@ -102,15 +89,9 @@ skills are generated from the source model in `data/**`, not committed. They are
 materialized only by explicit commands, written to an install root, project
 cache, or test output directory — never by route or hook:
 
-- `lilygo-skills generate skills --out <dir> --json` regenerates every runtime
-  skill from source packs into a generated cache.
-- `lilygo-skills verify --generated-root <dir> --json` checks that a generated
-  cache is complete and honest about evidence levels.
-- `lilygo-skills benchmark --generated-root <dir> --json` benchmarks routing
-  over a generated skill set.
-
-If a routed skill is missing at runtime, report it and include a compact
-generate/update command; do not fetch sources or write skills implicitly.
+If a generated skill is missing at runtime, report it and follow the compact
+repair command returned by the capsule; do not fetch sources or write skills
+implicitly from this router text.
 
 ## Static Expansion References
 
@@ -129,16 +110,17 @@ not as default prompt payload:
 - `../references/generation-contract.md`
 
 Generated Skill shapes are defined by public templates under
-`../../templates/skills/`. The CLI uses those templates for generated board,
-peripheral/chip/feature, and playbook Skill files.
+`../../templates/skills/`. Maintainer commands for regenerating and verifying
+those files live in the repository docs, not in this AI-facing router.
 
 ## Generated Playbooks
 
-Generated playbooks are compact operating-pattern skills, not extra board
-facts. Load them when the user asks to implement, debug, set up, build, flash,
-monitor serial output, diagnose LVGL, inspect OTA, write a BSP driver, or work
-with radio/GNSS. Do not load them for unrelated chat or pure fact lookups unless
-the user asks for a workflow.
+Generated playbooks are compact operating-pattern context, not extra board
+facts. Use the playbook hints already surfaced by `goal complete` or `goal plan`
+when the user asks to implement, debug, set up, build, flash, monitor serial
+output, diagnose LVGL, inspect OTA, write a BSP driver, or work with radio/GNSS.
+Do not load playbook detail for unrelated chat or pure fact lookups unless the
+user asks for a workflow.
 
 Common playbook ids:
 

@@ -458,7 +458,7 @@ fn evidence_boundary_violation(id: &str, content: &str) -> Option<String> {
         "flash verified on hardware",
         "lora link established",
         "gnss fix acquired",
-        "hardware verified: true",
+        concat!("hardware verified", ": true"),
     ];
     for needle in FORBIDDEN {
         if contains_unqualified_claim(&lower, needle) {

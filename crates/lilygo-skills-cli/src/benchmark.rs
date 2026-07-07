@@ -775,6 +775,10 @@ struct GoalCase {
     required_fact_tables: &'static [&'static str],
     required_demos: &'static [&'static str],
     required_recipes: &'static [&'static str],
+    required_action_ids: &'static [&'static str],
+    forbidden_action_ids: &'static [&'static str],
+    expect_no_demos: bool,
+    expect_no_recipes: bool,
     expect_no_preferences: bool,
     expect_no_reference_hints: bool,
 }
@@ -794,6 +798,10 @@ fn goal_cases() -> Vec<GoalCase> {
                 "recipe-build-upload-monitor",
                 "recipe-serial-debug",
             ],
+            required_action_ids: &[],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -806,6 +814,10 @@ fn goal_cases() -> Vec<GoalCase> {
             required_fact_tables: &[],
             required_demos: &["examples/lvgl/get_started/get_started.ino"],
             required_recipes: &["recipe-lvgl-simulator"],
+            required_action_ids: &[],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -818,6 +830,10 @@ fn goal_cases() -> Vec<GoalCase> {
             required_fact_tables: &[],
             required_demos: &["examples/factory/factory.ino"],
             required_recipes: &["recipe-ota-debug", "recipe-serial-debug"],
+            required_action_ids: &[],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -830,6 +846,10 @@ fn goal_cases() -> Vec<GoalCase> {
             required_fact_tables: &[],
             required_demos: &["examples/peripheral/NFC_Reader/NFC_Reader.ino"],
             required_recipes: &["recipe-run-official-demo", "recipe-build-upload-monitor"],
+            required_action_ids: &[],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -847,6 +867,10 @@ fn goal_cases() -> Vec<GoalCase> {
             ],
             required_demos: &[],
             required_recipes: &[],
+            required_action_ids: &["source-query-io"],
+            forbidden_action_ids: &["goal-plan-bridge", "goal-start-dry-run"],
+            expect_no_demos: true,
+            expect_no_recipes: true,
             expect_no_preferences: true,
             expect_no_reference_hints: true,
         },
@@ -867,6 +891,10 @@ fn goal_cases() -> Vec<GoalCase> {
                 "recipe-build-upload-monitor",
                 "recipe-lvgl-simulator",
             ],
+            required_action_ids: &[],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -879,6 +907,90 @@ fn goal_cases() -> Vec<GoalCase> {
             required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
             required_demos: &["examples/tft/tft.ino"],
             required_recipes: &["recipe-run-official-demo", "recipe-build-upload-monitor"],
+            required_action_ids: &["goal-plan-bridge", "source-query-i2c"],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
+            expect_no_preferences: false,
+            expect_no_reference_hints: false,
+        },
+        GoalCase {
+            name: "goal:t-display-s3-english-screen-pin-lookup",
+            prompt: "T-Display-S3 which pins are used by the screen?",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[],
+            required_facts: &[],
+            required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
+            required_demos: &[],
+            required_recipes: &[],
+            required_action_ids: &["source-query-io"],
+            forbidden_action_ids: &["goal-plan-bridge", "goal-start-dry-run"],
+            expect_no_demos: true,
+            expect_no_recipes: true,
+            expect_no_preferences: true,
+            expect_no_reference_hints: true,
+        },
+        GoalCase {
+            name: "goal:t-display-s3-read-pinout-docs-lookup",
+            prompt: "T-Display-S3 read pinout docs",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[],
+            required_facts: &[],
+            required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
+            required_demos: &[],
+            required_recipes: &[],
+            required_action_ids: &["source-query-io"],
+            forbidden_action_ids: &["goal-plan-bridge", "goal-start-dry-run"],
+            expect_no_demos: true,
+            expect_no_recipes: true,
+            expect_no_preferences: true,
+            expect_no_reference_hints: true,
+        },
+        GoalCase {
+            name: "goal:t-display-s3-chinese-screen-pin-lookup",
+            prompt: "T-Display-S3 哪些引脚被屏幕占用了?",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[],
+            required_facts: &[],
+            required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
+            required_demos: &[],
+            required_recipes: &[],
+            required_action_ids: &["source-query-io"],
+            forbidden_action_ids: &["goal-plan-bridge", "goal-start-dry-run"],
+            expect_no_demos: true,
+            expect_no_recipes: true,
+            expect_no_preferences: true,
+            expect_no_reference_hints: true,
+        },
+        GoalCase {
+            name: "goal:t-display-s3-mixed-lookup-then-display",
+            prompt: "T-Display-S3 查一下引脚，然后帮我点亮屏幕",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[],
+            required_facts: &[],
+            required_fact_tables: &["pin_matrix", "bus_matrix", "peripheral_table"],
+            required_demos: &["examples/tft/tft.ino"],
+            required_recipes: &["recipe-run-official-demo", "recipe-build-upload-monitor"],
+            required_action_ids: &["goal-plan-bridge", "source-query-io"],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
+            expect_no_preferences: false,
+            expect_no_reference_hints: false,
+        },
+        GoalCase {
+            name: "goal:t-display-s3-chinese-minimal-display-demo",
+            prompt: "T-Display-S3 Arduino 帮我让屏幕先亮起来，跑个最简单的显示例程",
+            expected_board: Some("board-t-display-s3"),
+            expected_completeness: &[("display", "complete")],
+            required_facts: &[],
+            required_fact_tables: &[],
+            required_demos: &["examples/tft/tft.ino"],
+            required_recipes: &["recipe-run-official-demo", "recipe-build-upload-monitor"],
+            required_action_ids: &["goal-plan-bridge"],
+            forbidden_action_ids: &[],
+            expect_no_demos: false,
+            expect_no_recipes: false,
             expect_no_preferences: false,
             expect_no_reference_hints: false,
         },
@@ -908,6 +1020,12 @@ fn validate_goal_case(case: &GoalCase, plan: &GoalPlan) -> Vec<GoalBenchmarkFail
         .recipe_ids
         .iter()
         .map(String::as_str)
+        .collect::<BTreeSet<_>>();
+    let actions = plan
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| action.id.as_str())
         .collect::<BTreeSet<_>>();
     let fact_tables = plan
         .context_capsule
@@ -953,10 +1071,32 @@ fn validate_goal_case(case: &GoalCase, plan: &GoalPlan) -> Vec<GoalBenchmarkFail
             failures.push(goal_failure(case, format!("missing recipe {recipe}")));
         }
     }
+    for action in case.required_action_ids {
+        if !actions.contains(action) {
+            failures.push(goal_failure(case, format!("missing action {action}")));
+        }
+    }
+    for action in case.forbidden_action_ids {
+        if actions.contains(action) {
+            failures.push(goal_failure(case, format!("forbidden action {action}")));
+        }
+    }
     for table in case.required_fact_tables {
         if !fact_tables.contains(table) {
             failures.push(goal_failure(case, format!("missing fact table {table}")));
         }
+    }
+    if case.expect_no_demos && !plan.context_capsule.demo_refs.is_empty() {
+        failures.push(goal_failure(
+            case,
+            "unexpected demos for lookup".to_string(),
+        ));
+    }
+    if case.expect_no_recipes && !plan.recipe_ids.is_empty() {
+        failures.push(goal_failure(
+            case,
+            "unexpected recipes for lookup".to_string(),
+        ));
     }
     if case.expect_no_preferences && !plan.context_capsule.preferences.is_empty() {
         failures.push(goal_failure(

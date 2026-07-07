@@ -43,11 +43,24 @@ const report = JSON.parse(process.env.INSTALLED_JSON);
 if (report.status !== "PASS" || report.sample_injection.status !== "PASS") {
   throw new Error("installed doctor did not pass sample injection");
 }
-for (const id of ["active_wiring", "codex-agents", "claude-skill", "claude-hook"]) {
+for (const id of ["active_wiring", "codex-agents", "claude-skill", "claude-hook", "runtime-parity"]) {
   const check = report.checks.find((item) => item.id === id);
   if (!check || check.status !== "PASS") {
     throw new Error(`${id} check did not pass`);
   }
 }
-console.log(JSON.stringify({ status: "PASS", self_tests: 2 }));
+NODE
+
+printf '{"schema_version":1,"drift":true}\n' >"$home/.claude/lilygo-skills/data/boards.json"
+drift_report="$(HOME="$home" "$installed_bin" doctor --json)"
+DRIFT_JSON="$drift_report" node <<'NODE'
+const report = JSON.parse(process.env.DRIFT_JSON);
+const parity = report.checks.find((item) => item.id === "runtime-parity");
+if (!parity || parity.status !== "WARN") {
+  throw new Error(`runtime parity did not warn on drift: ${JSON.stringify(report.checks)}`);
+}
+if (!parity.summary.includes("node install.js --all --build")) {
+  throw new Error(`runtime parity did not include remediation: ${parity.summary}`);
+}
+console.log(JSON.stringify({ status: "PASS", self_tests: 2, runtime_parity_drift: "WARN" }));
 NODE

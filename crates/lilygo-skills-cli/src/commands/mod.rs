@@ -19,6 +19,10 @@ use crate::preferences::resolve_preferences;
 use crate::project_context::{
     clear_project_context, new_project_context, resolve_project_context, write_project_context,
 };
+use crate::project_ledger::{
+    hints_for_route, maybe_compact_project_hook_context, render_hook_ledger_context,
+    route_json_with_ledger,
+};
 use crate::project_skills::registry_with_project_skills;
 use crate::reference_catalog::list_references;
 use crate::registry::{ensure_skill_files, load_registry, verify};
@@ -74,6 +78,10 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
 }
 
 fn route(root: &Path, args: &[String]) -> Result<(), String> {
+    if has_flag(args, "--help") || has_flag(args, "-h") {
+        println!("Usage: lilygo-skills route [--project <dir>] --json <prompt>");
+        return Ok(());
+    }
     require_json(args)?;
     let prompt = prompt_arg(args)?;
     let registry = load_registry(root)?;
@@ -85,7 +93,8 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
         let profile = project.context.active_profile();
         let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
         attach_route_readiness(root, &registry, &prompt, &mut route);
-        return print_json(&route);
+        let hints = hints_for_route(project.project_root.as_path(), &route, &prompt);
+        return print_json(&route_json_with_ledger(&route, hints));
     }
     let profile = load_profile(root);
     let mut route = route_with_profile_or_clarification(&registry, &prompt, profile.as_ref());
@@ -96,11 +105,9 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
 fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
     let host = args.first().map(String::as_str).unwrap_or("codex");
     if matches!(host, "--help" | "-h") {
-        println!("Usage: lilygo-skills hook <claude|codex>");
-        println!();
-        println!("Reads a prompt JSON object ({{\"prompt\":\"...\"}}) from stdin.");
-        println!("claude: emits the UserPromptSubmit hookSpecificOutput envelope.");
-        println!("codex: emits the diagnostic routing envelope for manual use.");
+        println!(
+            "Usage: lilygo-skills hook <claude|codex>\n\nReads a prompt JSON object ({{\"prompt\":\"...\"}}) from stdin.\nclaude: emits the UserPromptSubmit hookSpecificOutput envelope.\ncodex: emits the diagnostic routing envelope for manual use."
+        );
         return Ok(());
     }
     if !matches!(host, "codex" | "claude") {
@@ -127,41 +134,61 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
         Ok(cwd) => cwd,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let route = match resolve_project_context(&hook_cwd) {
-        Ok(Some(project)) => {
-            let registry =
-                match registry_with_project_skills(&registry, Some(project.project_root.as_path()))
-                {
-                    Ok(registry) => registry,
-                    Err(error) => return print_hook_fail_open(host, &error),
-                };
-            let profile = project.context.active_profile();
-            let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
-            attach_route_readiness(&root, &registry, &prompt, &mut route);
-            route
-        }
-        Ok(None) => {
-            let profile = load_profile(&root);
-            let mut route =
-                route_with_profile_or_clarification(&registry, &prompt, profile.as_ref());
-            attach_route_readiness(&root, &registry, &prompt, &mut route);
-            route
-        }
+    let project = match resolve_project_context(&hook_cwd) {
+        Ok(project) => project,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let mut content = render_context(&route);
-    let cwd = current_dir().ok();
-    let plan_registry = match resolve_project_context(cwd.as_deref().unwrap_or(Path::new("."))) {
-        Ok(Some(project)) => {
-            registry_with_project_skills(&registry, Some(project.project_root.as_path()))
-                .unwrap_or_else(|_| registry.clone())
+    let route_registry = match project.as_ref() {
+        Some(project) => {
+            match registry_with_project_skills(&registry, Some(project.project_root.as_path())) {
+                Ok(registry) => registry,
+                Err(error) => return print_hook_fail_open(host, &error),
+            }
         }
-        _ => registry.clone(),
+        None => registry.clone(),
     };
-    if let Ok(plan) = plan_goal_with_project(&root, &plan_registry, &prompt, &route, cwd.as_deref())
-    {
-        content.push_str(&render_hook_goal_summary(&plan));
+    let profile = project
+        .as_ref()
+        .map(|project| project.context.active_profile())
+        .or_else(|| load_profile(&root));
+    let mut route = route_with_profile_or_clarification(&route_registry, &prompt, profile.as_ref());
+    attach_route_readiness(&root, &route_registry, &prompt, &mut route);
+    let mut content = render_context(&route);
+    let ledger_hints = project
+        .as_ref()
+        .map(|project| hints_for_route(project.project_root.as_path(), &route, &prompt));
+    if let Some(hints) = &ledger_hints {
+        content.push_str(&render_hook_ledger_context(hints));
     }
+    let mut goal_plan = None;
+    if let Ok(plan) = plan_goal_with_project(
+        &root,
+        &route_registry,
+        &prompt,
+        &route,
+        Some(hook_cwd.as_path()),
+    ) {
+        content.push_str(&render_hook_goal_summary(&plan));
+        goal_plan = Some(plan);
+    }
+    let content = if let (Some(project), Some(hints)) = (project.as_ref(), ledger_hints.as_ref()) {
+        maybe_compact_project_hook_context(
+            project.project_root.as_path(),
+            &prompt,
+            &route,
+            content,
+            goal_plan.as_ref(),
+            hints,
+        )
+    } else {
+        content
+    };
+    let content = crate::session_context::maybe_compact_hook_context(
+        host,
+        &input,
+        content,
+        goal_plan.as_ref(),
+    );
     print_json(&hook_envelope(host, &route, content))
 }
 
@@ -261,11 +288,9 @@ fn generate_command(root: &Path, args: &[String]) -> Result<(), String> {
             };
             let report = crate::generate::generate_skills(root, &out)?;
             print_json(&report)?;
-            if report.status == "FAIL" {
-                Err("skill generation failed".to_string())
-            } else {
-                Ok(())
-            }
+            (report.status != "FAIL")
+                .then_some(())
+                .ok_or_else(|| "skill generation failed".to_string())
         }
         other => Err(format!("unknown generate subcommand: {other}")),
     }
@@ -282,41 +307,28 @@ fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
             current_dir()?.join(generated)
         };
         let report = crate::generate::verify_generated_root(root, &generated_root);
-        print_json(&report)?;
-        return if report.status == "PASS" {
-            Ok(())
-        } else {
-            Err("generated-root verification failed".to_string())
-        };
+        return print_status_json(
+            &report,
+            &report.status,
+            "generated-root verification failed",
+        );
     }
     require_json(args)?;
     let report = verify(root);
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("verification failed".to_string())
-    }
+    print_status_json(&report, &report.status, "verification failed")
 }
 
 fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
     if has_flag(args, "--help") || has_flag(args, "-h") {
-        println!("Usage: lilygo-skills doctor --json [--home <dir>]");
-        println!();
         println!(
-            "Checks runtime data, skill availability, sample injection, no-op routing, and optional host install files."
+            "Usage: lilygo-skills doctor --json [--home <dir>]\n\nChecks runtime data, skill availability, sample injection, no-op routing, and optional host install files."
         );
         return Ok(());
     }
     require_json(args)?;
     let home = option_value(args, "--home").map(PathBuf::from);
     let report = doctor_report(root, home.as_deref());
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("doctor check failed".to_string())
-    }
+    print_status_json(&report, &report.status, "doctor check failed")
 }
 
 fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
@@ -348,12 +360,7 @@ fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
     };
     let registry = registry_with_project_skills(&registry, project_root.as_deref())?;
     let report = run_benchmark(&source_root, &registry, iterations, max_ns_per_route);
-    print_json(&report)?;
-    if report.status == "PASS" {
-        Ok(())
-    } else {
-        Err("benchmark failed".to_string())
-    }
+    print_status_json(&report, &report.status, "benchmark failed")
 }
 
 fn goal(root: &Path, args: &[String]) -> Result<(), String> {
@@ -373,8 +380,7 @@ fn goal(root: &Path, args: &[String]) -> Result<(), String> {
         "plan" => goal_plan(root, &args[1..]),
         "complete" => goal_complete(root, &args[1..]),
         "start" => goal_start(&args[1..]),
-        "status" => goal_status(&args[1..]),
-        "evidence" => goal_evidence(&args[1..]),
+        "status" | "evidence" => goal_status(&args[1..]),
         "cancel" => goal_cancel(&args[1..]),
         other => Err(format!("unknown goal subcommand: {other}")),
     }
@@ -477,12 +483,7 @@ fn goal_start(args: &[String]) -> Result<(), String> {
         source_root: option_value(args, "--source-root").map(PathBuf::from),
     };
     let result = start_goal(&plan, &options)?;
-    print_json(&result)?;
-    if result.status == "PASS" {
-        Ok(())
-    } else {
-        Err("goal start blocked".to_string())
-    }
+    print_status_json(&result, &result.status, "goal start blocked")
 }
 
 fn goal_status(args: &[String]) -> Result<(), String> {
@@ -491,10 +492,6 @@ fn goal_status(args: &[String]) -> Result<(), String> {
         option_value(args, "--id").ok_or_else(|| "--id <goal-id> is required".to_string())?;
     let project_root = project_start_arg(args)?;
     print_json(&load_goal_evidence(project_root.as_path(), goal_id)?)
-}
-
-fn goal_evidence(args: &[String]) -> Result<(), String> {
-    goal_status(args)
 }
 
 fn goal_cancel(args: &[String]) -> Result<(), String> {
@@ -613,9 +610,14 @@ fn project(root: &Path, args: &[String]) -> Result<(), String> {
         return Err("missing project subcommand".to_string());
     };
     match subcommand {
+        "--help" | "-h" => {
+            print_project_help();
+            Ok(())
+        }
         "init" => project_init(root, &args[1..]),
         "show" => project_show(&args[1..]),
         "clear" => project_clear(&args[1..]),
+        "ledger" => project_ledger_command(&args[1..]),
         other => Err(format!("unknown project subcommand: {other}")),
     }
 }
@@ -965,12 +967,16 @@ mod tests {
     }
 
     #[test]
-    fn goal_subcommand_help_does_not_require_json() {
-        let result = run(
-            ["goal", "plan", "--help"].into_iter().map(str::to_string),
-            std::io::empty(),
-        );
-        assert!(result.is_ok());
+    fn help_surfaces_do_not_require_json() {
+        for args in [
+            vec!["goal", "plan", "--help"],
+            vec!["route", "--help"],
+            vec!["hook", "--help"],
+            vec!["doctor", "--help"],
+        ] {
+            let result = run(args.into_iter().map(str::to_string), std::io::empty());
+            assert!(result.is_ok());
+        }
     }
 
     #[test]

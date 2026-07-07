@@ -163,7 +163,7 @@ fn goal_complete_readiness() {
 }
 
 #[test]
-fn goal_complete_nfc_source_fallback() {
+fn goal_complete_nfc_uses_dynamic_source_topic() {
     let project = std::env::temp_dir().join(format!(
         "lilygo-goal-complete-nfc-source-{}",
         std::process::id()
@@ -176,12 +176,9 @@ fn goal_complete_nfc_source_fallback() {
     );
     assert_eq!(json_str(&result, "/status"), "needs_permission");
     assert_eq!(json_str(&result, "/route/board"), "board-t-watch-ultra");
-    assert_eq!(
-        json_str(&result, "/readiness/source/status"),
-        "source_backed"
-    );
+    assert_eq!(json_str(&result, "/readiness/source/status"), "complete");
     assert!(
-        json_str(&result, "/readiness/source/summary").contains("facts="),
+        json_str(&result, "/readiness/source/summary").contains("nfc=complete"),
         "{}",
         result["readiness"]["source"]
     );
@@ -192,7 +189,7 @@ fn goal_complete_nfc_source_fallback() {
             .is_some_and(|items| items
                 .iter()
                 .any(|item| item.as_str().is_some_and(|command| command
-                    .contains("source query --board board-t-watch-ultra --topic peripheral"))))
+                    .contains("source query --board board-t-watch-ultra --topic nfc"))))
     );
     let _ = fs::remove_dir_all(&project);
 }
@@ -1129,15 +1126,22 @@ fn goal_command_argv_preserves_user_values() {
         .iter()
         .find(|command| command.step_id == "monitor")
         .expect("monitor command");
+    assert_eq!(monitor.argv.first().map(String::as_str), Some("sh"));
     assert!(
         monitor
             .argv
-            .contains(&"--port=/tmp/serial port --erase".to_string()),
+            .iter()
+            .any(|arg| arg.contains("serial-mcp-server read"))
+    );
+    assert!(
+        monitor
+            .argv
+            .contains(&"/tmp/serial port --erase".to_string()),
         "{:?}",
         monitor.argv
     );
     assert!(!monitor.argv.iter().any(|arg| arg == "--erase"));
-    assert!(!monitor.argv.iter().any(|arg| arg == "--no-reset"));
+    assert!(!monitor.argv[2].contains("/tmp/serial port --erase"));
 
     let lvgl_plan = plan("T-Watch Ultra Arduino LVGL touch does not move");
     let commands = super::runner::planned_commands(&lvgl_plan, &options);
@@ -1216,11 +1220,37 @@ fn arduino_watch_ultra_commands_use_verified_board_profile() {
         .iter()
         .find(|command| command.step_id == "monitor")
         .expect("monitor command");
-    assert!(!monitor.argv.iter().any(|arg| arg == "--no-reset"));
+    assert_eq!(monitor.argv.first().map(String::as_str), Some("sh"));
+    assert!(
+        monitor
+            .argv
+            .iter()
+            .any(|arg| arg.contains("--timeout-ms 1000")),
+        "{:?}",
+        monitor.argv
+    );
 }
 
 #[test]
 fn observation_timeout_with_payload_counts_as_pass() {
+    assert_eq!(
+        super::runner::command_status(
+            "monitor",
+            true,
+            false,
+            r#"{"read":{"bytes_read":0,"data":"","status":"ok","timeout_ms":3000}}"#,
+        ),
+        "FAIL"
+    );
+    assert_eq!(
+        super::runner::command_status(
+            "monitor",
+            true,
+            false,
+            r#"{"read":{"bytes_read":78,"data":"[T: 1.0] AX:+0.24 AY:-0.06 AZ:+1.01 GX:-0.43 GY:+0.49 GZ:+0.06\n","status":"ok","timeout_ms":3000}}"#,
+        ),
+        "PASS"
+    );
     assert_eq!(
         super::runner::command_status(
             "monitor",
@@ -1599,6 +1629,146 @@ fn demo_intent_minimal_display_demo() {
             .first()
             .map(|demo| demo.path.as_str()),
         Some("examples/factory/factory.ino")
+    );
+}
+
+#[test]
+fn demo_intent_chinese_minimal_display_demo() {
+    let display_plan = plan("T-Display-S3 Arduino 帮我让屏幕先亮起来，跑个最简单的显示例程");
+    assert_eq!(
+        display_plan
+            .context_capsule
+            .demo_refs
+            .first()
+            .map(|demo| demo.path.as_str()),
+        Some("examples/tft/tft.ino")
+    );
+    assert!(
+        display_plan
+            .context_capsule
+            .next_actions
+            .iter()
+            .any(|action| action.id == "goal-plan-bridge")
+    );
+
+    let factory_plan = plan("T-Display-S3 Arduino 跑完整出厂测试");
+    assert_eq!(
+        factory_plan
+            .context_capsule
+            .demo_refs
+            .first()
+            .map(|demo| demo.path.as_str()),
+        Some("examples/factory/factory.ino")
+    );
+}
+
+#[test]
+fn intent_classification_lookup_prompts_are_read_only() {
+    for prompt in [
+        "T-Display-S3 which pins are used by the screen?",
+        "T-Display-S3 read pinout docs",
+        "T-Display-S3 inspect docs",
+        "T-Display-S3 locate docs",
+        "T-Display-S3 哪些引脚被屏幕占用了?",
+        "T-Display-S3 先看一下屏幕占用了哪些 IO",
+    ] {
+        let plan = plan(prompt);
+        let actions = &plan.context_capsule.next_actions;
+        assert!(
+            actions.iter().all(|action| !action.id.starts_with("goal-")),
+            "{prompt}: {actions:?}"
+        );
+        assert!(
+            actions.iter().all(|action| action.permission == "none"),
+            "{prompt}: {actions:?}"
+        );
+        assert!(
+            plan.context_capsule.demo_refs.is_empty(),
+            "{prompt}: {:?}",
+            plan.context_capsule.demo_refs
+        );
+        assert!(
+            plan.recipe_ids.is_empty(),
+            "{prompt}: {:?}",
+            plan.recipe_ids
+        );
+        assert!(
+            plan.context_capsule.implementation_start.is_none(),
+            "{prompt}: {:?}",
+            plan.context_capsule.implementation_start
+        );
+        assert!(
+            plan.context_capsule
+                .fact_tables
+                .iter()
+                .any(|table| table.query_command.contains("source query")),
+            "{prompt}: {:?}",
+            plan.context_capsule.fact_tables
+        );
+    }
+
+    let watch_s3 = plan("LilyGO T-Watch S3 屏幕和触摸占用了哪些引脚?");
+    let action_ids = watch_s3
+        .context_capsule
+        .next_actions
+        .iter()
+        .map(|action| action.id.as_str())
+        .collect::<Vec<_>>();
+    assert!(
+        action_ids.contains(&"source-query-display"),
+        "{action_ids:?}"
+    );
+    assert!(action_ids.contains(&"source-query-input"), "{action_ids:?}");
+    assert_eq!(
+        watch_s3.context_capsule.completeness.get("display"),
+        Some(&"complete".to_string())
+    );
+    assert_eq!(
+        watch_s3.context_capsule.completeness.get("input"),
+        Some(&"complete".to_string())
+    );
+    assert!(
+        watch_s3
+            .context_capsule
+            .next_actions
+            .iter()
+            .all(|action| action.permission == "none"),
+        "{:?}",
+        watch_s3.context_capsule.next_actions
+    );
+}
+
+#[test]
+fn intent_classification_mixed_prompt_prefers_action() {
+    let mixed_plan = plan("T-Display-S3 查一下引脚，然后帮我点亮屏幕");
+    let actions = &mixed_plan.context_capsule.next_actions;
+    assert!(
+        actions.iter().any(|action| action.id == "goal-plan-bridge"),
+        "{actions:?}"
+    );
+    assert!(
+        actions.iter().any(|action| action.id == "source-query-io"),
+        "{actions:?}"
+    );
+    assert!(
+        mixed_plan
+            .context_capsule
+            .demo_refs
+            .iter()
+            .any(|demo| demo.path == "examples/tft/tft.ino"),
+        "{:?}",
+        mixed_plan.context_capsule.demo_refs
+    );
+
+    let read_sensor_plan = plan("T-Display-S3 read I2C sensor data");
+    assert!(
+        read_sensor_plan
+            .context_capsule
+            .next_actions
+            .iter()
+            .any(|action| action.id == "goal-plan-bridge"),
+        "{:?}",
+        read_sensor_plan.context_capsule.next_actions
     );
 }
 

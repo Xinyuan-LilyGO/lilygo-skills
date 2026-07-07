@@ -45,6 +45,9 @@ pub fn new_project_context(
         board: board.to_string(),
         framework: framework.map(str::to_string),
         features,
+        preferred_tools: Vec::new(),
+        source_signature: None,
+        updated_at: None,
         notes: Some("Project defaults only; no machine-specific evidence.".to_string()),
     })
 }

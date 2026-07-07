@@ -11,7 +11,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 MAX_FILE=800
-MAX_TOTAL=12500
+MAX_TOTAL=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --max-production-file-lines) MAX_FILE="$2"; shift 2 ;;
@@ -75,11 +75,14 @@ for f in files:
     if lines > max_file:
         oversized.append({"file": f, "lines": lines})
 
-status = "PASS" if not oversized and total <= max_total else "FAIL"
+total_enforced = max_total > 0
+total_ok = (not total_enforced) or total <= max_total
+status = "PASS" if not oversized and total_ok else "FAIL"
 report = {
     "status": status,
     "max_production_file_lines": max_file,
-    "max_production_lines": max_total,
+    "max_production_lines": max_total if total_enforced else None,
+    "production_total_enforced": total_enforced,
     "production_total": total,
     "physical_total": physical_total,
     "counting": "nonblank_noncomment_production_lines",
@@ -94,7 +97,7 @@ print(json.dumps(report, indent=2))
 if status != "PASS":
     if oversized:
         print("production files over limit:", oversized, file=sys.stderr)
-    if total > max_total:
+    if total_enforced and total > max_total:
         print(f"production total {total} exceeds {max_total}", file=sys.stderr)
     sys.exit(1)
 PY

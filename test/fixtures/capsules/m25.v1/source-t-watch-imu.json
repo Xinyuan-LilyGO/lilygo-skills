@@ -1,0 +1,772 @@
+{
+  "status": "PASS",
+  "board_id": "board-t-watch-ultra",
+  "topic": "imu",
+  "supported": true,
+  "fact_pack": {
+    "schema_version": 1,
+    "board_id": "board-t-watch-ultra",
+    "mcu_family": "esp32-s3",
+    "supported": true,
+    "pin_matrix": [
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "pinout",
+        "key": "mcu.family",
+        "value": "esp32-s3",
+        "claim": "MCU family for runnable support boundary",
+        "source": {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+          "hash": "sha256:e16db4b2ac335d68da0b37fdf80a25db2c20e7ccca2c4dd65405f3c69ff062c2"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "pinout",
+        "key": "frameworks.supported",
+        "value": "arduino,esp-idf,rust,platformio",
+        "claim": "Frameworks recorded for this board",
+        "source": {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+          "hash": "sha256:e16db4b2ac335d68da0b37fdf80a25db2c20e7ccca2c4dd65405f3c69ff062c2"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "derived"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "pinout",
+        "key": "gpio.free",
+        "value": "unknown_with_sources",
+        "claim": "Free GPIO cannot be inferred without complete official pin assignment proof",
+        "source": {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+          "hash": "sha256:e16db4b2ac335d68da0b37fdf80a25db2c20e7ccca2c4dd65405f3c69ff062c2"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "unknown_with_sources"
+      }
+    ],
+    "bus_matrix": [
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.qspi.co5300",
+        "value": "CO5300 uses QSPI",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x1a.cst9217",
+        "value": "CST9217 uses I2C 0x1A",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.uart.u-blox-mia-m10q",
+        "value": "u-blox MIA-M10Q uses UART",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.spi.sx1262-or-sx1280",
+        "value": "SX1262 or SX1280 uses SPI",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.spi.st25r3916",
+        "value": "ST25R3916 uses SPI",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x28.bosch-bhi260ap",
+        "value": "Bosch BHI260AP uses I2C 0x28",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x34.axp2101",
+        "value": "AXP2101 uses I2C 0x34",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x51.pcf85063a",
+        "value": "PCF85063A uses I2C 0x51",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.pdm.tdk-t3902",
+        "value": "TDK T3902 uses PDM",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2s.max98357a",
+        "value": "MAX98357A uses I2S",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x5a.drv2605",
+        "value": "DRV2605 uses I2C 0x5A",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.i2c-0x20.xl9555",
+        "value": "XL9555 uses I2C 0x20",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.spi.microsd-up-to-32gb-fat32",
+        "value": "microSD up to 32GB FAT32 uses SPI",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "bus",
+        "key": "bus.qspi.16mb-flash-8mb-psram",
+        "value": "16MB flash + 8MB PSRAM uses QSPI",
+        "claim": "Peripheral bus assignment from board source",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      }
+    ],
+    "expander_matrix": [
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "expander",
+        "key": "expander.xl9555.bus",
+        "value": "I2C 0x20",
+        "claim": "XL9555 expander bus address",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "expander",
+        "key": "expander.xl9555.channel-map",
+        "value": "unknown_with_sources",
+        "claim": "Exact XL9555 channel-to-function mapping is not proven by the current source cache",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "unknown_with_sources"
+      }
+    ],
+    "connector_matrix": [
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "connector",
+        "key": "connector.gnss-receiver",
+        "value": "GNSS receiver uses UART",
+        "claim": "Board connector or socket integration record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "connector",
+        "key": "connector.lora-radio-option",
+        "value": "LoRa radio option uses SPI",
+        "claim": "Board connector or socket integration record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "connector",
+        "key": "connector.microsd-socket",
+        "value": "MicroSD socket uses SPI",
+        "claim": "Board connector or socket integration record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      }
+    ],
+    "peripheral_table": [
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.display.co5300",
+        "value": "AMOLED panel | CO5300 | QSPI | LilyGo display interface",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.touch.cst9217",
+        "value": "Capacitive touch | CST9217 | I2C 0x1A | TouchDrvCST92xx",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.gnss.u-blox-mia-m10q",
+        "value": "GNSS receiver | u-blox MIA-M10Q | UART | LilyGoLib GPS",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.radio.sx1262-or-sx1280",
+        "value": "LoRa radio option | SX1262 or SX1280 | SPI | RadioLib/LilyGoLib radio",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.nfc.st25r3916",
+        "value": "NFC reader | ST25R3916 | SPI | RFAL NFC",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.sensor.bosch-bhi260ap",
+        "value": "Smart IMU | Bosch BHI260AP | I2C 0x28 | SensorBHI260AP",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.power.axp2101",
+        "value": "Power manager | AXP2101 | I2C 0x34 | XPowersAXP2101",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.rtc.pcf85063a",
+        "value": "Real-time clock | PCF85063A | I2C 0x51 | SensorPCF85063",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.audio.tdk-t3902",
+        "value": "PDM microphone | TDK T3902 | PDM | LilyGoLib PDM",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.audio.max98357a",
+        "value": "Class-D amplifier | MAX98357A | I2S | LilyGoLib audio",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.haptic.drv2605",
+        "value": "Haptic driver | DRV2605 | I2C 0x5A | SensorDRV2605",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.io.xl9555",
+        "value": "GPIO expander | XL9555 | I2C 0x20 | ExtensionIOXL9555",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "driver-header",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+          "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+        },
+        "authority_rank": 95,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.storage.microsd-up-to-32gb-fat32",
+        "value": "MicroSD socket | microSD up to 32GB FAT32 | SPI | Arduino SD / LilyGoLib installSD",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      },
+      {
+        "schema_version": 1,
+        "board_id": "board-t-watch-ultra",
+        "topic": "peripheral",
+        "key": "peripheral.memory.16mb-flash-8mb-psram",
+        "value": "External flash and PSRAM | 16MB flash + 8MB PSRAM | QSPI | ESP32-S3 external memory",
+        "claim": "Board peripheral chip, bus, and driver record",
+        "source": {
+          "kind": "hardware-doc",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+          "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+        },
+        "authority_rank": 90,
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "confidence": "exact"
+      }
+    ],
+    "source_refs": [
+      {
+        "kind": "driver-header",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+        "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+      },
+      {
+        "kind": "arduino-pins",
+        "path_or_url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+        "hash": "sha256:e16db4b2ac335d68da0b37fdf80a25db2c20e7ccca2c4dd65405f3c69ff062c2"
+      },
+      {
+        "kind": "hardware-doc",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+        "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+      },
+      {
+        "kind": "github-repo",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+        "hash": "sha256:ca327aed19ec6eb032a129da288e8c48631f2dc9c83b323bf867cc9d02b23240"
+      },
+      {
+        "kind": "quick-start",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/lilygo-t-watch-ultra.md",
+        "hash": "sha256:5cc9561fce63cac0a7d9a7e9b409722a3e05f2bbc7378a1e215e7adeb65f706f"
+      },
+      {
+        "kind": "documentation-repo",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+        "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+      },
+      {
+        "kind": "wiki",
+        "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-ultra/",
+        "hash": "sha256:0c2d1165522a6ce0735be22cac2d9d0de530001267c11b87c824eff08f16f479"
+      }
+    ],
+    "conflicts": []
+  },
+  "facts": [
+    {
+      "schema_version": 1,
+      "board_id": "board-t-watch-ultra",
+      "topic": "bus",
+      "key": "bus.i2c-0x28.bosch-bhi260ap",
+      "value": "Bosch BHI260AP uses I2C 0x28",
+      "claim": "Peripheral bus assignment from board source",
+      "source": {
+        "kind": "driver-header",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+        "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+      },
+      "authority_rank": 95,
+      "evidence_level": "V3-source-reference",
+      "stale": false,
+      "confidence": "exact"
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-watch-ultra",
+      "topic": "peripheral",
+      "key": "peripheral.sensor.bosch-bhi260ap",
+      "value": "Smart IMU | Bosch BHI260AP | I2C 0x28 | SensorBHI260AP",
+      "claim": "Board peripheral chip, bus, and driver record",
+      "source": {
+        "kind": "driver-header",
+        "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+        "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+      },
+      "authority_rank": 95,
+      "evidence_level": "V3-source-reference",
+      "stale": false,
+      "confidence": "exact"
+    }
+  ],
+  "unknowns": [],
+  "conflicts": [],
+  "source_refs": [
+    {
+      "kind": "driver-header",
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+      "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+    },
+    {
+      "kind": "arduino-pins",
+      "path_or_url": "https://github.com/espressif/arduino-esp32/blob/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+      "hash": "sha256:e16db4b2ac335d68da0b37fdf80a25db2c20e7ccca2c4dd65405f3c69ff062c2"
+    },
+    {
+      "kind": "hardware-doc",
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/hardware/lilygo-t-watch-ultra.md",
+      "hash": "sha256:3feccdc9e71697d01c9bacd8db70c223395bc57f8830de93fcfc7bcfcdcc3f93"
+    },
+    {
+      "kind": "github-repo",
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib",
+      "hash": "sha256:ca327aed19ec6eb032a129da288e8c48631f2dc9c83b323bf867cc9d02b23240"
+    },
+    {
+      "kind": "quick-start",
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/docs/lilygo-t-watch-ultra.md",
+      "hash": "sha256:5cc9561fce63cac0a7d9a7e9b409722a3e05f2bbc7378a1e215e7adeb65f706f"
+    },
+    {
+      "kind": "documentation-repo",
+      "path_or_url": "https://github.com/Xinyuan-LilyGO/documentation",
+      "hash": "sha256:5ff0374d566490a10db90e347e3ad995860a7de19a9409e7630b97162de2057e"
+    },
+    {
+      "kind": "wiki",
+      "path_or_url": "https://wiki.lilygo.cc/products/t-watch-series/t-watch-ultra/",
+      "hash": "sha256:0c2d1165522a6ce0735be22cac2d9d0de530001267c11b87c824eff08f16f479"
+    }
+  ],
+  "completeness": {
+    "board_id": "board-t-watch-ultra",
+    "topic": "imu",
+    "completeness": "complete",
+    "evidence_level": "V3",
+    "source_query_command": "lilygo-skills source query --board board-t-watch-ultra --topic imu --json"
+  },
+  "discovery_hints": [
+    {
+      "when": "need source-backed board facts before writing firmware",
+      "action": "run_command",
+      "command": "lilygo-skills source query --board board-t-watch-ultra --topic imu --json",
+      "reason": "Fetch the full fact pack on demand instead of inlining every table."
+    },
+    {
+      "when": "a fact is unknown or ambiguous",
+      "action": "run_command",
+      "command": "lilygo-skills source query --board board-t-watch-ultra --topic expander --json",
+      "reason": "Check the expander table and source refs before assigning XL9555 channels."
+    }
+  ],
+  "warnings": [
+    "source query returns V3 source/context evidence, not a successful firmware run",
+    "unknown_with_sources means the current source cache has pointers but no exact actionable value"
+  ]
+}

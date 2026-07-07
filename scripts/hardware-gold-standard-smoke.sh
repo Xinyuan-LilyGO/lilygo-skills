@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "--dry-run" ]]; then
-  echo "hardware-gold-standard-smoke only supports --dry-run" >&2
-  exit 2
+if [[ $# -gt 0 && "${1:-}" != "--dry-run" ]]; then
+  echo "unknown argument: $1" >&2
+  exit 1
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

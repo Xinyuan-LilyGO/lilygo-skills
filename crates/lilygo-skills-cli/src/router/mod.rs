@@ -855,6 +855,16 @@ mod tests {
         assert!(watch.skills.contains(&"board-t-watch-ultra".to_string()));
         assert!(watch.skills.contains(&"periph-imu".to_string()));
         assert!(watch.skills.contains(&"feature-raise-to-wake".to_string()));
+
+        let watch_s3_pins = route_prompt(&registry, "LilyGO T-Watch S3 屏幕和触摸占用了哪些引脚?");
+        assert_eq!(watch_s3_pins.decision, "inject");
+        assert!(
+            watch_s3_pins
+                .skills
+                .contains(&"board-t-watch-s3".to_string())
+        );
+        assert!(watch_s3_pins.skills.contains(&"periph-display".to_string()));
+        assert!(watch_s3_pins.skills.contains(&"periph-input".to_string()));
     }
 
     #[test]

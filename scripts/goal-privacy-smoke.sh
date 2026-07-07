@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "--dry-run" ]]; then
-  echo "goal-privacy-smoke requires --dry-run" >&2
+if [[ "${1:-}" == "--dry-run" ]]; then
+  shift
+fi
+if [[ "$#" -ne 0 ]]; then
+  echo "usage: goal-privacy-smoke.sh [--dry-run]" >&2
   exit 2
 fi
 
@@ -49,6 +52,44 @@ JSON
   --port /dev/cu.lilygo-private-complete \
   --json "T-Watch Ultra Arduino OTA over WiFi then serial monitor" \
   >.tmp/goal-privacy-complete.json
+cat >.tmp/goal-privacy-ledger-record.json <<'JSON'
+{
+  "kind": "capability",
+  "board_id": "board-t-watch-ultra",
+  "framework": "fw-arduino",
+  "capability": "imu.bhi260ap",
+  "verification_level": "V5",
+  "summary": "imu.bhi260ap previously reached V5 evidence in a redacted public report.",
+  "source_signature": "sha256:source",
+  "public_evidence_hash": "sha256:evidence",
+  "expand_commands": ["lilygo-skills source query --board board-t-watch-ultra --topic imu --json"]
+}
+JSON
+"$BIN" project ledger record \
+  --project "$PROJECT_ROOT" \
+  --input .tmp/goal-privacy-ledger-record.json \
+  --json >.tmp/goal-privacy-ledger-record-out.json
+cat >.tmp/goal-privacy-ledger-private-record.json <<'JSON'
+{
+  "kind": "capability",
+  "board_id": "board-t-watch-ultra",
+  "framework": "fw-arduino",
+  "capability": "imu.bhi260ap",
+  "verification_level": "V5",
+  "summary": "private serial /dev/cu.usbmodem-private",
+  "source_signature": "sha256:source",
+  "public_evidence_hash": "sha256:evidence",
+  "expand_commands": ["lilygo-skills source query --board board-t-watch-ultra --topic imu --json"]
+}
+JSON
+set +e
+"$BIN" project ledger record \
+  --project "$PROJECT_ROOT" \
+  --input .tmp/goal-privacy-ledger-private-record.json \
+  --json >.tmp/goal-privacy-ledger-private-record-out.json 2>.tmp/goal-privacy-ledger-private-record-err.txt
+LEDGER_PRIVATE_CODE=$?
+export LEDGER_PRIVATE_CODE
+set -e
 node install.js --all --dry-run >.tmp/goal-privacy-install.json
 
 TRACKED_PRIVATE="$(git ls-files | grep -E '(^|/)\.lilygo-skills/(local\.json|evidence/)' || true)"
@@ -67,6 +108,8 @@ const startText = fs.readFileSync(".tmp/goal-privacy-start.json", "utf8");
 const start = JSON.parse(startText);
 const completeText = fs.readFileSync(".tmp/goal-privacy-complete.json", "utf8");
 const complete = JSON.parse(completeText);
+const ledgerText = fs.readFileSync(process.env.PROJECT_ROOT + "/.lilygo-skills/ledger.json", "utf8");
+const ledgerPrivateErr = fs.readFileSync(".tmp/goal-privacy-ledger-private-record-err.txt", "utf8");
 const installText = fs.readFileSync(".tmp/goal-privacy-install.json", "utf8");
 const recipePacks = JSON.parse(fs.readFileSync("data/recipes/recipes.json", "utf8"));
 function check(name, ok, detail) {
@@ -100,6 +143,9 @@ check("complete has no private port", !completeText.includes("/dev/cu.lilygo-pri
 check("complete hides wireless name", !completeText.includes("ExamplePrivateNetwork"), completeText);
 check("complete hides wireless key", !completeText.includes("ExamplePrivateKey"), completeText);
 check("complete hides ota target", !completeText.includes("SyntheticLocalTarget"), completeText);
+check("ledger hides private path", !ledgerText.includes(process.env.PROJECT_ROOT) && !/\/dev\/(?:cu|tty)/.test(ledgerText), ledgerText);
+check("ledger hides credentials", !/wifi_password|access_token|Bearer |ExamplePrivate/.test(ledgerText), ledgerText);
+check("ledger rejects private record", Number(process.env.LEDGER_PRIVATE_CODE) !== 0 && ledgerPrivateErr.includes("private pattern"), ledgerPrivateErr);
 check("install dry-run has no absolute user path", !/\/(Users|home)\/[A-Za-z0-9._-]+\//.test(installText), installText);
 check("recipe packs have portable refs", recipePacks.source_packs.every((pack) => pack.source_refs.every((ref) => ref.startsWith("https://"))), JSON.stringify(recipePacks, null, 2));
 check("recipe packs hash local refs", recipePacks.source_packs.every((pack) => pack.source_refs.every((ref) => ref.startsWith("https://") || ref.startsWith("http://") || /^sha256:[0-9a-f]{64}$/.test(pack.source_hashes?.[ref] || ""))), JSON.stringify(recipePacks, null, 2));

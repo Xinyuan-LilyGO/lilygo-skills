@@ -1,5 +1,6 @@
 //! Install/runtime health checks for the context-injection harness.
 use crate::commands::{attach_route_readiness, render_context};
+use crate::facts::stable_hash;
 use crate::model::{DoctorCheck, DoctorReport, DoctorSampleInjection};
 use crate::registry::{ensure_skill_files, load_registry};
 use crate::router::route_prompt;
@@ -43,6 +44,7 @@ pub(crate) fn doctor_report(root: &Path, home: Option<&Path>) -> DoctorReport {
         let host = host_checks(home);
         checks.push(active_wiring_check(&host));
         checks.extend(host);
+        checks.push(runtime_parity_check(home));
     } else {
         checks.push(check(
             "active_wiring",
@@ -100,6 +102,63 @@ fn host_checks(home: &Path) -> Vec<DoctorCheck> {
         ),
         claude_settings_check(home),
     ]
+}
+
+fn runtime_parity_check(home: &Path) -> DoctorCheck {
+    let codex = home.join(".codex/lilygo-skills");
+    let claude = home.join(".claude/lilygo-skills");
+    let (status, summary) = if !codex.exists() || !claude.exists() {
+        (
+            "PASS",
+            "Codex and Claude runtime parity is not required until both runtime mirrors exist"
+                .to_string(),
+        )
+    } else {
+        match (runtime_digest(&codex), runtime_digest(&claude)) {
+            (Ok(codex_hash), Ok(claude_hash)) if codex_hash == claude_hash => (
+                "PASS",
+                "Codex and Claude LilyGO runtime mirrors match".to_string(),
+            ),
+            (Ok(_), Ok(_)) => (
+                "WARN",
+                "Codex and Claude LilyGO runtime mirrors differ; run node install.js --all --build"
+                    .to_string(),
+            ),
+            (Err(error), _) | (_, Err(error)) => ("FAIL", error),
+        }
+    };
+    check("runtime-parity", status, summary)
+}
+
+fn runtime_digest(root: &Path) -> Result<String, String> {
+    let binary = if root.join("bin/lilygo-skills").exists() {
+        "bin/lilygo-skills"
+    } else {
+        "bin/lilygo-skills.exe"
+    };
+    let parts = [
+        binary,
+        "data/boards.json",
+        "data/facts/board-fact-packs.json",
+        "index/routes.json",
+        "public-skill/SKILL.md",
+        "skills/lilygo-router/SKILL.md",
+        "templates/skills/board.md",
+    ]
+    .into_iter()
+    .filter_map(|rel| {
+        let path = root.join(rel);
+        path.exists().then(|| {
+            fs::read(path)
+                .map(|data| (rel, data))
+                .map_err(|error| format!("failed to read runtime parity input: {error}"))
+        })
+    })
+    .collect::<Result<Vec<_>, _>>()?;
+    if parts.is_empty() {
+        return Err("installed runtime mirror has no comparable files".to_string());
+    }
+    Ok(stable_hash(&parts))
 }
 
 fn active_wiring_check(host: &[DoctorCheck]) -> DoctorCheck {
@@ -340,6 +399,7 @@ mod tests {
             "codex-agents",
             "claude-skill",
             "claude-hook",
+            "runtime-parity",
         ] {
             assert!(
                 report
@@ -372,6 +432,44 @@ mod tests {
                 .iter()
                 .any(|check| check.id == "claude-hook" && check.status == "FAIL")
         );
+        let _ = fs::remove_dir_all(&temp);
+    }
+
+    #[test]
+    fn doctor_reports_runtime_parity_warn_with_remediation() {
+        let temp =
+            std::env::temp_dir().join(format!("lilygo-doctor-parity-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&temp);
+        for host in [".codex", ".claude"] {
+            let root = temp.join(host).join("lilygo-skills");
+            fs::create_dir_all(root.join("bin")).expect("bin");
+            fs::create_dir_all(root.join("data/facts")).expect("facts");
+            fs::create_dir_all(root.join("index")).expect("index");
+            fs::write(root.join("bin/lilygo-skills"), "same-binary").expect("bin");
+            fs::write(root.join("data/boards.json"), "same-boards").expect("boards");
+            fs::write(root.join("data/facts/board-fact-packs.json"), "same-facts").expect("facts");
+            fs::write(root.join("index/routes.json"), "same-routes").expect("routes");
+        }
+        let matching = doctor_report(root().as_path(), Some(temp.as_path()));
+        assert!(
+            matching
+                .checks
+                .iter()
+                .any(|check| check.id == "runtime-parity" && check.status == "PASS")
+        );
+        fs::write(
+            temp.join(".claude/lilygo-skills/data/boards.json"),
+            "different-boards",
+        )
+        .expect("drift");
+        let drifted = doctor_report(root().as_path(), Some(temp.as_path()));
+        let parity = drifted
+            .checks
+            .iter()
+            .find(|check| check.id == "runtime-parity")
+            .expect("runtime parity check");
+        assert_eq!(parity.status, "WARN");
+        assert!(parity.summary.contains("node install.js --all --build"));
         let _ = fs::remove_dir_all(&temp);
     }
 }

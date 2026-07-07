@@ -1,0 +1,518 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "goal_id": "goal-c9f0f9339be5",
+  "prompt": "T-Display-S3 Arduino factory full peripheral test",
+  "decision": "planned",
+  "route": {
+    "skills": [
+      "lilygo-router",
+      "board-t-display-s3",
+      "series-esp32-s3",
+      "fw-arduino",
+      "periph-display"
+    ],
+    "board": "board-t-display-s3",
+    "framework": "fw-arduino",
+    "frameworks": [
+      "fw-arduino"
+    ],
+    "peripherals": [
+      "periph-display"
+    ]
+  },
+  "context_capsule": {
+    "summary": "Goal capsule for board=board-t-display-s3, framework=fw-arduino, skills=[lilygo-router,board-t-display-s3,series-esp32-s3,fw-arduino,periph-display]",
+    "facts": [
+      {
+        "key": "board",
+        "value": "LilyGO T-Display-S3",
+        "source": "board-t-display-s3",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "mcu",
+        "value": "esp32-s3",
+        "source": "board-t-display-s3",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "frameworks",
+        "value": "arduino,esp-idf,rust,platformio",
+        "source": "board-t-display-s3",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "peripheral",
+        "value": "display",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "chip",
+        "value": "ST7789 170x320 TFT",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "bus",
+        "value": "8-bit parallel display bus",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "driver",
+        "value": "TFT_eSPI Setup206; ESP-IDF i80-style panel init",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "peripheral",
+        "value": "power",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "chip",
+        "value": "GPIO-controlled backlight and screen power",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "bus",
+        "value": "GPIO38 backlight; GPIO15 screen power",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "key": "driver",
+        "value": "PIN_LCD_BL=GPIO38; PIN_POWER_ON=GPIO15",
+        "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "evidence_level": "V3-source-reference"
+      }
+    ],
+    "next_actions": [
+      {
+        "id": "source-query-display",
+        "label": "Check display source facts",
+        "command": "lilygo-skills source query --board board-t-display-s3 --topic display --json",
+        "permission": "none",
+        "reason": "Matched peripheral prompts should expose the narrow official source slice on demand."
+      },
+      {
+        "id": "expand-board-source",
+        "label": "Open selected board source refs",
+        "command": "lilygo-skills index query board-t-display-s3 --json",
+        "permission": "none",
+        "reason": "The closest official demo is examples/factory/factory.ino; read its source before adapting it."
+      },
+      {
+        "id": "goal-start-dry-run",
+        "label": "Preview build/upload/monitor plan",
+        "command": "lilygo-skills goal complete --dry-run --json 'T-Display-S3 Arduino factory full peripheral test'",
+        "permission": "none",
+        "reason": "Confirm the execution plan and required permissions before mutating a project or device."
+      }
+    ],
+    "completeness": {
+      "display": "complete"
+    },
+    "readiness": [
+      {
+        "board_id": "board-t-display-s3",
+        "topic": "display",
+        "completeness": "complete",
+        "evidence_level": "V3",
+        "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic display --json"
+      }
+    ],
+    "demo_refs": [
+      {
+        "framework": "arduino",
+        "target": "factory-display-lvgl",
+        "path": "examples/factory/factory.ino",
+        "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "intents": [
+          "full-factory",
+          "multi-peripheral-debug",
+          "lvgl"
+        ],
+        "complexity": "full"
+      },
+      {
+        "framework": "arduino",
+        "target": "tft-display",
+        "path": "examples/tft/tft.ino",
+        "source_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+        "evidence_level": "V3-source-reference",
+        "stale": false,
+        "intents": [
+          "minimal-display",
+          "first-run"
+        ],
+        "complexity": "minimal"
+      }
+    ],
+    "source_refs": [
+      {
+        "kind": "arduino-pins",
+        "authority_rank": 95,
+        "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "status": "github-live-verified",
+        "stale": false,
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "kind": "driver-header",
+        "authority_rank": 95,
+        "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
+        "status": "github-live-verified",
+        "stale": false,
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "kind": "github-repo",
+        "authority_rank": 90,
+        "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3",
+        "status": "github-cache",
+        "stale": false,
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "kind": "lilygo-hardware",
+        "authority_rank": 90,
+        "url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+        "status": "github-live-verified",
+        "stale": false,
+        "evidence_level": "V3-source-reference"
+      },
+      {
+        "kind": "documentation-repo",
+        "authority_rank": 65,
+        "url": "https://github.com/Xinyuan-LilyGO/documentation",
+        "status": "versioned-wiki-source",
+        "stale": false,
+        "evidence_level": "V3-source-reference"
+      }
+    ],
+    "budget": {
+      "max_fact_rows_per_table": 8,
+      "max_source_refs_inline": 5,
+      "max_discovery_hints_inline": 5,
+      "max_reference_hints_inline": 3,
+      "max_playbook_hints_inline": 3,
+      "overflow_count": 2
+    },
+    "boundary": {
+      "verification_level": "V3",
+      "hardware_verified": false,
+      "reason": "Goal planning is source/context evidence only until build, simulator, or hardware commands run."
+    }
+  },
+  "recipe_ids": [
+    "recipe-run-official-demo",
+    "recipe-build-upload-monitor",
+    "recipe-lvgl-simulator"
+  ],
+  "recipes": [
+    {
+      "id": "recipe-run-official-demo",
+      "purpose": "select and run the closest official LilyGO example before writing custom code",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "select-demo",
+          "title": "Select the closest source-backed demo from the board capsule",
+          "command": "read goal.context_capsule.demo_refs and choose the highest-match path",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "map-dependencies",
+          "title": "Map demo includes, driver wrappers, and board variant assumptions",
+          "command": "read goal.context_capsule.source_refs and selected demo source",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        }
+      ],
+      "expected_observations": [
+        "selected demo path is source-backed",
+        "driver and bus facts are visible before custom implementation"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "selected_demo_path",
+        "source_reference_list"
+      ],
+      "required_permissions": [
+        "read-only"
+      ],
+      "source_refs": [
+        "https://github.com/Xinyuan-LilyGO/documentation"
+      ]
+    },
+    {
+      "id": "recipe-build-upload-monitor",
+      "purpose": "compile, optionally upload, then observe the firmware with explicit hardware permission",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio",
+        "rust"
+      ],
+      "steps": [
+        {
+          "id": "check-toolchain",
+          "title": "Check selected framework toolchain availability",
+          "command": "framework-specific version command",
+          "permission": "read-only",
+          "evidence_level": "V3"
+        },
+        {
+          "id": "build",
+          "title": "Build the selected project or official demo",
+          "command": "framework-specific build command",
+          "permission": "allow-build",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "upload",
+          "title": "Upload only to the explicitly selected serial port",
+          "command": "framework-specific upload command with --port",
+          "permission": "allow-flash:port",
+          "evidence_level": "V5"
+        },
+        {
+          "id": "monitor",
+          "title": "Capture runtime output from the explicitly selected serial port",
+          "command": "framework-specific serial monitor command",
+          "permission": "allow-serial:port",
+          "evidence_level": "V5"
+        }
+      ],
+      "expected_observations": [
+        "build produces a firmware artifact",
+        "upload records target port and exit status in local evidence",
+        "monitor produces local evidence without committing raw logs"
+      ],
+      "failure_patterns": [
+        {
+          "class": "missing-tool-or-source",
+          "signals": [
+            "command not found",
+            "no such file",
+            "not found"
+          ],
+          "next_action": "install the missing tool or bind a real source checkout before retrying"
+        },
+        {
+          "class": "build-failure",
+          "signals": [
+            "compile",
+            "compilation",
+            "undefined reference",
+            "error:"
+          ],
+          "next_action": "patch the project and rerun the same build recipe once"
+        },
+        {
+          "class": "port-or-permission",
+          "signals": [
+            "failed to connect",
+            "permission denied",
+            "no serial"
+          ],
+          "next_action": "select an explicit port and fix OS permissions before hardware steps"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "timeout",
+            "no frames",
+            "no data"
+          ],
+          "next_action": "add instrumentation or reduce the target before another run"
+        }
+      ],
+      "artifacts": [
+        "build_log",
+        "firmware_artifact",
+        "upload_log",
+        "serial_log_private"
+      ],
+      "required_permissions": [
+        "allow-build",
+        "allow-flash:port",
+        "allow-serial:port"
+      ],
+      "source_refs": [
+        "https://docs.arduino.cc/arduino-cli/"
+      ]
+    },
+    {
+      "id": "recipe-lvgl-simulator",
+      "purpose": "prove LVGL page-data, simulator, or screenshot state before claiming board pixels",
+      "applies_to": [
+        "arduino",
+        "esp-idf",
+        "platformio"
+      ],
+      "steps": [
+        {
+          "id": "page-data",
+          "title": "Collect LVGL object tree, invalidation, input state, and timing data",
+          "command": "project LVGL page-data command",
+          "permission": "allow-simulator",
+          "evidence_level": "V4"
+        },
+        {
+          "id": "simulator-render",
+          "title": "Render the same page in a simulator or host harness",
+          "command": "LVGL simulator command",
+          "permission": "allow-simulator",
+          "evidence_level": "V4"
+        }
+      ],
+      "expected_observations": [
+        "touch/input read callback updates page-data",
+        "flush/tick timing is visible before hardware-pixel claims"
+      ],
+      "failure_patterns": [
+        {
+          "class": "lvgl-input-or-flush",
+          "signals": [
+            "input callback idle",
+            "flush not complete",
+            "tick stalled"
+          ],
+          "next_action": "instrument LVGL tick, flush, and input callbacks before retrying"
+        },
+        {
+          "class": "runtime-timeout-no-observation",
+          "signals": [
+            "no frames",
+            "timeout",
+            "no page-data"
+          ],
+          "next_action": "reduce to simulator/page-data before attached-board evidence"
+        }
+      ],
+      "artifacts": [
+        "page_data",
+        "simulator_screenshot"
+      ],
+      "required_permissions": [
+        "allow-simulator"
+      ],
+      "source_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lv_port_pc_vscode"
+      ]
+    }
+  ],
+  "source_packs": [
+    {
+      "id": "recipe-pack-watch-flash-debug",
+      "recipe_ids": [
+        "recipe-build-upload-monitor",
+        "recipe-serial-debug"
+      ],
+      "source_refs": [
+        "https://docs.espressif.com/projects/esptool/en/latest/esp32/"
+      ],
+      "authority": "local-operating-recipe"
+    },
+    {
+      "id": "recipe-pack-lvgl-ui-debug-loop",
+      "recipe_ids": [
+        "recipe-lvgl-simulator"
+      ],
+      "source_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lvgl/tree/master/examples"
+      ],
+      "official_refs": [
+        "https://docs.lvgl.io/master/",
+        "https://github.com/lvgl/lvgl/tree/master/examples",
+        "https://github.com/lvgl/lv_port_pc_vscode"
+      ],
+      "authority": "official-docs-over-operating-recipe"
+    }
+  ],
+  "permissions_required": [
+    "allow-build",
+    "allow-flash:port",
+    "allow-serial:port",
+    "allow-simulator"
+  ],
+  "planned_artifacts": [
+    "build_log",
+    "firmware_artifact",
+    "goal_plan",
+    "page_data",
+    "selected_demo_path",
+    "serial_log_private",
+    "simulator_screenshot",
+    "source_reference_list",
+    "upload_log"
+  ],
+  "privacy": {
+    "committed_state": [
+      "goal prompt, route ids, recipe ids, source urls, and public docs"
+    ],
+    "local_state": [
+      ".lilygo-skills/local.json",
+      ".lilygo-skills/evidence/"
+    ]
+  },
+  "warnings": [
+    "Verification level is context injection only.",
+    "Goal planning uses official code/examples/headers before documentation text.",
+    "Recipe operating-pattern references provide guidance, not board-fact authority."
+  ]
+}

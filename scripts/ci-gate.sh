@@ -9,23 +9,30 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 GATES=(
-  "cjk-prompt-smoke.sh --dry-run"
+  "capsule-byte-diff-smoke.sh"
+  "cjk-prompt-smoke.sh"
   "doc-split-smoke.sh"
   "full-evidence-smoke.sh --dry-run"
   "generated-cache-boundary-smoke.sh"
-  "goal-privacy-smoke.sh --dry-run"
+  "goal-privacy-smoke.sh"
   "goal-safety-smoke.sh --dry-run"
   "goal-complete-smoke.sh --dry-run"
   "goal-complete-permission-smoke.sh --dry-run"
   "goal-context-smoke.sh --dry-run"
-  "goal-bridge-smoke.sh --dry-run"
+  "goal-bridge-smoke.sh"
   "goal-hardware-smoke.sh --dry-run"
-  "hardware-gold-standard-smoke.sh --dry-run"
+  "hardware-gold-standard-smoke.sh"
+  "hardware-gold-standard-live-smoke.sh --dry-run"
   "board-completeness-smoke.sh --dry-run"
-  "board-data-expansion-smoke.sh --dry-run"
+  "board-data-expansion-smoke.sh"
+  "../pipeline/run-official-source-pipeline.js --gold-only --json"
+  "../pipeline/diff-gold-fact-packs.js --json"
+  "../pipeline/run-official-source-pipeline.js --all-boards --json"
+  "../eval/run-board-triple-questions.js --boards all --json --require-topic board-t-watch-s3:display --require-topic board-t-watch-s3:input"
   "product-board-smoke.sh --dry-run"
-  "pure-query-compact-smoke.sh --dry-run"
-  "context-budget-smoke.sh --dry-run"
+  "pure-query-compact-smoke.sh"
+  "context-budget-smoke.sh"
+  "project-context-ledger-smoke.sh"
   "project-context-smoke.sh --dry-run"
   "playbook-quality-smoke.sh --dry-run"
   "preference-reference-smoke.sh --dry-run"
@@ -41,6 +48,7 @@ GATES=(
   "code-size-boundary-smoke.sh"
   "meta-only-source-smoke.sh"
   "rust-module-doc-smoke.sh"
+  "router-skill-surface-smoke.sh"
   "source-comment-hygiene-smoke.sh"
   "static-context-template-smoke.sh"
   "install-build-failure-smoke.sh"
@@ -48,23 +56,43 @@ GATES=(
   "install-injection-smoke.sh"
   "practice-layer-free-smoke.sh"
   "system-smoke.sh"
+  "scorecard-private-boundary-smoke.sh"
 )
 
 failed=()
+skipped=()
 for gate in "${GATES[@]}"; do
   # shellcheck disable=SC2086
   set -- $gate
   script="scripts/$1"
   shift
   echo "== ci-gate: $script $* =="
-  if ! bash "$script" "$@"; then
+  set +e
+  if [[ "$script" == scripts/../pipeline/*.js || "$script" == scripts/../eval/*.js ]]; then
+    node "${script#scripts/../}" "$@"
+  else
+    bash "$script" "$@"
+  fi
+  code=$?
+  set -e
+  if [[ "$code" -eq 2 && "$script" =~ hardware|goal-hardware ]]; then
+    skipped+=("$script")
+    continue
+  fi
+  if [[ "$code" -ne 0 ]]; then
     failed+=("$script")
   fi
 done
+
+echo "== ci-gate: eval/run-scorecard.js --suite smoke --json =="
+node eval/run-scorecard.js --suite smoke --json
+
+echo "== ci-gate: eval/grade-scorecard.js --assert-forbidden-claims --json =="
+node eval/grade-scorecard.js --assert-forbidden-claims --json
 
 if [[ ${#failed[@]} -gt 0 ]]; then
   echo "FAIL ci-gate: ${failed[*]}" >&2
   exit 1
 fi
 
-echo "{\"status\":\"PASS\",\"gates\":${#GATES[@]}}"
+echo "{\"status\":\"PASS\",\"gates\":${#GATES[@]},\"boundary_skips\":${#skipped[@]}}"

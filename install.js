@@ -13,6 +13,7 @@ function parseArgs(argv) {
     "--dry-run",
     "--build",
     "--no-self-test",
+    "--prebuilt-only",
   ]);
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -49,6 +50,9 @@ function parseArgs(argv) {
   if (!["auto", "release", "debug"].includes(profile)) {
     throw new Error("--profile must be auto, release, or debug");
   }
+  if (args.has("--prebuilt-only") && (args.has("--build") || args.has("--bin"))) {
+    throw new Error("--prebuilt-only cannot be combined with --build or --bin");
+  }
   return {
     dryRun: args.has("--dry-run"),
     build: args.has("--build"),
@@ -57,6 +61,7 @@ function parseArgs(argv) {
     profile,
     bin: optionValue("--bin"),
     selfTest: !args.has("--no-self-test"),
+    prebuiltOnly: args.has("--prebuilt-only"),
   };
 }
 
@@ -69,6 +74,20 @@ function installPlatform() {
 
 function runtimeBinaryName() {
   return installPlatform() === "win32" ? "lilygo-skills.exe" : "lilygo-skills";
+}
+
+function prebuiltPlatformId() {
+  const platform = installPlatform();
+  const arch = process.env.LILYGO_INSTALL_ARCH || process.arch;
+  if (platform === "darwin" && arch === "arm64") return "macos-arm64";
+  if (platform === "darwin" && arch === "x64") return "macos-x64";
+  if (platform === "linux" && arch === "arm64") return "linux-arm64";
+  if (platform === "linux" && arch === "x64") return "linux-x64";
+  return `${platform}-${arch}`;
+}
+
+function prebuiltBinaryPath(repoRoot) {
+  return path.join(repoRoot, "dist", "bin", prebuiltPlatformId(), runtimeBinaryName());
 }
 
 function claudeSkillPath(home) {
@@ -685,6 +704,13 @@ function runSelfTest(plan) {
 }
 
 function resolveBinary(repoRoot, options) {
+  if (options.prebuiltOnly) {
+    return {
+      path: prebuiltBinaryPath(repoRoot),
+      profile: "prebuilt",
+      build_hint: `install a release bundle containing dist/bin/${prebuiltPlatformId()}/${runtimeBinaryName()}`,
+    };
+  }
   if (options.bin) {
     return {
       path: path.resolve(repoRoot, options.bin),
@@ -744,7 +770,7 @@ function resolveBinary(repoRoot, options) {
 }
 
 function buildPlan(repoRoot, options, binary) {
-  if (!options.build || options.bin) {
+  if (options.prebuiltOnly || !options.build || options.bin) {
     return {
       enabled: false,
       profile: binary.profile,
@@ -801,7 +827,9 @@ function main() {
   const binary = resolveBinary(repoRoot, options);
   const build = buildPlan(repoRoot, options, binary);
   const binaryExists = fs.existsSync(binary.path);
-  const mountOnly = !binaryExists && !build.enabled && !options.bin;
+  const mountOnly = !binaryExists && !build.enabled && !options.bin && !options.prebuiltOnly;
+  const runtimeMode =
+    mountOnly ? "mount-only" : options.prebuiltOnly && !binaryExists ? "prebuilt-missing" : "full";
   if (!binaryExists && !build.enabled) {
     warnings.push(
       mountOnly
@@ -815,6 +843,11 @@ function main() {
   const self_tests = [];
   let build_result = null;
   if (!options.dryRun) {
+    if (options.prebuiltOnly && !binaryExists) {
+      errors.push(
+        `prebuilt runtime missing at ${binary.path}; ${binary.build_hint}`
+      );
+    }
     build_result = runBuild(build, repoRoot);
     if (build_result && build_result.status !== "PASS") {
       errors.push(
@@ -867,7 +900,10 @@ function main() {
         status,
         hosts: plans.map((plan) => plan.host),
         mode: options.dryRun ? "dry-run" : "apply",
-        runtime_mode: mountOnly ? "mount-only" : "full",
+        runtime_mode: runtimeMode,
+        prebuilt_only: options.prebuiltOnly,
+        prebuilt_platform: prebuiltPlatformId(),
+        prebuilt_available: options.prebuiltOnly ? binaryExists : null,
         binary_profile: binary.profile,
         binary_source: displayPath(binary.path, options.home, repoRoot),
         build_plan: {
