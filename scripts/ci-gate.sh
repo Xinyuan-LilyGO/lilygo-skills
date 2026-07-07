@@ -9,6 +9,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 GATES=(
+  "capsule-byte-diff-smoke.sh"
   "cjk-prompt-smoke.sh --dry-run"
   "doc-split-smoke.sh"
   "full-evidence-smoke.sh --dry-run"
@@ -72,6 +73,12 @@ for gate in "${GATES[@]}"; do
     failed+=("$script")
   fi
 done
+
+echo "== ci-gate: eval/run-scorecard.js --suite smoke --json =="
+node eval/run-scorecard.js --suite smoke --json
+
+echo "== ci-gate: eval/grade-scorecard.js --assert-forbidden-claims --json =="
+node eval/grade-scorecard.js --assert-forbidden-claims --json
 
 if [[ ${#failed[@]} -gt 0 ]]; then
   echo "FAIL ci-gate: ${failed[*]}" >&2

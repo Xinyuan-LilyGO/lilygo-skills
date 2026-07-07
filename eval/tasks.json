@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "suite": "m25",
+  "tasks": [
+    {
+      "id": "tdisplay-s3-display-minimal",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 PlatformIO Arduino 点亮屏幕，先跑最小显示 demo",
+      "category": "demo-choice",
+      "expected_facts": ["examples/tft/tft.ino", "Setup206", "ST7789", "8-bit parallel"],
+      "forbidden_claims": ["Setup25", "SPI display bus", "unverified hardware success"]
+    },
+    {
+      "id": "tdisplay-s3-i2c-pins",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 哪些 I2C 引脚可以接传感器?",
+      "category": "pin-qa",
+      "expected_facts": ["GPIO18", "GPIO17", "SDA before SCL"],
+      "forbidden_claims": ["SDA=GPIO17", "SCL=GPIO18", "free GPIO is known"]
+    },
+    {
+      "id": "tdisplay-s3-display-occupied",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 屏幕占用了哪些 GPIO?",
+      "category": "pin-qa",
+      "expected_facts": ["GPIO39", "GPIO40", "GPIO41", "GPIO42", "GPIO45", "GPIO46", "GPIO47", "GPIO48"],
+      "forbidden_claims": ["SPI display", "TFT_MOSI", "TFT_SCLK"]
+    },
+    {
+      "id": "tdisplay-s3-factory-demo",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 跑完整出厂测试",
+      "category": "demo-choice",
+      "expected_facts": ["examples/factory/factory.ino", "full factory"],
+      "forbidden_claims": ["only tft.ino is available", "unverified hardware success"]
+    },
+    {
+      "id": "tdisplay-s3-flash-troubleshoot",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 烧录后黑屏怎么排查?",
+      "category": "flash-troubleshooting",
+      "expected_facts": ["backlight", "power", "serial", "evidence boundary"],
+      "forbidden_claims": ["fixed without serial log", "hardware verified"]
+    },
+    {
+      "id": "tdisplay-s3-tft-espi-pitfall",
+      "board_id": "board-t-display-s3",
+      "prompt": "T-Display-S3 TFT_eSPI 和 arduino-esp32 版本有什么坑?",
+      "category": "known-pitfall",
+      "expected_facts": ["arduino-esp32", "2.0.14", "TFT_eSPI"],
+      "forbidden_claims": ["latest core always works", "ignore setup file"]
+    },
+    {
+      "id": "twatch-ultra-imu",
+      "board_id": "board-t-watch-ultra",
+      "prompt": "T-Watch Ultra IMU 怎么读?",
+      "category": "peripheral-qa",
+      "expected_facts": ["BHI260AP", "I2C 0x28", "SensorBHI260AP"],
+      "forbidden_claims": ["MPU6050", "SPI IMU", "unverified live motion"]
+    },
+    {
+      "id": "twatch-ultra-nfc",
+      "board_id": "board-t-watch-ultra",
+      "prompt": "T-Watch Ultra NFC 用什么芯片和总线?",
+      "category": "peripheral-qa",
+      "expected_facts": ["ST25R3916", "SPI", "RFAL"],
+      "forbidden_claims": ["PN532", "I2C NFC", "hardware verified"]
+    },
+    {
+      "id": "twatch-ultra-power",
+      "board_id": "board-t-watch-ultra",
+      "prompt": "T-Watch Ultra 电源管理芯片是什么?",
+      "category": "peripheral-qa",
+      "expected_facts": ["AXP2101", "I2C 0x34"],
+      "forbidden_claims": ["AXP202", "battery charging tested"]
+    },
+    {
+      "id": "twatch-ultra-haptic",
+      "board_id": "board-t-watch-ultra",
+      "prompt": "T-Watch Ultra 震动马达怎么控制?",
+      "category": "peripheral-qa",
+      "expected_facts": ["DRV2605", "I2C 0x5A"],
+      "forbidden_claims": ["GPIO-only motor", "haptic verified"]
+    },
+    {
+      "id": "tbeam-lora",
+      "board_id": "board-t-beam",
+      "prompt": "T-Beam LoRa 芯片和 SPI 引脚怎么确认?",
+      "category": "radio",
+      "expected_facts": ["LoRa", "SPI", "official source"],
+      "forbidden_claims": ["display pins", "no antenna caveat", "guessed free GPIO"]
+    },
+    {
+      "id": "tbeam-gnss",
+      "board_id": "board-t-beam",
+      "prompt": "T-Beam GNSS 用什么 UART?",
+      "category": "radio",
+      "expected_facts": ["GNSS", "UART", "official source"],
+      "forbidden_claims": ["I2C GNSS", "verified fix"]
+    },
+    {
+      "id": "tdeck-keyboard",
+      "board_id": "board-t-deck",
+      "prompt": "T-Deck 键盘和轨迹球怎么查资料?",
+      "category": "input",
+      "expected_facts": ["keyboard", "trackball", "official source"],
+      "forbidden_claims": ["display-only test", "unverified input works"]
+    },
+    {
+      "id": "tdeck-lora",
+      "board_id": "board-t-deck",
+      "prompt": "T-Deck LoRa 怎么先确认芯片和总线?",
+      "category": "radio",
+      "expected_facts": ["LoRa", "SPI", "official source"],
+      "forbidden_claims": ["guessed SX model", "hardware verified"]
+    },
+    {
+      "id": "tdisplay-s3-amoled-display",
+      "board_id": "board-t-display-s3-amoled",
+      "prompt": "T-Display-S3 AMOLED 屏幕驱动怎么确认?",
+      "category": "display",
+      "expected_facts": ["AMOLED", "display", "official source"],
+      "forbidden_claims": ["ST7789 without source", "Setup206"]
+    },
+    {
+      "id": "tkeyboard-input",
+      "board_id": "board-t-keyboard-s3-pro",
+      "prompt": "T-Keyboard-S3-Pro 输入外设怎么查?",
+      "category": "input",
+      "expected_facts": ["keyboard", "input", "official source"],
+      "forbidden_claims": ["display-centric test", "unverified typing"]
+    },
+    {
+      "id": "tlora-pager-radio",
+      "board_id": "board-t-lora-pager",
+      "prompt": "T-LoRa Pager LoRa 和显示资料怎么找?",
+      "category": "mixed",
+      "expected_facts": ["LoRa", "display", "official source"],
+      "forbidden_claims": ["no radio", "hardware verified"]
+    },
+    {
+      "id": "tcamera-plus-s3-storage-camera",
+      "board_id": "board-t-camera-plus-s3",
+      "prompt": "T-Camera-Plus-S3 摄像头/存储相关资料怎么查?",
+      "category": "mixed",
+      "expected_facts": ["storage", "official source", "source query"],
+      "forbidden_claims": ["free pins known", "camera capture verified"]
+    },
+    {
+      "id": "tdongle-s3-usb",
+      "board_id": "board-t-dongle-s3",
+      "prompt": "T-Dongle-S3 的 USB/外设事实怎么确认?",
+      "category": "mixed",
+      "expected_facts": ["official source", "source query"],
+      "forbidden_claims": ["guessed pinout", "hardware verified"]
+    },
+    {
+      "id": "unsupported-rp2040-boundary",
+      "board_id": "future-rp2040-product",
+      "prompt": "LilyGO RP2040 产品可以直接用这个跑吗?",
+      "category": "support-boundary",
+      "expected_facts": ["unsupported", "ESP32"],
+      "forbidden_claims": ["runnable supported", "deep injection"]
+    }
+  ]
+}

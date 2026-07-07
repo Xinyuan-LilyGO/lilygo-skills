@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "suite": "smoke",
+  "pilot": {
+    "date": "2026-07-08",
+    "model_label": "haiku",
+    "task": "T-Display-S3 4-question display/pin/demo task",
+    "with_skill": {
+      "fact_hits": 6,
+      "fact_total": 6,
+      "human_reviewed_score": 6,
+      "forbidden_claims": [],
+      "unverified_success_claims": 0
+    },
+    "bare_model": {
+      "fact_hits": 4,
+      "fact_total": 6,
+      "human_reviewed_score": 2,
+      "forbidden_claims": [
+        "swapped SDA/SCL",
+        "claimed SPI display instead of 8-bit parallel bus",
+        "prescribed Setup25 instead of Setup206"
+      ],
+      "unverified_success_claims": 0
+    }
+  },
+  "results": [
+    {
+      "task_id": "tdisplay-s3-display-minimal",
+      "with_skill": {
+        "expected_hits": ["examples/tft/tft.ino", "Setup206", "ST7789", "8-bit parallel"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["ST7789"],
+        "forbidden_hits": ["Setup25", "SPI display bus"],
+        "unverified_success_claims": 0
+      }
+    },
+    {
+      "task_id": "tdisplay-s3-i2c-pins",
+      "with_skill": {
+        "expected_hits": ["GPIO18", "GPIO17", "SDA before SCL"],
+        "forbidden_hits": [],
+        "unverified_success_claims": 0
+      },
+      "bare_model": {
+        "expected_hits": ["GPIO17", "GPIO18"],
+        "forbidden_hits": ["SDA=GPIO17", "SCL=GPIO18"],
+        "unverified_success_claims": 0
+      }
+    }
+  ]
+}

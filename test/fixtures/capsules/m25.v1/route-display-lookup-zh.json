@@ -1,0 +1,68 @@
+{
+  "decision": "inject",
+  "skills": [
+    "lilygo-router",
+    "board-t-display-s3",
+    "series-esp32-s3",
+    "periph-display"
+  ],
+  "matches": [
+    {
+      "skill": "lilygo-router",
+      "matched": {
+        "kind": "signal",
+        "value": "LilyGO/ESP32-family"
+      }
+    },
+    {
+      "skill": "board-t-display-s3",
+      "matched": {
+        "kind": "keyword",
+        "value": "t-display"
+      }
+    },
+    {
+      "skill": "series-esp32-s3",
+      "matched": {
+        "kind": "keyword",
+        "value": "s3"
+      }
+    },
+    {
+      "skill": "periph-display",
+      "matched": {
+        "kind": "keyword",
+        "value": "display"
+      }
+    }
+  ],
+  "paths": {
+    "board-t-display-s3": "skills/board-t-display-s3/SKILL.md",
+    "lilygo-router": "skills/lilygo-router/SKILL.md",
+    "periph-display": "skills/periph-display/SKILL.md",
+    "series-esp32-s3": "skills/series-esp32-s3/SKILL.md"
+  },
+  "readiness": [
+    {
+      "board_id": "board-t-display-s3",
+      "topic": "display",
+      "completeness": "complete",
+      "evidence_level": "V3",
+      "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic display --json"
+    },
+    {
+      "board_id": "board-t-display-s3",
+      "topic": "input",
+      "completeness": "complete",
+      "evidence_level": "V3",
+      "source_query_command": "lilygo-skills source query --board board-t-display-s3 --topic input --json"
+    }
+  ],
+  "verification_level": "context-injection",
+  "hardware_verified": false,
+  "hardware_verification_boundary": false,
+  "notes": [
+    "Verification level is context injection only."
+  ],
+  "truncated": false
+}
