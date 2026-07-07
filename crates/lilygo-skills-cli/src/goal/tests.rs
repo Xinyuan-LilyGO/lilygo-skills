@@ -163,7 +163,7 @@ fn goal_complete_readiness() {
 }
 
 #[test]
-fn goal_complete_nfc_source_fallback() {
+fn goal_complete_nfc_uses_dynamic_source_topic() {
     let project = std::env::temp_dir().join(format!(
         "lilygo-goal-complete-nfc-source-{}",
         std::process::id()
@@ -176,12 +176,9 @@ fn goal_complete_nfc_source_fallback() {
     );
     assert_eq!(json_str(&result, "/status"), "needs_permission");
     assert_eq!(json_str(&result, "/route/board"), "board-t-watch-ultra");
-    assert_eq!(
-        json_str(&result, "/readiness/source/status"),
-        "source_backed"
-    );
+    assert_eq!(json_str(&result, "/readiness/source/status"), "complete");
     assert!(
-        json_str(&result, "/readiness/source/summary").contains("facts="),
+        json_str(&result, "/readiness/source/summary").contains("nfc=complete"),
         "{}",
         result["readiness"]["source"]
     );
@@ -192,7 +189,7 @@ fn goal_complete_nfc_source_fallback() {
             .is_some_and(|items| items
                 .iter()
                 .any(|item| item.as_str().is_some_and(|command| command
-                    .contains("source query --board board-t-watch-ultra --topic peripheral"))))
+                    .contains("source query --board board-t-watch-ultra --topic nfc"))))
     );
     let _ = fs::remove_dir_all(&project);
 }

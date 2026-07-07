@@ -370,10 +370,10 @@ pub(crate) fn board_fact_enrichment(
         .find(|board| board.id == board_id)
         .ok_or_else(|| format!("unknown board: {board_id}"))?;
     if !is_supported_esp32(board) {
-        let validation = unsupported_completeness(&board.id, topic);
+        let validation = unsupported_completeness(&board.id, &topic);
         if dry_run {
             return Ok(unsupported_enrichment_report(
-                board, topic, dry_run, validation,
+                board, &topic, dry_run, validation,
             ));
         }
         return Err(format!(
@@ -382,9 +382,9 @@ pub(crate) fn board_fact_enrichment(
     }
     let mut index = load_fact_pack_index(root)?;
     ensure_pack(&mut index, board);
-    let parsed_facts = enrichment_facts(board, &index, topic);
+    let parsed_facts = enrichment_facts(board, &index, &topic);
     merge_enrichment_facts(&mut index, board_id, parsed_facts.clone());
-    let validation = source_completeness_from_index(board, &index, topic);
+    let validation = source_completeness_from_index(board, &index, &topic);
     let writes = if dry_run {
         Vec::new()
     } else {
@@ -392,7 +392,7 @@ pub(crate) fn board_fact_enrichment(
     };
     Ok(enrichment_report(
         board,
-        topic,
+        &topic,
         dry_run,
         parsed_facts,
         validation,

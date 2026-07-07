@@ -48,9 +48,9 @@ pub(crate) fn source_query(
         .into_iter()
         .find(|pack| pack.board_id == board_id)
         .ok_or_else(|| format!("unknown board fact pack: {board_id}"))?;
-    let mut facts = facts_for_topic(&pack, topic);
-    if facts.is_empty() && is_bus_topic(topic) {
-        facts.push(unknown_topic_fact(&pack, topic));
+    let mut facts = facts_for_topic(&pack, &topic);
+    if facts.is_empty() {
+        facts.push(unknown_topic_fact(&pack, &topic));
     }
     let unknowns = facts
         .iter()
@@ -65,25 +65,21 @@ pub(crate) fn source_query(
         }
         .to_string(),
         board_id: board_id.to_string(),
-        topic: topic.to_string(),
+        topic: topic.clone(),
         supported: pack.supported,
         fact_pack: pack.clone(),
         facts,
         unknowns,
         conflicts: pack.conflicts.clone(),
         source_refs: pack.source_refs.clone(),
-        completeness: if is_readiness_topic(topic) {
-            completeness_signal(root, board_id, topic).ok()
+        completeness: if is_readiness_topic(&topic) {
+            completeness_signal(root, board_id, &topic).ok()
         } else {
             None
         },
-        discovery_hints: discovery_hints(board_id, topic, true),
+        discovery_hints: discovery_hints(board_id, &topic, true),
         warnings: query_warnings(&pack),
     })
-}
-
-fn is_bus_topic(topic: &str) -> bool {
-    matches!(topic, "i2c" | "spi" | "uart" | "i2s" | "gpio")
 }
 
 fn unknown_topic_fact(pack: &BoardFactPack, topic: &str) -> SourceFact {
@@ -122,7 +118,7 @@ pub(crate) fn source_completeness(
     let topic = normalize_completeness_topic(topic)?;
     let boards = load_board_index(root)?;
     let Some(board) = boards.boards.iter().find(|board| board.id == board_id) else {
-        return Ok(unsupported_completeness(board_id, topic));
+        return Ok(unsupported_completeness(board_id, &topic));
     };
     let mut pack = load_fact_pack_index(root)?
         .packs
@@ -130,7 +126,7 @@ pub(crate) fn source_completeness(
         .find(|pack| pack.board_id == board_id)
         .unwrap_or_else(|| fact_pack_from_board(board));
     pack.supported = pack.supported && is_supported_esp32(board);
-    Ok(evaluate_completeness(board, &pack, topic))
+    Ok(evaluate_completeness(board, &pack, &topic))
 }
 
 pub(crate) fn board_fact_enrichment_preview(
@@ -157,11 +153,24 @@ pub(crate) fn completeness_signals_for_prompt(
     let Some(board_id) = board_id else {
         return Vec::new();
     };
-    let topics = topics_for_prompt(prompt);
+    let topics = topics_for_board_prompt(root, board_id, prompt);
     topics
         .iter()
         .filter_map(|topic| completeness_signal(root, board_id, topic).ok())
         .collect()
+}
+
+pub(crate) fn topics_for_board_prompt(root: &Path, board_id: &str, prompt: &str) -> Vec<String> {
+    let mut topics = topics_for_prompt(prompt);
+    if let Ok(index) = load_fact_pack_index(root)
+        && let Some(pack) = index.packs.iter().find(|pack| pack.board_id == board_id)
+    {
+        topics.extend(dynamic_topics_for_prompt(pack, prompt));
+    }
+    topics.sort();
+    topics.dedup();
+    topics.truncate(ContextBudget::default().max_discovery_hints_inline);
+    topics
 }
 
 pub(crate) fn build_fact_pack_index(root: &Path) -> Result<BoardFactPackIndex, String> {
@@ -400,7 +409,54 @@ mod tests {
                 .iter()
                 .any(|fact| fact.key == "expander.xl9555.channel-map")
         );
+        let nfc = source_query(root().as_path(), "board-t-watch-ultra", "nfc").expect("nfc");
+        assert!(
+            nfc.facts
+                .iter()
+                .any(|fact| fact.value.contains("ST25R3916"))
+        );
+        assert!(nfc.facts.iter().any(|fact| fact.value.contains("RFAL NFC")));
+        for (topic, expected) in [
+            ("touch", "CST9217"),
+            ("rtc", "PCF85063A"),
+            ("audio", "MAX98357A"),
+            ("haptic", "DRV2605"),
+            ("storage", "MicroSD"),
+        ] {
+            let report = source_query(root().as_path(), "board-t-watch-ultra", topic)
+                .expect("dynamic topic");
+            assert_eq!(report.topic, topic);
+            assert!(
+                report
+                    .facts
+                    .iter()
+                    .any(|fact| fact.value.contains(expected)),
+                "{topic} missing {expected}: {:?}",
+                report.facts
+            );
+            assert!(report.completeness.is_some(), "{topic} missing readiness");
+        }
+        let unknown =
+            source_query(root().as_path(), "board-t-watch-ultra", "barometer").expect("unknown");
+        assert_eq!(unknown.topic, "barometer");
+        assert!(
+            unknown
+                .unknowns
+                .iter()
+                .any(|fact| fact.value == "unknown_with_sources")
+        );
         assert!(!report.discovery_hints.is_empty());
+    }
+
+    #[test]
+    fn board_prompt_topics_are_data_driven() {
+        let topics = topics_for_board_prompt(
+            root().as_path(),
+            "board-t-watch-ultra",
+            "check ST25R3916 NFC and DRV2605 haptic driver sources",
+        );
+        assert!(topics.contains(&"nfc".to_string()), "{topics:?}");
+        assert!(topics.contains(&"haptic".to_string()), "{topics:?}");
     }
 
     #[test]
@@ -646,9 +702,14 @@ mod tests {
         let watch_imu = source_completeness(root.as_path(), "board-t-watch-ultra", "imu").unwrap();
         let watch_power =
             source_completeness(root.as_path(), "board-t-watch-ultra", "power").unwrap();
+        let watch_nfc = source_completeness(root.as_path(), "board-t-watch-ultra", "nfc").unwrap();
+        let watch_haptic =
+            source_completeness(root.as_path(), "board-t-watch-ultra", "haptic").unwrap();
         assert_eq!(watch_display.completeness, "complete");
         assert_eq!(watch_imu.completeness, "complete");
         assert_eq!(watch_power.completeness, "complete");
+        assert_eq!(watch_nfc.completeness, "complete");
+        assert_eq!(watch_haptic.completeness, "complete");
         for (board, topic) in [
             ("board-t-display-s3", "display"),
             ("board-t-beam", "lora"),

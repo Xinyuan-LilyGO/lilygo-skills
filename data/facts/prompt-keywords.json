@@ -10,12 +10,13 @@
     "i2s": ["i2s", "audio", "bclk", "lrclk"],
     "gpio": ["gpio", "pin", "io", "引脚", "外设"]
   },
-  "topic_order": ["display", "imu", "lora", "gnss", "power", "input"],
+  "topic_order": ["display", "imu", "lora", "gnss", "nfc", "power", "input"],
   "topics": {
     "display": ["lvgl", "display", "screen", "lcd", "amoled", "blank", "显示"],
     "imu": ["imu", "bhi260ap", "gesture", "抬腕"],
     "lora": ["lora", "radio", "sx1262", "sx1268", "sx1276", "sx1278", "sx1280"],
     "gnss": ["gnss", "gps"],
+    "nfc": ["nfc", "st25r3916", "rfal", "rfid"],
     "power": ["power", "battery", "pmu", "电源"],
     "input": ["input", "keyboard", "button", "touch", "xl9555", "io", "expander", "按键"]
   }
