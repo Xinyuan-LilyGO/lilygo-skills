@@ -29,6 +29,26 @@ if (assertForbidden) {
   }
 }
 
+const today = process.env.LILYGO_SKILLS_TODAY || new Date().toISOString().slice(0, 10);
+if (fixture.pilot?.date && fixture.pilot.date > today) {
+  fail("fixture_date_in_future", { fixture_date: fixture.pilot.date, today });
+}
+
+const taskIds = new Set(tasks.map((task) => task.id));
+const resultIds = (fixture.results || []).map((result) => result.task_id);
+const duplicateResultIds = resultIds.filter((id, index) => resultIds.indexOf(id) !== index);
+const unknownResultIds = resultIds.filter((id) => !taskIds.has(id));
+const missingResultIds = [...taskIds].filter((id) => !resultIds.includes(id));
+if (duplicateResultIds.length || unknownResultIds.length || missingResultIds.length) {
+  fail("fixture_results_do_not_cover_tasks", {
+    fixture_results: resultIds.length,
+    tasks: tasks.length,
+    duplicate_result_ids: [...new Set(duplicateResultIds)],
+    unknown_result_ids: unknownResultIds,
+    missing_result_ids: missingResultIds
+  });
+}
+
 const withSkillPilot = fixture.pilot?.with_skill;
 const barePilot = fixture.pilot?.bare_model;
 if (!withSkillPilot || !barePilot) {

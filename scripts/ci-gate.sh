@@ -56,6 +56,7 @@ GATES=(
   "install-injection-smoke.sh"
   "practice-layer-free-smoke.sh"
   "system-smoke.sh"
+  "scorecard-private-boundary-smoke.sh"
 )
 
 failed=()
