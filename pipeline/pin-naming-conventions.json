@@ -25,6 +25,21 @@
     "TFT_BACKLIGHT": "pin.display.backlight",
     "SPI_SCK": "pin.spi.sck",
     "SPI_MOSI": "pin.spi.mosi",
-    "SPI_MISO": "pin.spi.miso"
+    "SPI_MISO": "pin.spi.miso",
+    "PIN_LCD_D0": "pin.display.d0",
+    "PIN_LCD_D1": "pin.display.d1",
+    "PIN_LCD_D2": "pin.display.d2",
+    "PIN_LCD_D3": "pin.display.d3",
+    "PIN_LCD_D4": "pin.display.d4",
+    "PIN_LCD_D5": "pin.display.d5",
+    "PIN_LCD_D6": "pin.display.d6",
+    "PIN_LCD_D7": "pin.display.d7",
+    "PIN_LCD_BL": "pin.display.backlight",
+    "PIN_LCD_CS": "pin.display.cs",
+    "PIN_LCD_DC": "pin.display.dc",
+    "PIN_LCD_RES": "pin.display.reset",
+    "PIN_LCD_WR": "pin.display.wr",
+    "PIN_LCD_RD": "pin.display.rd",
+    "PIN_POWER_ON": "pin.power.on"
   }
 }

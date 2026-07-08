@@ -380,7 +380,7 @@
           }
         ],
         "preview_count": 8,
-        "overflow_count": 5,
+        "overflow_count": 20,
         "query_command": "lilygo-skills source query --board board-t-display-s3 --topic pinout --json"
       },
       {
@@ -457,9 +457,27 @@
             "evidence_level": "V3-source-reference",
             "stale": false,
             "confidence": "exact"
+          },
+          {
+            "schema_version": 1,
+            "board_id": "board-t-display-s3",
+            "topic": "pinout",
+            "key": "bus.display.parallel",
+            "value": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0-D7=GPIO39/40/41/42/45/46/47/48, WR=GPIO8, RD=GPIO9, DC=GPIO7, CS=GPIO6, RST=GPIO5, BL=GPIO38, PWR=GPIO15",
+            "claim": "ST7789 8-bit parallel display bus and occupied GPIOs from official factory pin_config.h",
+            "source": {
+              "kind": "arduino-pins",
+              "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+              "line_range": "31-48",
+              "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+            },
+            "authority_rank": 90,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
           }
         ],
-        "preview_count": 4,
+        "preview_count": 5,
         "overflow_count": 0,
         "query_command": "lilygo-skills source query --board board-t-display-s3 --topic bus --json"
       },
@@ -647,7 +665,7 @@
       "max_discovery_hints_inline": 5,
       "max_reference_hints_inline": 3,
       "max_playbook_hints_inline": 3,
-      "overflow_count": 7
+      "overflow_count": 22
     },
     "boundary": {
       "verification_level": "V3",

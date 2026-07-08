@@ -2054,6 +2054,276 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d0",
+          "value": "PIN_LCD_D0=GPIO39",
+          "claim": "LCD 8-bit parallel data D0 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d1",
+          "value": "PIN_LCD_D1=GPIO40",
+          "claim": "LCD 8-bit parallel data D1 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d2",
+          "value": "PIN_LCD_D2=GPIO41",
+          "claim": "LCD 8-bit parallel data D2 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d3",
+          "value": "PIN_LCD_D3=GPIO42",
+          "claim": "LCD 8-bit parallel data D3 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d4",
+          "value": "PIN_LCD_D4=GPIO45",
+          "claim": "LCD 8-bit parallel data D4 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d5",
+          "value": "PIN_LCD_D5=GPIO46",
+          "claim": "LCD 8-bit parallel data D5 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d6",
+          "value": "PIN_LCD_D6=GPIO47",
+          "claim": "LCD 8-bit parallel data D6 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.d7",
+          "value": "PIN_LCD_D7=GPIO48",
+          "claim": "LCD 8-bit parallel data D7 from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "PIN_LCD_BL=GPIO38",
+          "claim": "LCD backlight from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "PIN_LCD_CS=GPIO6",
+          "claim": "LCD chip select from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "PIN_LCD_DC=GPIO7",
+          "claim": "LCD data/command from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "PIN_LCD_RES=GPIO5",
+          "claim": "LCD reset from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.wr",
+          "value": "PIN_LCD_WR=GPIO8",
+          "claim": "LCD write strobe from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.display.rd",
+          "value": "PIN_LCD_RD=GPIO9",
+          "claim": "LCD read strobe from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "pin.power.on",
+          "value": "PIN_POWER_ON=GPIO15",
+          "claim": "Board/LCD power enable from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
       "bus_matrix": [
@@ -2125,6 +2395,24 @@
             "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
           },
           "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3",
+          "topic": "pinout",
+          "key": "bus.display.parallel",
+          "value": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0-D7=GPIO39/40/41/42/45/46/47/48, WR=GPIO8, RD=GPIO9, DC=GPIO7, CS=GPIO6, RST=GPIO5, BL=GPIO38, PWR=GPIO15",
+          "claim": "ST7789 8-bit parallel display bus and occupied GPIOs from official factory pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
+            "line_range": "31-48",
+            "hash": "sha256:3862678dd9d23971970d6952a6a5ee43d7f7df28b539c8fc5b26db784e846fa4"
+          },
+          "authority_rank": 90,
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "exact"

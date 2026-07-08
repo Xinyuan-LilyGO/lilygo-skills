@@ -212,6 +212,39 @@
         }
       ],
       "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3/master/examples/factory/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "31-48",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        { "key": "pin.display.d0", "macro": "PIN_LCD_D0", "claim": "LCD 8-bit parallel data D0 from official factory pin_config.h" },
+        { "key": "pin.display.d1", "macro": "PIN_LCD_D1", "claim": "LCD 8-bit parallel data D1 from official factory pin_config.h" },
+        { "key": "pin.display.d2", "macro": "PIN_LCD_D2", "claim": "LCD 8-bit parallel data D2 from official factory pin_config.h" },
+        { "key": "pin.display.d3", "macro": "PIN_LCD_D3", "claim": "LCD 8-bit parallel data D3 from official factory pin_config.h" },
+        { "key": "pin.display.d4", "macro": "PIN_LCD_D4", "claim": "LCD 8-bit parallel data D4 from official factory pin_config.h" },
+        { "key": "pin.display.d5", "macro": "PIN_LCD_D5", "claim": "LCD 8-bit parallel data D5 from official factory pin_config.h" },
+        { "key": "pin.display.d6", "macro": "PIN_LCD_D6", "claim": "LCD 8-bit parallel data D6 from official factory pin_config.h" },
+        { "key": "pin.display.d7", "macro": "PIN_LCD_D7", "claim": "LCD 8-bit parallel data D7 from official factory pin_config.h" },
+        { "key": "pin.display.backlight", "macro": "PIN_LCD_BL", "claim": "LCD backlight from official factory pin_config.h" },
+        { "key": "pin.display.cs", "macro": "PIN_LCD_CS", "claim": "LCD chip select from official factory pin_config.h" },
+        { "key": "pin.display.dc", "macro": "PIN_LCD_DC", "claim": "LCD data/command from official factory pin_config.h" },
+        { "key": "pin.display.reset", "macro": "PIN_LCD_RES", "claim": "LCD reset from official factory pin_config.h" },
+        { "key": "pin.display.wr", "macro": "PIN_LCD_WR", "claim": "LCD write strobe from official factory pin_config.h" },
+        { "key": "pin.display.rd", "macro": "PIN_LCD_RD", "claim": "LCD read strobe from official factory pin_config.h" },
+        { "key": "pin.power.on", "macro": "PIN_POWER_ON", "claim": "Board/LCD power enable from official factory pin_config.h" }
+      ],
+      "buses": [
+        {
+          "key": "bus.display.parallel",
+          "template": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0-D7=GPIO{PIN_LCD_D0}/{PIN_LCD_D1}/{PIN_LCD_D2}/{PIN_LCD_D3}/{PIN_LCD_D4}/{PIN_LCD_D5}/{PIN_LCD_D6}/{PIN_LCD_D7}, WR=GPIO{PIN_LCD_WR}, RD=GPIO{PIN_LCD_RD}, DC=GPIO{PIN_LCD_DC}, CS=GPIO{PIN_LCD_CS}, RST=GPIO{PIN_LCD_RES}, BL=GPIO{PIN_LCD_BL}, PWR=GPIO{PIN_POWER_ON}",
+          "claim": "ST7789 8-bit parallel display bus and occupied GPIOs from official factory pin_config.h"
+        }
+      ],
+      "variant_confirmed": true
     }
   ]
 }
