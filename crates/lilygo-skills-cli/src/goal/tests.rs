@@ -857,6 +857,49 @@ fn context_budget_dedupes_repeated_capsules() {
 }
 
 #[test]
+fn lookup_capsule_injects_display_and_i2c_pins() {
+    // A pin/bus lookup prompt must surface the concrete GPIO occupancy inline
+    // (the great-effect injection lever), not only an expand pointer. The full
+    // parallel-bus data pins land, and each display GPIO is spelled out so a
+    // reader sees D0..D7 individually rather than a "/"-joined shorthand.
+    let summary = render_hook_goal_summary(&plan("T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?"));
+    assert!(
+        summary.contains("pins=["),
+        "missing pins segment: {summary}"
+    );
+    for gpio in [
+        "GPIO39", "GPIO40", "GPIO41", "GPIO42", "GPIO45", "GPIO46", "GPIO47", "GPIO48",
+    ] {
+        assert!(
+            summary.contains(gpio),
+            "display pin {gpio} not injected: {summary}"
+        );
+    }
+    assert!(
+        summary.contains("GPIO18") && summary.contains("GPIO17"),
+        "i2c pins missing"
+    );
+    // The injected capsule must stay small even with the pins surfaced.
+    assert!(summary.len() < 1400, "capsule too large: {}", summary.len());
+}
+
+#[test]
+fn lookup_capsule_injects_power_and_haptic_chip() {
+    // Naming the power/haptic subsystem must surface that peripheral's exact
+    // chip and I2C address instead of leaving it behind the expand pointer.
+    let power = render_hook_goal_summary(&plan("T-Watch Ultra 电源管理芯片是什么?"));
+    assert!(
+        power.contains("AXP2101") && power.contains("0x34"),
+        "power chip missing: {power}"
+    );
+    let haptic = render_hook_goal_summary(&plan("T-Watch Ultra 震动马达怎么控制?"));
+    assert!(
+        haptic.contains("DRV2605") && haptic.contains("0x5A"),
+        "haptic chip missing: {haptic}"
+    );
+}
+
+#[test]
 fn goal_start_safety() {
     let plan = plan("T-Watch Ultra Arduino IMU 抬腕检测怎么做");
     let temp = std::env::temp_dir().join(format!(

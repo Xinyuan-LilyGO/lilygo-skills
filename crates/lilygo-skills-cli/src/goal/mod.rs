@@ -450,20 +450,152 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         .collect::<Vec<_>>()
         .join(",");
     let source_recovery = render_compact_source_recovery(plan);
+    // Source-recovery prompts already surface the concrete pins via critical=[..]
+    // and the demo path via demo=..; only lookup/fact prompts (no source-recovery
+    // segment) need the inline pins/demo, so render them there to avoid both
+    // duplication and busting the capsule byte budget.
+    let pins = if source_recovery.is_empty() {
+        render_capsule_pins(plan, &facts)
+    } else {
+        String::new()
+    };
+    let demo = render_capsule_demo(plan, &source_recovery);
     format!(
-        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}]; next=[{}];{} facts=[{}]; completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
+        " LilyGO goal capsule: goal_id={}; recipes=[{}]; playbooks=[{}]; next=[{}];{} facts=[{}];{}{} completeness=[{}]; fact_tables={}; discovery_hints={}; evidence_boundary={}/hardware_verified={}",
         plan.goal_id,
         plan.recipe_ids.join(","),
         playbooks,
         next,
         source_recovery,
         facts,
+        pins,
+        demo,
         completeness,
         plan.context_capsule.fact_tables.len(),
         plan.context_capsule.discovery_hints.len(),
         plan.context_capsule.boundary.verification_level,
         plan.context_capsule.boundary.hardware_verified
     )
+}
+
+/// Surface the official demo path the plan already picked ("start from the
+/// closest official example") so an implementation prompt sees the concrete
+/// `examples/.../*.ino` entry point inline instead of only recipe names. Skipped
+/// when the compact source-recovery segment already carries the same demo path.
+fn render_capsule_demo(plan: &GoalPlan, source_recovery: &str) -> String {
+    let path = plan
+        .context_capsule
+        .implementation_start
+        .as_ref()
+        .and_then(|start| start.official_demo_path.as_deref())
+        .or_else(|| {
+            plan.context_capsule
+                .demo_refs
+                .first()
+                .map(|demo| demo.path.as_str())
+        });
+    match path {
+        Some(path) if !path.is_empty() && !source_recovery.contains(path) => {
+            format!(" demo={path};")
+        }
+        _ => String::new(),
+    }
+}
+
+/// Surface the exact source-backed pin/bus GPIO assignments already loaded into
+/// the capsule's fact tables so a lookup prompt ("which GPIOs does the display
+/// occupy?", "what are the I2C pins?") gets the concrete pins inline instead of
+/// only an expand pointer. Bounded so the injected capsule stays small: the
+/// fact tables are already prompt-relevant, so we render the top concrete
+/// GPIO/address rows and cap the segment length.
+fn render_capsule_pins(plan: &GoalPlan, facts: &str) -> String {
+    const MAX_ROWS: usize = 5;
+    const MAX_SEGMENT_BYTES: usize = 320;
+    // Keep at most one row per semantic slot: the fact tables carry the same
+    // GPIO several times (pin.i2c.sda, i2c.primary.sda, bus.i2c.primary all pin
+    // SDA), so slot dedup stops redundant I2C rows from crowding out the display
+    // occupancy the lookup also asked for. Slots render in a fixed priority so
+    // the byte cap trims the least-asked-for pin, never the primary bus/display.
+    let mut best_per_slot: std::collections::BTreeMap<
+        (u8, &'static str),
+        &crate::model::SourceFact,
+    > = std::collections::BTreeMap::new();
+    for row in plan
+        .context_capsule
+        .fact_tables
+        .iter()
+        .flat_map(|table| table.rows.iter())
+    {
+        if row.confidence == "unknown_with_sources" || row.value == "unknown_with_sources" {
+            continue;
+        }
+        if !is_concrete_pin_fact(&row.key, &row.value) {
+            continue;
+        }
+        // Skip anything the chip/bus/driver facts already carry verbatim.
+        if facts.contains(&row.value) {
+            continue;
+        }
+        let slot = pin_slot(&row.key, &row.value);
+        // Only the asked-for pin families (I2C bus, display occupancy, backlight/
+        // power) earn inline bytes; secondary pins stay behind the expand pointer.
+        if slot.0 >= 3 {
+            continue;
+        }
+        best_per_slot.entry(slot).or_insert(row);
+    }
+    let mut rendered: Vec<String> = Vec::new();
+    let mut bytes = 0usize;
+    for row in best_per_slot.values() {
+        let entry = format!("{}={}", row.key, row.value.trim());
+        if bytes + entry.len() > MAX_SEGMENT_BYTES {
+            continue;
+        }
+        bytes += entry.len() + 1;
+        rendered.push(entry);
+        if rendered.len() >= MAX_ROWS {
+            break;
+        }
+    }
+    if rendered.is_empty() {
+        String::new()
+    } else {
+        format!(" pins=[{}];", rendered.join(","))
+    }
+}
+
+/// Priority-ordered semantic slot for a concrete pin fact. Lower priority wins
+/// the byte budget; only the first row per slot is kept.
+fn pin_slot(key: &str, value: &str) -> (u8, &'static str) {
+    let hay = format!("{key} {value}").to_lowercase();
+    if hay.contains("sda") {
+        (0, "i2c.sda")
+    } else if hay.contains("scl") {
+        (0, "i2c.scl")
+    } else if key.to_lowercase().starts_with("bus.display")
+        || key.to_lowercase().starts_with("display.bus")
+    {
+        (1, "display.bus")
+    } else if hay.contains("backlight") || hay.contains("bl=") || hay.contains("power_on") {
+        (2, "display.power")
+    } else {
+        (3, "other")
+    }
+}
+
+/// A fact is a concrete pin/bus assignment worth surfacing inline when its key
+/// names a pin/bus/display/i2c slot and its value pins down an actual GPIO or
+/// I2C address (not a prose summary or an unknown).
+fn is_concrete_pin_fact(key: &str, value: &str) -> bool {
+    let key_lower = key.to_lowercase();
+    let value_lower = value.to_lowercase();
+    let key_is_pinlike = ["pin.", "bus.", "i2c.", "display.bus", "display.backlight"]
+        .iter()
+        .any(|prefix| key_lower.starts_with(prefix));
+    if !key_is_pinlike {
+        return false;
+    }
+    value_lower.contains("gpio") || value_lower.contains("0x")
 }
 
 fn render_compact_source_recovery(plan: &GoalPlan) -> String {

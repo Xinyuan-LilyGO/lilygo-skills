@@ -196,7 +196,7 @@
       },
       {
         "key": "bus.display.st7789",
-        "value": "ST7789 display uses an 8-bit parallel bus: D0-D7=GPIO39/40/41/42/45/46/47/48, CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9",
+        "value": "ST7789 display uses an 8-bit parallel bus: D0=GPIO39, D1=GPIO40, D2=GPIO41, D3=GPIO42, D4=GPIO45, D5=GPIO46, D6=GPIO47, D7=GPIO48, CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9",
         "source": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Setups/Setup206_LilyGo_T_Display_S3.h",
         "evidence_level": "V3-source-reference"
       },
@@ -391,7 +391,7 @@
             "board_id": "board-t-display-s3",
             "topic": "bus",
             "key": "bus.display.st7789",
-            "value": "ST7789 display uses an 8-bit parallel bus: D0-D7=GPIO39/40/41/42/45/46/47/48, CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9",
+            "value": "ST7789 display uses an 8-bit parallel bus: D0=GPIO39, D1=GPIO40, D2=GPIO41, D3=GPIO42, D4=GPIO45, D5=GPIO46, D6=GPIO47, D7=GPIO48, CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9",
             "claim": "Display bus and control pins are taken from the official TFT_eSPI Setup206 header",
             "source": {
               "kind": "driver-header",
@@ -463,7 +463,7 @@
             "board_id": "board-t-display-s3",
             "topic": "pinout",
             "key": "bus.display.parallel",
-            "value": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0-D7=GPIO39/40/41/42/45/46/47/48, WR=GPIO8, RD=GPIO9, DC=GPIO7, CS=GPIO6, RST=GPIO5, BL=GPIO38, PWR=GPIO15",
+            "value": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0=GPIO39, D1=GPIO40, D2=GPIO41, D3=GPIO42, D4=GPIO45, D5=GPIO46, D6=GPIO47, D7=GPIO48, WR=GPIO8, RD=GPIO9, DC=GPIO7, CS=GPIO6, RST=GPIO5, BL=GPIO38, PWR=GPIO15",
             "claim": "ST7789 8-bit parallel display bus and occupied GPIOs from official factory pin_config.h",
             "source": {
               "kind": "arduino-pins",
@@ -507,7 +507,7 @@
             "board_id": "board-t-display-s3",
             "topic": "display",
             "key": "display.bus_or_interface",
-            "value": "8-bit parallel display bus with D0-D7 on GPIO39/40/41/42/45/46/47/48 and control pins CS=6, DC=7, RST=5, WR=8, RD=9",
+            "value": "8-bit parallel display bus with D0=GPIO39, D1=GPIO40, D2=GPIO41, D3=GPIO42, D4=GPIO45, D5=GPIO46, D6=GPIO47, D7=GPIO48 and control pins CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9",
             "claim": "The official TFT_eSPI Setup206 header defines the display interface and GPIO mapping",
             "source": {
               "kind": "driver-header",

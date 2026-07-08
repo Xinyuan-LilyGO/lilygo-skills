@@ -296,6 +296,25 @@ fn requested_peripherals(route: &GoalRoute, prompt: &str) -> BTreeSet<&'static s
         requested.insert("memory");
         requested.insert("storage");
     }
+    // A prompt that names the power/PMIC or haptic subsystem should surface that
+    // peripheral's exact chip, bus, and driver -- otherwise "which power chip?"
+    // returns only the expand pointer while the AXP2101/DRV2605 fact stays hidden.
+    if contains_any(
+        &normalized,
+        &[
+            "power", "pmic", "axp", "battery", "charge", "电源", "电池", "充电",
+        ],
+    ) {
+        requested.insert("power");
+    }
+    if contains_any(
+        &normalized,
+        &[
+            "haptic", "vibrat", "motor", "drv2605", "震动", "马达", "振动",
+        ],
+    ) {
+        requested.insert("haptic");
+    }
     if route.chips.iter().any(|chip| chip == "chip-xl9555")
         || contains_any(
             &normalized,
@@ -660,6 +679,8 @@ fn normalized_peripheral(peripheral: &PeripheralRecord) -> &'static str {
         "storage"
     } else if peripheral.category == "power" {
         "power"
+    } else if peripheral.category == "haptic" {
+        "haptic"
     } else {
         "other"
     }
@@ -709,11 +730,17 @@ mod critical_text_tests {
         assert!(is_critical_text("bus.spi.radio", "SX1262 on SPI"));
         // Display facts stay critical (no regression vs the old allowlist).
         assert!(is_critical_text("pin.i2c.sda", "PIN_IIC_SDA=GPIO18"));
-        assert!(is_critical_text("display.panel_or_chip", "ST7789 170x320 TFT"));
+        assert!(is_critical_text(
+            "display.panel_or_chip",
+            "ST7789 170x320 TFT"
+        ));
         // Value-level GPIO fallback still catches unprefixed assignments.
         assert!(is_critical_text("backlight", "PIN_LCD_BL=GPIO38"));
         // Non-pin metadata is not critical.
         assert!(!is_critical_text("mcu.family", "esp32-s3"));
-        assert!(!is_critical_text("frameworks.supported", "arduino,platformio"));
+        assert!(!is_critical_text(
+            "frameworks.supported",
+            "arduino,platformio"
+        ));
     }
 }
