@@ -64,7 +64,7 @@
           "topic": "pinout",
           "key": "pin.i2c.sda",
           "value": "I2C_SDA=GPIO21",
-          "claim": "Primary I2C SDA (AXP192 PMIC + OLED) from official Factory utilities.h",
+          "claim": "Primary I2C SDA from official Factory utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
