@@ -57,9 +57,280 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "I2C_SDA=GPIO21",
+          "claim": "Primary I2C SDA (AXP192 PMIC + OLED) from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "I2C_SCL=GPIO22",
+          "claim": "Primary I2C SCL from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.gps.rx",
+          "value": "GPS_RX_PIN=GPIO34",
+          "claim": "GPS UART RX (ESP receives) from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.gps.tx",
+          "value": "GPS_TX_PIN=GPIO12",
+          "claim": "GPS UART TX (ESP transmits) from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.sclk",
+          "value": "RADIO_SCLK_PIN=GPIO5",
+          "claim": "LoRa SPI SCLK from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.miso",
+          "value": "RADIO_MISO_PIN=GPIO19",
+          "claim": "LoRa SPI MISO from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.mosi",
+          "value": "RADIO_MOSI_PIN=GPIO27",
+          "claim": "LoRa SPI MOSI from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.cs",
+          "value": "RADIO_CS_PIN=GPIO18",
+          "claim": "LoRa SPI NSS/CS from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.rst",
+          "value": "RADIO_RST_PIN=GPIO23",
+          "claim": "LoRa reset from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.dio0",
+          "value": "RADIO_DIO0_PIN=GPIO26",
+          "claim": "LoRa DIO0 (SX127x) from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.dio1",
+          "value": "RADIO_DIO1_PIN=GPIO33",
+          "claim": "LoRa DIO1 from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "pin.lora.busy",
+          "value": "RADIO_BUSY_PIN=GPIO32",
+          "claim": "LoRa BUSY (SX1262) / DIO2 from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "I2C_SDA=GPIO21; I2C_SCL=GPIO22",
+          "claim": "Primary I2C bus from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "bus.spi.lora",
+          "value": "LoRa radio on SPI: SCLK=GPIO5, MISO=GPIO19, MOSI=GPIO27, CS=GPIO18, RST=GPIO23, DIO0=GPIO26, DIO1=GPIO33, BUSY=GPIO32",
+          "claim": "LoRa SPI bus from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-beam",
+          "topic": "pinout",
+          "key": "bus.uart.gps",
+          "value": "GPS on UART: RX=GPIO34, TX=GPIO12, 9600 baud",
+          "claim": "GPS UART bus from official Factory utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
+            "line_range": "89-141",
+            "hash": "sha256:1f234017d45099f90e3a5cb7fb6ed16b78dfe11fa57f2b82a58f9d1b9411f733"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [

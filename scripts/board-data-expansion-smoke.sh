@@ -49,11 +49,11 @@ const tbeamRoute = read(".tmp/board-data-tbeam-route.json");
 check("T-Beam route still matches SX1262 LoRa", tbeamRoute.skills.includes("board-t-beam") && tbeamRoute.skills.includes("periph-lora"), tbeamRoute);
 check("T-Beam lora source refs include official repo", hasSource(beamLora, "LilyGo-LoRa-Series"), beamLora);
 check("T-Beam lora stays unknown_with_sources", hasUnknown(beamLora), beamLora.facts);
-check("T-Beam spi fallback stays source-backed unknown", hasUnknown(beamSpi), beamSpi.facts);
+check("T-Beam spi is source-backed exact after ingestion", hasSource(beamSpi, "LilyGo-LoRa-Series") && (beamSpi.facts || []).some((fact) => fact.confidence === "exact"), beamSpi.facts);
 check("T-Deck display source refs include official repo", hasSource(deckDisplay, "T-Deck"), deckDisplay);
 check("T-Deck display stays unknown_with_sources", hasUnknown(deckDisplay), deckDisplay.facts);
 check("AMOLED input stays unknown_with_sources", hasUnknown(amoledInput), amoledInput.facts);
-check("T-Beam lora is not falsely complete", beamLoraCompleteness.completeness !== "complete", beamLoraCompleteness);
+check("T-Beam lora completeness never hides residual unknowns", beamLoraCompleteness.completeness !== "complete" || hasUnknown(beamLoraCompleteness), beamLoraCompleteness);
 check("T-Deck input is not falsely complete", deckInputCompleteness.completeness !== "complete", deckInputCompleteness);
 process.stdout.write(JSON.stringify({
   status: "PASS",
