@@ -2,6 +2,23 @@
 
 面向 AI 辅助 LilyGO 开发板开发的 Skill runtime。
 
+## 60 秒上手
+
+```bash
+git clone https://github.com/Xinyuan-LilyGO/lilygo-skills.git
+cd lilygo-skills && node install.js --all      # 装到 Claude Code + Codex，自带 self-test
+```
+
+装好后，直接在 AI 对话里用自然语言提问，无需记任何命令：
+
+> 我在用 LilyGO T-Display-S3，PlatformIO Arduino，帮我点亮屏幕并接一个 I2C 传感器。
+
+运行时会自动把该板的关键引脚、驱动头、官方示例注入到对话里。想确认链路是否装好：
+
+```bash
+lilygo-skills doctor --json      # 检查 hook 接线与注入链路，全 PASS 即就绪
+```
+
 把它安装到 Codex、Claude Code 或其他 AI Agent 后，用户直接用自然语言描述固件
 需求即可。Agent 会按需加载对应的 LilyGO 板子、框架、source facts、官方示例、
 setup hint 和安全调试步骤，不需要用户自己手动搜索文档。

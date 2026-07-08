@@ -109,8 +109,8 @@ fn compact_context(plan: &GoalPlan) -> String {
 
 /// Critical facts must never vanish solely because the topic filter found no
 /// match: when the capsule carries critical facts but none share a key with
-/// the routed topics, fall back to the board's top facts instead of rendering
-/// critical=[] (M24 injection policy rule 6 / M25 WP-A.5).
+/// the routed topics, fall back to the board's top facts instead of emitting
+/// an empty critical list.
 fn compact_critical_lines(
     critical_facts: &[crate::model::GoalCriticalFact],
     topics: &[&str],

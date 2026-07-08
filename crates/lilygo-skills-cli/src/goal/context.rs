@@ -555,12 +555,30 @@ fn is_critical_source_fact(fact: &SourceFact) -> bool {
 }
 
 fn is_critical_text(key: &str, value: &str) -> bool {
+    let key_lower = key.to_lowercase();
+    // Structural rule (additive, board-class agnostic): concrete pin/bus/
+    // peripheral assignments are critical, so radio (LoRa/GNSS), IMU, UART and
+    // SPI boards get their critical pins too, not just display boards.
+    if ["pin.", "bus.", "display.", "expander.", "connector."]
+        .iter()
+        .any(|prefix| key_lower.starts_with(prefix))
+    {
+        return true;
+    }
+    // Any fact whose value names a concrete GPIO assignment.
+    if value.to_lowercase().contains("gpio") {
+        return true;
+    }
+    // Union with the prior keyword coverage (extended beyond display) so no
+    // board loses critical facts it already surfaced. Measured regression
+    // guard: replacing the keywords outright dropped coverage 14->3 boards.
     let haystack = format!("{key} {value}").to_lowercase();
     contains_any(
         &haystack,
         &[
-            "pin_iic", "iic", "i2c", "display", "tft", "lcd", "touch", "button", "bat_volt", "sd_",
-            "gpio38", "gpio15",
+            "pin_iic", "iic", "i2c", "spi", "uart", "i2s", "lora", "gnss", "gps", "imu", "radio",
+            "sx126", "sx127", "sx128", "display", "tft", "lcd", "amoled", "epaper", "e-paper",
+            "touch", "button", "bat_volt", "sd_", "pmic", "axp",
         ],
     )
 }
@@ -676,4 +694,26 @@ pub(super) fn primary_framework(skill: &str) -> bool {
         skill,
         "fw-arduino" | "fw-esp-idf" | "fw-platformio" | "fw-rust"
     )
+}
+
+#[cfg(test)]
+mod critical_text_tests {
+    use super::is_critical_text;
+
+    #[test]
+    fn structural_rule_covers_non_display_peripherals() {
+        // Radio / GNSS / IMU / UART / SPI pins are critical, not just display.
+        assert!(is_critical_text("pin.lora.sck", "LORA_SCK=GPIO5"));
+        assert!(is_critical_text("pin.gnss.rx", "GPS_RX=GPIO34"));
+        assert!(is_critical_text("pin.imu.int", "BHI_INT=GPIO37"));
+        assert!(is_critical_text("bus.spi.radio", "SX1262 on SPI"));
+        // Display facts stay critical (no regression vs the old allowlist).
+        assert!(is_critical_text("pin.i2c.sda", "PIN_IIC_SDA=GPIO18"));
+        assert!(is_critical_text("display.panel_or_chip", "ST7789 170x320 TFT"));
+        // Value-level GPIO fallback still catches unprefixed assignments.
+        assert!(is_critical_text("backlight", "PIN_LCD_BL=GPIO38"));
+        // Non-pin metadata is not critical.
+        assert!(!is_critical_text("mcu.family", "esp32-s3"));
+        assert!(!is_critical_text("frameworks.supported", "arduino,platformio"));
+    }
 }
