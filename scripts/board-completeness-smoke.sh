@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "--dry-run" ]]; then
-  echo "board-completeness-smoke requires --dry-run" >&2
+if [[ "${1:-}" == "--dry-run" ]]; then
+  shift
+fi
+if [[ "$#" -ne 0 ]]; then
+  echo "usage: board-completeness-smoke.sh [--dry-run]" >&2
   exit 2
 fi
 

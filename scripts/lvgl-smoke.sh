@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "--dry-run" ]]; then
-  echo "lvgl-smoke requires --dry-run unless a simulator or hardware profile flow is added" >&2
+if [[ "${1:-}" == "--dry-run" ]]; then
+  shift
+fi
+if [[ "$#" -ne 0 ]]; then
+  echo "usage: lvgl-smoke.sh [--dry-run]" >&2
   exit 2
 fi
 

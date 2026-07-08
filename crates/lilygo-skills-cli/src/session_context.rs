@@ -89,17 +89,7 @@ fn compact_context(plan: &GoalPlan) -> String {
         .filter_map(|action| action.id.strip_prefix("source-query-"))
         .filter(|topic| *topic != "io")
         .collect::<Vec<_>>();
-    let critical = plan
-        .context_capsule
-        .critical_facts
-        .iter()
-        .filter(|fact| topics.is_empty() || topics.iter().any(|topic| fact.key.contains(*topic)))
-        .take(2)
-        .map(|fact| {
-            let value = fact.value.rsplit('=').next().unwrap_or(fact.value.as_str());
-            format!("{}={value}", fact.key)
-        })
-        .collect::<Vec<_>>();
+    let critical = compact_critical_lines(&plan.context_capsule.critical_facts, &topics);
     let next = plan
         .context_capsule
         .next_actions
@@ -115,6 +105,31 @@ fn compact_context(plan: &GoalPlan) -> String {
         plan.context_capsule.boundary.verification_level,
         plan.context_capsule.boundary.hardware_verified
     )
+}
+
+/// Critical facts must never vanish solely because the topic filter found no
+/// match: when the capsule carries critical facts but none share a key with
+/// the routed topics, fall back to the board's top facts instead of rendering
+/// critical=[] (M24 injection policy rule 6 / M25 WP-A.5).
+fn compact_critical_lines(
+    critical_facts: &[crate::model::GoalCriticalFact],
+    topics: &[&str],
+) -> Vec<String> {
+    let render = |fact: &crate::model::GoalCriticalFact| {
+        let value = fact.value.rsplit('=').next().unwrap_or(fact.value.as_str());
+        format!("{}={value}", fact.key)
+    };
+    let filtered = critical_facts
+        .iter()
+        .filter(|fact| topics.is_empty() || topics.iter().any(|topic| fact.key.contains(*topic)))
+        .take(2)
+        .map(render)
+        .collect::<Vec<_>>();
+    if filtered.is_empty() {
+        critical_facts.iter().take(2).map(render).collect()
+    } else {
+        filtered
+    }
 }
 
 #[cfg(test)]
@@ -179,5 +194,29 @@ mod tests {
             "second={second}\nfull={full}"
         );
         let _ = fs::remove_dir_all(&temp);
+    }
+
+    #[test]
+    fn compact_critical_lines_fall_back_when_topics_match_nothing() {
+        let fact = |key: &str, value: &str| crate::model::GoalCriticalFact {
+            key: key.to_string(),
+            value: value.to_string(),
+            source: "test://pin_config.h".to_string(),
+            evidence_level: "V3-source-reference".to_string(),
+        };
+        let facts = vec![
+            fact("pin.i2c.sda", "PIN_IIC_SDA=GPIO18"),
+            fact("pin.i2c.scl", "PIN_IIC_SCL=GPIO17"),
+            fact("pin.touch.int", "PIN_TOUCH_INT=GPIO16"),
+        ];
+        // Topics overlap fact keys: relevance filter applies.
+        let matched = compact_critical_lines(&facts, &["i2c"]);
+        assert_eq!(matched, vec!["pin.i2c.sda=GPIO18", "pin.i2c.scl=GPIO17"]);
+        // Topics match no fact key: must fall back to top facts, never render
+        // an empty critical list while the capsule still carries facts.
+        let fallback = compact_critical_lines(&facts, &["uart"]);
+        assert_eq!(fallback, vec!["pin.i2c.sda=GPIO18", "pin.i2c.scl=GPIO17"]);
+        // Empty capsule stays empty: the fallback invents nothing.
+        assert!(compact_critical_lines(&[], &["uart"]).is_empty());
     }
 }
