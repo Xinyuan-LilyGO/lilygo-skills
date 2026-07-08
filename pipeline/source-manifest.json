@@ -10,23 +10,205 @@
       "topic": "pinout",
       "authority_rank": 90,
       "pins": [
-        { "key": "pin.i2c.sda", "macro": "I2C_SDA", "claim": "Primary I2C SDA from official Factory utilities.h" },
-        { "key": "pin.i2c.scl", "macro": "I2C_SCL", "claim": "Primary I2C SCL from official Factory utilities.h" },
-        { "key": "pin.gps.rx", "macro": "GPS_RX_PIN", "claim": "GPS UART RX (ESP receives) from official Factory utilities.h" },
-        { "key": "pin.gps.tx", "macro": "GPS_TX_PIN", "claim": "GPS UART TX (ESP transmits) from official Factory utilities.h" },
-        { "key": "pin.lora.sclk", "macro": "RADIO_SCLK_PIN", "claim": "LoRa SPI SCLK from official Factory utilities.h" },
-        { "key": "pin.lora.miso", "macro": "RADIO_MISO_PIN", "claim": "LoRa SPI MISO from official Factory utilities.h" },
-        { "key": "pin.lora.mosi", "macro": "RADIO_MOSI_PIN", "claim": "LoRa SPI MOSI from official Factory utilities.h" },
-        { "key": "pin.lora.cs", "macro": "RADIO_CS_PIN", "claim": "LoRa SPI NSS/CS from official Factory utilities.h" },
-        { "key": "pin.lora.rst", "macro": "RADIO_RST_PIN", "claim": "LoRa reset from official Factory utilities.h" },
-        { "key": "pin.lora.dio0", "macro": "RADIO_DIO0_PIN", "claim": "LoRa DIO0 (SX127x) from official Factory utilities.h" },
-        { "key": "pin.lora.dio1", "macro": "RADIO_DIO1_PIN", "claim": "LoRa DIO1 from official Factory utilities.h" },
-        { "key": "pin.lora.busy", "macro": "RADIO_BUSY_PIN", "claim": "LoRa BUSY (SX1262) / DIO2 from official Factory utilities.h" }
+        {
+          "key": "pin.i2c.sda",
+          "macro": "I2C_SDA",
+          "claim": "Primary I2C SDA from official Factory utilities.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "I2C_SCL",
+          "claim": "Primary I2C SCL from official Factory utilities.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "GPS_RX_PIN",
+          "claim": "GPS UART RX (ESP receives) from official Factory utilities.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "GPS_TX_PIN",
+          "claim": "GPS UART TX (ESP transmits) from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.sclk",
+          "macro": "RADIO_SCLK_PIN",
+          "claim": "LoRa SPI SCLK from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.miso",
+          "macro": "RADIO_MISO_PIN",
+          "claim": "LoRa SPI MISO from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.mosi",
+          "macro": "RADIO_MOSI_PIN",
+          "claim": "LoRa SPI MOSI from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "RADIO_CS_PIN",
+          "claim": "LoRa SPI NSS/CS from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.rst",
+          "macro": "RADIO_RST_PIN",
+          "claim": "LoRa reset from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.dio0",
+          "macro": "RADIO_DIO0_PIN",
+          "claim": "LoRa DIO0 (SX127x) from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.dio1",
+          "macro": "RADIO_DIO1_PIN",
+          "claim": "LoRa DIO1 from official Factory utilities.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "RADIO_BUSY_PIN",
+          "claim": "LoRa BUSY (SX1262) / DIO2 from official Factory utilities.h"
+        }
       ],
       "buses": [
-        { "key": "bus.i2c.primary", "template": "I2C_SDA=GPIO{I2C_SDA}; I2C_SCL=GPIO{I2C_SCL}", "claim": "Primary I2C bus from official Factory utilities.h" },
-        { "key": "bus.spi.lora", "template": "LoRa radio on SPI: SCLK=GPIO{RADIO_SCLK_PIN}, MISO=GPIO{RADIO_MISO_PIN}, MOSI=GPIO{RADIO_MOSI_PIN}, CS=GPIO{RADIO_CS_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO0=GPIO{RADIO_DIO0_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}", "claim": "LoRa SPI bus from official Factory utilities.h" },
-        { "key": "bus.uart.gps", "template": "GPS on UART: RX=GPIO{GPS_RX_PIN}, TX=GPIO{GPS_TX_PIN}, 9600 baud", "claim": "GPS UART bus from official Factory utilities.h" }
+        {
+          "key": "bus.i2c.primary",
+          "template": "I2C_SDA=GPIO{I2C_SDA}; I2C_SCL=GPIO{I2C_SCL}",
+          "claim": "Primary I2C bus from official Factory utilities.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "LoRa radio on SPI: SCLK=GPIO{RADIO_SCLK_PIN}, MISO=GPIO{RADIO_MISO_PIN}, MOSI=GPIO{RADIO_MOSI_PIN}, CS=GPIO{RADIO_CS_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO0=GPIO{RADIO_DIO0_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}",
+          "claim": "LoRa SPI bus from official Factory utilities.h"
+        },
+        {
+          "key": "bus.uart.gps",
+          "template": "GPS on UART: RX=GPIO{GPS_RX_PIN}, TX=GPIO{GPS_TX_PIN}, 9600 baud",
+          "claim": "GPS UART bus from official Factory utilities.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-deck",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Deck/master/examples/UnitTest/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "1-95",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.power.on",
+          "macro": "BOARD_POWERON",
+          "claim": "Board power-on enable from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "BOARD_I2C_SDA",
+          "claim": "Primary I2C SDA (keyboard/touch) from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "BOARD_I2C_SCL",
+          "claim": "Primary I2C SCL from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "BOARD_TOUCH_INT",
+          "claim": "Touch interrupt from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.keyboard.int",
+          "macro": "BOARD_KEYBOARD_INT",
+          "claim": "Keyboard interrupt from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "BOARD_SDCARD_CS",
+          "claim": "SD card CS from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "BOARD_TFT_CS",
+          "claim": "Display CS from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "BOARD_TFT_DC",
+          "claim": "Display DC from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "BOARD_TFT_BACKLIGHT",
+          "claim": "Display backlight from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "BOARD_SPI_SCK",
+          "claim": "Shared SPI SCK from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "BOARD_SPI_MOSI",
+          "claim": "Shared SPI MOSI from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "BOARD_SPI_MISO",
+          "claim": "Shared SPI MISO from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "RADIO_CS_PIN",
+          "claim": "LoRa SX1262 CS from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "RADIO_BUSY_PIN",
+          "claim": "LoRa SX1262 BUSY from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.lora.rst",
+          "macro": "RADIO_RST_PIN",
+          "claim": "LoRa SX1262 RST from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.lora.dio1",
+          "macro": "RADIO_DIO1_PIN",
+          "claim": "LoRa SX1262 DIO1 from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "BOARD_GPS_TX_PIN",
+          "claim": "GPS UART TX from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "BOARD_GPS_RX_PIN",
+          "claim": "GPS UART RX from official T-Deck UnitTest utilities.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "BOARD_I2C_SDA=GPIO{BOARD_I2C_SDA}; BOARD_I2C_SCL=GPIO{BOARD_I2C_SCL}",
+          "claim": "Primary I2C bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.spi.shared",
+          "template": "Shared SPI (display+LoRa+SD): SCK=GPIO{BOARD_SPI_SCK}, MOSI=GPIO{BOARD_SPI_MOSI}, MISO=GPIO{BOARD_SPI_MISO}",
+          "claim": "Shared SPI bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.display.st7789",
+          "template": "ST7789 on shared SPI: CS=GPIO{BOARD_TFT_CS}, DC=GPIO{BOARD_TFT_DC}, BL=GPIO{BOARD_TFT_BACKLIGHT}",
+          "claim": "Display bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "LoRa SX1262 on shared SPI: CS=GPIO{RADIO_CS_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}",
+          "claim": "LoRa SPI bus from official T-Deck UnitTest utilities.h"
+        }
       ]
     }
   ]

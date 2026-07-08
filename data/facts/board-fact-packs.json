@@ -741,9 +741,406 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.power.on",
+          "value": "BOARD_POWERON=GPIO10",
+          "claim": "Board power-on enable from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "BOARD_I2C_SDA=GPIO18",
+          "claim": "Primary I2C SDA (keyboard/touch) from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "BOARD_I2C_SCL=GPIO8",
+          "claim": "Primary I2C SCL from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "BOARD_TOUCH_INT=GPIO16",
+          "claim": "Touch interrupt from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.keyboard.int",
+          "value": "BOARD_KEYBOARD_INT=GPIO46",
+          "claim": "Keyboard interrupt from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.sdcard.cs",
+          "value": "BOARD_SDCARD_CS=GPIO39",
+          "claim": "SD card CS from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "BOARD_TFT_CS=GPIO12",
+          "claim": "Display CS from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "BOARD_TFT_DC=GPIO11",
+          "claim": "Display DC from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "BOARD_TFT_BACKLIGHT=GPIO42",
+          "claim": "Display backlight from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "BOARD_SPI_SCK=GPIO40",
+          "claim": "Shared SPI SCK from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "BOARD_SPI_MOSI=GPIO41",
+          "claim": "Shared SPI MOSI from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "BOARD_SPI_MISO=GPIO38",
+          "claim": "Shared SPI MISO from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.lora.cs",
+          "value": "RADIO_CS_PIN=GPIO9",
+          "claim": "LoRa SX1262 CS from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.lora.busy",
+          "value": "RADIO_BUSY_PIN=GPIO13",
+          "claim": "LoRa SX1262 BUSY from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.lora.rst",
+          "value": "RADIO_RST_PIN=GPIO17",
+          "claim": "LoRa SX1262 RST from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.lora.dio1",
+          "value": "RADIO_DIO1_PIN=GPIO45",
+          "claim": "LoRa SX1262 DIO1 from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.gps.tx",
+          "value": "BOARD_GPS_TX_PIN=GPIO43",
+          "claim": "GPS UART TX from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "pin.gps.rx",
+          "value": "BOARD_GPS_RX_PIN=GPIO44",
+          "claim": "GPS UART RX from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "BOARD_I2C_SDA=GPIO18; BOARD_I2C_SCL=GPIO8",
+          "claim": "Primary I2C bus from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "bus.spi.shared",
+          "value": "Shared SPI (display+LoRa+SD): SCK=GPIO40, MOSI=GPIO41, MISO=GPIO38",
+          "claim": "Shared SPI bus from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "bus.display.st7789",
+          "value": "ST7789 on shared SPI: CS=GPIO12, DC=GPIO11, BL=GPIO42",
+          "claim": "Display bus from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-deck",
+          "topic": "pinout",
+          "key": "bus.spi.lora",
+          "value": "LoRa SX1262 on shared SPI: CS=GPIO9, BUSY=GPIO13, RST=GPIO17, DIO1=GPIO45",
+          "claim": "LoRa SPI bus from official T-Deck UnitTest utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+            "line_range": "1-95",
+            "hash": "sha256:3b2401b6b00f8a0aaa45e10864236488aebacf92b1fcd4cc1e7c8f02759f3c76"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
