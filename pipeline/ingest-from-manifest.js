@@ -15,6 +15,7 @@ const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
 const { execFileSync } = require("child_process");
+const { autoMapPins } = require("./auto-map-pins");
 
 const ROOT = path.join(__dirname, "..");
 const MANIFEST = path.join(ROOT, "pipeline/source-manifest.json");
@@ -85,10 +86,26 @@ function ingestSource(source) {
     line_range: source.line_range,
     hash,
   };
-  const pins = (source.pins || []).map((p) => {
-    if (!(p.macro in macros)) throw new Error(`${source.board_id}: macro ${p.macro} not found in ${source.line_range}`);
-    return entry(source, sourceObj, p.key, `${p.macro}=GPIO${macros[p.macro]}`, p.claim);
-  });
+  const sourceName = source.url.split("/").pop();
+  let pins;
+  if (source.auto_pins) {
+    // Framework-grown board: no hand-written pin mapping. Derive canonical
+    // keys from the naming convention; unrecognized macros are skipped.
+    pins = autoMapPins(macros).map((p) =>
+      entry(
+        source,
+        sourceObj,
+        p.key,
+        `${p.macro}=GPIO${p.value_num}`,
+        `${p.key} auto-mapped from ${p.macro} in official ${sourceName}`
+      )
+    );
+  } else {
+    pins = (source.pins || []).map((p) => {
+      if (!(p.macro in macros)) throw new Error(`${source.board_id}: macro ${p.macro} not found in ${source.line_range}`);
+      return entry(source, sourceObj, p.key, `${p.macro}=GPIO${macros[p.macro]}`, p.claim);
+    });
+  }
   const buses = (source.buses || []).map((b) =>
     entry(source, sourceObj, b.key, fillTemplate(b.template, macros), b.claim)
   );

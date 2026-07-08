@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "note": "Naming-convention table for auto-mapping official #define macros to canonical fact keys. A manifest source with \"auto_pins\": true needs no per-pin mapping: the extractor scans every #define in the block, normalizes the macro name (strip these prefixes/suffixes), and maps it via this table. Macros not in the table are skipped, never guessed. The equivalence gate (verify-auto-mapping.js) proves this table reproduces the hand-authored mappings for T-Beam and T-Deck.",
+  "strip_prefixes": ["BOARD_"],
+  "strip_suffixes": ["_PIN"],
+  "macro_to_key": {
+    "I2C_SDA": "pin.i2c.sda",
+    "I2C_SCL": "pin.i2c.scl",
+    "GPS_RX": "pin.gps.rx",
+    "GPS_TX": "pin.gps.tx",
+    "RADIO_SCLK": "pin.lora.sclk",
+    "RADIO_MISO": "pin.lora.miso",
+    "RADIO_MOSI": "pin.lora.mosi",
+    "RADIO_CS": "pin.lora.cs",
+    "RADIO_RST": "pin.lora.rst",
+    "RADIO_DIO0": "pin.lora.dio0",
+    "RADIO_DIO1": "pin.lora.dio1",
+    "RADIO_BUSY": "pin.lora.busy",
+    "POWERON": "pin.power.on",
+    "TOUCH_INT": "pin.touch.int",
+    "KEYBOARD_INT": "pin.keyboard.int",
+    "SDCARD_CS": "pin.sdcard.cs",
+    "TFT_CS": "pin.display.cs",
+    "TFT_DC": "pin.display.dc",
+    "TFT_BACKLIGHT": "pin.display.backlight",
+    "SPI_SCK": "pin.spi.sck",
+    "SPI_MOSI": "pin.spi.mosi",
+    "SPI_MISO": "pin.spi.miso"
+  }
+}
