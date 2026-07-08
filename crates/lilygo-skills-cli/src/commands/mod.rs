@@ -777,6 +777,19 @@ fn update(root: &Path, args: &[String]) -> Result<(), String> {
     let home = option_value(rest, "--home").map(PathBuf::from);
     let generated_out = output_path_arg(rest, "--out")?;
     match (target, has_flag(rest, "--dry-run")) {
+        ("board-facts", dry) if has_flag(rest, "--from-source") => {
+            // Explicit, opt-in self-serve ingestion: fetch the board's official
+            // source declared in pipeline/source-manifest.json, extract pins,
+            // and (unless --dry-run) write source-backed facts. Network only
+            // happens under this flag, so offline gates stay offline.
+            let (board, _topic) = board_topic_args(rest, "display")?;
+            if !manifest_source_board(root, board) {
+                return Err(format!(
+                    "no source-manifest entry for {board}; add one to pipeline/source-manifest.json"
+                ));
+            }
+            run_manifest_ingest(root, board, !dry)
+        }
         ("board-facts", true) => {
             let (board, topic) = board_topic_args(rest, "display")?;
             print_json(&board_fact_enrichment_preview(root, board, topic)?)

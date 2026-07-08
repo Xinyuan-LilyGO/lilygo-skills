@@ -426,3 +426,49 @@ pub(crate) fn find_root_from(start: &Path) -> Option<PathBuf> {
         }
     }
 }
+
+pub(crate) fn manifest_source_board(root: &std::path::Path, board: &str) -> bool {
+    let manifest = root.join("pipeline/source-manifest.json");
+    let Ok(text) = std::fs::read_to_string(&manifest) else {
+        return false;
+    };
+    let Ok(value) = serde_json::from_str::<serde_json::Value>(&text) else {
+        return false;
+    };
+    value
+        .get("sources")
+        .and_then(|sources| sources.as_array())
+        .is_some_and(|sources| {
+            sources
+                .iter()
+                .any(|source| source.get("board_id").and_then(|id| id.as_str()) == Some(board))
+        })
+}
+
+pub(crate) fn run_manifest_ingest(
+    root: &std::path::Path,
+    board: &str,
+    write: bool,
+) -> Result<(), String> {
+    let mut command = std::process::Command::new("node");
+    command
+        .current_dir(root)
+        .arg("pipeline/ingest-from-manifest.js")
+        .arg("--board")
+        .arg(board)
+        .arg("--json");
+    if write {
+        command.arg("--write");
+    }
+    let output = command
+        .output()
+        .map_err(|error| format!("could not launch source ingest (node required): {error}"))?;
+    if !output.status.success() {
+        return Err(format!(
+            "source ingest failed: {}",
+            String::from_utf8_lossy(&output.stderr).trim()
+        ));
+    }
+    print!("{}", String::from_utf8_lossy(&output.stdout));
+    Ok(())
+}

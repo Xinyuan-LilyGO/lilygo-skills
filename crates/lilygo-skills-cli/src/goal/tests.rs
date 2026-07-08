@@ -1865,7 +1865,10 @@ fn starter_board_data_is_source_backed() {
             .iter()
             .any(|fact| fact.confidence == "unknown_with_sources")
     );
-    assert_ne!(
+    // Ingested official pins make lora required-complete; the residual radio
+    // chip variant stays unknown_with_sources (asserted above), so completeness
+    // reports complete without hiding the remaining gap.
+    assert_eq!(
         crate::facts::source_completeness(root.as_path(), "board-t-beam", "lora")
             .expect("beam lora completeness")
             .completeness,
