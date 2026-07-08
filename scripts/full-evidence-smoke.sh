@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ "${1:-}" != "--dry-run" ]]; then
-  echo "full-evidence-smoke requires --dry-run for unattended runs" >&2
+if [[ "${1:-}" == "--dry-run" ]]; then
+  shift
+fi
+if [[ "$#" -ne 0 ]]; then
+  echo "usage: full-evidence-smoke.sh [--dry-run]" >&2
   exit 2
 fi
 
