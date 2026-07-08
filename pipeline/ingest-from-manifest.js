@@ -109,7 +109,44 @@ function ingestSource(source) {
   const buses = (source.buses || []).map((b) =>
     entry(source, sourceObj, b.key, fillTemplate(b.template, macros), b.claim)
   );
-  return { pins, buses, hash };
+  // Authority boundary: if any macro we depend on is defined with different
+  // values elsewhere in the same file (a multi-variant header, e.g. one board
+  // block vs another), the chosen line_range is a human judgment that must be
+  // explicitly acknowledged. The framework never silently picks a variant.
+  const referenced = new Set();
+  for (const p of source.pins || []) referenced.add(p.macro);
+  if (source.auto_pins) autoMapPins(macros).forEach((p) => referenced.add(p.macro));
+  for (const b of source.buses || []) {
+    (b.template.match(/\{([A-Z0-9_]+)\}/g) || []).forEach((m) => referenced.add(m.slice(1, -1)));
+  }
+  const conflicts = detectVariantConflicts(text, referenced, macros);
+  if (conflicts.length && source.variant_confirmed !== true) {
+    throw new Error(
+      `${source.board_id}: multi-variant macros require human review and "variant_confirmed": true in the manifest ` +
+        `(this header defines them with different values in different board blocks): ` +
+        conflicts.map((c) => `${c.macro}=${c.chosen} vs ${c.all_values.join("/")}`).join("; ")
+    );
+  }
+  return { pins, buses, hash, conflicts_acknowledged: conflicts };
+}
+
+// Returns referenced macros that the full file defines with more than one
+// distinct value, with the value chosen by the manifest line_range.
+function detectVariantConflicts(fullText, referenced, chosenMacros) {
+  const defs = {};
+  const re = /^\s*#define\s+([A-Z0-9_]+)\s+(\d+)\b/gm;
+  let m;
+  while ((m = re.exec(fullText)) !== null) {
+    (defs[m[1]] = defs[m[1]] || new Set()).add(m[2]);
+  }
+  const conflicts = [];
+  for (const macro of referenced) {
+    const values = defs[macro];
+    if (values && values.size > 1) {
+      conflicts.push({ macro, chosen: chosenMacros[macro], all_values: [...values] });
+    }
+  }
+  return conflicts;
 }
 
 function mergeIntoPack(pack, pins, buses) {

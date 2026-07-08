@@ -87,7 +87,8 @@
           "template": "GPS on UART: RX=GPIO{GPS_RX_PIN}, TX=GPIO{GPS_TX_PIN}, 9600 baud",
           "claim": "GPS UART bus from official Factory utilities.h"
         }
-      ]
+      ],
+      "variant_confirmed": true
     },
     {
       "board_id": "board-t-deck",
@@ -209,7 +210,8 @@
           "template": "LoRa SX1262 on shared SPI: CS=GPIO{RADIO_CS_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}",
           "claim": "LoRa SPI bus from official T-Deck UnitTest utilities.h"
         }
-      ]
+      ],
+      "variant_confirmed": true
     }
   ]
 }
