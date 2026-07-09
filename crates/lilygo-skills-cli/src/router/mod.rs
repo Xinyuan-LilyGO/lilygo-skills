@@ -293,6 +293,28 @@ pub(crate) fn derived_context_specs() -> Vec<OwnedDerivedSpec> {
     file.entries
 }
 
+// Router keyword rules live in data so the classification vocabulary (embedded-
+// prompt gate + critical-fact keywords) can be reviewed and extended -- e.g.
+// adding CJK hardware terms -- without editing Rust. Rust only reads the data.
+const KEYWORD_RULES_JSON: &str = include_str!("../../../../data/router/keyword-rules.json");
+
+#[derive(serde::Deserialize)]
+pub(crate) struct KeywordRules {
+    pub embedded_prompt: Vec<String>,
+    pub critical_text: CriticalTextRules,
+}
+
+#[derive(serde::Deserialize)]
+pub(crate) struct CriticalTextRules {
+    pub key_prefixes: Vec<String>,
+    pub keywords: Vec<String>,
+}
+
+pub(crate) fn keyword_rules() -> KeywordRules {
+    serde_json::from_str(KEYWORD_RULES_JSON)
+        .expect("embedded data/router/keyword-rules.json must be valid")
+}
+
 fn add_derived_context(
     registry: &Registry,
     prompt: &str,
@@ -554,56 +576,9 @@ fn needs_hardware_boundary(prompt: &str) -> bool {
 }
 
 fn is_embedded_prompt(prompt: &str) -> bool {
-    contains_any(
-        prompt,
-        &[
-            "arduino",
-            "esp-idf",
-            "idf.py",
-            "rust",
-            "esp-rs",
-            "platformio",
-            "pio",
-            "lvgl",
-            "display",
-            "screen",
-            "touch",
-            "serial",
-            "flash",
-            "upload",
-            "ota",
-            "firmware",
-            "lora",
-            "gps",
-            "gnss",
-            "nfc",
-            "battery",
-            "pmu",
-            "power",
-            "sensor",
-            "imu",
-            "i2c",
-            "spi",
-            "gpio",
-            "pinout",
-            "button",
-            "sd",
-            "tf",
-            "audio",
-            "speaker",
-            "microphone",
-            "haptic",
-            "gesture",
-            "raise-to-wake",
-            "tilt-to-wake",
-            "wrist raise",
-            "抬腕",
-            "debug",
-            "build",
-            "setup",
-            "install",
-        ],
-    )
+    let terms = keyword_rules().embedded_prompt;
+    let needles = terms.iter().map(String::as_str).collect::<Vec<_>>();
+    contains_any(prompt, &needles)
 }
 
 fn needs_board_clarification(prompt: &str) -> bool {
@@ -733,6 +708,115 @@ mod tests {
         // Fact prompt keywords and topic fields are data-backed too.
         assert!(root.join("data/facts/prompt-keywords.json").is_file());
         assert!(root.join("data/facts/topic-fields.json").is_file());
+    }
+
+    #[test]
+    fn keyword_rules_are_data_backed_and_reproduce_english_behavior() {
+        // The router keyword vocabulary must live in data (not hardcoded in Rust)
+        // and the data-driven `is_embedded_prompt` must reproduce every prior
+        // hardcoded English term (zero regression on the existing hit set).
+        let path = repo_root().join("data/router/keyword-rules.json");
+        assert!(path.is_file(), "keyword rules must be a data file");
+        let rules = keyword_rules();
+        assert!(!rules.embedded_prompt.is_empty());
+        assert!(!rules.critical_text.keywords.is_empty());
+
+        // Exact prior hardcoded English embedded-prompt needles.
+        const OLD_ENGLISH_EMBEDDED: &[&str] = &[
+            "arduino",
+            "esp-idf",
+            "idf.py",
+            "rust",
+            "esp-rs",
+            "platformio",
+            "pio",
+            "lvgl",
+            "display",
+            "screen",
+            "touch",
+            "serial",
+            "flash",
+            "upload",
+            "ota",
+            "firmware",
+            "lora",
+            "gps",
+            "gnss",
+            "nfc",
+            "battery",
+            "pmu",
+            "power",
+            "sensor",
+            "imu",
+            "i2c",
+            "spi",
+            "gpio",
+            "pinout",
+            "button",
+            "sd",
+            "tf",
+            "audio",
+            "speaker",
+            "microphone",
+            "haptic",
+            "gesture",
+            "raise-to-wake",
+            "tilt-to-wake",
+            "wrist raise",
+            "抬腕",
+            "debug",
+            "build",
+            "setup",
+            "install",
+        ];
+        for term in OLD_ENGLISH_EMBEDDED {
+            assert!(
+                is_embedded_prompt(term),
+                "data-driven is_embedded_prompt regressed on old term {term}"
+            );
+        }
+        // A plainly non-embedded prompt still does not match (no over-broadening).
+        assert!(!is_embedded_prompt("how do i prune tomatoes"));
+    }
+
+    #[test]
+    fn cjk_hardware_prompt_recalls_inferred_board() {
+        // With an active board profile, a Chinese hardware prompt that names no
+        // board must still inject the board capsule (inferred-from-project),
+        // isomorphic to the English context-fallback test. This is what the new
+        // CJK embedded terms (屏/点亮/显示/触摸/串口/固件/烧录/引脚) unlock.
+        let registry = registry();
+        let profile = ActiveProfile {
+            board: "board-t-display-s3".to_string(),
+            framework: None,
+            features: Vec::new(),
+        };
+        for prompt in ["这个屏怎么点亮", "固件烧录后串口没有输出"] {
+            let route = route_prompt_with_profile(&registry, prompt, Some(&profile));
+            assert_eq!(route.decision, "inject", "prompt: {prompt}");
+            assert!(
+                route.skills.contains(&"board-t-display-s3".to_string()),
+                "prompt {prompt} must inject the active board: {:?}",
+                route.skills
+            );
+            assert_eq!(
+                route.board_source.as_deref(),
+                Some("inferred-from-project"),
+                "prompt {prompt} must be marked inferred"
+            );
+        }
+        // A 显示/触摸 prompt also carries the board's display facts, matching the
+        // existing English fallback test's peripheral assertion.
+        let display = route_prompt_with_profile(&registry, "显示和触摸怎么调", Some(&profile));
+        assert_eq!(display.decision, "inject");
+        assert!(display.skills.contains(&"periph-display".to_string()));
+
+        // Guardrail: the same CJK hardware prompt with NO active board stays at
+        // zero injection -- the CJK terms never invent a board out of nothing.
+        let no_board = route_prompt(&registry, "这个屏怎么点亮");
+        assert_eq!(no_board.decision, "no-op");
+        assert!(no_board.skills.is_empty());
+        assert!(no_board.board_source.is_none());
     }
 
     #[test]

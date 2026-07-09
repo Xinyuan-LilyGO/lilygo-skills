@@ -566,13 +566,17 @@ fn is_critical_source_fact(fact: &SourceFact) -> bool {
 }
 
 fn is_critical_text(key: &str, value: &str) -> bool {
+    // Keyword tables live in data/router/keyword-rules.json; Rust reads them and
+    // keeps only the structural checks (prefix match + GPIO-in-value).
+    let rules = crate::router::keyword_rules().critical_text;
     let key_lower = key.to_lowercase();
     // Structural rule (additive, board-class agnostic): concrete pin/bus/
     // peripheral assignments are critical, so radio (LoRa/GNSS), IMU, UART and
     // SPI boards get their critical pins too, not just display boards.
-    if ["pin.", "bus.", "display.", "expander.", "connector."]
+    if rules
+        .key_prefixes
         .iter()
-        .any(|prefix| key_lower.starts_with(prefix))
+        .any(|prefix| key_lower.starts_with(prefix.as_str()))
     {
         return true;
     }
@@ -584,14 +588,12 @@ fn is_critical_text(key: &str, value: &str) -> bool {
     // board loses critical facts it already surfaced. Measured regression
     // guard: replacing the keywords outright dropped coverage 14->3 boards.
     let haystack = format!("{key} {value}").to_lowercase();
-    contains_any(
-        &haystack,
-        &[
-            "pin_iic", "iic", "i2c", "spi", "uart", "i2s", "lora", "gnss", "gps", "imu", "radio",
-            "sx126", "sx127", "sx128", "display", "tft", "lcd", "amoled", "epaper", "e-paper",
-            "touch", "button", "bat_volt", "sd_", "pmic", "axp",
-        ],
-    )
+    let needles = rules
+        .keywords
+        .iter()
+        .map(String::as_str)
+        .collect::<Vec<_>>();
+    contains_any(&haystack, &needles)
 }
 
 fn push_critical_fact(
@@ -740,6 +742,40 @@ mod critical_text_tests {
         assert!(!is_critical_text(
             "frameworks.supported",
             "arduino,platformio"
+        ));
+    }
+
+    #[test]
+    fn data_driven_critical_text_reproduces_hardcoded_english_behavior() {
+        // The keyword tables now live in data/router/keyword-rules.json; the
+        // data-driven is_critical_text must reproduce the exact prior hardcoded
+        // English behavior -- every old keyword/prefix still marks a fact
+        // critical (zero regression), and non-matching metadata still does not.
+        const OLD_PREFIXES: &[&str] = &["pin.", "bus.", "display.", "expander.", "connector."];
+        for prefix in OLD_PREFIXES {
+            let key = format!("{prefix}example");
+            assert!(
+                is_critical_text(&key, "some value"),
+                "prefix {prefix} regressed"
+            );
+        }
+        const OLD_KEYWORDS: &[&str] = &[
+            "pin_iic", "iic", "i2c", "spi", "uart", "i2s", "lora", "gnss", "gps", "imu", "radio",
+            "sx126", "sx127", "sx128", "display", "tft", "lcd", "amoled", "epaper", "e-paper",
+            "touch", "button", "bat_volt", "sd_", "pmic", "axp",
+        ];
+        for keyword in OLD_KEYWORDS {
+            // A keyword in the value (key deliberately non-prefixed, non-GPIO) must
+            // still make the fact critical via the data-backed keyword union.
+            assert!(
+                is_critical_text("meta.info", &format!("uses {keyword} here")),
+                "keyword {keyword} regressed"
+            );
+        }
+        // Control: nothing matching stays non-critical.
+        assert!(!is_critical_text(
+            "meta.info",
+            "plain prose with no hardware term"
         ));
     }
 }
