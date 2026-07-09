@@ -580,39 +580,32 @@ fn t_watch_ultra_peripherals() -> Vec<String> {
 }
 
 fn inferred_peripherals(slug: &str) -> Vec<String> {
-    let mut values = BTreeSet::new();
-    if contains_any(
-        slug,
-        &[
-            "display", "watch", "deck", "e-paper", "epaper", "qt", "dongle",
-        ],
-    ) {
-        values.insert("display");
-    }
-    if contains_any(
-        slug,
-        &[
-            "watch", "display", "touch", "keyboard", "encoder", "knob", "deck",
-        ],
-    ) {
-        values.insert("input");
-    }
-    if contains_any(slug, &["lora", "beam", "t3", "echo"]) {
-        values.insert("lora");
-    }
-    if contains_any(slug, &["gps", "gnss", "beam", "sim", "a7670"]) {
-        values.insert("gps");
-    }
-    if contains_any(slug, &["watch", "beam", "power", "solar"]) {
-        values.insert("power");
-    }
-    if contains_any(slug, &["sd", "display", "watch", "deck", "p4", "s3"]) {
-        values.insert("storage");
-    }
-    if contains_any(slug, &["audio", "speaker", "watch", "twr"]) {
-        values.insert("audio");
-    }
-    values.into_iter().map(str::to_string).collect()
+    const RULES: &[(&str, &[&str])] = &[
+        (
+            "display",
+            &[
+                "display", "watch", "deck", "e-paper", "epaper", "qt", "dongle",
+            ],
+        ),
+        (
+            "input",
+            &[
+                "watch", "display", "touch", "keyboard", "encoder", "knob", "deck",
+            ],
+        ),
+        ("lora", &["lora", "beam", "t3", "echo"]),
+        ("gps", &["gps", "gnss", "beam", "sim", "a7670"]),
+        ("power", &["watch", "beam", "power", "solar"]),
+        ("storage", &["sd", "display", "watch", "deck", "p4", "s3"]),
+        ("audio", &["audio", "speaker", "watch", "twr"]),
+    ];
+    RULES
+        .iter()
+        .filter(|(_, needles)| contains_any(slug, needles))
+        .map(|(name, _)| name.to_string())
+        .collect::<BTreeSet<_>>()
+        .into_iter()
+        .collect()
 }
 
 fn contains_any(value: &str, needles: &[&str]) -> bool {
