@@ -475,6 +475,12 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
     capsule.push_str(&format!(" facts=[{facts}];"));
     capsule.push_str(&pins);
     capsule.push_str(&demo);
+    // Behavioral guidance, placed next to the honesty markers: steer the model
+    // to fetch exact pins/buses from the source query before asserting them, and
+    // never to fabricate GPIO numbers. Whether this actually reduces pin
+    // hallucination is a live-model behavior claim that cannot be proven by these
+    // deterministic tests -- it needs a real live-model A/B run (see the report).
+    capsule.push_str(GUIDANCE_LINE);
     capsule.push_str(&format!(
         " evidence_boundary={}/hardware_verified={}",
         plan.context_capsule.boundary.verification_level,
@@ -482,6 +488,10 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
     ));
     capsule
 }
+
+/// Fetch-before-claim behavioral guidance surfaced in every board goal capsule,
+/// immediately before the honesty markers.
+pub(crate) const GUIDANCE_LINE: &str = " guidance=verify exact pins/buses via 'lilygo-skills source query' before claiming them; do not invent pin numbers;";
 
 /// Surface the official demo path the plan already picked ("start from the
 /// closest official example") so an implementation prompt sees the concrete

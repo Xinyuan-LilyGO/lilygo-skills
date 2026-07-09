@@ -493,6 +493,49 @@ fn capsule_drops_internal_bookkeeping_noise() {
 }
 
 #[test]
+fn capsule_carries_fetch_before_claim_guidance() {
+    // Every board goal capsule must carry the fetch-before-claim guidance line,
+    // placed right next to the honesty markers. NOTE: this only proves the line
+    // is present -- whether it changes live-model behavior (fewer invented pins)
+    // needs a real A/B and is not asserted here.
+    let prompts = [
+        "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor",
+        "T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?",
+        "T-Watch Ultra Arduino IMU 抬腕检测怎么做",
+    ];
+    let mut total = 0usize;
+    for prompt in prompts {
+        let summary = render_hook_goal_summary(&plan(prompt));
+        assert!(
+            summary.contains("do not invent pin numbers"),
+            "guidance line missing: {summary}"
+        );
+        assert!(
+            summary.contains("lilygo-skills source query"),
+            "guidance must point at the source query: {summary}"
+        );
+        // Guidance sits just before the honesty markers, which must remain.
+        assert!(
+            summary.contains(
+                "do not invent pin numbers; evidence_boundary=V3/hardware_verified=false"
+            ),
+            "guidance must be adjacent to intact honesty markers: {summary}"
+        );
+        total += summary.len();
+    }
+    // The average board capsule stays under the 1024 B budget even with the
+    // guidance line added (WP1 de-noise freed the space). The fleet-wide average
+    // measured by eval/coverage-gate.js is lower still.
+    let avg = total / prompts.len();
+    assert!(avg < 1024, "avg capsule too large: {avg}");
+
+    // A no-board prompt injects no capsule at all -- the guidance never leaks
+    // into an off-topic or board-less context.
+    let none = render_hook_goal_summary(&plan("what is the weather today"));
+    assert!(!none.contains("do not invent pin numbers"), "{none}");
+}
+
+#[test]
 fn source_recovery_hook_summary_t_display_s3() {
     let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen");
     let summary = render_hook_goal_summary(&plan);
