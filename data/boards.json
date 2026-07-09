@@ -331,7 +331,38 @@
       ],
       "source_hashes": {},
       "stale": false,
-      "peripheral_matrix": [],
+      "peripheral_matrix": [
+        {
+          "category": "radio",
+          "name": "LoRa radio",
+          "chip": "SX1262",
+          "bus": "SPI",
+          "driver": "RadioLib on shared SPI (CS=GPIO9, BUSY=GPIO13, RST=GPIO17, DIO1=GPIO45)",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "io",
+          "name": "Keyboard",
+          "chip": "on-board I2C keyboard controller",
+          "bus": "I2C (SDA=GPIO18, SCL=GPIO8, INT=GPIO46)",
+          "driver": "Wire keyboard read",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "io",
+          "name": "Trackball",
+          "chip": "GPIO quadrature trackball",
+          "bus": "GPIO (BOARD_TBOX_G01=GPIO3, G02=GPIO2, G03=GPIO15, G04=GPIO1)",
+          "driver": "digitalRead direction pins",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
       "demo_refs": [
         {
           "framework": "source",
