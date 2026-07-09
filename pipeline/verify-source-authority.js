@@ -10,6 +10,7 @@ const path = require("path");
 const fs = require("fs");
 const { execFileSync } = require("child_process");
 const { autoMapPins } = require("./auto-map-pins");
+const { firstDefineMap, allDefineValues } = require("./extract-defines");
 
 const ROOT = path.join(__dirname, "..");
 const MANIFEST = path.join(ROOT, "pipeline/source-manifest.json");
@@ -25,18 +26,10 @@ function sliceRange(text, range) {
   return text.split("\n").slice(a - 1, b).join("\n");
 }
 function extractBlockMacros(block) {
-  const map = {};
-  const re = /^\s*#define\s+([A-Z0-9_]+)\s+(\d+)\b/gm;
-  let m;
-  while ((m = re.exec(block)) !== null) if (!(m[1] in map)) map[m[1]] = m[2];
-  return map;
+  return firstDefineMap(block);
 }
 function allDefs(text) {
-  const defs = {};
-  const re = /^\s*#define\s+([A-Z0-9_]+)\s+(\d+)\b/gm;
-  let m;
-  while ((m = re.exec(text)) !== null) (defs[m[1]] = defs[m[1]] || new Set()).add(m[2]);
-  return defs;
+  return allDefineValues(text);
 }
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));

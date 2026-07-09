@@ -16,6 +16,7 @@ const path = require("path");
 const crypto = require("crypto");
 const { execFileSync } = require("child_process");
 const { autoMapPins } = require("./auto-map-pins");
+const { firstDefineMap, allDefineValues } = require("./extract-defines");
 
 const ROOT = path.join(__dirname, "..");
 const MANIFEST = path.join(ROOT, "pipeline/source-manifest.json");
@@ -43,13 +44,7 @@ function sliceRange(text, range) {
 }
 
 function extractMacros(block) {
-  const map = {};
-  const re = /^\s*#define\s+([A-Z0-9_]+)\s+(\d+)\b/gm;
-  let m;
-  while ((m = re.exec(block)) !== null) {
-    if (!(m[1] in map)) map[m[1]] = m[2]; // first definition wins inside the block
-  }
-  return map;
+  return firstDefineMap(block); // first definition wins inside the block
 }
 
 function fillTemplate(tpl, macros) {
@@ -133,12 +128,7 @@ function ingestSource(source) {
 // Returns referenced macros that the full file defines with more than one
 // distinct value, with the value chosen by the manifest line_range.
 function detectVariantConflicts(fullText, referenced, chosenMacros) {
-  const defs = {};
-  const re = /^\s*#define\s+([A-Z0-9_]+)\s+(\d+)\b/gm;
-  let m;
-  while ((m = re.exec(fullText)) !== null) {
-    (defs[m[1]] = defs[m[1]] || new Set()).add(m[2]);
-  }
+  const defs = allDefineValues(fullText);
   const conflicts = [];
   for (const macro of referenced) {
     const values = defs[macro];
