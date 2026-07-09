@@ -20,8 +20,9 @@ pub fn route_prompt_with_profile(
     profile: Option<&ActiveProfile>,
 ) -> RouteResult {
     let normalized = normalize(prompt);
+    let has_signal = has_lilygo_signal(registry, &normalized);
     let profile_can_apply = profile.is_some_and(|_| is_embedded_prompt(&normalized));
-    if !has_lilygo_signal(registry, &normalized) && !profile_can_apply {
+    if !has_signal && !profile_can_apply {
         if needs_board_clarification(&normalized) {
             return clarification_result(
                 "board",
@@ -94,6 +95,17 @@ pub fn route_prompt_with_profile(
     suppress_exact_product_prefix_fallbacks(registry, &normalized, &mut selected);
     matches.retain(|matched| selected.contains(&matched.skill));
 
+    // Context fallback: the primary board context is inferred (not user-named)
+    // when no board/keyword signal matched the prompt yet an active profile
+    // board still supplied the capsule. This only fires on the profile-fallback
+    // path; keyword/board-name routes keep board_source = None (unchanged).
+    let board_source =
+        if !has_signal && profile.is_some_and(|profile| selected.contains(&profile.board)) {
+            Some("inferred-from-project".to_string())
+        } else {
+            None
+        };
+
     let skills = ordered_skills(registry, &selected);
     let paths = registry
         .skills
@@ -115,6 +127,7 @@ pub fn route_prompt_with_profile(
         hardware_verification_boundary: needs_hardware_boundary(&normalized),
         notes: route_notes(&normalized),
         truncated: false,
+        board_source,
     }
 }
 
@@ -193,6 +206,7 @@ fn noop_result(
         hardware_verification_boundary,
         notes,
         truncated: false,
+        board_source: None,
     }
 }
 
@@ -214,6 +228,7 @@ fn clarification_result(id: &str, prompt: &str, examples: Vec<String>) -> RouteR
         hardware_verification_boundary: false,
         notes: Vec::new(),
         truncated: false,
+        board_source: None,
     }
 }
 
@@ -1108,6 +1123,96 @@ mod tests {
             !other_board
                 .skills
                 .contains(&"board-t-watch-ultra".to_string())
+        );
+    }
+
+    #[test]
+    fn context_fallback_inferred_board_injection() {
+        // Positive: an active board profile + a board-relevant prompt that never
+        // names the board must still inject that board capsule, marked inferred.
+        let registry = registry();
+        let profile = ActiveProfile {
+            board: "board-t-display-s3".to_string(),
+            framework: None,
+            features: Vec::new(),
+        };
+        for prompt in [
+            "how do I light up the screen",
+            "the display shows nothing after flash",
+        ] {
+            let route = route_prompt_with_profile(&registry, prompt, Some(&profile));
+            assert_eq!(route.decision, "inject", "prompt: {prompt}");
+            assert!(
+                route.skills.contains(&"board-t-display-s3".to_string()),
+                "prompt {prompt} must inject the active board: {:?}",
+                route.skills
+            );
+            assert!(
+                route.skills.contains(&"periph-display".to_string()),
+                "prompt {prompt} should carry the board's display facts"
+            );
+            assert_eq!(
+                route.board_source.as_deref(),
+                Some("inferred-from-project"),
+                "prompt {prompt} must mark the board as inferred"
+            );
+        }
+    }
+
+    #[test]
+    fn context_fallback_unrelated_prompt_with_active_board_stays_empty() {
+        // Negative A: an active board is set but the prompt is totally unrelated
+        // (a cooking question). Chosen + locked behavior: inject nothing, so no
+        // wrong board facts leak into an off-topic prompt.
+        let registry = registry();
+        let profile = ActiveProfile {
+            board: "board-t-display-s3".to_string(),
+            framework: None,
+            features: Vec::new(),
+        };
+        for prompt in ["红烧肉怎么做", "how do I braise pork belly"] {
+            let route = route_prompt_with_profile(&registry, prompt, Some(&profile));
+            assert_eq!(route.decision, "no-op", "prompt: {prompt}");
+            assert!(
+                route.skills.is_empty(),
+                "prompt {prompt}: {:?}",
+                route.skills
+            );
+            assert!(route.board_source.is_none());
+        }
+    }
+
+    #[test]
+    fn context_fallback_no_active_board_stays_empty() {
+        // Negative B: no active board + a prompt that names no board must inject
+        // zero bytes -- the fallback never invents a board out of nothing.
+        let registry = registry();
+        let route = route_prompt(&registry, "how do I light up the screen");
+        assert_eq!(route.decision, "no-op");
+        assert!(route.skills.is_empty());
+        assert!(route.board_source.is_none());
+    }
+
+    #[test]
+    fn context_fallback_named_board_is_not_marked_inferred() {
+        // A prompt that names its own board is the keyword path, not a fallback:
+        // board_source stays None even when a matching profile is present.
+        let registry = registry();
+        let profile = ActiveProfile {
+            board: "board-t-display-s3".to_string(),
+            framework: None,
+            features: Vec::new(),
+        };
+        let route = route_prompt_with_profile(
+            &registry,
+            "T-Display-S3 LVGL screen is blank",
+            Some(&profile),
+        );
+        assert_eq!(route.decision, "inject");
+        assert!(route.skills.contains(&"board-t-display-s3".to_string()));
+        assert!(
+            route.board_source.is_none(),
+            "an explicitly named board must not be flagged as inferred"
         );
     }
 

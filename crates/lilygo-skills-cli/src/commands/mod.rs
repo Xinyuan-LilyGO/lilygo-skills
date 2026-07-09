@@ -858,6 +858,40 @@ mod tests {
     use std::path::Path;
 
     #[test]
+    fn inferred_board_source_reaches_capsule_text() {
+        // The context-fallback provenance must surface in the rendered capsule so
+        // the model can tell an inferred board from a user-named one; an
+        // unmarked inject stays byte-identical to before.
+        let source_root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+        let registry = load_registry(source_root.as_path()).expect("registry");
+        let profile = ActiveProfile {
+            board: "board-t-display-s3".to_string(),
+            framework: None,
+            features: Vec::new(),
+        };
+        let inferred = route_with_profile_or_clarification(
+            &registry,
+            "how do I light up the screen",
+            Some(&profile),
+        );
+        assert_eq!(
+            inferred.board_source.as_deref(),
+            Some("inferred-from-project")
+        );
+        let context = render_context(&inferred);
+        assert!(
+            context.contains("board_source=inferred-from-project"),
+            "inferred capsule must state its provenance: {context}"
+        );
+
+        let named = route_prompt(&registry, "T-Display-S3 LVGL screen is blank");
+        assert!(
+            !render_context(&named).contains("board_source"),
+            "keyword-matched boards must not emit a board_source marker"
+        );
+    }
+
+    #[test]
     fn hook_envelopes() {
         let route = RouteResult {
             decision: "inject".to_string(),
@@ -872,6 +906,7 @@ mod tests {
             hardware_verification_boundary: true,
             notes: Vec::new(),
             truncated: false,
+            board_source: None,
         };
         let context = render_context(&route);
         assert!(context.contains("verification_level=context-injection"));
@@ -921,6 +956,7 @@ mod tests {
             hardware_verification_boundary: true,
             notes: Vec::new(),
             truncated: false,
+            board_source: None,
         };
         let context = render_context(&route);
         assert!(context.is_empty(), "no-op routes must not render context");

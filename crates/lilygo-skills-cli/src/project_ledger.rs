@@ -861,6 +861,7 @@ mod tests {
             hardware_verification_boundary: true,
             notes: Vec::new(),
             truncated: false,
+            board_source: None,
         }
     }
 

@@ -262,6 +262,12 @@ pub(crate) fn render_context(route: &crate::model::RouteResult) -> String {
         route.skills.join(","),
         route.verification_level
     );
+    // Context fallback: when the board was inferred from the active project (no
+    // board name in the prompt), tell the model the provenance so it treats the
+    // capsule as a project-derived default rather than a user-stated board.
+    if let Some(board_source) = &route.board_source {
+        context.push_str(&format!("; board_source={board_source}"));
+    }
     if !route.readiness.is_empty() {
         let readiness = route
             .readiness

@@ -83,6 +83,13 @@ pub struct RouteResult {
     pub hardware_verification_boundary: bool,
     pub notes: Vec<String>,
     pub truncated: bool,
+    /// Provenance of the primary board context when it was not named in the
+    /// prompt. `Some("inferred-from-project")` marks a context-fallback inject:
+    /// no board keyword matched, but an active project/profile board supplied
+    /// the capsule. `None` for the normal keyword/board-name path so existing
+    /// serialized envelopes and snapshots stay byte-identical.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub board_source: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
