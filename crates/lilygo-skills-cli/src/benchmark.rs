@@ -469,18 +469,16 @@ fn measure_routes(registry: &Registry, cases: &[BenchmarkCase], iterations: usiz
         checksum,
     }
 }
+fn pass_fail(ok: bool) -> String {
+    if ok { "PASS" } else { "FAIL" }.to_string()
+}
 fn performance_budget(
     max_ns_per_route: Option<u128>,
     ns_per_route: f64,
 ) -> Option<PerformanceBudget> {
     max_ns_per_route.map(|max| PerformanceBudget {
         max_ns_per_route: max,
-        status: if ns_per_route <= max as f64 {
-            "PASS"
-        } else {
-            "FAIL"
-        }
-        .to_string(),
+        status: pass_fail(ns_per_route <= max as f64),
     })
 }
 fn baseline_comparison(case_count: usize) -> BenchmarkBaselineComparison {
@@ -492,12 +490,7 @@ fn baseline_comparison(case_count: usize) -> BenchmarkBaselineComparison {
         baseline_case_count,
         added_case_count,
         required_added_cases: 12,
-        status: if added_case_count >= 12 {
-            "PASS"
-        } else {
-            "FAIL"
-        }
-        .to_string(),
+        status: pass_fail(added_case_count >= 12),
     }
 }
 fn overall_status(
@@ -508,28 +501,18 @@ fn overall_status(
     performance_budget: &Option<PerformanceBudget>,
     baseline_comparison: &BenchmarkBaselineComparison,
 ) -> String {
-    if correctness_status != "PASS" {
-        return "FAIL".to_string();
-    }
-    if goal_status != "PASS" {
-        return "FAIL".to_string();
-    }
-    if goal_complete_status != "PASS" {
-        return "FAIL".to_string();
-    }
-    if playbook_status != "PASS" {
-        return "FAIL".to_string();
-    }
-    if baseline_comparison.status != "PASS" {
-        return "FAIL".to_string();
-    }
-    if performance_budget
-        .as_ref()
-        .is_some_and(|budget| budget.status != "PASS")
-    {
-        return "FAIL".to_string();
-    }
-    "PASS".to_string()
+    let statuses = [
+        correctness_status,
+        goal_status,
+        goal_complete_status,
+        playbook_status,
+        baseline_comparison.status.as_str(),
+    ];
+    let all_pass = statuses.iter().all(|status| *status == "PASS")
+        && performance_budget
+            .as_ref()
+            .is_none_or(|budget| budget.status == "PASS");
+    pass_fail(all_pass)
 }
 
 fn validate_playbook_quality(root: &Path, registry: &Registry) -> PlaybookQualityBenchmark {
@@ -547,7 +530,7 @@ fn validate_playbook_quality(root: &Path, registry: &Registry) -> PlaybookQualit
         }
     }
     PlaybookQualityBenchmark {
-        status: if failures.is_empty() { "PASS" } else { "FAIL" }.to_string(),
+        status: pass_fail(failures.is_empty()),
         case_count: cases.len(),
         failures,
     }
@@ -690,7 +673,7 @@ fn validate_goal_capsules(root: &Path, registry: &Registry) -> GoalBenchmark {
         }
     }
     GoalBenchmark {
-        status: if failures.is_empty() { "PASS" } else { "FAIL" }.to_string(),
+        status: pass_fail(failures.is_empty()),
         case_count: cases.len(),
         failures,
     }
@@ -738,7 +721,7 @@ fn validate_goal_complete(root: &Path, registry: &Registry) -> GoalBenchmark {
         }
     }
     GoalBenchmark {
-        status: if failures.is_empty() { "PASS" } else { "FAIL" }.to_string(),
+        status: pass_fail(failures.is_empty()),
         case_count,
         failures,
     }
