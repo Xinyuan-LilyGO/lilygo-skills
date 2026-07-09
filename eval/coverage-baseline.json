@@ -1,6 +1,6 @@
 {
-  "min_covered": 48,
-  "min_coverage_pct": 77.4,
-  "honesty_markers_required": 19,
+  "min_covered": 50,
+  "min_coverage_pct": 80.6,
+  "honesty_markers_required": 20,
   "note": "P0 baseline for the great-effect refactor; injected-capsule coverage and honesty markers must never regress below this. honesty_markers_required is the current measured floor (a capsule with no board data legitimately carries no marker). Update only with an explicit, reviewed reason."
 }
