@@ -245,6 +245,49 @@
         }
       ],
       "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-dongle-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+      "source_kind": "arduino-pins",
+      "line_range": "33-63",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        { "key": "pin.button.boot", "macro": "BOOT_PIN", "claim": "BOOT/IO0 button from official factory_screen.ino" },
+        { "key": "pin.led.data", "macro": "LED_DI_PIN", "claim": "APA102 RGB LED data from official factory_screen.ino" },
+        { "key": "pin.led.clock", "macro": "LED_CI_PIN", "claim": "APA102 RGB LED clock from official factory_screen.ino" },
+        { "key": "pin.display.mosi", "macro": "PIN_NUM_MOSI", "claim": "ST7735 SPI MOSI from official factory_screen.ino" },
+        { "key": "pin.display.sck", "macro": "PIN_NUM_CLK", "claim": "ST7735 SPI SCLK from official factory_screen.ino" },
+        { "key": "pin.display.cs", "macro": "PIN_NUM_CS", "claim": "ST7735 SPI CS from official factory_screen.ino" },
+        { "key": "pin.display.dc", "macro": "PIN_NUM_DC", "claim": "ST7735 data/command from official factory_screen.ino" },
+        { "key": "pin.display.reset", "macro": "PIN_NUM_RST", "claim": "ST7735 reset from official factory_screen.ino" },
+        { "key": "pin.display.backlight", "macro": "PIN_NUM_BCKL", "claim": "ST7735 backlight from official factory_screen.ino" },
+        { "key": "pin.sdmmc.d0", "macro": "SD_MMC_D0_PIN", "claim": "microSD SD_MMC D0 from official factory_screen.ino" },
+        { "key": "pin.sdmmc.d1", "macro": "SD_MMC_D1_PIN", "claim": "microSD SD_MMC D1 from official factory_screen.ino" },
+        { "key": "pin.sdmmc.d2", "macro": "SD_MMC_D2_PIN", "claim": "microSD SD_MMC D2 from official factory_screen.ino" },
+        { "key": "pin.sdmmc.d3", "macro": "SD_MMC_D3_PIN", "claim": "microSD SD_MMC D3 from official factory_screen.ino" },
+        { "key": "pin.sdmmc.clk", "macro": "SD_MMC_CLK_PIN", "claim": "microSD SD_MMC CLK from official factory_screen.ino" },
+        { "key": "pin.sdmmc.cmd", "macro": "SD_MMC_CMD_PIN", "claim": "microSD SD_MMC CMD from official factory_screen.ino" }
+      ],
+      "buses": [
+        {
+          "key": "bus.display.st7735",
+          "template": "ST7735 0.96in 160x80 on SPI2: MOSI=GPIO{PIN_NUM_MOSI}, SCLK=GPIO{PIN_NUM_CLK}, CS=GPIO{PIN_NUM_CS}, DC=GPIO{PIN_NUM_DC}, RST=GPIO{PIN_NUM_RST}, BL=GPIO{PIN_NUM_BCKL}",
+          "claim": "ST7735 SPI display bus from official factory_screen.ino"
+        },
+        {
+          "key": "bus.sdmmc.microsd",
+          "template": "microSD on SD_MMC: CLK=GPIO{SD_MMC_CLK_PIN}, CMD=GPIO{SD_MMC_CMD_PIN}, D0=GPIO{SD_MMC_D0_PIN}, D1=GPIO{SD_MMC_D1_PIN}, D2=GPIO{SD_MMC_D2_PIN}, D3=GPIO{SD_MMC_D3_PIN}",
+          "claim": "microSD SD_MMC bus from official factory_screen.ino"
+        },
+        {
+          "key": "bus.led.apa102",
+          "template": "APA102 RGB LED: DATA=GPIO{LED_DI_PIN}, CLK=GPIO{LED_CI_PIN}",
+          "claim": "APA102 RGB LED bus from official factory_screen.ino"
+        }
+      ],
+      "variant_confirmed": true
     }
   ]
 }

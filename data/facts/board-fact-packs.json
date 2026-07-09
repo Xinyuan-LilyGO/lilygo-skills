@@ -3402,9 +3402,334 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "BOOT_PIN=GPIO0",
+          "claim": "BOOT/IO0 button from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.led.data",
+          "value": "LED_DI_PIN=GPIO40",
+          "claim": "APA102 RGB LED data from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.led.clock",
+          "value": "LED_CI_PIN=GPIO39",
+          "claim": "APA102 RGB LED clock from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "PIN_NUM_MOSI=GPIO3",
+          "claim": "ST7735 SPI MOSI from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "PIN_NUM_CLK=GPIO5",
+          "claim": "ST7735 SPI SCLK from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "PIN_NUM_CS=GPIO4",
+          "claim": "ST7735 SPI CS from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "PIN_NUM_DC=GPIO2",
+          "claim": "ST7735 data/command from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "PIN_NUM_RST=GPIO1",
+          "claim": "ST7735 reset from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "PIN_NUM_BCKL=GPIO38",
+          "claim": "ST7735 backlight from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d0",
+          "value": "SD_MMC_D0_PIN=GPIO14",
+          "claim": "microSD SD_MMC D0 from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d1",
+          "value": "SD_MMC_D1_PIN=GPIO17",
+          "claim": "microSD SD_MMC D1 from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d2",
+          "value": "SD_MMC_D2_PIN=GPIO21",
+          "claim": "microSD SD_MMC D2 from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d3",
+          "value": "SD_MMC_D3_PIN=GPIO18",
+          "claim": "microSD SD_MMC D3 from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.clk",
+          "value": "SD_MMC_CLK_PIN=GPIO12",
+          "claim": "microSD SD_MMC CLK from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "pin.sdmmc.cmd",
+          "value": "SD_MMC_CMD_PIN=GPIO16",
+          "claim": "microSD SD_MMC CMD from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "bus.display.st7735",
+          "value": "ST7735 0.96in 160x80 on SPI2: MOSI=GPIO3, SCLK=GPIO5, CS=GPIO4, DC=GPIO2, RST=GPIO1, BL=GPIO38",
+          "claim": "ST7735 SPI display bus from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "bus.sdmmc.microsd",
+          "value": "microSD on SD_MMC: CLK=GPIO12, CMD=GPIO16, D0=GPIO14, D1=GPIO17, D2=GPIO21, D3=GPIO18",
+          "claim": "microSD SD_MMC bus from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-dongle-s3",
+          "topic": "pinout",
+          "key": "bus.led.apa102",
+          "value": "APA102 RGB LED: DATA=GPIO40, CLK=GPIO39",
+          "claim": "APA102 RGB LED bus from official factory_screen.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+            "line_range": "33-63",
+            "hash": "sha256:1b88a7d4059db762ba60f4e605cd48886a303dd52e8ecd164121b55a4366de69"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
