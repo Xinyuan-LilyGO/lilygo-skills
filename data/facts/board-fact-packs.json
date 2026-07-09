@@ -2581,9 +2581,262 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.te",
+          "value": "TFT_TE=GPIO9",
+          "claim": "AMOLED tearing-effect from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.sdo",
+          "value": "TFT_SDO=GPIO8",
+          "claim": "AMOLED SDO (read) from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "TFT_QSPI_CS=GPIO6",
+          "claim": "RM67162 AMOLED QSPI CS from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "TFT_QSPI_SCK=GPIO47",
+          "claim": "RM67162 AMOLED QSPI SCK from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.d0",
+          "value": "TFT_QSPI_D0=GPIO18",
+          "claim": "RM67162 AMOLED QSPI D0 from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.d1",
+          "value": "TFT_QSPI_D1=GPIO7",
+          "claim": "RM67162 AMOLED QSPI D1 from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.d2",
+          "value": "TFT_QSPI_D2=GPIO48",
+          "claim": "RM67162 AMOLED QSPI D2 from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.d3",
+          "value": "TFT_QSPI_D3=GPIO5",
+          "claim": "RM67162 AMOLED QSPI D3 from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "TFT_QSPI_RST=GPIO17",
+          "claim": "RM67162 AMOLED reset from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.led",
+          "value": "PIN_LED=GPIO38",
+          "claim": "Onboard LED from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.battery.adc",
+          "value": "PIN_BAT_VOLT=GPIO4",
+          "claim": "Battery voltage ADC from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.button.1",
+          "value": "PIN_BUTTON_1=GPIO0",
+          "claim": "Button 1 (BOOT/IO0) from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "pin.button.2",
+          "value": "PIN_BUTTON_2=GPIO21",
+          "claim": "Button 2 from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-amoled",
+          "topic": "pinout",
+          "key": "bus.display.qspi.rm67162",
+          "value": "RM67162 AMOLED 536x240 on QSPI (SPI2): CS=GPIO6, SCK=GPIO47, D0=GPIO18, D1=GPIO7, D2=GPIO48, D3=GPIO5, RST=GPIO17, TE=GPIO9",
+          "claim": "RM67162 AMOLED QSPI display bus from official factory pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+            "line_range": "34-55",
+            "hash": "sha256:99c823e0f6947e04be6963d0d6c0b1d0351accbdfa42945c18638942b8f59de5"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
