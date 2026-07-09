@@ -99,7 +99,68 @@
         "wiki": "5a3aa3acb73db5de14302c69a8d1b52ef06d0a94ce2b5392f43f1bc3170733c5"
       },
       "stale": false,
-      "peripheral_matrix": [],
+      "peripheral_matrix": [
+        {
+          "category": "storage",
+          "name": "microSD card slot",
+          "chip": "microSD storage card",
+          "bus": "SPI",
+          "driver": "Arduino SD (SD_CS=GPIO21, shared SPI SCLK/MOSI/MISO)",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "camera",
+          "name": "Camera sensor",
+          "chip": "OV2640",
+          "bus": "DVP 8-bit parallel",
+          "driver": "esp32-camera (XCLK=GPIO7)",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "touch",
+          "name": "Capacitive touch",
+          "chip": "CST816",
+          "bus": "I2C 0x15",
+          "driver": "CST816 touch driver",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "power",
+          "name": "PMU / battery charger",
+          "chip": "SY6970",
+          "bus": "I2C 0x6A",
+          "driver": "XPowersLib SY6970/PPM",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "audio",
+          "name": "Class-D amplifier",
+          "chip": "MAX98357A",
+          "bus": "I2S",
+          "driver": "Arduino I2S",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        },
+        {
+          "category": "audio",
+          "name": "PDM microphone",
+          "chip": "MSM261",
+          "bus": "PDM",
+          "driver": "ESP-IDF I2S PDM",
+          "source_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/components/private_library/pin_config.h",
+          "source_status": "github-live-verified",
+          "evidence_level": "V3-source-reference"
+        }
+      ],
       "demo_refs": [
         {
           "framework": "source",

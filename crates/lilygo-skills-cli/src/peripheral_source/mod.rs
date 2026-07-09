@@ -568,7 +568,15 @@ fn canonical_peripheral_skills() -> Vec<Skill> {
         canonical_peripheral(
             "periph-storage",
             "SD, SPIFFS, LittleFS, partition, and asset storage context.",
-            &["sd", "tf", "spiffs", "littlefs", "storage", "partition"],
+            &[
+                "sd",
+                "tf",
+                "spiffs",
+                "littlefs",
+                "storage",
+                "partition",
+                "存储",
+            ],
             58,
         ),
         canonical_peripheral(
