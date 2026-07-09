@@ -9,7 +9,7 @@
 const path = require("path");
 const { execFileSync } = require("child_process");
 const fs = require("fs");
-const { autoMapPins } = require("./auto-map-pins");
+const { autoMapPins, normalizeMacro, loadConventions } = require("./auto-map-pins");
 
 const ROOT = path.join(__dirname, "..");
 const MANIFEST = path.join(ROOT, "pipeline/source-manifest.json");
@@ -37,6 +37,8 @@ function extractMacros(block) {
 }
 
 const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
+const conv = loadConventions();
+const conventionRecognizes = (macro) => Boolean((conv.macro_to_key || {})[normalizeMacro(macro, conv)]);
 const results = [];
 let failed = false;
 
@@ -48,21 +50,34 @@ for (const source of manifest.sources) {
     autoMapPins(macros).map((p) => [p.key, `${p.macro}=GPIO${p.value_num}`])
   );
   const mismatches = [];
+  // Equivalence is only assertable where the naming convention claims to cover
+  // the macro: for those, the auto-mapper must reproduce the hand mapping
+  // exactly (this keeps the convention table honest and fully guards the
+  // reference boards whose macros are all convention-covered). A board may also
+  // carry explicit hand mappings for macros the convention does not name (novel
+  // vendor headers); those are reported as convention_uncovered, not failures,
+  // because verify-source-authority is what guards their extraction.
+  const uncovered = [];
   for (const pin of source.pins) {
+    if (!conventionRecognizes(pin.macro)) {
+      uncovered.push(pin.key);
+      continue;
+    }
     const expected = `${pin.macro}=GPIO${macros[pin.macro]}`;
     const got = auto.get(pin.key);
     if (got !== expected) {
       mismatches.push({ key: pin.key, hand: expected, auto: got || null });
     }
   }
-  // Also flag hand keys the auto-mapper missed entirely.
   const handKeys = new Set(source.pins.map((p) => p.key));
   const extraAuto = [...auto.keys()].filter((k) => !handKeys.has(k));
   if (mismatches.length) failed = true;
   results.push({
     board_id: source.board_id,
     hand_pins: source.pins.length,
-    auto_reproduced: source.pins.length - mismatches.length,
+    convention_covered: source.pins.length - uncovered.length,
+    auto_reproduced: source.pins.length - uncovered.length - mismatches.length,
+    convention_uncovered: uncovered,
     mismatches,
     auto_only_keys: extraAuto,
   });
