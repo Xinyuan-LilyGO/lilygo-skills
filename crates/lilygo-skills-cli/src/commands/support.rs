@@ -245,6 +245,16 @@ pub(crate) fn load_profile(root: &Path) -> Option<ActiveProfile> {
 
 pub(crate) fn render_context(route: &crate::model::RouteResult) -> String {
     if route.decision != "inject" {
+        // A recognized-but-unsupported LilyGO product (e.g. an RP2040 board) must
+        // surface its support boundary explicitly instead of injecting nothing,
+        // so the model never treats a non-ESP32 board as runnable here. A plain
+        // non-LilyGO prompt (verification_level "none") still injects nothing.
+        if route.verification_level == "unsupported" {
+            return "LilyGO support boundary: unsupported LilyGO product (non-ESP32); \
+                 this runtime only covers ESP32-family boards, so no board context is \
+                 injected. hardware_verified=false; evidence_boundary=V3"
+                .to_string();
+        }
         return String::new();
     }
     let mut context = format!(
