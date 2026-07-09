@@ -18,10 +18,8 @@ pub(super) fn compose_context_capsule(
     let reference_hints = reference_hints_for_prompt(root, project_start, prompt);
     let mut playbook_hints = crate::playbooks::playbook_hints_for_prompt(prompt, &route.skills);
     let Some(board_id) = &goal_route.board else {
-        budget.overflow_count += playbook_hints
-            .len()
-            .saturating_sub(budget.max_playbook_hints_inline);
-        playbook_hints.truncate(budget.max_playbook_hints_inline);
+        let max = budget.max_playbook_hints_inline;
+        cap_inline(&mut budget, &mut playbook_hints, max);
         return Ok(GoalContextCapsule {
             summary: context_summary(route, goal_route),
             facts,
@@ -88,19 +86,13 @@ pub(super) fn compose_context_capsule(
         .collect::<BTreeMap<_, _>>();
     let mut discovery_hints = discovery_hints_for_goal(Some(board_id), prompt);
     discovery_hints.extend(readiness.iter().filter_map(readiness_discovery_hint));
-    budget.overflow_count += discovery_hints
-        .len()
-        .saturating_sub(budget.max_discovery_hints_inline);
-    discovery_hints.truncate(budget.max_discovery_hints_inline);
+    let max = budget.max_discovery_hints_inline;
+    cap_inline(&mut budget, &mut discovery_hints, max);
     let mut reference_hints = reference_hints;
-    budget.overflow_count += reference_hints
-        .len()
-        .saturating_sub(budget.max_reference_hints_inline);
-    reference_hints.truncate(budget.max_reference_hints_inline);
-    budget.overflow_count += playbook_hints
-        .len()
-        .saturating_sub(budget.max_playbook_hints_inline);
-    playbook_hints.truncate(budget.max_playbook_hints_inline);
+    let max = budget.max_reference_hints_inline;
+    cap_inline(&mut budget, &mut reference_hints, max);
+    let max = budget.max_playbook_hints_inline;
+    cap_inline(&mut budget, &mut playbook_hints, max);
     let implementation_start =
         implementation_start_for_goal(prompt, &demo_refs, &source_refs, &fact_tables);
     let critical_facts = critical_facts_for_goal(prompt, &fact_tables);
@@ -628,15 +620,22 @@ fn recovery_action(kind: &str, command: impl Into<String>, reason: &str) -> Goal
     }
 }
 
+/// Charge the inline budget for every trimmed item, then cap the list to the
+/// inline limit. Keeps the four identical overflow-then-truncate call sites in
+/// the capsule builder in one place.
+fn cap_inline<T>(budget: &mut ContextBudget, items: &mut Vec<T>, max: usize) {
+    budget.overflow_count += items.len().saturating_sub(max);
+    items.truncate(max);
+}
+
 fn goal_source_ref_from_fact_source(source: &SourceFactSource) -> GoalSourceRef {
-    GoalSourceRef {
-        kind: source.kind.clone(),
-        authority_rank: board_source_rank(&source.kind),
-        url: source.path_or_url.clone(),
-        status: source.hash.clone(),
-        stale: false,
-        evidence_level: "V3-source-reference".to_string(),
-    }
+    source_ref(
+        &source.kind,
+        board_source_rank(&source.kind),
+        &source.path_or_url,
+        &source.hash,
+        false,
+    )
 }
 
 fn add_fact(facts: &mut Vec<GoalFact>, key: &str, value: &str, source: &str) {

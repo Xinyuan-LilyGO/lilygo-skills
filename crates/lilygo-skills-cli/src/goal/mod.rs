@@ -248,7 +248,7 @@ pub fn start_goal(plan: &GoalPlan, options: &GoalStartOptions) -> Result<GoalSta
     } else {
         "complete"
     };
-    let highest = highest_level(status, &ran_commands);
+    let highest = highest_level(&ran_commands);
     let evidence_blockers = if status == "partial" {
         blocked_permissions
             .iter()
@@ -257,12 +257,7 @@ pub fn start_goal(plan: &GoalPlan, options: &GoalStartOptions) -> Result<GoalSta
     } else {
         blockers
     };
-    let signature = failure_signature(
-        status,
-        failure_class.as_deref(),
-        &evidence_blockers,
-        &ran_commands,
-    );
+    let signature = failure_signature(status, failure_class.as_deref(), &ran_commands);
     let retry = retry_state(
         options.project_root.as_path(),
         &plan.goal_id,
@@ -344,7 +339,6 @@ struct RetryState {
 fn failure_signature(
     status: &str,
     failure_class: Option<&str>,
-    _blockers: &[String],
     commands: &[crate::model::GoalCommandEvidence],
 ) -> Option<String> {
     if status != "blocked" {
@@ -483,8 +477,16 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
 /// `examples/.../*.ino` entry point inline instead of only recipe names. Skipped
 /// when the compact source-recovery segment already carries the same demo path.
 fn render_capsule_demo(plan: &GoalPlan, source_recovery: &str) -> String {
-    let path = plan
-        .context_capsule
+    match capsule_demo_path(plan) {
+        Some(path) if !path.is_empty() && !source_recovery.contains(path) => {
+            format!(" demo={path};")
+        }
+        _ => String::new(),
+    }
+}
+
+fn capsule_demo_path(plan: &GoalPlan) -> Option<&str> {
+    plan.context_capsule
         .implementation_start
         .as_ref()
         .and_then(|start| start.official_demo_path.as_deref())
@@ -493,13 +495,7 @@ fn render_capsule_demo(plan: &GoalPlan, source_recovery: &str) -> String {
                 .demo_refs
                 .first()
                 .map(|demo| demo.path.as_str())
-        });
-    match path {
-        Some(path) if !path.is_empty() && !source_recovery.contains(path) => {
-            format!(" demo={path};")
-        }
-        _ => String::new(),
-    }
+        })
 }
 
 /// Surface the exact source-backed pin/bus GPIO assignments already loaded into
@@ -602,18 +598,7 @@ fn render_compact_source_recovery(plan: &GoalPlan) -> String {
     if plan.context_capsule.critical_facts.is_empty() {
         return String::new();
     }
-    let demo = plan
-        .context_capsule
-        .implementation_start
-        .as_ref()
-        .and_then(|start| start.official_demo_path.as_deref())
-        .or_else(|| {
-            plan.context_capsule
-                .demo_refs
-                .first()
-                .map(|demo| demo.path.as_str())
-        })
-        .unwrap_or("none");
+    let demo = capsule_demo_path(plan).unwrap_or("none");
     let headers = plan
         .context_capsule
         .implementation_start

@@ -618,7 +618,7 @@ pub(super) fn command_failure_summary(command: &GoalCommandEvidence) -> String {
     )
 }
 
-pub(super) fn highest_level(_status: &str, commands: &[GoalCommandEvidence]) -> String {
+pub(super) fn highest_level(commands: &[GoalCommandEvidence]) -> String {
     if commands
         .iter()
         .any(|command| command.status == "PASS" && level_rank(&command.step_id) >= 5)
