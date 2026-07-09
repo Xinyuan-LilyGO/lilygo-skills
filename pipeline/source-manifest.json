@@ -159,14 +159,7 @@
       "line_range": "14-20",
       "topic": "pinout",
       "authority_rank": 90,
-      "pins": [
-        { "key": "pin.display.mosi", "macro": "TFT_MOSI", "claim": "ST7789V SPI MOSI from official TTGO T-Display TFT_eSPI Setup25 (User_Setup_Select selects it)" },
-        { "key": "pin.display.sck", "macro": "TFT_SCLK", "claim": "ST7789V SPI SCLK from official TTGO T-Display TFT_eSPI Setup25" },
-        { "key": "pin.display.cs", "macro": "TFT_CS", "claim": "ST7789V SPI CS from official TTGO T-Display TFT_eSPI Setup25" },
-        { "key": "pin.display.dc", "macro": "TFT_DC", "claim": "ST7789V data/command from official TTGO T-Display TFT_eSPI Setup25" },
-        { "key": "pin.display.reset", "macro": "TFT_RST", "claim": "ST7789V reset from official TTGO T-Display TFT_eSPI Setup25" },
-        { "key": "pin.display.backlight", "macro": "TFT_BL", "claim": "ST7789V backlight from official TTGO T-Display TFT_eSPI Setup25" }
-      ],
+      "auto_pins": true,
       "buses": [
         {
           "key": "bus.display.st7789",
