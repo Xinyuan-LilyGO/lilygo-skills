@@ -189,8 +189,13 @@ mod tests {
         assert!(second_spi_uart.contains("source-query-uart:none"));
         assert!(!second_spi_uart.contains("pin.i2c.sda"));
         assert!(third.contains("LilyGO incremental"));
+        // Efficiency guard (not an honesty/coverage assertion): the incremental
+        // repeat must stay far smaller than the full capsule. Injection de-noise
+        // shrank the full capsule (dropped goal_id/completeness/fact_tables/
+        // discovery_hints counts), so the fixed ratio was retuned from 5x to 4x;
+        // it still proves >4x compaction of the repeated context.
         assert!(
-            second.len() * 5 <= full.len(),
+            second.len() * 4 <= full.len(),
             "second={second}\nfull={full}"
         );
         let _ = fs::remove_dir_all(&temp);

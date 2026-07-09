@@ -447,6 +447,52 @@ fn source_recovery_capsule_t_display_s3() {
 }
 
 #[test]
+fn capsule_drops_internal_bookkeeping_noise() {
+    // Lock: the injected capsule must never carry the internal-bookkeeping
+    // fields with near-zero answer value. Two shapes exercised: an implementation
+    // prompt (recipes present, so kept) and a pure fact lookup (recipes empty).
+    for prompt in [
+        "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor",
+        "T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?",
+    ] {
+        let summary = render_hook_goal_summary(&plan(prompt));
+        // Random goal_id hash: gone.
+        assert!(
+            !summary.contains("goal_id="),
+            "goal_id must not be injected: {summary}"
+        );
+        // Empty recipe/playbook arrays: not rendered as noise.
+        assert!(
+            !summary.contains("recipes=[]"),
+            "empty recipes must not render: {summary}"
+        );
+        assert!(
+            !summary.contains("playbooks=[]"),
+            "empty playbooks must not render: {summary}"
+        );
+        // Pure counts: dropped.
+        assert!(
+            !summary.contains("fact_tables="),
+            "fact_tables count must not render: {summary}"
+        );
+        assert!(
+            !summary.contains("discovery_hints="),
+            "discovery_hints count must not render: {summary}"
+        );
+        // completeness=[..] duplicated the route prefix's readiness=[..]; dropped.
+        assert!(
+            !summary.contains("completeness="),
+            "completeness duplicate must not render: {summary}"
+        );
+        // Honesty markers stay: the model must never see a capsule without them.
+        assert!(
+            summary.contains("evidence_boundary=V3/hardware_verified=false"),
+            "honesty markers must remain: {summary}"
+        );
+    }
+}
+
+#[test]
 fn source_recovery_hook_summary_t_display_s3() {
     let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen");
     let summary = render_hook_goal_summary(&plan);
