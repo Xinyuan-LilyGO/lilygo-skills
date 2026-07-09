@@ -1271,9 +1271,136 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "TFT_MOSI=GPIO19",
+          "claim": "ST7789V SPI MOSI from official TTGO T-Display TFT_eSPI Setup25 (User_Setup_Select selects it)",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "TFT_SCLK=GPIO18",
+          "claim": "ST7789V SPI SCLK from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "TFT_CS=GPIO5",
+          "claim": "ST7789V SPI CS from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "TFT_DC=GPIO16",
+          "claim": "ST7789V data/command from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "TFT_RST=GPIO23",
+          "claim": "ST7789V reset from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "TFT_BL=GPIO4",
+          "claim": "ST7789V backlight from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display",
+          "topic": "pinout",
+          "key": "bus.display.st7789",
+          "value": "ST7789V 135x240 on SPI: MOSI=GPIO19, SCLK=GPIO18, CS=GPIO5, DC=GPIO16, RST=GPIO23, BL=GPIO4",
+          "claim": "ST7789V SPI display bus from official TTGO T-Display TFT_eSPI Setup25",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO-T-Display/blob/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+            "line_range": "14-20",
+            "hash": "sha256:102044d30b99184b59716b3526dbc80b4f3286b35a07362b03f7057c41e7d78c"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [

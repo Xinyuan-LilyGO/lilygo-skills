@@ -319,6 +319,30 @@
         }
       ],
       "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/TTGO-T-Display/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+      "source_kind": "arduino-pins",
+      "line_range": "14-20",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        { "key": "pin.display.mosi", "macro": "TFT_MOSI", "claim": "ST7789V SPI MOSI from official TTGO T-Display TFT_eSPI Setup25 (User_Setup_Select selects it)" },
+        { "key": "pin.display.sck", "macro": "TFT_SCLK", "claim": "ST7789V SPI SCLK from official TTGO T-Display TFT_eSPI Setup25" },
+        { "key": "pin.display.cs", "macro": "TFT_CS", "claim": "ST7789V SPI CS from official TTGO T-Display TFT_eSPI Setup25" },
+        { "key": "pin.display.dc", "macro": "TFT_DC", "claim": "ST7789V data/command from official TTGO T-Display TFT_eSPI Setup25" },
+        { "key": "pin.display.reset", "macro": "TFT_RST", "claim": "ST7789V reset from official TTGO T-Display TFT_eSPI Setup25" },
+        { "key": "pin.display.backlight", "macro": "TFT_BL", "claim": "ST7789V backlight from official TTGO T-Display TFT_eSPI Setup25" }
+      ],
+      "buses": [
+        {
+          "key": "bus.display.st7789",
+          "template": "ST7789V 135x240 on SPI: MOSI=GPIO{TFT_MOSI}, SCLK=GPIO{TFT_SCLK}, CS=GPIO{TFT_CS}, DC=GPIO{TFT_DC}, RST=GPIO{TFT_RST}, BL=GPIO{TFT_BL}",
+          "claim": "ST7789V SPI display bus from official TTGO T-Display TFT_eSPI Setup25"
+        }
+      ],
+      "variant_confirmed": true
     }
   ]
 }
