@@ -24,7 +24,7 @@
       "skill_id": "periph-input",
       "kind": "derived",
       "value": "touch/input loop",
-      "needles": ["touch", "input", "button", "触摸", "触控", "触摸屏", "按键", "输入"]
+      "needles": ["touch", "input", "button", "keyboard", "trackball", "触摸", "触控", "触摸屏", "按键", "输入", "键盘", "轨迹球"]
     },
     {
       "skill_id": "debug-lvgl-loop",
