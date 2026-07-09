@@ -38,6 +38,26 @@ the agent records public references, routes the request to source discovery,
 and expands build, flash, OTA, or hardware-debug guidance after that board
 family has source-backed support.
 
+The current source model ships 26 board fact packs
+(`data/facts/board-fact-packs.json`), all with `fields_missing_source=0` in the
+official-source pipeline. Recently deepened boards include:
+
+- **T-Display-S3**: the 8-bit parallel (i8080) display bus is modeled at pin
+  granularity, so the runtime knows `display.d0`–`display.d7`, `display.wr`,
+  `display.rd`, `display.cs`, `display.dc`, `display.reset`, and
+  `display.backlight` are occupied before it suggests wiring anything else.
+- **T-Deck**: LoRa (`lora.cs`/`lora.busy`/`lora.rst`/`lora.dio1`), the keyboard
+  interrupt (`keyboard.int`), the trackball/touch interrupt, the shared SPI bus,
+  SD card, and display pins come from the official `utilities.h`.
+- **T-CameraPlus-S3**: the peripheral matrix is present but honestly reports
+  `unknown_with_sources` for topics such as storage that still require official
+  product-source inspection, rather than inventing SD/SPI/MMC pins.
+
+A recognized LilyGO product that is out of scope (a non-ESP32 board such as an
+RP2040 product) does not inject an empty capsule: it emits an explicit support
+boundary line stating the board is unsupported and that this runtime only covers
+ESP32-family boards. Plain non-LilyGO prompts still inject nothing.
+
 ## How The Architecture Works
 
 lilygo-skills is a context harness, not a directory of static prompt snippets.
@@ -98,10 +118,17 @@ the release gates:
 - **Better action guidance**: implementation prompts surface selected official
   demos, source queries, and permission-aware `next_actions`; pure lookup
   prompts stay read-only with facts and expansion commands.
-- **Stronger regression gates**: byte-for-byte capsule fixtures, board
-  triple-question tests, scorecard grading, install/doctor smokes, and the
-  94-case benchmark check that the useful context and safety boundaries keep
-  working as the source model grows.
+- **Stronger regression gates**: `bash scripts/ci-gate.sh` runs 48 deterministic
+  smokes (byte-for-byte capsule fixtures, board triple-question tests, scorecard
+  grading, install/doctor smokes, and the source pipeline), and
+  `node eval/coverage-gate.js` grades the *real injected capsule* that the model
+  receives for every eval prompt against its expected facts. That coverage gate
+  enforces a ratcheted baseline (currently `covered >= 53` of 62 expected facts,
+  85.5%, with all 20 honesty markers present) so trimming scaffolding can never
+  silently regress the facts the model actually sees. Source integrity is guarded
+  separately by `pipeline/verify-auto-mapping.js` (extracted pins match the
+  official macros) and `pipeline/verify-source-authority.js` (every fact keeps a
+  ranked official source), both wired into the pipeline gates.
 
 This makes the Skill easier to extend and easier to trust: add or refresh source
 data, regenerate runtime Skills, run the gates, and the agent sees better board
@@ -719,6 +746,43 @@ peripheral evidence.
 
 Remove `--dry-run` only when the planned reads/writes are correct. Route, hook,
 and goal planning never mutate source data by themselves.
+
+## Add A New Board
+
+Board facts are ingested from official LilyGO sources, never hand-typed into the
+runtime. To add or deepen a board:
+
+1. Add an official source entry to `pipeline/source-manifest.json`: the board
+   id, the raw URL of the official header/example (for example a Factory
+   `utilities.h`), the line range that selects the board's block, the topic, an
+   `authority_rank`, and the macro→fact key mapping. If the board uses macro
+   names the shared table does not know yet, extend
+   `pipeline/pin-naming-conventions.json` so the auto-mapper can reproduce the
+   pins.
+2. Dry-run the ingest to see the extracted, source-hashed facts without touching
+   committed data, then write them:
+
+   ```bash
+   node pipeline/ingest-from-manifest.js --board <board-id> --json
+   node pipeline/ingest-from-manifest.js --board <board-id> --write
+   ```
+
+   The ingester fetches the official source (honoring the ambient proxy), hashes
+   it, extracts the declared macros inside the declared line range, and merges
+   source-backed pin/bus facts into `data/facts/board-fact-packs.json`.
+3. Prove the change and keep the gates green:
+
+   ```bash
+   node pipeline/verify-auto-mapping.js --json     # auto-mapped pins == official macros
+   node pipeline/verify-source-authority.js --json # every fact keeps a ranked official source
+   node pipeline/run-official-source-pipeline.js --all-boards --json  # fields_missing_source=0
+   node eval/coverage-gate.js                       # injected-capsule coverage stays >= baseline
+   bash scripts/ci-gate.sh                           # all 48 deterministic gates
+   ```
+
+   New expected facts can be added to `eval/tasks.json`; when the real injected
+   capsule covers more of them, ratchet the coverage baseline up (never down)
+   with `node eval/coverage-gate.js --update-baseline`.
 
 ## Direct Commands For Agents
 
