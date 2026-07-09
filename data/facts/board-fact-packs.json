@@ -4622,9 +4622,658 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "SDA=GPIO3",
+          "claim": "Shared I2C SDA from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "SCL=GPIO2",
+          "claim": "Shared I2C SCL from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "MOSI=GPIO34",
+          "claim": "Shared SPI MOSI from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "MISO=GPIO33",
+          "claim": "Shared SPI MISO from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "SCK=GPIO35",
+          "claim": "Shared SPI SCK from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "DISP_CS=GPIO38",
+          "claim": "ST7796 display CS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "DISP_DC=GPIO37",
+          "claim": "ST7796 display DC from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "DISP_BL=GPIO42",
+          "claim": "ST7796 display backlight from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.lora.cs",
+          "value": "LORA_CS=GPIO36",
+          "claim": "SX1262 LoRa CS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.lora.rst",
+          "value": "LORA_RST=GPIO47",
+          "claim": "SX1262 LoRa RST from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.lora.busy",
+          "value": "LORA_BUSY=GPIO48",
+          "claim": "SX1262 LoRa BUSY from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.lora.dio1",
+          "value": "LORA_IRQ=GPIO14",
+          "claim": "SX1262 LoRa IRQ/DIO1 from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.gps.tx",
+          "value": "GPS_TX=GPIO12",
+          "claim": "GPS UART TX from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.gps.rx",
+          "value": "GPS_RX=GPIO4",
+          "claim": "GPS UART RX from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.gps.pps",
+          "value": "GPS_PPS=GPIO13",
+          "claim": "GPS PPS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.keyboard.int",
+          "value": "KB_INT=GPIO6",
+          "claim": "Keyboard interrupt from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.keyboard.backlight",
+          "value": "KB_BACKLIGHT=GPIO46",
+          "claim": "Keyboard backlight from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.rotary.a",
+          "value": "ROTARY_A=GPIO40",
+          "claim": "Rotary encoder A from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.rotary.b",
+          "value": "ROTARY_B=GPIO41",
+          "claim": "Rotary encoder B from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.rotary.c",
+          "value": "ROTARY_C=GPIO7",
+          "claim": "Rotary encoder push from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.sdcard.cs",
+          "value": "SD_CS=GPIO21",
+          "claim": "microSD CS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.nfc.cs",
+          "value": "NFC_CS=GPIO39",
+          "claim": "ST25R3916 NFC CS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.nfc.int",
+          "value": "NFC_INT=GPIO5",
+          "claim": "ST25R3916 NFC interrupt from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.rtc.int",
+          "value": "RTC_INT=GPIO1",
+          "claim": "PCF85063 RTC interrupt from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.sensor.int",
+          "value": "SENSOR_INT=GPIO8",
+          "claim": "BHI260AP sensor interrupt from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2s.ws",
+          "value": "I2S_WS=GPIO18",
+          "claim": "ES8311 I2S WS from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2s.sck",
+          "value": "I2S_SCK=GPIO11",
+          "claim": "ES8311 I2S BCLK from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2s.mclk",
+          "value": "I2S_MCLK=GPIO10",
+          "claim": "ES8311 I2S MCLK from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2s.dout",
+          "value": "I2S_SDOUT=GPIO45",
+          "claim": "ES8311 I2S DOUT from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "pin.i2s.din",
+          "value": "I2S_SDIN=GPIO17",
+          "claim": "ES8311 I2S DIN from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Shared I2C (BHI260AP, PCF85063, BQ25896, DRV2605L, ES8311): SDA=GPIO3, SCL=GPIO2",
+          "claim": "Shared I2C bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.spi.shared",
+          "value": "Shared SPI (LoRa + microSD + ST25R3916): SCK=GPIO35, MOSI=GPIO34, MISO=GPIO33",
+          "claim": "Shared SPI bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.spi.lora",
+          "value": "SX1262 LoRa on shared SPI: CS=GPIO36, RST=GPIO47, BUSY=GPIO48, IRQ/DIO1=GPIO14",
+          "claim": "SX1262 LoRa SPI bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.display.st7796",
+          "value": "ST7796 222x480 on SPI: CS=GPIO38, DC=GPIO37, BL=GPIO42, MOSI=GPIO34, SCK=GPIO35",
+          "claim": "ST7796 SPI display bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.uart.gps",
+          "value": "GPS on UART: TX=GPIO12, RX=GPIO4, PPS=GPIO13",
+          "claim": "GPS UART bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-pager",
+          "topic": "pinout",
+          "key": "bus.i2s.es8311",
+          "value": "ES8311 audio codec on I2S: WS=GPIO18, BCLK=GPIO11, MCLK=GPIO10, DOUT=GPIO45, DIN=GPIO17",
+          "claim": "ES8311 I2S audio bus from official T-LoRa-Pager pins_arduino.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/blob/master/variants/lilygo_tlora_pager/pins_arduino.h",
+            "line_range": "14-71",
+            "hash": "sha256:770fb6537428b1e89a60a21f59088aa8b65c4a1f709c398a4a7b66e8de30525d"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
