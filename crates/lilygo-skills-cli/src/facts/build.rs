@@ -1,6 +1,7 @@
 //! Builds source-backed fact packs from board records while preserving
 //! `unknown_with_sources` for unproven pin and peripheral details.
 use super::*;
+use crate::text_match::slug;
 
 pub(crate) fn fact_pack_from_board(board: &BoardRecord) -> BoardFactPack {
     let source_refs = board_sources(board);
@@ -508,18 +509,6 @@ pub(crate) fn is_embedded_fact_or_impl_prompt(prompt: &str) -> bool {
 
 pub(crate) fn contains_any(value: &str, needles: &[&str]) -> bool {
     needles.iter().any(|needle| value.contains(needle))
-}
-
-pub(crate) fn slug(value: &str) -> String {
-    value
-        .to_lowercase()
-        .chars()
-        .map(|ch| if ch.is_ascii_alphanumeric() { ch } else { '-' })
-        .collect::<String>()
-        .split('-')
-        .filter(|part| !part.is_empty())
-        .collect::<Vec<_>>()
-        .join("-")
 }
 
 pub(crate) fn stable_hash(value: &impl Serialize) -> String {

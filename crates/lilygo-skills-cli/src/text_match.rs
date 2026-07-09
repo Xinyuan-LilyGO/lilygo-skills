@@ -4,6 +4,21 @@ pub(crate) fn contains_any(haystack: &str, needles: &[&str]) -> bool {
     needles.iter().any(|needle| contains_word(haystack, needle))
 }
 
+/// Lowercase a value and collapse every run of non-alphanumeric characters into
+/// a single `-`, trimming leading/trailing separators. Shared by fact-pack keys
+/// and generated peripheral/chip/feature skill ids so both stay byte-identical.
+pub(crate) fn slug(value: &str) -> String {
+    value
+        .to_lowercase()
+        .chars()
+        .map(|ch| if ch.is_ascii_alphanumeric() { ch } else { '-' })
+        .collect::<String>()
+        .split('-')
+        .filter(|part| !part.is_empty())
+        .collect::<Vec<_>>()
+        .join("-")
+}
+
 pub(crate) fn contains_word(haystack: &str, needle: &str) -> bool {
     if needle.is_empty() {
         return false;

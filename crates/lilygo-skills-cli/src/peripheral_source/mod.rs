@@ -8,6 +8,7 @@ use crate::model::{
 };
 use crate::registry::load_registry;
 use crate::source::{generated_skill_writes, load_board_index, write_if_changed};
+use crate::text_match::slug;
 use std::cmp::Reverse;
 use std::collections::{BTreeMap, BTreeSet};
 use std::fs;
@@ -746,21 +747,6 @@ fn chip_skill_id(pack: &PeripheralSourcePack) -> String {
 
 fn feature_skill_id(feature: &FeatureRef) -> String {
     format!("feature-{}", slug(&feature.feature))
-}
-
-fn slug(value: &str) -> String {
-    let mut out = String::new();
-    let mut last_dash = false;
-    for ch in value.to_lowercase().chars() {
-        if ch.is_ascii_alphanumeric() {
-            out.push(ch);
-            last_dash = false;
-        } else if !last_dash && !out.is_empty() {
-            out.push('-');
-            last_dash = true;
-        }
-    }
-    out.trim_matches('-').to_string()
 }
 
 fn chip_slug(value: &str) -> String {
