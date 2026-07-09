@@ -64,7 +64,7 @@
           "topic": "pinout",
           "key": "pin.i2c.sda",
           "value": "I2C_SDA=GPIO21",
-          "claim": "Primary I2C SDA from official Factory utilities.h",
+          "claim": "pin.i2c.sda auto-mapped from I2C_SDA in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -82,7 +82,7 @@
           "topic": "pinout",
           "key": "pin.i2c.scl",
           "value": "I2C_SCL=GPIO22",
-          "claim": "Primary I2C SCL from official Factory utilities.h",
+          "claim": "pin.i2c.scl auto-mapped from I2C_SCL in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -100,7 +100,7 @@
           "topic": "pinout",
           "key": "pin.gps.rx",
           "value": "GPS_RX_PIN=GPIO34",
-          "claim": "GPS UART RX (ESP receives) from official Factory utilities.h",
+          "claim": "pin.gps.rx auto-mapped from GPS_RX_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -118,7 +118,7 @@
           "topic": "pinout",
           "key": "pin.gps.tx",
           "value": "GPS_TX_PIN=GPIO12",
-          "claim": "GPS UART TX (ESP transmits) from official Factory utilities.h",
+          "claim": "pin.gps.tx auto-mapped from GPS_TX_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -136,7 +136,7 @@
           "topic": "pinout",
           "key": "pin.lora.sclk",
           "value": "RADIO_SCLK_PIN=GPIO5",
-          "claim": "LoRa SPI SCLK from official Factory utilities.h",
+          "claim": "pin.lora.sclk auto-mapped from RADIO_SCLK_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -154,7 +154,7 @@
           "topic": "pinout",
           "key": "pin.lora.miso",
           "value": "RADIO_MISO_PIN=GPIO19",
-          "claim": "LoRa SPI MISO from official Factory utilities.h",
+          "claim": "pin.lora.miso auto-mapped from RADIO_MISO_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -172,7 +172,7 @@
           "topic": "pinout",
           "key": "pin.lora.mosi",
           "value": "RADIO_MOSI_PIN=GPIO27",
-          "claim": "LoRa SPI MOSI from official Factory utilities.h",
+          "claim": "pin.lora.mosi auto-mapped from RADIO_MOSI_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -190,7 +190,7 @@
           "topic": "pinout",
           "key": "pin.lora.cs",
           "value": "RADIO_CS_PIN=GPIO18",
-          "claim": "LoRa SPI NSS/CS from official Factory utilities.h",
+          "claim": "pin.lora.cs auto-mapped from RADIO_CS_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -208,7 +208,7 @@
           "topic": "pinout",
           "key": "pin.lora.rst",
           "value": "RADIO_RST_PIN=GPIO23",
-          "claim": "LoRa reset from official Factory utilities.h",
+          "claim": "pin.lora.rst auto-mapped from RADIO_RST_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -226,7 +226,7 @@
           "topic": "pinout",
           "key": "pin.lora.dio0",
           "value": "RADIO_DIO0_PIN=GPIO26",
-          "claim": "LoRa DIO0 (SX127x) from official Factory utilities.h",
+          "claim": "pin.lora.dio0 auto-mapped from RADIO_DIO0_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -244,7 +244,7 @@
           "topic": "pinout",
           "key": "pin.lora.dio1",
           "value": "RADIO_DIO1_PIN=GPIO33",
-          "claim": "LoRa DIO1 from official Factory utilities.h",
+          "claim": "pin.lora.dio1 auto-mapped from RADIO_DIO1_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -262,7 +262,7 @@
           "topic": "pinout",
           "key": "pin.lora.busy",
           "value": "RADIO_BUSY_PIN=GPIO32",
-          "claim": "LoRa BUSY (SX1262) / DIO2 from official Factory utilities.h",
+          "claim": "pin.lora.busy auto-mapped from RADIO_BUSY_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/blob/master/examples/Factory/utilities.h",
@@ -748,7 +748,7 @@
           "topic": "pinout",
           "key": "pin.power.on",
           "value": "BOARD_POWERON=GPIO10",
-          "claim": "Board power-on enable from official T-Deck UnitTest utilities.h",
+          "claim": "pin.power.on auto-mapped from BOARD_POWERON in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -766,7 +766,7 @@
           "topic": "pinout",
           "key": "pin.i2c.sda",
           "value": "BOARD_I2C_SDA=GPIO18",
-          "claim": "Primary I2C SDA (keyboard/touch) from official T-Deck UnitTest utilities.h",
+          "claim": "pin.i2c.sda auto-mapped from BOARD_I2C_SDA in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -784,7 +784,7 @@
           "topic": "pinout",
           "key": "pin.i2c.scl",
           "value": "BOARD_I2C_SCL=GPIO8",
-          "claim": "Primary I2C SCL from official T-Deck UnitTest utilities.h",
+          "claim": "pin.i2c.scl auto-mapped from BOARD_I2C_SCL in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -802,7 +802,7 @@
           "topic": "pinout",
           "key": "pin.touch.int",
           "value": "BOARD_TOUCH_INT=GPIO16",
-          "claim": "Touch interrupt from official T-Deck UnitTest utilities.h",
+          "claim": "pin.touch.int auto-mapped from BOARD_TOUCH_INT in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -820,7 +820,7 @@
           "topic": "pinout",
           "key": "pin.keyboard.int",
           "value": "BOARD_KEYBOARD_INT=GPIO46",
-          "claim": "Keyboard interrupt from official T-Deck UnitTest utilities.h",
+          "claim": "pin.keyboard.int auto-mapped from BOARD_KEYBOARD_INT in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -838,7 +838,7 @@
           "topic": "pinout",
           "key": "pin.sdcard.cs",
           "value": "BOARD_SDCARD_CS=GPIO39",
-          "claim": "SD card CS from official T-Deck UnitTest utilities.h",
+          "claim": "pin.sdcard.cs auto-mapped from BOARD_SDCARD_CS in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -856,7 +856,7 @@
           "topic": "pinout",
           "key": "pin.display.cs",
           "value": "BOARD_TFT_CS=GPIO12",
-          "claim": "Display CS from official T-Deck UnitTest utilities.h",
+          "claim": "pin.display.cs auto-mapped from BOARD_TFT_CS in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -874,7 +874,7 @@
           "topic": "pinout",
           "key": "pin.display.dc",
           "value": "BOARD_TFT_DC=GPIO11",
-          "claim": "Display DC from official T-Deck UnitTest utilities.h",
+          "claim": "pin.display.dc auto-mapped from BOARD_TFT_DC in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -892,7 +892,7 @@
           "topic": "pinout",
           "key": "pin.display.backlight",
           "value": "BOARD_TFT_BACKLIGHT=GPIO42",
-          "claim": "Display backlight from official T-Deck UnitTest utilities.h",
+          "claim": "pin.display.backlight auto-mapped from BOARD_TFT_BACKLIGHT in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -910,7 +910,7 @@
           "topic": "pinout",
           "key": "pin.spi.sck",
           "value": "BOARD_SPI_SCK=GPIO40",
-          "claim": "Shared SPI SCK from official T-Deck UnitTest utilities.h",
+          "claim": "pin.spi.sck auto-mapped from BOARD_SPI_SCK in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -928,7 +928,7 @@
           "topic": "pinout",
           "key": "pin.spi.mosi",
           "value": "BOARD_SPI_MOSI=GPIO41",
-          "claim": "Shared SPI MOSI from official T-Deck UnitTest utilities.h",
+          "claim": "pin.spi.mosi auto-mapped from BOARD_SPI_MOSI in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -946,7 +946,7 @@
           "topic": "pinout",
           "key": "pin.spi.miso",
           "value": "BOARD_SPI_MISO=GPIO38",
-          "claim": "Shared SPI MISO from official T-Deck UnitTest utilities.h",
+          "claim": "pin.spi.miso auto-mapped from BOARD_SPI_MISO in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -964,7 +964,7 @@
           "topic": "pinout",
           "key": "pin.lora.cs",
           "value": "RADIO_CS_PIN=GPIO9",
-          "claim": "LoRa SX1262 CS from official T-Deck UnitTest utilities.h",
+          "claim": "pin.lora.cs auto-mapped from RADIO_CS_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -982,7 +982,7 @@
           "topic": "pinout",
           "key": "pin.lora.busy",
           "value": "RADIO_BUSY_PIN=GPIO13",
-          "claim": "LoRa SX1262 BUSY from official T-Deck UnitTest utilities.h",
+          "claim": "pin.lora.busy auto-mapped from RADIO_BUSY_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -1000,7 +1000,7 @@
           "topic": "pinout",
           "key": "pin.lora.rst",
           "value": "RADIO_RST_PIN=GPIO17",
-          "claim": "LoRa SX1262 RST from official T-Deck UnitTest utilities.h",
+          "claim": "pin.lora.rst auto-mapped from RADIO_RST_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -1018,7 +1018,7 @@
           "topic": "pinout",
           "key": "pin.lora.dio1",
           "value": "RADIO_DIO1_PIN=GPIO45",
-          "claim": "LoRa SX1262 DIO1 from official T-Deck UnitTest utilities.h",
+          "claim": "pin.lora.dio1 auto-mapped from RADIO_DIO1_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -1036,7 +1036,7 @@
           "topic": "pinout",
           "key": "pin.gps.tx",
           "value": "BOARD_GPS_TX_PIN=GPIO43",
-          "claim": "GPS UART TX from official T-Deck UnitTest utilities.h",
+          "claim": "pin.gps.tx auto-mapped from BOARD_GPS_TX_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -1054,7 +1054,7 @@
           "topic": "pinout",
           "key": "pin.gps.rx",
           "value": "BOARD_GPS_RX_PIN=GPIO44",
-          "claim": "GPS UART RX from official T-Deck UnitTest utilities.h",
+          "claim": "pin.gps.rx auto-mapped from BOARD_GPS_RX_PIN in official utilities.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck/blob/master/examples/UnitTest/utilities.h",
@@ -2188,7 +2188,7 @@
           "topic": "pinout",
           "key": "pin.display.d0",
           "value": "PIN_LCD_D0=GPIO39",
-          "claim": "LCD 8-bit parallel data D0 from official factory pin_config.h",
+          "claim": "pin.display.d0 auto-mapped from PIN_LCD_D0 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2206,7 +2206,7 @@
           "topic": "pinout",
           "key": "pin.display.d1",
           "value": "PIN_LCD_D1=GPIO40",
-          "claim": "LCD 8-bit parallel data D1 from official factory pin_config.h",
+          "claim": "pin.display.d1 auto-mapped from PIN_LCD_D1 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2224,7 +2224,7 @@
           "topic": "pinout",
           "key": "pin.display.d2",
           "value": "PIN_LCD_D2=GPIO41",
-          "claim": "LCD 8-bit parallel data D2 from official factory pin_config.h",
+          "claim": "pin.display.d2 auto-mapped from PIN_LCD_D2 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2242,7 +2242,7 @@
           "topic": "pinout",
           "key": "pin.display.d3",
           "value": "PIN_LCD_D3=GPIO42",
-          "claim": "LCD 8-bit parallel data D3 from official factory pin_config.h",
+          "claim": "pin.display.d3 auto-mapped from PIN_LCD_D3 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2260,7 +2260,7 @@
           "topic": "pinout",
           "key": "pin.display.d4",
           "value": "PIN_LCD_D4=GPIO45",
-          "claim": "LCD 8-bit parallel data D4 from official factory pin_config.h",
+          "claim": "pin.display.d4 auto-mapped from PIN_LCD_D4 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2278,7 +2278,7 @@
           "topic": "pinout",
           "key": "pin.display.d5",
           "value": "PIN_LCD_D5=GPIO46",
-          "claim": "LCD 8-bit parallel data D5 from official factory pin_config.h",
+          "claim": "pin.display.d5 auto-mapped from PIN_LCD_D5 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2296,7 +2296,7 @@
           "topic": "pinout",
           "key": "pin.display.d6",
           "value": "PIN_LCD_D6=GPIO47",
-          "claim": "LCD 8-bit parallel data D6 from official factory pin_config.h",
+          "claim": "pin.display.d6 auto-mapped from PIN_LCD_D6 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2314,7 +2314,7 @@
           "topic": "pinout",
           "key": "pin.display.d7",
           "value": "PIN_LCD_D7=GPIO48",
-          "claim": "LCD 8-bit parallel data D7 from official factory pin_config.h",
+          "claim": "pin.display.d7 auto-mapped from PIN_LCD_D7 in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2332,7 +2332,7 @@
           "topic": "pinout",
           "key": "pin.display.backlight",
           "value": "PIN_LCD_BL=GPIO38",
-          "claim": "LCD backlight from official factory pin_config.h",
+          "claim": "pin.display.backlight auto-mapped from PIN_LCD_BL in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2350,7 +2350,7 @@
           "topic": "pinout",
           "key": "pin.display.cs",
           "value": "PIN_LCD_CS=GPIO6",
-          "claim": "LCD chip select from official factory pin_config.h",
+          "claim": "pin.display.cs auto-mapped from PIN_LCD_CS in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2368,7 +2368,7 @@
           "topic": "pinout",
           "key": "pin.display.dc",
           "value": "PIN_LCD_DC=GPIO7",
-          "claim": "LCD data/command from official factory pin_config.h",
+          "claim": "pin.display.dc auto-mapped from PIN_LCD_DC in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2386,7 +2386,7 @@
           "topic": "pinout",
           "key": "pin.display.reset",
           "value": "PIN_LCD_RES=GPIO5",
-          "claim": "LCD reset from official factory pin_config.h",
+          "claim": "pin.display.reset auto-mapped from PIN_LCD_RES in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2404,7 +2404,7 @@
           "topic": "pinout",
           "key": "pin.display.wr",
           "value": "PIN_LCD_WR=GPIO8",
-          "claim": "LCD write strobe from official factory pin_config.h",
+          "claim": "pin.display.wr auto-mapped from PIN_LCD_WR in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2422,7 +2422,7 @@
           "topic": "pinout",
           "key": "pin.display.rd",
           "value": "PIN_LCD_RD=GPIO9",
-          "claim": "LCD read strobe from official factory pin_config.h",
+          "claim": "pin.display.rd auto-mapped from PIN_LCD_RD in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",
@@ -2440,7 +2440,7 @@
           "topic": "pinout",
           "key": "pin.power.on",
           "value": "PIN_POWER_ON=GPIO15",
-          "claim": "Board/LCD power enable from official factory pin_config.h",
+          "claim": "pin.power.on auto-mapped from PIN_POWER_ON in official pin_config.h",
           "source": {
             "kind": "arduino-pins",
             "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/examples/factory/pin_config.h",

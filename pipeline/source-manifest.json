@@ -9,68 +9,7 @@
       "line_range": "89-141",
       "topic": "pinout",
       "authority_rank": 90,
-      "pins": [
-        {
-          "key": "pin.i2c.sda",
-          "macro": "I2C_SDA",
-          "claim": "Primary I2C SDA from official Factory utilities.h"
-        },
-        {
-          "key": "pin.i2c.scl",
-          "macro": "I2C_SCL",
-          "claim": "Primary I2C SCL from official Factory utilities.h"
-        },
-        {
-          "key": "pin.gps.rx",
-          "macro": "GPS_RX_PIN",
-          "claim": "GPS UART RX (ESP receives) from official Factory utilities.h"
-        },
-        {
-          "key": "pin.gps.tx",
-          "macro": "GPS_TX_PIN",
-          "claim": "GPS UART TX (ESP transmits) from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.sclk",
-          "macro": "RADIO_SCLK_PIN",
-          "claim": "LoRa SPI SCLK from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.miso",
-          "macro": "RADIO_MISO_PIN",
-          "claim": "LoRa SPI MISO from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.mosi",
-          "macro": "RADIO_MOSI_PIN",
-          "claim": "LoRa SPI MOSI from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.cs",
-          "macro": "RADIO_CS_PIN",
-          "claim": "LoRa SPI NSS/CS from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.rst",
-          "macro": "RADIO_RST_PIN",
-          "claim": "LoRa reset from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.dio0",
-          "macro": "RADIO_DIO0_PIN",
-          "claim": "LoRa DIO0 (SX127x) from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.dio1",
-          "macro": "RADIO_DIO1_PIN",
-          "claim": "LoRa DIO1 from official Factory utilities.h"
-        },
-        {
-          "key": "pin.lora.busy",
-          "macro": "RADIO_BUSY_PIN",
-          "claim": "LoRa BUSY (SX1262) / DIO2 from official Factory utilities.h"
-        }
-      ],
+      "auto_pins": true,
       "buses": [
         {
           "key": "bus.i2c.primary",
@@ -97,98 +36,7 @@
       "line_range": "1-95",
       "topic": "pinout",
       "authority_rank": 90,
-      "pins": [
-        {
-          "key": "pin.power.on",
-          "macro": "BOARD_POWERON",
-          "claim": "Board power-on enable from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.i2c.sda",
-          "macro": "BOARD_I2C_SDA",
-          "claim": "Primary I2C SDA (keyboard/touch) from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.i2c.scl",
-          "macro": "BOARD_I2C_SCL",
-          "claim": "Primary I2C SCL from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.touch.int",
-          "macro": "BOARD_TOUCH_INT",
-          "claim": "Touch interrupt from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.keyboard.int",
-          "macro": "BOARD_KEYBOARD_INT",
-          "claim": "Keyboard interrupt from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.sdcard.cs",
-          "macro": "BOARD_SDCARD_CS",
-          "claim": "SD card CS from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.display.cs",
-          "macro": "BOARD_TFT_CS",
-          "claim": "Display CS from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.display.dc",
-          "macro": "BOARD_TFT_DC",
-          "claim": "Display DC from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.display.backlight",
-          "macro": "BOARD_TFT_BACKLIGHT",
-          "claim": "Display backlight from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.spi.sck",
-          "macro": "BOARD_SPI_SCK",
-          "claim": "Shared SPI SCK from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.spi.mosi",
-          "macro": "BOARD_SPI_MOSI",
-          "claim": "Shared SPI MOSI from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.spi.miso",
-          "macro": "BOARD_SPI_MISO",
-          "claim": "Shared SPI MISO from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.lora.cs",
-          "macro": "RADIO_CS_PIN",
-          "claim": "LoRa SX1262 CS from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.lora.busy",
-          "macro": "RADIO_BUSY_PIN",
-          "claim": "LoRa SX1262 BUSY from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.lora.rst",
-          "macro": "RADIO_RST_PIN",
-          "claim": "LoRa SX1262 RST from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.lora.dio1",
-          "macro": "RADIO_DIO1_PIN",
-          "claim": "LoRa SX1262 DIO1 from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.gps.tx",
-          "macro": "BOARD_GPS_TX_PIN",
-          "claim": "GPS UART TX from official T-Deck UnitTest utilities.h"
-        },
-        {
-          "key": "pin.gps.rx",
-          "macro": "BOARD_GPS_RX_PIN",
-          "claim": "GPS UART RX from official T-Deck UnitTest utilities.h"
-        }
-      ],
+      "auto_pins": true,
       "buses": [
         {
           "key": "bus.i2c.primary",
@@ -220,23 +68,7 @@
       "line_range": "31-48",
       "topic": "pinout",
       "authority_rank": 90,
-      "pins": [
-        { "key": "pin.display.d0", "macro": "PIN_LCD_D0", "claim": "LCD 8-bit parallel data D0 from official factory pin_config.h" },
-        { "key": "pin.display.d1", "macro": "PIN_LCD_D1", "claim": "LCD 8-bit parallel data D1 from official factory pin_config.h" },
-        { "key": "pin.display.d2", "macro": "PIN_LCD_D2", "claim": "LCD 8-bit parallel data D2 from official factory pin_config.h" },
-        { "key": "pin.display.d3", "macro": "PIN_LCD_D3", "claim": "LCD 8-bit parallel data D3 from official factory pin_config.h" },
-        { "key": "pin.display.d4", "macro": "PIN_LCD_D4", "claim": "LCD 8-bit parallel data D4 from official factory pin_config.h" },
-        { "key": "pin.display.d5", "macro": "PIN_LCD_D5", "claim": "LCD 8-bit parallel data D5 from official factory pin_config.h" },
-        { "key": "pin.display.d6", "macro": "PIN_LCD_D6", "claim": "LCD 8-bit parallel data D6 from official factory pin_config.h" },
-        { "key": "pin.display.d7", "macro": "PIN_LCD_D7", "claim": "LCD 8-bit parallel data D7 from official factory pin_config.h" },
-        { "key": "pin.display.backlight", "macro": "PIN_LCD_BL", "claim": "LCD backlight from official factory pin_config.h" },
-        { "key": "pin.display.cs", "macro": "PIN_LCD_CS", "claim": "LCD chip select from official factory pin_config.h" },
-        { "key": "pin.display.dc", "macro": "PIN_LCD_DC", "claim": "LCD data/command from official factory pin_config.h" },
-        { "key": "pin.display.reset", "macro": "PIN_LCD_RES", "claim": "LCD reset from official factory pin_config.h" },
-        { "key": "pin.display.wr", "macro": "PIN_LCD_WR", "claim": "LCD write strobe from official factory pin_config.h" },
-        { "key": "pin.display.rd", "macro": "PIN_LCD_RD", "claim": "LCD read strobe from official factory pin_config.h" },
-        { "key": "pin.power.on", "macro": "PIN_POWER_ON", "claim": "Board/LCD power enable from official factory pin_config.h" }
-      ],
+      "auto_pins": true,
       "buses": [
         {
           "key": "bus.display.parallel",
