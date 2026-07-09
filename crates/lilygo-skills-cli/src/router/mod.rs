@@ -10,13 +10,6 @@ use std::collections::{BTreeMap, BTreeSet};
 
 const ROUTER_SKILL: &str = "lilygo-router";
 
-pub(crate) struct DerivedSpec<'a> {
-    skill_id: &'a str,
-    kind: &'a str,
-    value: &'a str,
-    needles: &'a [&'a str],
-}
-
 pub fn route_prompt(registry: &Registry, prompt: &str) -> RouteResult {
     route_prompt_with_profile(registry, prompt, None)
 }
@@ -36,39 +29,21 @@ pub fn route_prompt_with_profile(
                 board_examples(registry),
             );
         }
-        return RouteResult {
-            decision: "no-op".to_string(),
-            skills: Vec::new(),
-            matches: Vec::new(),
-            paths: BTreeMap::new(),
-            readiness: Vec::new(),
-            missing: Vec::new(),
-            questions: Vec::new(),
-            verification_level: "none".to_string(),
-            hardware_verified: false,
-            hardware_verification_boundary: false,
-            notes: vec!["No LilyGO ESP32-family signal detected.".to_string()],
-            truncated: false,
-        };
+        return noop_result(
+            "none",
+            false,
+            vec!["No LilyGO ESP32-family signal detected.".to_string()],
+        );
     }
     if is_unsupported_non_esp32(&normalized) {
-        return RouteResult {
-            decision: "no-op".to_string(),
-            skills: Vec::new(),
-            matches: Vec::new(),
-            paths: BTreeMap::new(),
-            readiness: Vec::new(),
-            missing: Vec::new(),
-            questions: Vec::new(),
-            verification_level: "unsupported".to_string(),
-            hardware_verified: false,
-            hardware_verification_boundary: true,
-            notes: vec![
+        return noop_result(
+            "unsupported",
+            true,
+            vec![
                 "Unsupported LilyGO product boundary: first implementation only supports ESP32-family boards."
                     .to_string(),
             ],
-            truncated: false,
-        };
+        );
     }
 
     let mut selected = BTreeSet::new();
@@ -200,6 +175,27 @@ fn framework_examples() -> Vec<String> {
     ]
 }
 
+fn noop_result(
+    verification_level: &str,
+    hardware_verification_boundary: bool,
+    notes: Vec<String>,
+) -> RouteResult {
+    RouteResult {
+        decision: "no-op".to_string(),
+        skills: Vec::new(),
+        matches: Vec::new(),
+        paths: BTreeMap::new(),
+        readiness: Vec::new(),
+        missing: Vec::new(),
+        questions: Vec::new(),
+        verification_level: verification_level.to_string(),
+        hardware_verified: false,
+        hardware_verification_boundary,
+        notes,
+        truncated: false,
+    }
+}
+
 fn clarification_result(id: &str, prompt: &str, examples: Vec<String>) -> RouteResult {
     RouteResult {
         decision: "needs_clarification".to_string(),
@@ -289,19 +285,7 @@ fn add_derived_context(
     matches: &mut Vec<MatchReason>,
 ) {
     for spec in derived_context_specs() {
-        let needles: Vec<&str> = spec.needles.iter().map(String::as_str).collect();
-        add_when_any(
-            registry,
-            prompt,
-            selected,
-            matches,
-            DerivedSpec {
-                skill_id: &spec.skill_id,
-                kind: &spec.kind,
-                value: &spec.value,
-                needles: &needles,
-            },
-        );
+        add_when_any(registry, prompt, selected, matches, &spec);
     }
     add_runner_and_tool_context(registry, prompt, selected, matches);
 }

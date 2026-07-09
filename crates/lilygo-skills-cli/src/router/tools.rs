@@ -64,14 +64,15 @@ pub(crate) fn add_when_any(
     prompt: &str,
     selected: &mut BTreeSet<String>,
     matches: &mut Vec<MatchReason>,
-    spec: DerivedSpec<'_>,
+    spec: &OwnedDerivedSpec,
 ) {
-    if contains_any(prompt, spec.needles) {
+    let needles: Vec<&str> = spec.needles.iter().map(String::as_str).collect();
+    if contains_any(prompt, &needles) {
         add_skill(
             registry,
-            spec.skill_id,
-            spec.kind,
-            spec.value,
+            &spec.skill_id,
+            &spec.kind,
+            &spec.value,
             selected,
             matches,
         );
