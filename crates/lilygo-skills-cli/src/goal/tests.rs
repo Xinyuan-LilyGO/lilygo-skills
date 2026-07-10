@@ -3,6 +3,8 @@ use super::*;
 use crate::model::ActiveProfile;
 use crate::registry::load_registry;
 use crate::router::{route_prompt, route_prompt_with_profile};
+use std::collections::BTreeSet;
+use std::fs;
 
 fn root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR")).join("../..")
