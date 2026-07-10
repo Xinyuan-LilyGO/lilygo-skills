@@ -2,6 +2,7 @@
 mod benchmark;
 #[cfg(test)]
 mod benchmark_tests;
+mod board_sniff;
 mod commands;
 mod doctor;
 mod facts;

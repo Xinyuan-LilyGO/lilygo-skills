@@ -58,6 +58,7 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
             Ok(())
         }
         "route" => route(&root, &args[1..]),
+        "context" => context::context_command(&root, &args[1..]),
         "index" => index(&root, &args[1..]),
         "generate" => generate_command(&root, &args[1..]),
         "verify" => verify_command(&root, &args[1..]),
@@ -134,61 +135,16 @@ fn hook(args: &[String], stdin: &mut impl Read) -> Result<(), String> {
         Ok(cwd) => cwd,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let project = match resolve_project_context(&hook_cwd) {
-        Ok(project) => project,
+    // Delegate to the shared capsule assembly. `sniff = false` keeps the hook's
+    // board resolution exactly as before (project profile, then runtime
+    // default), so hook output stays byte-identical; only `context` opts into
+    // best-effort board sniffing.
+    let (route, content) = match context::assemble_capsule(
+        &root, &registry, &prompt, &hook_cwd, host, &input, false,
+    ) {
+        Ok(result) => result,
         Err(error) => return print_hook_fail_open(host, &error),
     };
-    let route_registry = match project.as_ref() {
-        Some(project) => {
-            match registry_with_project_skills(&registry, Some(project.project_root.as_path())) {
-                Ok(registry) => registry,
-                Err(error) => return print_hook_fail_open(host, &error),
-            }
-        }
-        None => registry.clone(),
-    };
-    let profile = project
-        .as_ref()
-        .map(|project| project.context.active_profile())
-        .or_else(|| load_profile(&root));
-    let mut route = route_with_profile_or_clarification(&route_registry, &prompt, profile.as_ref());
-    attach_route_readiness(&root, &route_registry, &prompt, &mut route);
-    let mut content = render_context(&route);
-    let ledger_hints = project
-        .as_ref()
-        .map(|project| hints_for_route(project.project_root.as_path(), &route, &prompt));
-    if let Some(hints) = &ledger_hints {
-        content.push_str(&render_hook_ledger_context(hints));
-    }
-    let mut goal_plan = None;
-    if let Ok(plan) = plan_goal_with_project(
-        &root,
-        &route_registry,
-        &prompt,
-        &route,
-        Some(hook_cwd.as_path()),
-    ) {
-        content.push_str(&render_hook_goal_summary(&plan));
-        goal_plan = Some(plan);
-    }
-    let content = if let (Some(project), Some(hints)) = (project.as_ref(), ledger_hints.as_ref()) {
-        maybe_compact_project_hook_context(
-            project.project_root.as_path(),
-            &prompt,
-            &route,
-            content,
-            goal_plan.as_ref(),
-            hints,
-        )
-    } else {
-        content
-    };
-    let content = crate::session_context::maybe_compact_hook_context(
-        host,
-        &input,
-        content,
-        goal_plan.as_ref(),
-    );
     print_json(&hook_envelope(host, &route, content))
 }
 
@@ -844,6 +800,7 @@ fn verify_hardware(root: &Path, args: &[String]) -> Result<(), String> {
     }
 }
 
+mod context;
 mod support;
 pub(crate) use support::*;
 
