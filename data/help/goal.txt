@@ -1,7 +1,0 @@
-lilygo-skills goal plan [--project <dir>] --json <prompt>
-lilygo-skills goal complete [--project <dir>] [--generated-root <dir>] [--allow-generate] [--dry-run] [--allow-build] [--allow-flash --port <port>] [--allow-serial --port <port>] [--allow-network --allow-ota] [--allow-simulator] [--source-root <dir>] --json <prompt>
-lilygo-skills goal start --plan <file> [--project <dir>] [--dry-run] [--allow-build] [--allow-flash --port <port>] [--allow-serial --port <port>] [--allow-network --allow-ota] [--allow-simulator] [--source-root <dir>] --json
-lilygo-skills goal status --id <goal-id> [--project <dir>] --json
-lilygo-skills goal evidence --id <goal-id> [--project <dir>] --json
-lilygo-skills goal cancel --id <goal-id> [--project <dir>] --json
-Default safety: plan and complete write nothing; start and authorized complete mutate only local evidence unless explicit allow flags are present.

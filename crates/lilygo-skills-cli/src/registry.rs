@@ -42,10 +42,6 @@ const REQUIRED_REFERENCE_SKILLS: &[&str] = &[
     "tool-lvgl-simulator",
 ];
 
-pub fn required_reference_skills() -> &'static [&'static str] {
-    REQUIRED_REFERENCE_SKILLS
-}
-
 pub fn load_registry(root: &Path) -> Result<Registry, String> {
     let path = root.join(REGISTRY_PATH);
     let data = fs::read_to_string(&path)
@@ -83,9 +79,22 @@ fn skill_is_available(
     meta_only && generatable.contains(skill_id)
 }
 
+/// On a meta-only source tree, board/peripheral/framework SKILL.md files are not
+/// committed (skills are delivered as context injection, not files), so every
+/// registry-declared skill counts as available. On a materialized runtime we
+/// still require the file itself. This replaces the removed generation stack's
+/// `generatable_skill_ids`, which enumerated exactly this same registry set.
+fn registry_skill_ids(registry: &Registry) -> BTreeSet<String> {
+    registry
+        .skills
+        .iter()
+        .map(|skill| skill.id.clone())
+        .collect()
+}
+
 pub fn ensure_skill_files(root: &Path, registry: &Registry) -> Result<(), String> {
     let meta_only = tree_is_meta_only(root, registry);
-    let generatable = crate::generate::generatable_skill_ids(root).unwrap_or_default();
+    let generatable = registry_skill_ids(registry);
     let missing = registry
         .skills
         .iter()
@@ -136,7 +145,7 @@ pub fn verify(root: &Path) -> VerifyReport {
     };
 
     let meta_only = tree_is_meta_only(root, &registry);
-    let generatable = crate::generate::generatable_skill_ids(root).unwrap_or_default();
+    let generatable = registry_skill_ids(&registry);
     let mut ids = BTreeSet::new();
     for skill in &registry.skills {
         validate_skill(

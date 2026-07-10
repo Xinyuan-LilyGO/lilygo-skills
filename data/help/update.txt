@@ -1,4 +1,3 @@
-lilygo-skills update sources|boards|skills|source-packs|fact-packs|board-facts|peripheral-skills|runtime [--board <board-id> --topic <topic>] [--out <generated-root>] [--dry-run] [--home <dir>] --json
-For generated runtime skills, update skills/peripheral-skills writes only to .lilygo-skills/generated-skills or --out <generated-root>; it never writes generated SKILL.md files into the source skills/ tree.
+lilygo-skills update board-facts|fact-packs [--board <board-id> --topic <topic>] [--from-source] [--dry-run] --json
 For board readiness enrichment, use: lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json
 For self-serve ingestion from the official source, add --from-source: lilygo-skills update board-facts --board <board-id> --from-source --dry-run --json previews the pins extracted from the board's manifest-declared official source; drop --dry-run to write source-backed facts. --from-source is the only path that fetches over the network and requires a pipeline/source-manifest.json entry for the board.

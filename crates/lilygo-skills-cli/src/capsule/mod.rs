@@ -18,11 +18,11 @@ use crate::model::{
     GoalRecoveryAction, GoalRoute, GoalSourceRef, PeripheralRecord, PlaybookHint, Recipe, Registry,
     RouteResult, SkillKind, SourceFact, SourceFactSource, SourceUrl,
 };
-use crate::peripheral_source::{load_source_pack_index, source_authority_rank};
 use crate::preferences::preference_hints_for_prompt;
 use crate::recipes::selected_recipes;
 use crate::reference_catalog::reference_hints_for_prompt;
 use crate::source::load_board_index;
+use crate::source_packs::{load_source_pack_index, source_authority_rank};
 use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;

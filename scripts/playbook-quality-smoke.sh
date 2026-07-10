@@ -12,8 +12,6 @@ mkdir -p .tmp
 
 cargo build -q -p lilygo-skills-cli
 BIN="$ROOT/target/debug/lilygo-skills"
-OUT=".tmp/m13-playbook-generated"
-rm -rf "$OUT"
 
 "$BIN" route --json "T-Watch Ultra LVGL blank screen touch debug" \
   >.tmp/playbook-route-lvgl.json
@@ -29,10 +27,6 @@ rm -rf "$OUT"
   >.tmp/playbook-query-lvgl.json
 "$BIN" index query playbook-ota-debug --json \
   >.tmp/playbook-query-ota.json
-"$BIN" generate skills --out "$OUT" --json \
-  >.tmp/playbook-generate.json
-"$BIN" verify --generated-root "$OUT" --json \
-  >.tmp/playbook-verify-generated.json
 
 node <<'NODE'
 const fs = require("fs");
@@ -56,11 +50,7 @@ const goalOta = read(".tmp/playbook-goal-ota.json");
 const goalBsp = read(".tmp/playbook-goal-bsp.json");
 const queryLvgl = read(".tmp/playbook-query-lvgl.json");
 const queryOta = read(".tmp/playbook-query-ota.json");
-const generated = read(".tmp/playbook-generate.json");
-const verified = read(".tmp/playbook-verify-generated.json");
 const generatedText =
-  text(".tmp/playbook-generate.json") +
-  text(".tmp/playbook-verify-generated.json") +
   text(".tmp/playbook-goal-lvgl.json") +
   text(".tmp/playbook-goal-ota.json");
 
@@ -112,13 +102,6 @@ check("index query returns structured playbook body",
   queryLvgl.evidence_targets.length > 0 &&
   queryOta.anti_claims.some((claim) => claim.includes("planning evidence")),
   {queryLvgl, queryOta});
-check("generated playbook skills materialized",
-  generated.status === "PASS" &&
-  generated.playbook_skills === 7 &&
-  verified.status === "PASS" &&
-  fs.existsSync(".tmp/m13-playbook-generated/skills/playbook-lvgl-debug/SKILL.md") &&
-  fs.existsSync(".tmp/m13-playbook-generated/skills/playbook-ota-debug/SKILL.md"),
-  {generated, verified});
 check("public playbook output has no private machine data",
   !/\/Users\/[^" ]+|\/dev\/cu|192\.168\.|token=|password|secret/.test(generatedText),
   generatedText);
@@ -130,12 +113,10 @@ process.stdout.write(JSON.stringify({
     "no-over-injection",
     "goal playbook usefulness",
     "index query structured playbook",
-    "generated-root playbook materialization",
     "privacy boundary"
   ],
   route_skills: routeLvgl.skills,
   lvgl_playbooks: hintIds(goalLvgl),
-  ota_playbooks: hintIds(goalOta),
-  generated_playbooks: generated.playbook_skills
+  ota_playbooks: hintIds(goalOta)
 }, null, 2) + "\n");
 NODE

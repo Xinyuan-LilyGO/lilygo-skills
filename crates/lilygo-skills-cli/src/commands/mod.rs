@@ -8,9 +8,6 @@ use crate::facts::{
 };
 use crate::hardware::verify_hardware_profile;
 use crate::model::{ActiveProfile, RouteResult, SkillKind};
-use crate::peripheral_source::{
-    peripheral_skill_apply, peripheral_skill_preview, source_pack_apply, source_pack_preview,
-};
 use crate::preferences::resolve_preferences;
 use crate::project_context::{
     clear_project_context, new_project_context, resolve_project_context, write_project_context,
@@ -26,10 +23,7 @@ use crate::router::{
     framework_clarification_result, project_context_needs_framework, route_prompt_with_profile,
 };
 use crate::setup_plan::setup_plan;
-use crate::source::{
-    generated_skill_writes, sync_apply, sync_preview, update_apply, update_preview,
-    write_if_changed,
-};
+use crate::source::write_if_changed;
 use serde::Serialize;
 use std::fs;
 use std::io::Read;
@@ -56,7 +50,6 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
         "route" => route(&root, &args[1..]),
         "context" => context::context_command(&root, &args[1..]),
         "index" => index(&root, &args[1..]),
-        "generate" => generate_command(&root, &args[1..]),
         "verify" => verify_command(&root, &args[1..]),
         "doctor" => doctor(&root, &args[1..]),
         "source" => source_command(&root, &args[1..]),
@@ -66,7 +59,6 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
         "profile" => profile(&root, &args[1..]),
         "project" => project(&root, &args[1..]),
         "verify-hardware" => verify_hardware(&root, &args[1..]),
-        "sync-boards" => sync_boards(&root, &args[1..]),
         "update" => update(&root, &args[1..]),
         other => Err(format!("unknown command: {other}")),
     }
@@ -215,54 +207,7 @@ fn index(root: &Path, args: &[String]) -> Result<(), String> {
     }
 }
 
-// `generate skills --out <dir>`: materialize runtime skills into a generated
-// cache. The only sanctioned producer of board/peripheral/reference SKILL.md
-// after the meta-only release boundary; never writes into the source skills/.
-fn generate_command(root: &Path, args: &[String]) -> Result<(), String> {
-    if args.is_empty() || has_flag(args, "--help") || has_flag(args, "-h") {
-        print_generate_help();
-        return Ok(());
-    }
-    let Some(subcommand) = args.first().map(String::as_str) else {
-        return Err("missing generate subcommand (expected: skills)".to_string());
-    };
-    match subcommand {
-        "skills" => {
-            let rest = &args[1..];
-            require_json(rest)?;
-            let out = option_value(rest, "--out").ok_or("generate skills requires --out <dir>")?;
-            let out = if Path::new(out).is_absolute() {
-                PathBuf::from(out)
-            } else {
-                current_dir()?.join(out)
-            };
-            let report = crate::generate::generate_skills(root, &out)?;
-            print_json(&report)?;
-            (report.status != "FAIL")
-                .then_some(())
-                .ok_or_else(|| "skill generation failed".to_string())
-        }
-        other => Err(format!("unknown generate subcommand: {other}")),
-    }
-}
-
 fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
-    // verify --generated-root <dir> runs a focused generated-skill verification;
-    // plain verify runs the full source-tree verification.
-    if let Some(generated) = option_value(args, "--generated-root") {
-        require_json(args)?;
-        let generated_root = if Path::new(generated).is_absolute() {
-            PathBuf::from(generated)
-        } else {
-            current_dir()?.join(generated)
-        };
-        let report = crate::generate::verify_generated_root(root, &generated_root);
-        return print_status_json(
-            &report,
-            &report.status,
-            "generated-root verification failed",
-        );
-    }
     require_json(args)?;
     let report = verify(root);
     print_status_json(&report, &report.status, "verification failed")
@@ -410,30 +355,14 @@ fn project_init(root: &Path, args: &[String]) -> Result<(), String> {
     let project_root = project_init_arg(args)?;
     let registry = load_registry(root)?;
     let context = new_project_context(&registry, board, framework, features)?;
-    let mut writes = write_project_context(project_root.as_path(), &context)?;
-    let generated_root = project_root.join(crate::generate::GENERATED_CACHE_DIR);
-    let generated = crate::generate::generate_skills(root, &generated_root)?;
-    let generated_verify = crate::generate::verify_generated_root(root, &generated_root);
-    if generated_verify.status != "PASS" {
-        return Err(format!(
-            "project generated cache verification failed: {:?}",
-            generated_verify.errors
-        ));
-    }
-    writes.extend(generated_skill_writes(
-        project_root.as_path(),
-        &generated_root,
-    ));
+    let writes = write_project_context(project_root.as_path(), &context)?;
+    // Skills are delivered as context injection (via `context`/`hook`), not as a
+    // materialized per-project skill cache, so project init only writes the
+    // project profile now that the generation stack is gone.
     print_json(&serde_json::json!({
         "status": "PASS",
         "project_root": project_root,
         "context": context,
-        "generated_cache": {
-            "root": generated_root,
-            "skill_count": generated.skill_count,
-            "verify_status": generated_verify.status,
-            "writes": generated_skill_writes(project_root.as_path(), &generated_root)
-        },
         "writes": writes
     }))
 }
@@ -534,15 +463,6 @@ fn profile_clear(root: &Path, args: &[String]) -> Result<(), String> {
     }))
 }
 
-fn sync_boards(root: &Path, args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    if has_flag(args, "--dry-run") {
-        print_json(&sync_preview(root))
-    } else {
-        print_json(&sync_apply(root)?)
-    }
-}
-
 fn update(root: &Path, args: &[String]) -> Result<(), String> {
     if args.is_empty() || has_flag(args, "--help") {
         print_update_help();
@@ -553,8 +473,9 @@ fn update(root: &Path, args: &[String]) -> Result<(), String> {
     };
     require_json(&args[1..])?;
     let rest = &args[1..];
-    let home = option_value(rest, "--home").map(PathBuf::from);
-    let generated_out = output_path_arg(rest, "--out")?;
+    // Generation-serving update targets (boards/sources/skills/runtime/
+    // source-packs/peripheral-skills) were removed with the generation stack;
+    // only the source-backed fact-enrichment targets remain.
     match (target, has_flag(rest, "--dry-run")) {
         ("board-facts", dry) if has_flag(rest, "--from-source") => {
             // Explicit, opt-in self-serve ingestion: fetch the board's official
@@ -577,25 +498,9 @@ fn update(root: &Path, args: &[String]) -> Result<(), String> {
             let (board, topic) = board_topic_args(rest, "display")?;
             print_json(&board_fact_enrichment_apply(root, board, topic)?)
         }
-        ("boards", true) => print_json(&sync_preview(root)),
-        ("boards", false) => print_json(&sync_apply(root)?),
-        ("source-packs", true) => print_json(&source_pack_preview(root)?),
-        ("source-packs", false) => print_json(&source_pack_apply(root)?),
         ("fact-packs", true) => print_json(&fact_pack_preview(root)?),
         ("fact-packs", false) => print_json(&fact_pack_apply(root)?),
-        ("peripheral-skills", true) => {
-            print_json(&peripheral_skill_preview(root, generated_out.as_deref())?)
-        }
-        ("peripheral-skills", false) => {
-            print_json(&peripheral_skill_apply(root, generated_out.as_deref())?)
-        }
-        (_, true) => print_json(&update_preview(root, target, generated_out.as_deref())?),
-        (_, false) => print_json(&update_apply(
-            root,
-            target,
-            home.as_deref(),
-            generated_out.as_deref(),
-        )?),
+        (other, _) => Err(format!("unknown update target: {other}")),
     }
 }
 

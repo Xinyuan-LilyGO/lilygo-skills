@@ -1,15 +1,12 @@
-lilygo-skills route|hook|index|generate|verify|doctor|goal|source|preference|reference|setup|profile|project|sync-boards|update
+lilygo-skills route|hook|context|index|verify|doctor|source|preference|reference|setup|profile|project|verify-hardware|update
 Commands:
 route [--project <dir>] --json <prompt>
 hook <codex|claude>
+context [--project <dir>] [--plan] [--json] [prompt]
 index list --json
 index query <skill-id> --json
-generate skills --out <dir> --json
-verify [--generated-root <dir>] --json
+verify --json
 doctor --json [--home <dir>]
-goal plan [--project <dir>] --json <prompt>
-goal start --plan <file> [--project <dir>] [--dry-run] [--allow-build] [--allow-flash --port <port>] [--allow-serial --port <port>] [--allow-network --allow-ota] [--allow-simulator] [--source-root <dir>] --json
-goal status|evidence|cancel --id <goal-id> [--project <dir>] --json
 source query --board <board-id> --topic <io|pinout|bus|i2c|spi|uart|i2s|gpio|expander|connector|peripheral|display|imu|power|lora|gnss|input> --json
 source completeness --board <board-id> --topic <display|imu|power|lora|gnss|input> --json
 preference show [--project <dir>] --json
@@ -22,5 +19,4 @@ project show [--project <dir>] --json
 project clear [--project <dir>] --json
 project ledger show|record|clear [--project <dir>] [--input <file>] --json
 verify-hardware --profile <file> --json
-sync-boards [--dry-run] --json
-update sources|boards|skills|source-packs|fact-packs|board-facts|peripheral-skills|runtime [--board <board-id> --topic <topic>] [--dry-run] [--home <dir>] --json
+update board-facts|fact-packs [--board <board-id> --topic <topic>] [--from-source] [--dry-run] --json

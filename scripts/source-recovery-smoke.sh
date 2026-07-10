@@ -8,7 +8,6 @@ mkdir -p .tmp
 cargo build -q -p lilygo-skills-cli
 BIN="$ROOT/target/debug/lilygo-skills"
 PROMPT="T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen"
-GENERATED_ROOT="$ROOT/.tmp/source-recovery-generated"
 
 "$BIN" context --plan --json "$PROMPT" >.tmp/source-recovery-goal.json
 printf '{"prompt": "%s"}\n' "$PROMPT" | "$BIN" hook codex >.tmp/source-recovery-hook.json
@@ -16,11 +15,6 @@ printf '{"prompt": "%s"}\n' "$PROMPT" | "$BIN" hook codex >.tmp/source-recovery-
   >.tmp/source-recovery-i2c.json
 "$BIN" source query --board board-t-display-s3 --topic io --json \
   >.tmp/source-recovery-io.json
-rm -rf "$GENERATED_ROOT"
-"$BIN" generate skills --out "$GENERATED_ROOT" --json \
-  >.tmp/source-recovery-generate.json
-"$BIN" verify --generated-root "$GENERATED_ROOT" --json \
-  >.tmp/source-recovery-verify.json
 
 node <<'NODE'
 const fs = require("fs");
@@ -44,12 +38,6 @@ const goal = read(".tmp/source-recovery-goal.json");
 const hook = read(".tmp/source-recovery-hook.json");
 const i2c = read(".tmp/source-recovery-i2c.json");
 const io = read(".tmp/source-recovery-io.json");
-const generated = read(".tmp/source-recovery-generate.json");
-const verify = read(".tmp/source-recovery-verify.json");
-const boardSkill = fs.readFileSync(
-  ".tmp/source-recovery-generated/skills/board-t-display-s3/SKILL.md",
-  "utf8"
-);
 const hookContext = hook.context || "";
 
 if (goal.status !== "PASS" || goal.route.board !== "board-t-display-s3") {
@@ -94,17 +82,6 @@ if (!containsText(io.facts, [
 ])) {
   fail("io source facts", io);
 }
-if (generated.status !== "PASS" || verify.status !== "PASS") {
-  fail("generated skill verification", {generated, verify});
-}
-if (!containsText(boardSkill, [
-  "Source-Backed Board Facts",
-  "PIN_IIC_SDA=GPIO18",
-  "PIN_IIC_SCL=GPIO17",
-  "examples/tft/tft.ino"
-])) {
-  fail("generated board skill", {boardSkill});
-}
 
 process.stdout.write(JSON.stringify({
   status: "PASS",
@@ -114,7 +91,6 @@ process.stdout.write(JSON.stringify({
   demo_refs: goal.context_capsule.demo_refs.map((demo) => demo.path),
   critical_facts: goal.context_capsule.critical_facts.map((fact) => fact.value),
   recovery_actions: goal.context_capsule.recovery_actions.map((action) => action.command),
-  generated_root: ".tmp/source-recovery-generated",
   highest_verification_level: "V3",
   hardware_verified: false
 }, null, 2) + "\n");

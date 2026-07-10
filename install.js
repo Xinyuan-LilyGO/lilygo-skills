@@ -208,9 +208,9 @@ function codexAgentsSection(root) {
     "other LilyGO products), firmware, flashing, LVGL, OTA, LoRa/GNSS, sensors,",
     "battery, or pinouts:",
     "",
-    `1. Run \`"${bin}" route --json "<prompt>"\` to resolve skill ids.`,
-    `2. Read the matched files under \`${path.join(root, "skills")}/<skill-id>/SKILL.md\`.`,
-    `3. For debug/implementation goals use \`"${bin}" goal complete --dry-run --json "<prompt>"\`.`,
+    `1. Run \`"${bin}" context --json "<prompt>"\` to get the injected board capsule (facts, pins, source refs).`,
+    `2. Run \`"${bin}" source query --board <board-id> --topic <topic> --json\` for exact pins/buses before claiming them.`,
+    `3. Read the operating patterns in the meta skill \`${path.join(root, "public-skill", "SKILL.md")}\`.`,
     "",
     "Skip this section for prompts unrelated to LilyGO hardware.",
     AGENTS_SECTION_END,
@@ -275,19 +275,15 @@ function planHost(host, home) {
     host,
     home,
     runtime_root: root,
-    // Generated skills are produced from the source model, not copied from a
-    // committed snapshot (meta-only release boundary).
-    generate_plan: {
-      command: `lilygo-skills generate skills --out ${root} --json`,
-      output: path.join(root, "skills"),
+    // Board/peripheral skills are injected context built from data/** at query
+    // time, not materialized files; install copies the data model + route index.
+    materialize_plan: {
+      copies: ["data/**", "index/routes.json", "skills/lilygo-router/SKILL.md"],
       source: "data/** source model",
     },
     planned_writes: [
       path.join(root, "bin", runtimeBinaryName()),
       path.join(root, "index", "routes.json"),
-      path.join(root, "skills"),
-      path.join(root, "skills", "references"),
-      path.join(root, "templates", "skills"),
       path.join(root, "data", "boards.json"),
       path.join(root, "data", "references", "source-intake", "manifest.md"),
       path.join(root, "public-skill", "SKILL.md"),
@@ -324,9 +320,9 @@ function displayMessage(message, home, repoRoot) {
 function publicPlan(plan, home, repoRoot) {
   const runtimeRoot = displayPath(plan.runtime_root, home, repoRoot);
   return {
-    command: `lilygo-skills generate skills --out ${runtimeRoot} --json`,
-    output: path.join(runtimeRoot, "skills"),
-    source: plan.generate_plan.source,
+    copies: plan.materialize_plan.copies,
+    output: path.join(runtimeRoot, "index", "routes.json"),
+    source: plan.materialize_plan.source,
   };
 }
 
@@ -601,9 +597,11 @@ function applyHost(plan, repoRoot, binaryPath) {
   fs.mkdirSync(path.join(plan.runtime_root, "bin"), { recursive: true });
   fs.copyFileSync(binaryPath, binPath);
   fs.chmodSync(binPath, 0o755);
-  // Meta-only release boundary: the source tree ships no generated SKILL.md.
-  // Install materializes every runtime skill from the source model into the
-  // install root instead of copying committed snapshots.
+  // Context-injection release boundary: board/peripheral skills are delivered
+  // as injected context (built from data/** at query time), not as materialized
+  // SKILL.md files. Install copies the runtime data model plus the route index;
+  // the installed tree stays "meta-only" so the CLI treats every registered
+  // skill as available without a per-skill file.
   copyDir(path.join(repoRoot, "data"), path.join(plan.runtime_root, "data"), {
     mirror: true,
   });
@@ -611,16 +609,9 @@ function applyHost(plan, repoRoot, binaryPath) {
     recursive: true,
     force: true,
   });
-  const generated = cp.spawnSync(
-    binPath,
-    ["generate", "skills", "--out", plan.runtime_root, "--json"],
-    { cwd: repoRoot, encoding: "utf8" }
-  );
-  if (generated.status !== 0) {
-    throw new Error(
-      `generate skills failed: ${(generated.stderr || generated.stdout || "").trim()}`
-    );
-  }
+  copyDir(path.join(repoRoot, "index"), path.join(plan.runtime_root, "index"), {
+    mirror: true,
+  });
   // Single source: the public/meta skill is the committed router skill.
   copyRouterSkill(repoRoot, plan.runtime_root);
   if (plan.host === "claude") {
@@ -919,7 +910,7 @@ function main() {
             }
           : null,
         self_tests,
-        generate_plans: plans.map((plan) => publicPlan(plan, options.home, repoRoot)),
+        materialize_plans: plans.map((plan) => publicPlan(plan, options.home, repoRoot)),
         planned_writes: plans.flatMap((plan) =>
           plan.planned_writes.map((target) => displayPath(target, options.home, repoRoot))
         ),
