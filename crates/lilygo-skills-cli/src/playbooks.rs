@@ -5,13 +5,19 @@
 //! replace source-backed board facts.
 
 use crate::model::{Playbook, PlaybookCatalog, PlaybookHint, Registry, Skill, SkillKind};
-use crate::text_match::contains_word;
+use crate::selection::{SelectionConfig, SelectionInput};
 use std::collections::{BTreeMap, BTreeSet};
 
 const PLAYBOOKS_JSON: &str = include_str!("../../../data/playbooks/playbooks.json");
+const PLAYBOOK_TRIGGERS_JSON: &str = include_str!("../../../data/playbooks/playbook-triggers.json");
 
 pub fn playbook_catalog() -> PlaybookCatalog {
     serde_json::from_str(PLAYBOOKS_JSON).expect("embedded playbook catalog must be valid JSON")
+}
+
+fn playbook_triggers() -> SelectionConfig {
+    serde_json::from_str(PLAYBOOK_TRIGGERS_JSON)
+        .expect("embedded data/playbooks/playbook-triggers.json must be valid SelectionConfig")
 }
 
 pub fn validate_playbook_catalog(catalog: &PlaybookCatalog) -> Vec<String> {
@@ -68,90 +74,14 @@ pub fn playbook_by_id(id: &str) -> Option<Playbook> {
 }
 
 pub fn selected_playbook_ids(prompt: &str, route_skills: &[String]) -> Vec<String> {
-    let normalized = normalize(prompt);
-    if !is_embedded_work_prompt(&normalized, route_skills) {
-        return Vec::new();
-    }
-    let mut ids = BTreeSet::new();
-    let action = has_action_intent(&normalized);
-    let source = has_source_intent(&normalized);
-    if action || source {
-        ids.insert("playbook-source-discovery".to_string());
-    }
-    if action
-        && matches_any(
-            &normalized,
-            &[
-                "build", "flash", "upload", "serial", "monitor", "boot log", "烧录", "上传", "串口",
-            ],
-        )
-    {
-        ids.insert("playbook-build-flash-serial".to_string());
-    }
-    if action
-        && matches_any(
-            &normalized,
-            &[
-                "lvgl",
-                "display",
-                "screen",
-                "touch",
-                "flush",
-                "blank",
-                "page-data",
-            ],
-        )
-    {
-        ids.insert("playbook-lvgl-debug".to_string());
-    }
-    if action
-        && matches_any(
-            &normalized,
-            &[
-                "ota",
-                "rollback",
-                "manifest",
-                "partition",
-                "firmware update",
-            ],
-        )
-    {
-        ids.insert("playbook-ota-debug".to_string());
-        ids.insert("playbook-build-flash-serial".to_string());
-    }
-    if action
-        && matches_any(
-            &normalized,
-            &[
-                "bsp",
-                "driver",
-                "peripheral driver",
-                "status action smoke",
-                "capability",
-            ],
-        )
-    {
-        ids.insert("playbook-bsp-driver".to_string());
-    }
-    if action && matches_any(&normalized, &["lora", "gnss", "gps", "radio", "meshtastic"]) {
-        ids.insert("playbook-radio-gnss".to_string());
-    }
-    if action
-        && matches_any(
-            &normalized,
-            &[
-                "setup",
-                "install",
-                "toolchain",
-                "blank machine",
-                "rustup",
-                "node",
-            ],
-        )
-    {
-        ids.insert("playbook-setup-toolchain".to_string());
-    }
-    order_playbook_ids(ids)
+    let mut lists = BTreeMap::new();
+    lists.insert("route_skills", route_skills.to_vec());
+    let input = SelectionInput {
+        prompt: prompt.to_lowercase(),
+        flags: BTreeMap::new(),
+        lists,
+    };
+    crate::selection::evaluate(&playbook_triggers(), input)
 }
 
 pub fn playbook_hints_for_prompt(prompt: &str, route_skills: &[String]) -> Vec<PlaybookHint> {
@@ -208,101 +138,6 @@ fn playbook_hint(playbook: &Playbook) -> PlaybookHint {
         evidence_targets: playbook.evidence_targets.clone(),
         anti_claims: playbook.anti_claims.clone(),
     }
-}
-
-fn order_playbook_ids(ids: BTreeSet<String>) -> Vec<String> {
-    let order = [
-        "playbook-source-discovery",
-        "playbook-setup-toolchain",
-        "playbook-build-flash-serial",
-        "playbook-lvgl-debug",
-        "playbook-ota-debug",
-        "playbook-bsp-driver",
-        "playbook-radio-gnss",
-    ];
-    order
-        .iter()
-        .filter(|id| ids.contains(**id))
-        .map(|id| (*id).to_string())
-        .collect()
-}
-
-fn is_embedded_work_prompt(prompt: &str, route_skills: &[String]) -> bool {
-    route_skills
-        .iter()
-        .any(|skill| skill == "lilygo-router" || skill.starts_with("board-"))
-        || matches_any(
-            prompt,
-            &[
-                "lilygo",
-                "t-display",
-                "t-watch",
-                "t-beam",
-                "esp32",
-                "arduino",
-                "esp-idf",
-                "platformio",
-                "lvgl",
-                "ota",
-                "lora",
-                "gnss",
-            ],
-        )
-}
-
-fn has_action_intent(prompt: &str) -> bool {
-    matches_any(
-        prompt,
-        &[
-            "add",
-            "implement",
-            "debug",
-            "fix",
-            "build",
-            "flash",
-            "upload",
-            "monitor",
-            "setup",
-            "install",
-            "run",
-            "demo",
-            "example",
-            "fails",
-            "failure",
-            "blank",
-            "does not",
-            "怎么做",
-            "实现",
-            "调试",
-            "安装",
-            "烧录",
-        ],
-    )
-}
-
-fn has_source_intent(prompt: &str) -> bool {
-    matches_any(
-        prompt,
-        &[
-            "source",
-            "official",
-            "datasheet",
-            "pinout",
-            "which repo",
-            "where to find",
-            "资料",
-            "官方",
-            "数据手册",
-        ],
-    )
-}
-
-fn matches_any(prompt: &str, needles: &[&str]) -> bool {
-    needles.iter().any(|needle| contains_word(prompt, needle))
-}
-
-fn normalize(value: &str) -> String {
-    value.to_lowercase().replace('_', "-")
 }
 
 #[cfg(test)]
