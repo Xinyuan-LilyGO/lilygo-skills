@@ -16,7 +16,6 @@ cargo run -p lilygo-skills-cli -- update fact-packs --dry-run --json >.tmp/syste
 cargo run -p lilygo-skills-cli -- update peripheral-skills --dry-run --json >.tmp/system-update-peripheral-skills.json
 cargo run -p lilygo-skills-cli -- update runtime --dry-run --json >.tmp/system-update-runtime.json
 cargo run -p lilygo-skills-cli -- route --json "T-Display-S3 Arduino LVGL" >.tmp/system-route.json
-cargo run -p lilygo-skills-cli -- benchmark --json --iterations 100 >.tmp/system-benchmark.json
 node install.js --codex --dry-run >.tmp/install-codex.json
 node install.js --claude --dry-run >.tmp/install-claude.json
 
@@ -33,7 +32,6 @@ const files = [
   ".tmp/system-update-peripheral-skills.json",
   ".tmp/system-update-runtime.json",
   ".tmp/system-route.json",
-  ".tmp/system-benchmark.json",
   ".tmp/install-codex.json",
   ".tmp/install-claude.json"
 ];
@@ -56,15 +54,12 @@ const ok =
   noSourceWrites(data[".tmp/system-update-peripheral-skills.json"]) &&
   data[".tmp/system-update-runtime.json"].status === "PASS" &&
   data[".tmp/system-route.json"].verification_level === "context-injection" &&
-  data[".tmp/system-benchmark.json"].status === "PASS" &&
   data[".tmp/install-codex.json"].status === "PASS" &&
   data[".tmp/install-claude.json"].status === "PASS";
 process.stdout.write(JSON.stringify({
   status: ok ? "PASS" : "FAIL",
   install_dry_run: ["codex", "claude"],
   route_skills: data[".tmp/system-route.json"].skills,
-  benchmark_ns_per_route: data[".tmp/system-benchmark.json"].ns_per_route,
-  benchmark_case_count: data[".tmp/system-benchmark.json"].case_count,
   registry_status: data[".tmp/system-verify.json"].status,
   source_candidate_count: data[".tmp/system-sync.json"].generated_candidate_count,
   source_pack_count: data[".tmp/system-update-source-packs.json"].source_pack_count,

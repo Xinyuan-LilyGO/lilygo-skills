@@ -1,7 +1,4 @@
 //! Binary entry point that delegates all behavior to the CLI command module.
-mod benchmark;
-#[cfg(test)]
-mod benchmark_tests;
 mod board_sniff;
 mod commands;
 mod doctor;

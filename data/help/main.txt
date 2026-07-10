@@ -1,4 +1,4 @@
-lilygo-skills route|hook|index|generate|verify|doctor|benchmark|goal|source|preference|reference|setup|profile|project|sync-boards|update
+lilygo-skills route|hook|index|generate|verify|doctor|goal|source|preference|reference|setup|profile|project|sync-boards|update
 Commands:
 route [--project <dir>] --json <prompt>
 hook <codex|claude>
@@ -7,7 +7,6 @@ index query <skill-id> --json
 generate skills --out <dir> --json
 verify [--generated-root <dir>] --json
 doctor --json [--home <dir>]
-benchmark [--generated-root <dir>] [--project <dir>] [--iterations <n>] [--max-ns-per-route <n>] --json
 goal plan [--project <dir>] --json <prompt>
 goal start --plan <file> [--project <dir>] [--dry-run] [--allow-build] [--allow-flash --port <port>] [--allow-serial --port <port>] [--allow-network --allow-ota] [--allow-simulator] [--source-root <dir>] --json
 goal status|evidence|cancel --id <goal-id> [--project <dir>] --json

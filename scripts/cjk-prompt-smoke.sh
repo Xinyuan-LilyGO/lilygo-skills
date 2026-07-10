@@ -29,7 +29,6 @@ printf '{"prompt":"T-Display-S3烧录失败怎么办"}\n' \
   >.tmp/cjk-source-watch-s3-display.json
 "$BIN" source query --board board-t-watch-s3 --topic input --json \
   >.tmp/cjk-source-watch-s3-input.json
-"$BIN" benchmark --json --iterations 100 >.tmp/cjk-benchmark.json
 
 node <<'NODE'
 const fs = require("fs");
@@ -51,7 +50,6 @@ const goal = read(".tmp/cjk-goal-watch-imu.json");
 const watchS3Goal = read(".tmp/cjk-goal-watch-s3-display-touch.json");
 const watchS3DisplaySource = read(".tmp/cjk-source-watch-s3-display.json");
 const watchS3InputSource = read(".tmp/cjk-source-watch-s3-input.json");
-const benchmark = read(".tmp/cjk-benchmark.json");
 
 check("display route injects flash playbook",
   display.decision === "inject" &&
@@ -107,13 +105,6 @@ check("watch S3 input source query is topic narrow",
   inputKeys.includes("input.touch_interrupt") &&
   inputKeys.every((key) => key.startsWith("input.") || key.startsWith("bus.touch.") || key === "framework.demo_refs"),
   inputKeys);
-check("benchmark includes and passes CJK cases",
-  benchmark.status === "PASS" &&
-  benchmark.coverage.missing_skills.length === 0 &&
-  benchmark.playbook_quality.case_count >= 5 &&
-  benchmark.correctness.failures.length === 0 &&
-  benchmark.playbook_quality.failures.length === 0,
-  benchmark);
 
 process.stdout.write(JSON.stringify({
   status: "PASS",
@@ -124,12 +115,9 @@ process.stdout.write(JSON.stringify({
     "hook CJK JSON envelope",
     "goal CJK IMU facts",
     "goal CJK watch S3 display/touch source queries",
-    "source CJK watch S3 display/input narrowness",
-    "benchmark CJK fixtures"
+    "source CJK watch S3 display/input narrowness"
   ],
   route_skills: display.skills,
-  goal_board: goal.route.board,
-  benchmark_case_count: benchmark.case_count,
-  playbook_quality_cases: benchmark.playbook_quality.case_count
+  goal_board: goal.route.board
 }, null, 2) + "\n");
 NODE
