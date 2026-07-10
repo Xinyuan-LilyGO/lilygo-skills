@@ -53,9 +53,8 @@ run_hook_with_cache() {
 }
 
 run_json "route-display-lookup-zh" "$BIN" route --json "T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?"
-run_json "goal-display-first-run" "$BIN" goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"
-run_json "goal-factory-demo" "$BIN" goal plan --json "T-Display-S3 Arduino factory full peripheral test"
-run_json "goal-flash-serial" "$BIN" goal complete --dry-run --json "T-Display-S3 build flash and capture serial log"
+run_json "goal-display-first-run" "$BIN" context --plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"
+run_json "goal-factory-demo" "$BIN" context --plan --json "T-Display-S3 Arduino factory full peripheral test"
 run_json "source-t-watch-imu" "$BIN" source query --board board-t-watch-ultra --topic imu --json
 run_hook "hook-display-impl" '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"}'
 run_hook "hook-lookup-zh" '{"prompt":"T-Display-S3 的 I2C 引脚和屏幕占用了哪些 GPIO?"}'

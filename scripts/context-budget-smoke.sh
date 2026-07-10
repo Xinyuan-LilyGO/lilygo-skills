@@ -15,11 +15,11 @@ BIN="$ROOT/target/debug/lilygo-skills"
 CACHE_DIR="$ROOT/.tmp/context-budget-cache"
 rm -rf "$CACHE_DIR"
 
-"$BIN" goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor" \
+"$BIN" context --plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor" \
   >.tmp/context-budget-impl.json
-"$BIN" goal plan --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?" \
+"$BIN" context --plan --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?" \
   >.tmp/context-budget-lookup.json
-"$BIN" goal plan --json "T-Display-S3 debug I2C I2C I2C sensor screen screen screen" \
+"$BIN" context --plan --json "T-Display-S3 debug I2C I2C I2C sensor screen screen screen" \
   >.tmp/context-budget-repeat.json
 printf '{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"}' \
   | "$BIN" hook claude >.tmp/context-budget-impl-hook.json

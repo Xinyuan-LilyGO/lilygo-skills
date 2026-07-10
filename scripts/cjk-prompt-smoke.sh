@@ -22,8 +22,8 @@ BIN="$ROOT/target/debug/lilygo-skills"
   >.tmp/cjk-route-watch-s3-display-touch.json
 printf '{"prompt":"T-Display-S3烧录失败怎么办"}\n' \
   | "$BIN" hook claude >.tmp/cjk-hook-display-flash.json
-"$BIN" goal plan --json "t-watch ultra imu抬腕检测怎么做" >.tmp/cjk-goal-watch-imu.json
-"$BIN" goal plan --json "LilyGO T-Watch S3 屏幕和触摸占用了哪些引脚?" \
+"$BIN" context --plan --json "t-watch ultra imu抬腕检测怎么做" >.tmp/cjk-goal-watch-imu.json
+"$BIN" context --plan --json "LilyGO T-Watch S3 屏幕和触摸占用了哪些引脚?" \
   >.tmp/cjk-goal-watch-s3-display-touch.json
 "$BIN" source query --board board-t-watch-s3 --topic display --json \
   >.tmp/cjk-source-watch-s3-display.json

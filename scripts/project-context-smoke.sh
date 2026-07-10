@@ -50,7 +50,7 @@ DISPLAY_PROJECT="$(mktemp -d "${TMPDIR:-/tmp}/lilygo-display-project.XXXXXX")"
   --json >.tmp/project-context-display-init.json
 "$BIN" route --project "$DISPLAY_PROJECT" --json "LVGL 显示 demo 怎么做" \
   >.tmp/project-context-display-route.json
-"$BIN" goal plan --project "$DISPLAY_PROJECT" --json "LVGL 显示 demo 怎么做" \
+"$BIN" context --plan --project "$DISPLAY_PROJECT" --json "LVGL 显示 demo 怎么做" \
   >.tmp/project-context-display-goal.json
 
 (

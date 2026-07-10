@@ -99,7 +99,7 @@ fn compact_context(plan: &GoalPlan) -> String {
         .take(3)
         .collect::<Vec<_>>();
     format!(
-        "LilyGO incremental: critical=[{}]; next=[{}]; expand=goal plan; evidence_boundary={}/hardware_verified={}",
+        "LilyGO incremental: critical=[{}]; next=[{}]; expand=context --plan; evidence_boundary={}/hardware_verified={}",
         critical.join(","),
         next.join(","),
         plan.context_capsule.boundary.verification_level,
@@ -135,7 +135,7 @@ fn compact_critical_lines(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::goal::plan_goal;
+    use crate::capsule::plan_goal;
     use crate::registry::load_registry;
     use crate::router::route_prompt;
     use std::path::Path;
@@ -158,9 +158,9 @@ mod tests {
         }
         let prompt = "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor";
         let first_plan = plan(prompt);
-        let full = crate::goal::render_hook_goal_summary(&first_plan);
+        let full = crate::capsule::render_hook_goal_summary(&first_plan);
         let spi_uart = plan("T-Display-S3 debug an SPI sensor and UART module");
-        let spi_uart_full = crate::goal::render_hook_goal_summary(&spi_uart);
+        let spi_uart_full = crate::capsule::render_hook_goal_summary(&spi_uart);
         let input = r#"{"prompt":"T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor","session_id":"session-a"}"#;
         let spi_uart_input = r#"{"prompt":"T-Display-S3 debug an SPI sensor and UART module","session_id":"session-a"}"#;
         let first = maybe_compact_hook_context("claude", input, full.clone(), Some(&first_plan));

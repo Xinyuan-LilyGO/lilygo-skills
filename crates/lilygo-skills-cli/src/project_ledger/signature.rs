@@ -72,16 +72,6 @@ pub(super) fn project_code_signature(project_root: &Path) -> Option<String> {
     Some(stable_hash(&parts.join("|")))
 }
 
-pub(super) fn hash_project_file(project_root: &Path, relative: &str) -> Result<String, String> {
-    if relative.starts_with('/') || relative.contains("..") {
-        return Err("evidence path must be project-relative".to_string());
-    }
-    let path = project_root.join(relative);
-    let data =
-        fs::read(&path).map_err(|error| format!("failed to read {}: {error}", path.display()))?;
-    Ok(stable_hash(&String::from_utf8_lossy(&data)))
-}
-
 fn collect_project_files(
     root: &Path,
     current: &Path,

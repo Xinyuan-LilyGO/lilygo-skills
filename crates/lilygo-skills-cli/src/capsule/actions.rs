@@ -36,12 +36,19 @@ pub(super) fn next_actions_for_goal(
     let fact_only = crate::facts::is_fact_prompt(prompt) && !implementation_or_debug;
     let mut actions = Vec::new();
     if implementation_or_debug {
+        // Read-only bridge to the compact capsule plan. The id is kept stable so
+        // the rendered `next=[goal-plan-bridge:none,..]` capsule token (graded by
+        // coverage-gate) is unchanged; the command points at the retained
+        // `context --plan` view now that the goal command surface is gone.
         actions.push(next_action(
             "goal-plan-bridge",
-            "Read the compact goal plan",
-            format!("lilygo-skills goal plan --json {}", shell_quote(prompt)),
+            "Read the compact capsule plan",
+            format!(
+                "lilygo-skills context --plan --json {}",
+                shell_quote(prompt)
+            ),
             "none",
-            "Use the planner as the next read-only step before editing firmware or touching hardware.",
+            "Read the compact capsule plan as the next read-only step before editing firmware.",
         ));
     }
     if fact_only || needs_io_expansion(&normalized, fact_tables) {
@@ -89,43 +96,9 @@ pub(super) fn next_actions_for_goal(
             ),
         ));
     }
-    actions.push(next_action(
-        "goal-start-dry-run",
-        "Preview build/upload/monitor plan",
-        format!(
-            "lilygo-skills goal complete --dry-run --json {}",
-            shell_quote(prompt)
-        ),
-        "none",
-        "Confirm the execution plan and required permissions before mutating a project or device.",
-    ));
-    if implementation_or_debug {
-        actions.push(next_action(
-            "goal-build",
-            "Run the build step after approval",
-            format!(
-                "lilygo-skills goal complete --allow-build --json {}",
-                shell_quote(prompt)
-            ),
-            "allow-build",
-            "A compiled artifact is the first evidence level above source/context planning.",
-        ));
-    }
-    if contains_any(
-        &normalized,
-        &["upload", "flash", "monitor", "serial", "串口", "烧录"],
-    ) {
-        actions.push(next_action(
-            "goal-flash-monitor",
-            "Flash and observe after approval",
-            format!(
-                "lilygo-skills goal complete --allow-build --allow-flash --allow-serial --json {}",
-                shell_quote(prompt)
-            ),
-            "allow-flash",
-            "Device mutation and serial observation require explicit user permission.",
-        ));
-    }
+    // Build/flash/serial execution next-actions were dropped with the goal
+    // execution command surface (R5b): the capsule is source/context evidence
+    // only, so it no longer advertises permission-gated mutation commands.
     dedup_next_actions(actions, 8)
 }
 

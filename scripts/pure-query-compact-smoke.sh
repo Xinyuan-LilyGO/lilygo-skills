@@ -13,13 +13,13 @@ mkdir -p .tmp
 cargo build -q -p lilygo-skills-cli
 BIN="$ROOT/target/debug/lilygo-skills"
 
-"$BIN" goal plan --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?" \
+"$BIN" context --plan --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?" \
   >.tmp/pure-query-plan.json
-"$BIN" goal plan --json "T-Display-S3 which pins are used by the screen?" \
+"$BIN" context --plan --json "T-Display-S3 which pins are used by the screen?" \
   >.tmp/pure-query-plan-english-screen.json
-"$BIN" goal plan --json "T-Display-S3 read pinout docs" \
+"$BIN" context --plan --json "T-Display-S3 read pinout docs" \
   >.tmp/pure-query-plan-read-pinout-docs.json
-"$BIN" goal plan --json "T-Display-S3 哪些引脚被屏幕占用了?" \
+"$BIN" context --plan --json "T-Display-S3 哪些引脚被屏幕占用了?" \
   >.tmp/pure-query-plan-chinese-screen.json
 printf '{"prompt":"T-Display-S3 的 I2C 引脚和外设地址有哪些?"}' \
   | "$BIN" hook claude >.tmp/pure-query-hook.json

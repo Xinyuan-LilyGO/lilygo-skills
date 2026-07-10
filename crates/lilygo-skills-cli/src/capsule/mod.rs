@@ -458,3 +458,6 @@ fn hex_prefix(bytes: &[u8], chars: usize) -> String {
 fn contains_any(value: &str, needles: &[&str]) -> bool {
     needles.iter().any(|needle| value.contains(needle))
 }
+
+#[cfg(test)]
+mod tests;

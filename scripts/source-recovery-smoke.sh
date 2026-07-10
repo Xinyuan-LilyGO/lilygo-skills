@@ -10,7 +10,7 @@ BIN="$ROOT/target/debug/lilygo-skills"
 PROMPT="T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen"
 GENERATED_ROOT="$ROOT/.tmp/source-recovery-generated"
 
-"$BIN" goal plan --json "$PROMPT" >.tmp/source-recovery-goal.json
+"$BIN" context --plan --json "$PROMPT" >.tmp/source-recovery-goal.json
 printf '{"prompt": "%s"}\n' "$PROMPT" | "$BIN" hook codex >.tmp/source-recovery-hook.json
 "$BIN" source query --board board-t-display-s3 --topic i2c --json \
   >.tmp/source-recovery-i2c.json

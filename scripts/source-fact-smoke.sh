@@ -22,7 +22,7 @@ BIN="$ROOT/target/debug/lilygo-skills"
   >.tmp/source-fact-expander.json
 "$BIN" update fact-packs --dry-run --json \
   >.tmp/source-fact-update-dry-run.json
-"$BIN" goal plan --json "T-Watch Ultra Arduino IO口怎么用? 哪些GPIO接了外设?" \
+"$BIN" context --plan --json "T-Watch Ultra Arduino IO口怎么用? 哪些GPIO接了外设?" \
   >.tmp/source-fact-goal.json
 
 node <<'NODE'
