@@ -43,12 +43,9 @@ the user asks for that content.
 
 ## Debug loop — how to drive a board task
 
-This is the methodology the deterministic planners still encode; run it as prose.
-For an implementation or debug prompt you can let
-`lilygo-skills goal complete --dry-run --json "<prompt>"` classify completion
-state, missing inputs, and readiness, and `lilygo-skills goal plan --json "<prompt>"`
-lay out the evidence steps — but the loop itself is the same whether or not you
-call them:
+This is the methodology to run as prose for an implementation or debug prompt.
+Classify the completion state, missing inputs, and readiness yourself, then lay
+out the evidence steps and work through the loop:
 
 1. **Classify the task.** Identify the LilyGO product and MCU, the framework
    (Arduino / PlatformIO / ESP-IDF / Rust esp-rs — ask if none is known, never
