@@ -1,5 +1,6 @@
 //! Binary entry point that delegates all behavior to the CLI command module.
 mod board_sniff;
+mod capsule;
 mod commands;
 mod doctor;
 mod facts;
