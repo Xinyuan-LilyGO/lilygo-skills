@@ -1,15 +1,24 @@
 //! Resolves global and project-scoped preferences into compact hints that guide
 //! agents without exposing private local evidence.
+//!
+//! The gate that decides whether a prompt should carry preference hints is
+//! distilled into `data/preferences/preference-triggers.json` and evaluated by
+//! the shared [`crate::selection`] engine; this module keeps only the resolve
+//! logic and the compact hint projection.
 use crate::facts;
 use crate::model::{
     CodeLimits, HardwareSafety, PreferenceConfig, PreferenceHint, ResolvedPreferences,
 };
+use crate::selection::{SelectionConfig, SelectionInput};
 use serde::Deserialize;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 const PROJECT_PREFERENCES_PATH: &str = ".lilygo-skills/preferences.json";
 const DEFAULTS_PATH: &str = "data/preferences/defaults.json";
+const PREFERENCE_TRIGGERS_JSON: &str =
+    include_str!("../../../data/preferences/preference-triggers.json");
 
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -83,10 +92,7 @@ pub(crate) fn preference_hints_for_prompt(
     project_start: Option<&Path>,
     prompt: &str,
 ) -> Vec<PreferenceHint> {
-    if facts::is_fact_prompt(prompt) && !explicit_behavior_prompt(prompt) {
-        return Vec::new();
-    }
-    if !facts::is_implementation_or_debug_prompt(prompt) && !explicit_behavior_prompt(prompt) {
+    if !preference_gate_open(prompt) {
         return Vec::new();
     }
     let Ok(resolved) = resolve_preferences(root, project_start) else {
@@ -359,11 +365,29 @@ fn find_project_preferences(start: &Path) -> Option<PathBuf> {
     }
 }
 
-fn explicit_behavior_prompt(prompt: &str) -> bool {
-    let normalized = prompt.to_lowercase();
-    ["binflow", "serial", "debug", "调试", "style", "preference"]
-        .iter()
-        .any(|needle| normalized.contains(needle))
+fn preference_triggers() -> SelectionConfig {
+    serde_json::from_str(PREFERENCE_TRIGGERS_JSON)
+        .expect("embedded data/preferences/preference-triggers.json must be valid SelectionConfig")
+}
+
+/// True when the prompt should carry preference hints. Distilled from the old
+/// two-clause fact/implementation/explicit-behavior gate: proceed when the
+/// prompt is explicit about behavior, or is an implementation/debug prompt that
+/// is not a pure fact lookup. The `is_fact` and `impl_debug` flags come from the
+/// shared fact classifier; the explicit-behavior substring table lives in JSON.
+fn preference_gate_open(prompt: &str) -> bool {
+    let mut flags = BTreeMap::new();
+    flags.insert("is_fact", facts::is_fact_prompt(prompt));
+    flags.insert(
+        "impl_debug",
+        facts::is_implementation_or_debug_prompt(prompt),
+    );
+    let input = SelectionInput {
+        prompt: prompt.to_lowercase(),
+        flags,
+        lists: BTreeMap::new(),
+    };
+    !crate::selection::evaluate(&preference_triggers(), input).is_empty()
 }
 
 #[cfg(test)]
