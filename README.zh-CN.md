@@ -1,33 +1,202 @@
 # lilygo-skills
 
-面向 AI 辅助 LilyGO 开发板开发的 Skill runtime。
+面向 AI 辅助 LilyGO 开发板开发的 **skill 优先(skill-first)** 上下文 runtime。
 
-## 60 秒上手
+装到 Claude Code、Codex 或任意 agent 一次即可。之后用户用自然语言描述固件需求,
+agent 就能加载正确的板子、框架、带官方来源背书的引脚、官方示例、setup hint 和安全
+调试步骤——无需手翻数据手册,**也绝不编造引脚**。
+
+设计目标很窄:**在硬件事实上保持正确,在“到底验证到哪一步”上保持诚实。** runtime
+说出的每个引脚、总线、电源轨都能追溯到官方上游的某一行(URL + 行号 + sha256);数据
+本地随 CLI 发布,断网可用;机器可校验的诚实标记(`hardware_verified`、
+`evidence_boundary`)确保“有官方来源”不会被误当成“板子真的跑通了”。
+
+## 一段话看懂架构
+
+产品是一个很小的 **meta Skill**(`skills/lilygo-router/SKILL.md`)加一个薄 Rust CLI。
+`SKILL.md` 是*操作系统*:查询协议、调试循环、诚实规则,全部以散文形式承载。CLI 是
+确定性的 **Context Kernel**:判断 prompt 是否是 LilyGO 工作、涉及哪块板子/框架、哪些
+带来源的事实可以安全注入,然后把一个紧凑胶囊和精确的 `source query` 命令交给 AI,让
+它按需拉取更深的内容。“选哪些子 skill / playbook 相关”由数据驱动的 trigger 决定;
+“这个引脚我能不能说”由诚实规则和 source model 强制。
+
+## 任意 agent 可用——hook 是可选的
+
+- **纯 skill(任意宿主)。** `SKILL.md` + `lilygo-skills` CLI 在 Claude Code、Codex
+  或任意 agent 上就足够。跑 `context` 拿胶囊、跑 `source query` 拉精确引脚,价值不依赖
+  任何 hook。
+- **可选的 Claude Code hook。** 一行 `UserPromptSubmit` hook 会自动注入胶囊,省掉手动
+  `context`。它只是*便利*:没有 hook 的宿主多跑一条命令,什么都不损失——数据和质量门禁
+  跨平台完全一致。
+
+## CLI——五个日常命令
+
+日常使用面很小、很稳定:
+
+```bash
+lilygo-skills context [--project <dir>] --json "<prompt>"   # Context Kernel:CWD → 板 → 胶囊(≤~1KB)
+lilygo-skills source query --board <board-id> --topic <topic> --json   # 拉带来源的精确引脚/总线
+lilygo-skills route --json "<prompt>"                        # 相关性闸门 + 匹配到的 skill/playbook id
+lilygo-skills index list|query <id> --json                  # 列出已注册 skill/playbook,展开某一个
+lilygo-skills doctor --json                                  # 体检注入链路
+```
+
+`context` 是一击入口:它从项目自动认板(先读 `.lilygo-skills/project.json`,否则嗅探
+`platformio.ini`、`sdkconfig`、`*.ino`),返回匹配的 skill id、top 事实、验证等级和后续
+查询命令。
+
+另有少量支撑命令覆盖安装/健康、setup 和项目记忆:`verify`、
+`setup plan --framework <arduino|platformio|esp-idf|rust>`、`preference show`、
+`reference list`、`project init|show|clear`、`source completeness`,以及做来源补全的
+`update board-facts`。**没有** `goal`、`benchmark`、`generate` 命令——那些层已折叠进
+`SKILL.md` 散文与数据模型。
+
+## 数据驱动的选择
+
+recipe、playbook、reference hint、preference hint 都是 **JSON 数据**,不是手写的散文分支。
+每类都有一张 `*-triggers.json` 表(`data/recipes/recipe-triggers.json`、
+`data/playbooks/playbook-triggers.json`、`data/references/reference-triggers.json`、
+`data/preferences/...`),由单一的选择引擎(`selection.rs`)把 prompt 对着这些 trigger
+匹配,决定要浮现哪些紧凑 id。增删或调优一条 recipe/playbook/reference 是改数据,不是写新
+Rust;reader 代码保持很薄。
+
+- **Recipes**(`data/recipes/recipes.json`)—— OTA、LVGL、LoRa 是带官方来源背书的
+  recipe pack(引用 Espressif OTA、LVGL、RadioLib + LilyGO 示例),不是提交的外设 skill。
+- **Playbooks**(`data/playbooks/playbooks.json`)—— source discovery、setup、
+  build/flash/serial、LVGL、BSP driver、radio/GNSS 的精简操作指南。agent 先看到紧凑 id,
+  再用 `lilygo-skills index query <playbook-id> --json` 展开。
+
+## 引导文档——薄代码 + 厚引导
+
+行为深度以散文引导文档的形式放在 `skills/lilygo-router/guides/`,遵循 `dev-flow` 风格
+(薄代码 + 厚引导)。`SKILL.md` 是入口,`context`/`source query` 的 expand 指针指向它们:
+
+| 引导文档 | 驱动什么 |
+|----------|----------|
+| `query-protocol.md` | 拿 `context` → 自动认板 → 说任何引脚前先 `source query` 拉取 |
+| `board-bringup-checklist.md` | 从零上手:认板 → 找官方源 → 跑官方 demo → 采证据 |
+| `debug-flash-serial.md` | 有界 build → upload → monitor,以及失败归类 |
+| `debug-display-bringup.md` | ST7789 / TFT_eSPI Setup vs ESP-IDF i80、背光与电源轨 |
+| `debug-lvgl-loop.md` | LVGL tick / flush / draw-buffer / 触摸循环排错 |
+| `debug-lora-gnss.md` | SX126x / RadioLib + GNSS 上手与排错 |
+| `debug-power-battery.md` | 电源轨、充电、电量计检查 |
+| `toolchain-setup.md` | Arduino / PlatformIO / ESP-IDF / Rust esp-rs 工具链(报告 + 提示) |
+| `honesty-evidence.md` | 证据等级、`hardware_verified=false`、不乱编规则 |
+
+## 相对通用 LilyGO skill 的特质
+
+- **引脚有来源。** 每条板级事实都带官方 URL、行号和 sha256,说出的引脚能追溯到上游确切
+  一行——不是从训练数据里回忆的值。
+- **离线本地。** 数据随 CLI 发布,毫秒级作答;没有托管服务依赖,断网可用。
+- **自动认板。** `context` 从项目文件推断板子,用户不必每次报板名。
+- **质量门禁。** 棘轮化 coverage 基线、source-authority 与 auto-mapping 校验,加一个
+  确定性 CI gate,守护数据。
+- **诚实可机检。** `hardware_verified` 和 `evidence_boundary` 是可被 gate 打分的注入
+  标记,不只是散文承诺。
+
+## 效果(小样本,如实陈述)
+
+早期效果 pilot(2026-07-07,记录在 `eval/fixtures/smoke-scorecard.json`)用两种方式跑
+一组冷门 LilyGO 板级引脚/接线/调试问题:**完整系统**(注入胶囊 + 模型自己跑
+`source query` 拉取)对比**裸模型**(无 skill)。
+
+- **完整系统:6/6 全对,0 幻觉**,且全部附官方来源引用。
+- **裸模型:命中口径 4/6,人评 2/6**,并有三处*自信的错误*——例如把 SDA/SCL 接反、把
+  8-bit 并口屏说成 SPI 总线、开出错误的 TFT_eSPI Setup 文件。
+
+pilot 展示的价值是**正确 + 可验证 + 零编造**,尤其在裸模型不确定却照样硬答的板子上。
+两点诚实提醒:
+
+- 这是**小样本 pilot**,不是大规模 benchmark,只作方向性参考。
+- 完整系统的强项来自*完整*闭环(胶囊**推送**关键子集,模型再用 `source query` **拉取**
+  其余)。对*不完整*胶囊做纯推送式阅读,可能比裸模型更糟——模型会锚定在部分“已验证事实”
+  上,把其余靠推断补齐。修法是在 `SKILL.md` 和 guides 里写死一条硬规则:**胶囊是指针,
+  不是完整引脚图——引脚不在胶囊里就是“去拉取”,绝不是“猜”。**
+- **最终判据是 P4 真机 A/B**,它需要用户凭据,这里既不模拟也不伪造。
+
+## 板子覆盖
+
+source model 提供 **26 个 board fact pack**(`data/facts/board-fact-packs.json`),在
+official-source pipeline 中全部 `fields_missing_source=0`。资料不完整的 topic 如实返回
+`unknown_with_sources` 或 `needs_source_ingestion`,绝不编造引脚。近期加深的板子:
+
+- **T-Display-S3** —— 8-bit 并口(i8080)屏总线已按引脚粒度建模
+  (`display.d0`–`display.d7`、`wr`、`rd`、`cs`、`dc`、`reset`、`backlight`),runtime
+  知道这些引脚已被屏占用,之后才建议接别的线。
+- **T-Deck** —— LoRa(`lora.cs`/`busy`/`rst`/`dio1`)、键盘中断、轨迹球中断、共享 SPI
+  总线、SD 卡、显示引脚,均来自官方 `utilities.h`。
+- **T-CameraPlus-S3** —— 外设矩阵已存在,但对仍需查官方产品源才能定的话题(如存储)
+  如实返回 `unknown_with_sources`。
+
+被识别但超出范围的 LilyGO 产品(如 RP2040 等非 ESP32 板)会给出显式的支持边界一行,而
+不是注入空胶囊。普通非 LilyGO prompt 什么都不注入。
+
+## 安装
+
+把仓库给 agent 让它安装,或在 Git 与 Node.js 就绪后手动装一次:
 
 ```bash
 git clone https://github.com/Xinyuan-LilyGO/lilygo-skills.git
-cd lilygo-skills && node install.js --all      # 装到 Claude Code + Codex，自带 self-test
+cd lilygo-skills
+node install.js --all --dry-run     # 预览写入
+node install.js --all               # 安装 + 自测
+lilygo-skills doctor --json         # 确认注入链路
 ```
 
-装好后，直接在 AI 对话里用自然语言提问，无需记任何命令：
+- **Node.js** 是运行 `install.js`、挂载 Skill 的必需项。
+- **Rust/Cargo** 推荐用于完整动态 runtime。缺失时安装器仍以 **mount-only** 挂载;用
+  `--build` 在同一步编译 CLI,或用 `--prebuilt-only` 安装预编译 runtime(无需 Rust):
 
-> 我在用 LilyGO T-Display-S3，PlatformIO Arduino，帮我点亮屏幕并接一个 I2C 传感器。
+  ```bash
+  node install.js --all --prebuilt-only && lilygo-skills doctor --json
+  ```
 
-运行时会自动把该板的关键引脚、驱动头、官方示例注入到对话里。想确认链路是否装好：
+安装器把 runtime 根写到 `~/.claude/lilygo-skills/` 和 `~/.codex/lilygo-skills/`,把 router
+Skill 装到 `~/.claude/skills/lilygo-skills/SKILL.md`,向 `~/.claude/settings.json` 幂等合并
+可选的 `UserPromptSubmit` hook,并向 `~/.codex/AGENTS.md` 追加一段带标记的小节。若
+`settings.json` 不是合法 JSON,安装器会明确报错并打印手工片段,不碰这个文件。
+
+宿主工具链(Arduino CLI、PlatformIO、ESP-IDF、esp-rs、board core、串口工具、
+LoRa/GNSS 库)保持显式——都通过 `setup plan` 和用户授权步骤处理,绝不隐式安装。
+
+## 质量门禁
+
+发布 runtime 改动前,跑门禁:
 
 ```bash
-lilygo-skills doctor --json      # 检查 hook 接线与注入链路，全 PASS 即就绪
+cargo test --workspace                              # 154 个测试
+node eval/coverage-gate.js                          # 注入胶囊覆盖率 >= 基线
+node pipeline/verify-auto-mapping.js                # 抽取引脚 == 官方宏
+node pipeline/verify-source-authority.js            # 每条事实都保留有排序的官方来源
+bash scripts/ci-gate.sh                             # 34 道确定性门禁
+cargo fmt --check ; cargo clippy --workspace --all-targets -- -D warnings
 ```
 
-把它安装到 Codex、Claude Code 或其他 AI Agent 后，用户直接用自然语言描述固件
-需求即可。Agent 会按需加载对应的 LilyGO 板子、框架、source facts、官方示例、
-setup hint 和安全调试步骤，不需要用户自己手动搜索文档。
+`coverage-gate.js` 针对每个 eval prompt 直接给模型*真实收到的注入胶囊*按期望事实打分
+(当前 **62 条期望事实里覆盖 55 条,88.7%,20 个诚实标记全部在场**,基线只上不下)。因此
+裁剪脚手架永远无法悄悄让模型实际看到的事实退化。`ci-gate.sh` 跑 34 道确定性检查
+(byte-for-byte 胶囊 fixture、板级三问测试、scorecard grading、install/doctor smoke、
+source pipeline)。
 
-已提交的 meta Skill 是上下文注入的运行入口：识别板子/框架/领域，读取官方来源，
-规划有界调试闭环，返回完成状态，申请权限，只在授权后运行本地命令，分类失败，并记录
-证据。自动生成的 skills 是这个运行流的补充上下文，本身不是产品边界。
+## 如何加一块板
 
-文档入口：
+板级事实一律从官方 LilyGO 来源 ingest,绝不手敲:
+
+1. 在 `pipeline/source-manifest.json` 加一条官方源条目(板 id、官方头文件/示例原始 URL、
+   line range、topic、`authority_rank`,以及宏→事实 key 映射)。若该板用了共享表还不认识
+   的宏名,扩展 `pipeline/pin-naming-conventions.json`。
+2. 先 dry-run 再写入:
+
+   ```bash
+   node pipeline/ingest-from-manifest.js --board <board-id> --json
+   node pipeline/ingest-from-manifest.js --board <board-id> --write
+   ```
+
+3. 保持门禁全绿(auto-mapping、source-authority、all-boards pipeline、coverage gate、
+   `scripts/ci-gate.sh`)。新的期望事实进 `eval/tasks.json`;真实注入覆盖更多时用
+   `node eval/coverage-gate.js --update-baseline` 把基线**上调**(绝不下调)。
+
+## 文档
 
 | 主题 | English | 中文 |
 |------|---------|------|
@@ -41,689 +210,5 @@ setup hint 和安全调试步骤，不需要用户自己手动搜索文档。
 | 验证等级 | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | 新增板子 | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
 
-公开仓库只保存 runtime source：CLI、安装器、router Skill、source model、
-templates、references、schemas 和发布门禁。
-
-项目目标是逐步覆盖 LilyGO boards。Runtime 覆盖从 LilyGO ESP32 系列产品开始：
-ESP32、ESP32-S2、ESP32-S3、ESP32-C3、ESP32-P4。其他 LilyGO 产品可以进入同一套
-source-candidate flow：Agent 记录公开资料、把请求路由到 source discovery，并在该
-board family 具备 source-backed support 后展开 build、flash、OTA 和硬件调试指导。
-
-当前 source model 提供 26 个 board fact pack（`data/facts/board-fact-packs.json`），
-在 official-source pipeline 中全部 `fields_missing_source=0`。近期加深的板子包括：
-
-- **T-Display-S3**：8-bit 并口（i8080）屏总线已按引脚粒度建模，runtime 知道
-  `display.d0`–`display.d7`、`display.wr`、`display.rd`、`display.cs`、
-  `display.dc`、`display.reset`、`display.backlight` 都已被屏占用，之后才建议接别的线。
-- **T-Deck**：LoRa（`lora.cs`/`lora.busy`/`lora.rst`/`lora.dio1`）、键盘中断
-  （`keyboard.int`）、轨迹球/触摸中断、共享 SPI 总线、SD 卡和显示引脚均来自官方
-  `utilities.h`。
-- **T-CameraPlus-S3**：外设矩阵已存在，但对仍需查官方产品源才能定的话题（如存储）
-  如实返回 `unknown_with_sources`，绝不臆造 SD/SPI/MMC 引脚。
-
-被识别但超出范围的 LilyGO 产品（如 RP2040 等非 ESP32 板）不会注入空胶囊：它会给出
-一条显式的支持边界，说明该板不受支持、本 runtime 只覆盖 ESP32 系列。普通非 LilyGO
-prompt 仍然什么都不注入。
-
-## 架构如何工作
-
-lilygo-skills 不是一组静态 prompt 片段，而是一个 context harness。安装后的 Skill
-只是一个很小的入口，真正判断 prompt 是否和 LilyGO 有关、应该选哪块板子和框架、
-哪些 source facts 可以安全注入、下一步应该给哪些展开命令，都是由 Rust runtime
-完成。
-
-这个架构由五个实际部件组成：
-
-1. **Meta Skill 入口**：`skills/lilygo-router/SKILL.md` 是唯一提交的 routed
-   Skill。它告诉 Codex 或 Claude Code 如何调用安装态 runtime，以及生成上下文在哪。
-2. **Source model**：`data/**`、`index/**`、schema、recipe、playbook 和官方
-   references 是板子、外设、示例、setup 路径和调试指导的 source truth。
-3. **生成层**：板子、框架、外设、芯片、功能、debug、app、playbook 等 Skill 会生成到
-   安装目录或项目 cache。它们是 runtime artifact，不是提交到仓库里的静态快照。
-4. **紧凑 capsule**：route 和 hook 输出默认很小。查询类 prompt 只拿 id、关键事实、
-   readiness 和展开命令；实现或调试类 prompt 才增加精选 demo、`next_actions` 和
-   带权限边界的 goal 步骤。
-5. **项目记忆**：`.lilygo-skills/project.json` 保存公开的板子/框架默认值；project
-   ledger 可以记录 prompt-safe 的 context digest 和曾验证 capability 摘要。代码或
-   source 变化、runtime 升级、TTL 过期，或用户要求重新验证时，这些记忆会变成 stale。
-
-所以默认体验是渐进式披露。Agent 不需要每次都把整份板级手册塞进 prompt，而是先拿到
-最小可用 capsule，再通过稳定命令展开：
-
-```bash
-lilygo-skills source query --board <board-id> --topic io --json
-lilygo-skills index query <skill-or-playbook-id> --json
-lilygo-skills goal plan --json "<prompt>"
-lilygo-skills goal complete --dry-run --json "<prompt>"
-```
-
-接触硬件的动作需要明确授权。`goal complete` 是 coordinator：它会返回 readiness、
-缺失的 source data、需要的 setup、权限、计划中的 build/flash/serial 步骤和证据边界。
-物理动作通过已授权的 goal execution 和 evidence collection 执行。
-
-## 当前 runtime 改进点
-
-当前 runtime 围绕四个已经进入 release gate 的属性设计：
-
-- **默认上下文更小**：当前 gate 把纯查询 hook context 控制在约 `819` bytes，实现类
-  hook context 约 `1381` bytes，同一 session 重复上下文约 `209` bytes；同时保留关键
-  引脚、证据边界和展开命令。
-- **板级事实更有来源**：official-source pipeline 现在检查 26 个 board fact pack，
-  `fields_missing_source=0`；资料不完整的 topic 返回 `unknown_with_sources` 或
-  `needs_source_ingestion`，不会编造 facts。
-- **行动路径更清楚**：实现类 prompt 会给精选官方 demo、source query 和带权限的
-  `next_actions`；纯查询 prompt 保持只读，不注入 build、flash、serial、network 或
-  OTA 动作。
-- **回归门禁更硬**：`bash scripts/ci-gate.sh` 跑 48 道确定性 smoke（byte-for-byte
-  capsule fixture、板级三问测试、scorecard grading、install/doctor smoke、source
-  pipeline），而 `node eval/coverage-gate.js` 针对每个 eval prompt 直接给模型*真实
-  收到的注入胶囊*按期望事实打分。该覆盖门禁执行棘轮化基线（当前 62 条期望事实里
-  `covered >= 53`，即 85.5%，且 20 个诚实标记全部在场），因此裁剪脚手架永远无法悄悄
-  让模型实际看到的事实退化。source 完整性另由 `pipeline/verify-auto-mapping.js`
-  （抽取的引脚等于官方宏）和 `pipeline/verify-source-authority.js`（每条事实都保留有
-  排序的官方来源）守护，二者都接入 pipeline 门禁。
-
-这样扩展新板子或刷新资料时，不需要把默认 prompt 变大：补 source data，重新生成
-runtime Skills，跑 gate，Agent 就能看到更好的板级上下文。
-
-## 60 秒上手检查
-
-如果使用包含预编译 runtime 的 release bundle，最短安装和自检是一条命令：
-
-```bash
-node install.js --all --prebuilt-only && lilygo-skills doctor --json
-```
-
-如果是在没有 `dist/bin/<platform>/lilygo-skills` 的源码 checkout 里，先用同一路径
-做 dry-run：
-
-```bash
-node install.js --all --dry-run --prebuilt-only
-```
-
-然后直接用自然语言问 Agent：
-
-```text
-我在用 LilyGO T-Watch S3，屏幕和触摸已经占用了哪些引脚？
-```
-
-预期 capsule 不应该是一整份手册。它应该识别到 `board-t-watch-s3`，保持 V3
-source/context 证据边界，并给出 display/input 的紧凑事实或展开命令。当前 source
-model 可以展开到这些 source-backed facts：
-
-```text
-display: ST7789 240x240, MOSI=GPIO13, SCLK=GPIO18, CS=GPIO12, DC=GPIO38, BL=GPIO45
-touch: FT6X36 on Wire1, SDA=GPIO39, SCL=GPIO40, INT=GPIO16
-expand: lilygo-skills source query --board board-t-watch-s3 --topic display --json
-expand: lilygo-skills source query --board board-t-watch-s3 --topic input --json
-```
-
-这就是预期的第一次体验：用户正常描述需求，Agent 拿到当前已经 ready 的板级事实；
-更深的实现继续通过显式 source query、goal plan、setup 和需要权限的验证命令推进。
-
-## 安装到 AI Agent
-
-推荐方式是直接让 AI 安装这个 Skill：
-
-```text
-帮我从 https://github.com/Xinyuan-LilyGO/lilygo-skills 安装这个 LilyGO Skill，
-并在当前固件仓库里使用它。如果缺 Node.js，先告诉我；如果需要构建完整
-Rust runtime，安装 Rust/Cargo 前先问我。
-```
-
-推荐环境：
-
-- Git：用于 clone 仓库和 source reference。
-- Node.js：运行 `install.js` 和挂载 Skill 必需。
-- Rust/Cargo：完整动态 runtime 推荐具备。如果暂时缺失，也可以先挂载 Skill；
-  Agent 会根据 setup guidance 后续帮助配置 Rust/Cargo 或安装预编译 runtime。
-
-Agent 应该先检查：
-
-```bash
-git --version
-node --version
-rustup --version   # 只有本机构建 runtime 前才需要
-cargo --version    # 只有本机构建 runtime 前才需要
-```
-
-如果缺 Node.js，Agent 会说明 installer 需要 Node.js。如果缺 Rust/Cargo，
-Agent 仍然可以先挂载 Skill，然后根据 setup guidance 配置 Rust/Cargo 或使用预编译
-runtime。宿主依赖安装保持在显式 setup plan 中。Arduino CLI、PlatformIO、ESP-IDF、
-esp-rs、board core、串口工具、LoRa/GNSS 依赖等框架工具，也会由 Agent 根据
-`setup plan` 和当前固件任务继续配置。
-
-Git 和 Node.js 具备后的手动挂载：
-
-```bash
-git clone https://github.com/Xinyuan-LilyGO/lilygo-skills.git
-cd lilygo-skills
-node install.js --all --dry-run
-node install.js --all
-lilygo-skills doctor --json
-```
-
-安装位置：
-
-```text
-~/.codex/lilygo-skills/
-~/.claude/lilygo-skills/
-```
-
-安装器同时会接好两个宿主的注入链路：
-
-- **Claude Code**：把带 YAML frontmatter 的 router skill 装到
-  `~/.claude/skills/lilygo-skills/SKILL.md`，并向 `~/.claude/settings.json`
-  幂等合并一个 `UserPromptSubmit` hook：
-
-  ```json
-  {
-    "hooks": {
-      "UserPromptSubmit": [
-        {
-          "hooks": [
-            {
-              "type": "command",
-              "command": "\"$HOME/.claude/lilygo-skills/bin/lilygo-skills\" hook claude"
-            }
-          ]
-        }
-      ]
-    }
-  }
-  ```
-
-  LilyGO 相关 prompt 会通过 `hookSpecificOutput.additionalContext` 信封注入
-  上下文；无关 prompt 保持静默（fail-open，退出码 0）。如果 `settings.json`
-  不是合法 JSON，安装器会明确报错并打印上面的手工接线片段，不会碰这个文件。
-  重复安装不会产生重复条目。
-
-- **Codex**：向 `~/.codex/AGENTS.md` 追加一段带标记的 `lilygo-skills` 小节
-  （只追加一次，重装时原位替换），指向 runtime 根目录和 `route --json`
-  发现协议。
-
-卸载请按顺序：先删除 `~/.claude/settings.json` 里的 `UserPromptSubmit` 条目
-（否则每条 prompt 都会报 hook 命令失败），再删除
-`~/.claude/skills/lilygo-skills/`、`~/.claude/lilygo-skills/`、
-`~/.codex/AGENTS.md` 里的标记小节和 `~/.codex/lilygo-skills/`。
-
-公开源码树是 meta-only：唯一提交的 Skill 是 `skills/lilygo-router/SKILL.md`，
-即 meta router。板子、系列、框架、工具、外设、芯片、功能、debug、应用等 skill
-不再提交到 `skills/` 下，而是按需从 `data/` 里的 source model 生成。
-`skills/references/` 下的静态文档和 `templates/skills/` 下的生成契约会提交，
-方便用户查看上下文如何选择、生成的 Skill 文件如何成形。
-
-当已有编译好的 runtime 时，`install.js` 会通过调用 CLI 的 `generate skills`
-把 runtime skills 生成到安装目录，而不是拷贝一份已提交的快照。完整安装内容包括
-`lilygo-skills` 二进制、刚生成的 runtime skills、source/fact 数据，以及 Agent 会
-加载的 meta router Skill。真实 source truth 在 `data/`、`index/` 和官方资料里；
-完整安装每次都从这个 source model 重新生成 skills。
-安装目录也包含 `skills/references/` 和 `templates/skills/`，因此安装态 Agent
-不需要浏览源码 checkout 也能查看同一套契约。
-
-release 包可以直接使用预编译 runtime，不需要本机 Rust：
-
-```bash
-node install.js --all --dry-run --prebuilt-only
-node install.js --all --prebuilt-only
-```
-
-`--prebuilt-only` 不会退回 Cargo。在没有
-`dist/bin/<platform>/lilygo-skills` 的源码 checkout 里，dry-run 会报告选中的
-平台和 planned writes；真正 apply 会在写 runtime 文件前明确失败。源码开发时使用
-mount-only 或 `--build`。
-
-如果没有编译好的 runtime，且没有显式传 `--build`，`install.js` 仍会以
-**mount-only** 模式成功挂载。它会接好 Codex/Claude 入口，复制 meta router、
-data、templates 和 references，并安装一个很小的 setup-only launcher。这个
-launcher 会明确报告 setup-only mode，引导 Agent 先看 setup readiness，再构建或安装
-runtime 后继续深入固件开发。
-
-需要在同一步升级为完整动态上下文时，使用 `--build`。
-`install.js --build` 会先运行 `cargo build --release -p lilygo-skills-cli`。
-不带 `--build` 时，安装器默认优先安装 `target/release/lilygo-skills`，缺失时回退到
-`target/debug/lilygo-skills`，再缺失则回退到 mount-only；也支持显式指定二进制：
-
-```bash
-node install.js --all --dry-run
-node install.js --all
-node install.js --all --dry-run --prebuilt-only
-node install.js --all --dry-run --build
-node install.js --all --build
-node install.js --all --profile release
-node install.js --all --bin /path/to/lilygo-skills
-```
-
-正常安装后直接调用 `lilygo-skills`。`cargo run` 只用于源码 checkout 内的开发
-和测试。如果 Agent 已经有编译好的二进制，可以用 `--bin` 直接安装这个产物，不需要
-再次构建 CLI。
-
-安装器把宿主工具链保持为显式步骤：Arduino CLI、PlatformIO、ESP-IDF、esp-rs、
-board core、固件库和 LoRa/GNSS 依赖都通过 setup plan 和用户授权的安装步骤处理。
-
-完整安装默认会运行一次 `doctor` 自测。之后也可以随时运行：
-
-```bash
-lilygo-skills doctor --json
-lilygo-skills doctor --json --home "$HOME"
-```
-
-`doctor` 会检查 runtime data、生成 skill 可用性、一个 LilyGO 样例注入、一个 no-op
-样例，并默认检查当前 `$HOME` 下 Codex/Claude 的接线状态。缺少宿主集成会报告为
-warning；存在 LilyGO hook 但命令畸形会失败。当 Codex 和 Claude 两端 runtime 都
-存在时，`doctor` 还会检查二进制和数据镜像是否漂移。漂移是 warning，并给出重跑安装
-命令；hook 接线损坏仍是 failure。硬件、OTA、串口、RF、显示和传感器结果通过对应
-任务的 goal evidence flow 验证。
-
-Setup 会先通过 Skill 路由，而不是直接运行安装器。机器 readiness 由只读 setup
-planner 处理：
-
-```bash
-lilygo-skills setup plan --framework arduino --json
-lilygo-skills setup plan --framework platformio --json
-lilygo-skills setup plan --framework esp-idf --json
-lilygo-skills setup plan --framework rust --json
-```
-
-`setup plan` 是只读的：它返回检查项和安装提示，`writes=[]`。安装包、修改固件文件、
-打开串口和烧录硬件都作为显式后续步骤执行。
-
-## 用自然语言开始
-
-安装后，用户不需要先研究 CLI，直接对 AI 说需求即可：
-
-```text
-我在用 LilyGO T-Display-S3，PlatformIO Arduino 项目。
-帮我接一个 I2C 温湿度传感器，并把读数显示到 LVGL 屏幕上。
-```
-
-```text
-这个仓库目标是 LilyGO T-Beam。
-帮我搭 LoRa + GNSS 遥测，并给出串口调试路径。
-```
-
-```text
-我有一个 LilyGO T-Deck 显示项目。
-帮我找到显示和输入相关资料，做一个小 UI，并说明如何验证。
-```
-
-Agent 会用这个 Skill 判断应该注入哪些紧凑上下文、读哪些官方示例或源码、以及
-哪些 setup/debug 命令可以安全执行。
-
-默认注入会尽量小。查询类 prompt 只拿 matched ids、关键事实和展开命令，不注入
-demo、recipe、build、flash、serial、network 或 OTA 动作。实现和调试 prompt 会多拿
-紧凑的 `next_actions`，其中包括只读的 `goal-plan-bridge`，用于提醒 Agent 先查看
-goal plan，再编辑固件或接触硬件。build、flash、serial、network、OTA 仍然只作为
-需要显式权限的下一步出现。显示 bring-up 会优先给最小官方 demo；factory 示例仍保留
-给全板或多外设调试。
-混合意图按动作优先处理，例如“先查一下引脚，然后帮我点亮屏幕”会进入实现路径；
-纯查询措辞，例如“哪些引脚被屏幕占用了”，在中英文里都保持只读。
-
-在同一个 AI session 里，同一块板子/主题的重复 hook context 可以折叠为更短的
-增量 capsule。关键引脚、证据边界和展开命令会保留；重复的大块 facts、demo、recipe
-和 generated skill 列表会被裁掉。Agent 仍然可以随时通过 `source query`、
-`index query`、读取生成 skill 或 `goal plan` 展开完整上下文。
-
-跨 session 的固件仓库会使用 project ledger 做同样的预算控制。它在
-`.lilygo-skills/` 下保存 prompt-safe 摘要、source signature、曾经验证过的 capability
-证据和 context digest；串口、Wi-Fi、OTA endpoint、token、原始日志和私有 evidence
-path 保留在被忽略的项目本地状态。Ledger 永远不替代官方 source facts。用户要求重新运行或重新验证时，runtime
-会绕过这层紧凑记忆，重新给出完整 source/goal 路径。
-
-常见任务可以直接这样说：
-
-| 用户可以说 | Agent 背后应该触发 |
-|------------|--------------------|
-| “帮我在这个仓库初始化 LilyGO Skill，我用 T-Display-S3 和 PlatformIO。” | `project init`，写 `.lilygo-skills/project.json`，生成 ignored 的项目 cache |
-| “重新生成这个项目的 LilyGO skills，并检查是否完整。” | `generate skills --out .lilygo-skills/generated-skills` + `verify --generated-root` |
-| “我准备用 Arduino/ESP-IDF/PlatformIO/Rust 开发，帮我检查环境。” | `setup plan --framework ...` |
-| “这个板子的屏幕/LoRa/GNSS/某个传感器怎么接、用哪个 demo？” | `source query` 和必要的 generated board/peripheral layer |
-| “帮我实现这个功能，先告诉我还缺什么信息。” | `goal complete --dry-run` 或 `goal plan` |
-| “跑 benchmark，确认这个 Skill 注入没有退化。” | `benchmark --generated-root ...` 或默认 registry benchmark |
-| “验证到 V3/V4/V5，并说明证据是什么。” | 按验证等级选择 route/source/build/flash/serial/OTA/display 证据 |
-| “这个项目有自己的 LVGL 或串口调试习惯，帮我作为本地上下文加入。” | `.lilygo-skills/skills/index.json` 加项目 `SKILL.md`，作为补充上下文路由 |
-| “这个项目的显示 bring-up 已经验证过了，之后帮我记住。” | 通过 redacted evidence summary 写 `project ledger record`，后续注入更紧凑 |
-| “安装后确认注入链路真的生效。” | `doctor --json` |
-| “不碰板子，先检查硬件证据 harness 是否可用。” | `scripts/hardware-gold-standard-live-smoke.sh --dry-run` |
-
-这些自然语言请求会触发明确的运行路径。普通问答不会隐式写文件；只有用户要求安装、
-初始化、生成、更新、实现或验证时，Agent 才会进入对应的写入或执行命令。
-
-对于实现、setup、demo 和调试类任务，Agent 通常先运行：
-
-```bash
-lilygo-skills goal complete --dry-run --json "<prompt>"
-```
-
-这个 capsule 会直接说明当前 completion state：是否已经 ready、是否需要询问板子或
-框架、是否需要 source ingestion、是否缺 generated skills、是否需要 setup、是否需要
-显式权限，或者是否可以交给已有安全 goal runner 执行。
-
-对于实现或调试类请求，Skill 还会路由自动生成的 playbook。它们是精简的操作指南，
-覆盖 source discovery、setup、build/flash/serial、LVGL、OTA、BSP driver、
-radio/GNSS 等工作。Agent 起初只看到紧凑的 playbook id 和摘要；只有任务需要完整
-检查清单时，才会用 `lilygo-skills index query playbook-lvgl-debug --json` 或对应
-`playbook-*` id 展开。
-
-如果用户明确说了框架，Agent 会加载对应框架 layer。如果某个构建/实现任务需要
-框架，但 prompt 和项目上下文都没有提供，runtime 会返回 `needs_clarification`，
-让 AI 在 Arduino、PlatformIO、ESP-IDF、Rust esp-rs 等选项中询问用户。轻量资料
-查询可以保持 framework unspecified，直到有足够信号再选择。
-
-## Agent 会做什么
-
-以 T-Display-S3 传感器示例为例，Skill 会帮助 Agent：
-
-1. 从 prompt 或项目上下文识别精确板子和框架。
-2. 只加载当前任务需要的板子、框架、显示、传感器相关 layer。
-3. 需要实现细节时查询 source-backed facts：引脚、总线、连接器、外设、demo。
-4. 如果已知板子/主题资料还不完整，返回 `needs_source_ingestion`、官方资料和
-   update 命令，而不是直接猜。
-5. 加入 source-first 的 playbook hint，并只在需要详细清单时展开对应 playbook。
-6. 先用 `goal complete` 判断下一步 completion state。
-7. 为 Arduino、PlatformIO、ESP-IDF、Rust esp-rs、LVGL、串口、OTA、simulator、
-   build、flash 生成 setup、source 或 debug plan。
-8. 在接触硬件、串口、网络、OTA 或 simulator artifact 前先请求权限。
-
-这样没有经验的用户也能从“板子名 + 目标”开始，同时避免 AI 编造 GPIO、bus、
-屏幕芯片或不支持的工作流。
-
-外设首先是 board facts：引脚、总线、expander、connector、电源、屏幕、无线电、
-传感器、存储、输入设备和 demo 都应该来自对应板子的 source-backed fact pack。
-peripheral/chip layer 是跨板复用的索引，帮助路由相似器件，但不能替代板子自己的
-事实。以 LoRa/GNSS 为例，runtime 可以路由到 T-Beam、LoRa、GNSS、Arduino 和
-serial-debug 上下文，但具体芯片、总线、天线、区域和 demo 指导仍取决于这块板子的
-source completeness。
-
-## 渐进式披露
-
-Runtime 采用分层设计，避免一次性把所有文档塞进上下文。公开模型编号是 `L0` 到
-`L14`；`L14` 是 project ledger layer，用于压缩同一项目里的重复上下文。
-
-| Layer | 何时加载 | 作用 |
-|-------|----------|------|
-| L0 | 始终 | Router、hook envelope、verify、benchmark |
-| L1 | 识别到板子/项目上下文 | LilyGO 板子、MCU 系列、source pointer |
-| L2 | 识别到外设/芯片/功能 | Display、sensor、GNSS、LoRa、power、storage、input |
-| L3 | 识别到框架 | Arduino、PlatformIO、ESP-IDF、Rust esp-rs、LVGL |
-| L4 | 要实现或调试 | Build、flash、serial、OTA、simulator、app recipe |
-| L5 | 固件仓库上下文 | `.lilygo-skills/project.json` 默认值和澄清问题 |
-| L6 | 用户要求实现/调试 | Goal plan、权限、artifact、证据边界 |
-| L7 | 需要细节 | Source facts、preferences、reference read hints |
-| L8 | 资料不完整 | Completeness 状态和 enrichment 下一步 |
-| L9 | 需要可复用实现/调试模式 | 生成的 playbook hint 和展开命令 |
-| L10 | Agent 需要完成任务 | Completion coordinator 状态、setup、权限和证据摘要 |
-| L11 | 需要实现或调试路径 | Action routing、按意图选择 demo 和带权限的 `next_actions` |
-| L12 | prompt budget 需要保持小 | Goal bridge、active doctor hint 和紧凑 starter-board refs |
-| L13 | 同一 prompt 上下文重复出现 | 查询/动作拆分、session 增量提示、runtime parity、硬件 harness |
-| L14 | 项目已经看过或验证过上下文 | Project ledger hit、stale 标记和重新验证命令 |
-
-默认注入很小：id、摘要、top facts、readiness status 和查询命令。完整 fact pack、
-官方源码和长参考文档只在任务需要时再读取。Playbook 也遵循同样规则：route 和 hook
-只注入类似 `playbook-lvgl-debug` 的紧凑 id；只有用户要求实现、调试、setup、烧录、
-验证或诊断时，Agent 才展开完整生成 playbook。
-
-第一次使用某块板子时，安装态 runtime 会从安装目录里选择已经生成好的相关 layer。
-route 和 hook 保持 no-write：如果某个被路由到的生成 skill 缺失，它们可以报告这一点
-并附上一条紧凑的 generate/update 命令，但绝不会隐式写入 skill，也不会联网抓取资料。
-只有显式的 install、update、project-init 和 generate 命令才会写入生成 skill，且只写
-到安装目录、项目 cache 或测试输出目录。新增或过期资料通过显式 `update boards`、
-`update skills`、`update source-packs`、`update board-facts` 命令刷新。
-
-## 项目上下文
-
-每个固件仓库可以保存公开默认值：
-
-```bash
-lilygo-skills project init \
-  --project /path/to/firmware \
-  --board board-t-display-s3 \
-  --framework fw-platformio \
-  --json
-```
-
-这会写入可提交的 `.lilygo-skills/project.json`，并生成 ignored 的项目 cache
-`.lilygo-skills/generated-skills/`。机器本地证据应该放在
-`.lilygo-skills/local.json` 或 `.lilygo-skills/evidence/`，并保持 ignored。
-OTA 执行也走这个私有层。用户提出 OTA 需求时，agent 会先从项目 manifest、
-脚本、reference 和 ignored 本地 runner 配置里找真实执行方式；如果需要，它可以
-把从项目推导出的 `ota_manifest_argv` 和 `ota_observe_argv` 写进
-`.lilygo-skills/local.json`，只在缺少无法推断的私有端点、凭证或传输信息时再问。
-这些私有值不会进入公共 prompt context 或命令输出。
-
-路由优先级：
-
-```text
-明确 prompt > project context > global profile > needs_clarification > no-op
-```
-
-缺少板子或框架时，Agent 会收到结构化问题，而不是静默猜测。
-
-Project ledger 是同一目录下的独立记忆层：
-
-```text
-.lilygo-skills/
-  project.json            公开的板子/框架默认值
-  ledger.json             公开的曾验证 capability 摘要
-  context-digest.json     公开的已注入上下文 hash
-  local.json              ignored 的私有 runner 细节
-  evidence/               ignored 的私有或原始证据
-```
-
-Agent 通常会在 `goal complete` 已经拿到证据后维护 ledger；或者当用户明确要求记住某个
-已经验证过的项目能力时，通过结构化、已脱敏的记录写入。后续 prompt 只会拿到过去式的
-紧凑提示，例如 "previously verified"，以及展开命令。项目源码变化、source signature
-变化、runtime 版本变化、digest 过期，或用户要求重新运行/重新验证时，条目会变成
-stale 或被绕过。可以这样检查或清空这层公开记忆：
-
-```bash
-lilygo-skills project ledger show --project /path/to/firmware --json
-lilygo-skills project ledger clear --project /path/to/firmware --json
-```
-
-调试 runtime 时，可以设置 `LILYGO_SKILLS_DISABLE_PROJECT_LEDGER=1` 强制恢复非 ledger
-行为。
-
-## Preferences 和 References
-
-Preferences 用来告诉 Agent 你希望 LilyGO 开发怎么做，例如框架优先级、调试工具、
-代码大小限制和安全默认值。它是行为策略，不是资料来源：
-
-```bash
-lilygo-skills preference show --json
-lilygo-skills preference show --project /path/to/firmware --json
-```
-
-项目偏好写在 `.lilygo-skills/preferences.json`，只要里面都是公开行为偏好，就可以
-提交：
-
-用户不需要一开始手写这个文件，可以直接对 AI 说：
-
-```text
-这个固件仓库优先用 PlatformIO，串口调试用 serial-mcp-server，单个固件函数控制在 60 行以内。
-```
-
-Agent 应该先确认这些是公开行为偏好，然后写入或更新
-`.lilygo-skills/preferences.json`。CLI 会负责解析、校验，并且只在实现或调试类
-prompt 需要时注入紧凑结果。
-
-```json
-{
-  "framework_order": ["platformio", "arduino", "esp-idf", "rust"],
-  "debug_tools": ["serial-mcp-server", "espflash", "binflow"],
-  "code_limits": {
-    "max_function_lines": 60,
-    "max_file_lines": 500,
-    "max_nesting": 3
-  },
-  "hardware_safety": {
-    "prefer_dry_run": true,
-    "require_explicit_flash": true
-  }
-}
-```
-
-不要把串口、Wi-Fi、OTA 主机、凭证、原始日志、本地 evidence path 写进 preferences。
-这些属于 ignored local state，例如 `.lilygo-skills/local.json`。
-
-References 用来告诉 Agent 在需要更多上下文时应该读哪些资料：
-
-```bash
-lilygo-skills reference list --json
-lilygo-skills reference list --project /path/to/firmware --json
-```
-
-References 通常应该是官方示例、源码、数据手册、硬件说明或项目本地设计文档。
-比如用户可以说：
-
-```text
-把 LilyGoLib factory example 作为这个仓库的显示和外设 bring-up 参考。
-```
-
-确认后，Agent 写入 `.lilygo-skills/references.json`。这里不能只存一个裸链接，AI
-应该补上说明字段：`title`、`kind`、`applies_to`、`authority`、`summary`、
-`read_when`、`inject_triggers`，让后续 Agent 知道这份资料是什么、什么时候读、
-为什么读。
-
-```json
-{
-  "schema_version": 1,
-  "entries": [
-    {
-      "id": "project-lilygo-factory-example",
-      "title": "LilyGoLib factory example",
-      "kind": "official-example",
-      "applies_to": ["display", "peripheral", "bring-up"],
-      "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/examples/factory/factory.ino",
-      "authority": "source-navigation",
-      "summary": "Read as an official example before changing board display or peripheral bring-up code.",
-      "read_when": "User asks to implement or debug display, sensor, radio, or board bring-up behavior.",
-      "inject_triggers": ["display", "sensor", "peripheral", "bring-up", "factory"]
-    }
-  ]
-}
-```
-
-`serial-mcp-server` 更适合作为 preference 例子，因为它是调试工具偏好。它也可以在
-内置 tool reference catalog 里出现，但项目 references 通常应该指向代码、官方示例、
-板级文档、数据手册或项目设计说明。Preference 不会强制 AI 先读 reference；prompt、
-项目上下文、route 结果和 goal 类型会一起解析，`goal plan` 只注入相关的紧凑
-`preferences` 和 `reference_hints`。Source-completeness 和 board facts 优先级更高：
-如果板子/主题缺关键事实，capsule 应该先返回 `needs_source_ingestion`，而不是把一个
-reference 链接当作已经足够。
-
-内置 reference catalog 只包含公开 URL（官方文档、工具参考），公网克隆开箱即可
-全部解析；`reference list --json` 会报告每个条目的 source health。
-
-OTA、LVGL、LoRa 不是提交的板级外设 skill，而是 `data/recipes/recipes.json` 里的
-source-backed recipe pack。每个 recipe source pack 引用官方上游文档（Espressif OTA
-文档、LVGL 文档和示例、RadioLib 加 LilyGO LoRa 示例）。`goal plan` 会暴露
-recipe id、source-pack id 和官方 refs，让 Agent 先读权威来源。
-
-生成 playbook 是 recipes 和 source facts 之上的操作模式层。它们来自
-`data/playbooks/playbooks.json`，和其他 deep skills 一样生成到 runtime。Board facts
-仍由 source model 提供；硬件结果来自 goal evidence。Playbook 告诉 Agent 应该读哪些
-source、检查哪些失败维度，以及需要什么证据。
-
-## 更新和资料刷新
-
-用户可以直接说：
-
-```text
-更新这个板子的 LilyGO Skill 资料，并检查 display facts 是否完整。
-```
-
-后台通常先跑 dry-run：
-
-```bash
-lilygo-skills update sources --dry-run --json
-lilygo-skills update boards --dry-run --json
-lilygo-skills update skills --dry-run --json
-lilygo-skills update source-packs --dry-run --json
-lilygo-skills update peripheral-skills --dry-run --json
-lilygo-skills update fact-packs --dry-run --json
-lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json
-lilygo-skills verify --json
-lilygo-skills benchmark --json --iterations 5000
-```
-
-由于 skill 是生成而非提交的，可以直接生成一份 generated cache 并检查：
-
-```bash
-lilygo-skills generate skills --out <dir> --json
-lilygo-skills verify --generated-root <dir> --json
-lilygo-skills benchmark --generated-root <dir> --json --iterations 5000
-```
-
-`generate skills` 把每个 runtime skill 写入 generated cache（绝不写入源码树），
-并报告 `skill_count`、`source_pack_ids`、`source_hashes`、`warnings` 和
-`verification_hints`。`update skills` 和 `update peripheral-skills` 是同一条
-generated cache 路径的兼容入口；默认写 `.lilygo-skills/generated-skills/`，
-也可以用 `--out` 指向其他 generated root。`verify --generated-root` 双向检查该
-generated cache：registry/index 一致性、每个被路由到的 skill 都存在、没有未注册
-generated skill、必需的 reference skill 都存在，以及 evidence-boundary 措辞诚实。
-`benchmark --generated-root` 在该生成 skill 集合上 benchmark 路由。
-
-`benchmark` 是这个工程和安装后二进制 `lilygo-skills` 自带的质量门。它验证路由和
-上下文注入质量：route fixtures、避免过度注入的 negative cases、已注册 skill 覆盖率、
-goal capsules 和 goal complete 状态覆盖都必须通过。Agent 或维护者在更新 source、
-skill、router 或 goal 后，以及发布新版 Skill 前运行。硬件性能通过具体板子的 build、
-flash、serial、display、RF、OTA 或外设证据验证。
-
-只有在 planned reads/writes 正确时才移除 `--dry-run`。route、hook 和 goal plan
-本身不会修改 source data。
-
-## 如何加一块板
-
-板级事实一律从官方 LilyGO 来源 ingest，绝不手敲进 runtime。要新增或加深一块板：
-
-1. 在 `pipeline/source-manifest.json` 加一条官方源条目：板 id、官方头文件/示例的原始
-   URL（如 Factory `utilities.h`）、选中该板代码块的 line range、topic、
-   `authority_rank`，以及宏→事实 key 的映射。如果该板用了共享表还不认识的宏名，就扩展
-   `pipeline/pin-naming-conventions.json`，让 auto-mapper 能复现这些引脚。
-2. 先 dry-run 看抽取出的、带 source hash 的事实（不动已提交数据），确认无误后再写入：
-
-   ```bash
-   node pipeline/ingest-from-manifest.js --board <board-id> --json
-   node pipeline/ingest-from-manifest.js --board <board-id> --write
-   ```
-
-   ingester 会抓取官方源（遵循环境里的 proxy）、做 hash、在声明的 line range 内抽取
-   声明的宏，并把 source-backed 的引脚/总线事实合并进 `data/facts/board-fact-packs.json`。
-3. 证明改动并保持门禁全绿：
-
-   ```bash
-   node pipeline/verify-auto-mapping.js --json     # 自动映射的引脚 == 官方宏
-   node pipeline/verify-source-authority.js --json # 每条事实都保留有排序的官方来源
-   node pipeline/run-official-source-pipeline.js --all-boards --json  # fields_missing_source=0
-   node eval/coverage-gate.js                       # 注入胶囊覆盖率 >= 基线
-   bash scripts/ci-gate.sh                           # 48 道确定性门禁
-   ```
-
-   新的期望事实可加进 `eval/tasks.json`；当真实注入胶囊覆盖到更多事实时，用
-   `node eval/coverage-gate.js --update-baseline` 把覆盖基线**上调**（绝不下调）。
-
-## 给 Agent 的直接命令
-
-CLI 是 Skill 背后的实现层。常用命令：
-
-```bash
-lilygo-skills route --json "<prompt>"
-lilygo-skills goal complete --dry-run --json "<prompt>"
-lilygo-skills goal plan --json "<prompt>"
-lilygo-skills setup plan --framework platformio --json
-lilygo-skills source query --board <board-id> --topic io --json
-lilygo-skills source completeness --board <board-id> --topic display --json
-lilygo-skills reference list --json
-lilygo-skills preference show --json
-lilygo-skills index query playbook-lvgl-debug --json
-lilygo-skills generate skills --out <dir> --json
-```
-
-源码 checkout 内开发时等价形式是：
-
-```bash
-cargo run -p lilygo-skills-cli -- <command>
-```
-
-本 README 是主要使用文档。
+公开仓库就是 runtime source:CLI、安装器、router Skill、source model、数据表、references、
+schema 和发布门禁。本 README 是主要使用文档。
