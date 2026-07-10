@@ -15,16 +15,7 @@ const { firstDefineMap, allDefineValues } = require("./extract-defines");
 const ROOT = path.join(__dirname, "..");
 const MANIFEST = path.join(ROOT, "pipeline/source-manifest.json");
 
-function fetchText(url) {
-  return execFileSync("curl", ["-sfL", "--max-time", "30", url], {
-    encoding: "utf8",
-    maxBuffer: 8 * 1024 * 1024,
-  });
-}
-function sliceRange(text, range) {
-  const [a, b] = range.split("-").map((n) => parseInt(n, 10));
-  return text.split("\n").slice(a - 1, b).join("\n");
-}
+const { fetchText, sliceRange } = require("./source-io");
 function extractBlockMacros(block) {
   return firstDefineMap(block);
 }

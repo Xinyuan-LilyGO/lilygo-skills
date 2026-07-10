@@ -31,17 +31,8 @@ const boardArg = (() => {
   return i >= 0 ? args[i + 1] : null;
 })();
 
-function fetchText(url) {
-  return execFileSync("curl", ["-sfL", "--max-time", "30", url], {
-    encoding: "utf8",
-    maxBuffer: 8 * 1024 * 1024,
-  });
-}
+const { fetchText, sliceRange } = require("./source-io");
 
-function sliceRange(text, range) {
-  const [a, b] = range.split("-").map((n) => parseInt(n, 10));
-  return text.split("\n").slice(a - 1, b).join("\n");
-}
 
 function extractMacros(block) {
   return firstDefineMap(block); // first definition wins inside the block
