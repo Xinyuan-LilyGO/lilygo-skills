@@ -14,6 +14,7 @@ mod recipes;
 mod reference_catalog;
 mod registry;
 mod router;
+mod selection;
 mod session_context;
 mod setup_plan;
 mod source;
