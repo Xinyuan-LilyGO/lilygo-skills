@@ -4,10 +4,10 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-first_run="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor")"
-factory="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 Arduino factory full peripheral test")"
-chinese_first="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 Arduino 帮我让屏幕先亮起来，跑个最简单的显示例程")"
-chinese_factory="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 Arduino 跑完整出厂测试")"
+first_run="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor")"
+factory="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 Arduino factory full peripheral test")"
+chinese_first="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 Arduino 帮我让屏幕先亮起来，跑个最简单的显示例程")"
+chinese_factory="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 Arduino 跑完整出厂测试")"
 
 FIRST_RUN_JSON="$first_run" FACTORY_JSON="$factory" CHINESE_FIRST_JSON="$chinese_first" CHINESE_FACTORY_JSON="$chinese_factory" node <<'NODE'
 const firstRun = JSON.parse(process.env.FIRST_RUN_JSON);

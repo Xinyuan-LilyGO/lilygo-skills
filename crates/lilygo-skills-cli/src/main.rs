@@ -5,7 +5,6 @@ mod commands;
 mod doctor;
 mod facts;
 mod generate;
-mod goal;
 mod hardware;
 mod model;
 mod peripheral_source;

@@ -92,8 +92,13 @@ pub(super) fn assemble_capsule(
 /// capsule).
 pub(super) fn context_command(root: &Path, args: &[String]) -> Result<(), String> {
     if has_flag(args, "--help") || has_flag(args, "-h") {
-        println!("Usage: lilygo-skills context [--project <dir>] [--json] [prompt]");
+        println!(
+            "Usage: lilygo-skills context [--project <dir>] [--plan] [--json] [prompt]\n\n--plan emits the full read-only capsule plan JSON for <prompt> (board/framework\nfacts, source refs, critical pins, and next-action pointers)."
+        );
         return Ok(());
+    }
+    if has_flag(args, "--plan") {
+        return context_plan_command(root, args);
     }
     let start_dir = project_start_arg(args)?;
     let registry = load_registry(root)?;
@@ -122,6 +127,43 @@ pub(super) fn context_command(root: &Path, args: &[String]) -> Result<(), String
     }
     println!("{content}");
     Ok(())
+}
+
+/// `context --plan [--project <dir>] --json <prompt>` emits the full read-only
+/// capsule plan: the routed board/framework/peripheral facts, source refs,
+/// critical pins, demo refs, recipe ids, and permission-aware next actions. It
+/// is the retained, execution-free view of the injected capsule (the same
+/// producer `hook`/`context` render into the compact string), so tooling can
+/// inspect the structured capsule without the removed goal command surface.
+fn context_plan_command(root: &Path, args: &[String]) -> Result<(), String> {
+    require_json(args)?;
+    let prompt = prompt_arg(args)?;
+    let registry = load_registry(root)?;
+    ensure_skill_files(root, &registry)?;
+    let project_start = project_start_arg(args)?;
+    let resolved_project = resolve_project_context(project_start.as_path())?;
+    let registry = registry_with_project_skills(
+        &registry,
+        resolved_project
+            .as_ref()
+            .map(|project| project.project_root.as_path()),
+    )?;
+    let mut route = if let Some(project) = resolved_project {
+        let profile = project.context.active_profile();
+        route_with_profile_or_clarification(&registry, &prompt, Some(&profile))
+    } else {
+        let profile = load_profile(root);
+        route_with_profile_or_clarification(&registry, &prompt, profile.as_ref())
+    };
+    attach_route_readiness(root, &registry, &prompt, &mut route);
+    let plan = plan_goal_with_project(
+        root,
+        &registry,
+        &prompt,
+        &route,
+        Some(project_start.as_path()),
+    )?;
+    print_json(&plan)
 }
 
 /// Resolve the active board id for `start_dir` the same way `assemble_capsule`

@@ -4,22 +4,24 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-impl="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor")"
-multi="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 debug an SPI sensor and UART module")"
-fact="$(cargo run -q -p lilygo-skills-cli -- goal plan --json "T-Display-S3 Arduino IO口怎么用? 哪些GPIO接了外设?")"
+impl="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor")"
+multi="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 debug an SPI sensor and UART module")"
+fact="$(cargo run -q -p lilygo-skills-cli -- context --plan --json "T-Display-S3 Arduino IO口怎么用? 哪些GPIO接了外设?")"
 
 IMPL_JSON="$impl" MULTI_JSON="$multi" FACT_JSON="$fact" node <<'NODE'
 const impl = JSON.parse(process.env.IMPL_JSON);
 const multi = JSON.parse(process.env.MULTI_JSON);
 const fact = JSON.parse(process.env.FACT_JSON);
 const actions = impl.context_capsule.next_actions || [];
-for (const id of ["source-query-io", "source-query-i2c", "goal-build"]) {
+for (const id of ["goal-plan-bridge", "source-query-io", "source-query-i2c"]) {
   if (!actions.some((action) => action.id === id)) {
     throw new Error(`missing implementation next action ${id}`);
   }
 }
-if (!actions.some((action) => action.permission === "allow-build")) {
-  throw new Error("implementation plan lacks permission-gated build action");
+// Execution next-actions (build/flash) were dropped with the goal command
+// surface; every retained next-action is a read-only, permission=none pointer.
+if (!actions.every((action) => action.permission === "none")) {
+  throw new Error("implementation plan emitted a permissioned execution action");
 }
 const multiActions = multi.context_capsule.next_actions || [];
 for (const id of ["source-query-spi", "source-query-uart"]) {

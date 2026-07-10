@@ -141,45 +141,6 @@ pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static
     selected
 }
 
-pub fn classify_failure(output: &str) -> Option<String> {
-    let normalized = output.to_lowercase();
-    if contains_any(
-        &normalized,
-        &[
-            "no such file",
-            "not found",
-            "command not found",
-            "not concrete",
-            "no executable goal steps",
-            "failed to run",
-        ],
-    ) {
-        return Some("missing-tool-or-source".to_string());
-    }
-    if contains_any(
-        &normalized,
-        &["failed to connect", "no serial", "permission denied"],
-    ) {
-        return Some("port-or-permission".to_string());
-    }
-    if contains_any(
-        &normalized,
-        &["timed out", "timeout", "no frames", "no data"],
-    ) {
-        return Some("runtime-timeout-no-observation".to_string());
-    }
-    if contains_any(&normalized, &["manifest", "rollback", "partition"]) {
-        return Some("ota-partition-manifest".to_string());
-    }
-    if contains_any(
-        &normalized,
-        &["undefined reference", "compile", "compilation", "error:"],
-    ) {
-        return Some("build-failure".to_string());
-    }
-    None
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -305,21 +266,5 @@ mod tests {
         let selected = selected_recipe_ids("T-Watch Ultra rotation display issue", &lvgl);
         assert!(selected.contains("recipe-lvgl-simulator"));
         assert!(!selected.contains("recipe-ota-debug"));
-    }
-
-    #[test]
-    fn goal_failure_classification() {
-        assert_eq!(
-            classify_failure("Compilation error: undefined reference").as_deref(),
-            Some("build-failure")
-        );
-        assert_eq!(
-            classify_failure("OTA manifest digest mismatch then rollback").as_deref(),
-            Some("ota-partition-manifest")
-        );
-        assert_eq!(
-            classify_failure("failed to connect to serial port").as_deref(),
-            Some("port-or-permission")
-        );
     }
 }

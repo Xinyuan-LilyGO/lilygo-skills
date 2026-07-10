@@ -13,8 +13,8 @@ use privacy::validate_public_entry;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use signature::{
-    expansion_commands, hash_project_file, project_code_signature, route_dimensions,
-    route_signature, source_signature_for_readiness, source_signature_for_route,
+    expansion_commands, project_code_signature, route_dimensions, route_signature,
+    source_signature_for_readiness,
 };
 use staleness::{digest_stale, entry_stale};
 use std::collections::BTreeSet;
@@ -370,69 +370,6 @@ pub fn maybe_compact_project_hook_context(
     full_context
 }
 
-pub fn record_goal_capabilities(
-    project_root: &Path,
-    prompt: &str,
-    plan: &GoalPlan,
-    highest_verification_level: &str,
-    hardware_verified: bool,
-    evidence_path: Option<&str>,
-) -> Result<Vec<String>, String> {
-    if disabled() || !verified_evidence_level(highest_verification_level, hardware_verified) {
-        return Ok(Vec::new());
-    }
-    let Some(board_id) = plan.route.board.clone() else {
-        return Ok(Vec::new());
-    };
-    let public_hash = evidence_path
-        .and_then(|path| hash_project_file(project_root, path).ok())
-        .map(|hash| format!("sha256:{hash}"));
-    let mut ledger = read_ledger(project_root)?;
-    let source_signature =
-        source_signature_for_route(&plan.context_capsule.readiness, &plan.route.skills);
-    for capability in capabilities_from_plan(prompt, plan) {
-        let now = current_timestamp();
-        let entry = CapabilityEntry {
-            entry_id: capability_entry_id(
-                &board_id,
-                plan.route.framework.as_deref(),
-                &capability,
-                &source_signature,
-                public_hash.as_deref(),
-            ),
-            board_id: board_id.clone(),
-            framework: plan.route.framework.clone(),
-            capability: capability.clone(),
-            verification_level: highest_verification_level.to_string(),
-            status: "verified".to_string(),
-            summary: format!(
-                "{capability} previously reached {highest_verification_level} evidence for {board_id}; re-run goal evidence before claiming current behavior."
-            ),
-            source_signature: source_signature.clone(),
-            project_code_signature: project_code_signature(project_root),
-            runtime_version: env!("CARGO_PKG_VERSION").to_string(),
-            public_evidence_hash: public_hash.clone(),
-            expand_commands: vec![
-                "lilygo-skills goal evidence --id <goal-id> --json".to_string(),
-                format!(
-                    "lilygo-skills source query --board {board_id} --topic {} --json",
-                    topic_from_capability(&capability)
-                ),
-            ],
-            verified_at: now.clone(),
-            updated_at: now,
-            expires_at: None,
-        };
-        validate_public_entry(&entry)?;
-        merge_capability(&mut ledger, entry);
-    }
-    if ledger.capabilities.is_empty() {
-        return Ok(Vec::new());
-    }
-    write_ledger(project_root, &ledger)?;
-    Ok(vec![LEDGER_FILE.to_string()])
-}
-
 fn capability_entry_from_record(
     project_root: &Path,
     record: RecordInput,
@@ -733,37 +670,6 @@ fn merge_capability(ledger: &mut ProjectLedger, entry: CapabilityEntry) {
             .cmp(&right.board_id)
             .then(left.capability.cmp(&right.capability))
     });
-}
-
-fn capabilities_from_plan(prompt: &str, plan: &GoalPlan) -> Vec<String> {
-    let mut capabilities = BTreeSet::new();
-    for chip in &plan.route.chips {
-        capabilities.insert(match chip.as_str() {
-            "chip-bhi260ap" => "imu.bhi260ap".to_string(),
-            "chip-st25r3916" => "nfc.st25r3916".to_string(),
-            "chip-sx1262" => "lora.sx1262".to_string(),
-            other => other.trim_start_matches("chip-").replace('-', "."),
-        });
-    }
-    for peripheral in &plan.route.peripherals {
-        capabilities.insert(peripheral.trim_start_matches("periph-").to_string());
-    }
-    if capabilities.is_empty() {
-        for topic in &["display", "imu", "ota", "lvgl", "lora", "gnss", "nfc"] {
-            if contains_word(prompt, topic) {
-                capabilities.insert((*topic).to_string());
-            }
-        }
-    }
-    capabilities.into_iter().collect()
-}
-
-fn topic_from_capability(capability: &str) -> &str {
-    capability.split('.').next().unwrap_or(capability)
-}
-
-fn verified_evidence_level(level: &str, hardware_verified: bool) -> bool {
-    hardware_verified || level.starts_with("V4") || level.starts_with("V5")
 }
 
 fn capability_entry_id(

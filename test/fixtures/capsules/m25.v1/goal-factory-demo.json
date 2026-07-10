@@ -105,13 +105,6 @@
         "command": "lilygo-skills index query board-t-display-s3 --json",
         "permission": "none",
         "reason": "The closest official demo is examples/factory/factory.ino; read its source before adapting it."
-      },
-      {
-        "id": "goal-start-dry-run",
-        "label": "Preview build/upload/monitor plan",
-        "command": "lilygo-skills goal complete --dry-run --json 'T-Display-S3 Arduino factory full peripheral test'",
-        "permission": "none",
-        "reason": "Confirm the execution plan and required permissions before mutating a project or device."
       }
     ],
     "completeness": {

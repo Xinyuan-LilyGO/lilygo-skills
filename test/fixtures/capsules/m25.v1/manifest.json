@@ -5,7 +5,6 @@
   "files": [
     "goal-display-first-run.json",
     "goal-factory-demo.json",
-    "goal-flash-serial.json",
     "hook-display-impl.json",
     "hook-lookup-zh.json",
     "hook-session-full.json",

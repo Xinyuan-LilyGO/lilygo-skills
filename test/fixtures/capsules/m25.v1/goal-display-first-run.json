@@ -100,10 +100,10 @@
     "next_actions": [
       {
         "id": "goal-plan-bridge",
-        "label": "Read the compact goal plan",
-        "command": "lilygo-skills goal plan --json 'T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor'",
+        "label": "Read the compact capsule plan",
+        "command": "lilygo-skills context --plan --json 'T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor'",
         "permission": "none",
-        "reason": "Use the planner as the next read-only step before editing firmware or touching hardware."
+        "reason": "Read the compact capsule plan as the next read-only step before editing firmware."
       },
       {
         "id": "source-query-io",
@@ -132,20 +132,6 @@
         "command": "lilygo-skills index query board-t-display-s3 --json",
         "permission": "none",
         "reason": "The closest official demo is examples/tft/tft.ino; read its source before adapting it."
-      },
-      {
-        "id": "goal-start-dry-run",
-        "label": "Preview build/upload/monitor plan",
-        "command": "lilygo-skills goal complete --dry-run --json 'T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor'",
-        "permission": "none",
-        "reason": "Confirm the execution plan and required permissions before mutating a project or device."
-      },
-      {
-        "id": "goal-build",
-        "label": "Run the build step after approval",
-        "command": "lilygo-skills goal complete --allow-build --json 'T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor'",
-        "permission": "allow-build",
-        "reason": "A compiled artifact is the first evidence level above source/context planning."
       }
     ],
     "implementation_start": {

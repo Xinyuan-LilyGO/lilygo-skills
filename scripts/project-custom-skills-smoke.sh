@@ -42,7 +42,7 @@ Use this after official LilyGO board facts and display source refs are loaded.
 MD
 
 route="$(cargo run -q -p lilygo-skills-cli -- route --project "$tmp" --json "LVGL touch debug")"
-plan="$(cargo run -q -p lilygo-skills-cli -- goal plan --project "$tmp" --json "LVGL touch debug")"
+plan="$(cargo run -q -p lilygo-skills-cli -- context --plan --project "$tmp" --json "LVGL touch debug")"
 
 ROUTE_JSON="$route" PLAN_JSON="$plan" node <<'NODE'
 const route = JSON.parse(process.env.ROUTE_JSON);
@@ -52,7 +52,7 @@ if (!route.skills.includes("project-lvgl-loop")) {
 }
 const hints = plan.context_capsule.internal_skill_hints || [];
 if (!hints.some((hint) => hint.skill_id === "project-lvgl-loop")) {
-  throw new Error("goal plan did not expose compact project skill hint");
+  throw new Error("context --plan did not expose compact project skill hint");
 }
 NODE
 

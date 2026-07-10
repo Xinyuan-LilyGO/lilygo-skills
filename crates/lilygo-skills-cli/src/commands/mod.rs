@@ -1,13 +1,10 @@
 //! CLI command dispatcher for route, generation, source, project, setup, and
 //! goal surfaces; handlers keep public JSON contracts stable.
+use crate::capsule::{plan_goal_with_project, render_hook_goal_summary};
 use crate::doctor::doctor_report;
 use crate::facts::{
     board_fact_enrichment_apply, board_fact_enrichment_preview, completeness_signals_for_prompt,
     fact_pack_apply, fact_pack_preview, source_completeness, source_query,
-};
-use crate::goal::{
-    GoalCompleteOptions, GoalStartOptions, cancel_goal, complete_goal, load_goal_evidence,
-    plan_goal_with_project, read_plan, render_hook_goal_summary, start_goal,
 };
 use crate::hardware::verify_hardware_profile;
 use crate::model::{ActiveProfile, RouteResult, SkillKind};
@@ -62,7 +59,6 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
         "generate" => generate_command(&root, &args[1..]),
         "verify" => verify_command(&root, &args[1..]),
         "doctor" => doctor(&root, &args[1..]),
-        "goal" => goal(&root, &args[1..]),
         "source" => source_command(&root, &args[1..]),
         "preference" => preference_command(&root, &args[1..]),
         "reference" => reference_command(&root, &args[1..]),
@@ -283,145 +279,6 @@ fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
     let home = option_value(args, "--home").map(PathBuf::from);
     let report = doctor_report(root, home.as_deref());
     print_status_json(&report, &report.status, "doctor check failed")
-}
-
-fn goal(root: &Path, args: &[String]) -> Result<(), String> {
-    let Some(subcommand) = args.first().map(String::as_str) else {
-        print_goal_help();
-        return Ok(());
-    };
-    match subcommand {
-        "--help" | "-h" => {
-            print_goal_help();
-            Ok(())
-        }
-        _ if has_flag(&args[1..], "--help") || has_flag(&args[1..], "-h") => {
-            print_goal_help();
-            Ok(())
-        }
-        "plan" => goal_plan(root, &args[1..]),
-        "complete" => goal_complete(root, &args[1..]),
-        "start" => goal_start(&args[1..]),
-        "status" | "evidence" => goal_status(&args[1..]),
-        "cancel" => goal_cancel(&args[1..]),
-        other => Err(format!("unknown goal subcommand: {other}")),
-    }
-}
-
-fn goal_complete(root: &Path, args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let prompt = goal_complete_prompt_arg(args)?;
-    let registry = load_registry(root)?;
-    ensure_skill_files(root, &registry)?;
-    let project_start = project_start_arg(args)?;
-    let resolved_project = resolve_project_context(project_start.as_path())?;
-    let registry = registry_with_project_skills(
-        &registry,
-        resolved_project
-            .as_ref()
-            .map(|project| project.project_root.as_path()),
-    )?;
-    let project_root = resolved_project
-        .as_ref()
-        .map(|project| project.project_root.clone())
-        .unwrap_or_else(|| project_start.clone());
-    let mut route = if let Some(project) = &resolved_project {
-        let profile = project.context.active_profile();
-        route_with_profile_or_clarification(&registry, &prompt, Some(&profile))
-    } else {
-        let profile = load_profile(root);
-        route_with_profile_or_clarification(&registry, &prompt, profile.as_ref())
-    };
-    attach_route_readiness(root, &registry, &prompt, &mut route);
-    let options = GoalCompleteOptions {
-        project_root: project_root.clone(),
-        project_start: project_start.clone(),
-        generated_root: output_path_arg(args, "--generated-root")?,
-        allow_generate: has_flag(args, "--allow-generate"),
-        start_options: GoalStartOptions {
-            project_root,
-            dry_run: has_flag(args, "--dry-run"),
-            allow_build: has_flag(args, "--allow-build"),
-            allow_flash: has_flag(args, "--allow-flash"),
-            allow_serial: has_flag(args, "--allow-serial"),
-            allow_network: has_flag(args, "--allow-network"),
-            allow_ota: has_flag(args, "--allow-ota"),
-            allow_simulator: has_flag(args, "--allow-simulator"),
-            port: option_value(args, "--port").map(str::to_string),
-            source_root: option_value(args, "--source-root").map(PathBuf::from),
-        },
-    };
-    print_json(&complete_goal(root, &registry, &prompt, &route, options)?)
-}
-
-fn goal_plan(root: &Path, args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let prompt = prompt_arg(args)?;
-    let registry = load_registry(root)?;
-    ensure_skill_files(root, &registry)?;
-    let project_start = project_start_arg(args)?;
-    let resolved_project = resolve_project_context(project_start.as_path())?;
-    let registry = registry_with_project_skills(
-        &registry,
-        resolved_project
-            .as_ref()
-            .map(|project| project.project_root.as_path()),
-    )?;
-    let mut route = if let Some(project) = resolved_project {
-        let profile = project.context.active_profile();
-        route_with_profile_or_clarification(&registry, &prompt, Some(&profile))
-    } else {
-        let profile = load_profile(root);
-        route_with_profile_or_clarification(&registry, &prompt, profile.as_ref())
-    };
-    attach_route_readiness(root, &registry, &prompt, &mut route);
-    let plan = plan_goal_with_project(
-        root,
-        &registry,
-        &prompt,
-        &route,
-        Some(project_start.as_path()),
-    )?;
-    print_json(&plan)
-}
-
-fn goal_start(args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let plan_path = option_value(args, "--plan")
-        .map(PathBuf::from)
-        .ok_or_else(|| "--plan <file> is required".to_string())?;
-    let project_root = project_start_arg(args)?;
-    let plan = read_plan(plan_path.as_path())?;
-    let options = GoalStartOptions {
-        project_root,
-        dry_run: has_flag(args, "--dry-run"),
-        allow_build: has_flag(args, "--allow-build"),
-        allow_flash: has_flag(args, "--allow-flash"),
-        allow_serial: has_flag(args, "--allow-serial"),
-        allow_network: has_flag(args, "--allow-network"),
-        allow_ota: has_flag(args, "--allow-ota"),
-        allow_simulator: has_flag(args, "--allow-simulator"),
-        port: option_value(args, "--port").map(str::to_string),
-        source_root: option_value(args, "--source-root").map(PathBuf::from),
-    };
-    let result = start_goal(&plan, &options)?;
-    print_status_json(&result, &result.status, "goal start blocked")
-}
-
-fn goal_status(args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let goal_id =
-        option_value(args, "--id").ok_or_else(|| "--id <goal-id> is required".to_string())?;
-    let project_root = project_start_arg(args)?;
-    print_json(&load_goal_evidence(project_root.as_path(), goal_id)?)
-}
-
-fn goal_cancel(args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let goal_id =
-        option_value(args, "--id").ok_or_else(|| "--id <goal-id> is required".to_string())?;
-    let project_root = project_start_arg(args)?;
-    print_json(&cancel_goal(project_root.as_path(), goal_id)?)
 }
 
 fn source_command(root: &Path, args: &[String]) -> Result<(), String> {
@@ -941,7 +798,6 @@ mod tests {
     #[test]
     fn help_surfaces_do_not_require_json() {
         for args in [
-            vec!["goal", "plan", "--help"],
             vec!["route", "--help"],
             vec!["hook", "--help"],
             vec!["doctor", "--help"],
@@ -1009,21 +865,6 @@ mod tests {
         );
         assert_eq!(noop.decision, "no-op");
         assert!(noop.skills.is_empty());
-    }
-
-    #[test]
-    fn goal_complete_rejects_unknown_options() {
-        let args = vec![
-            "--bad-flag".to_string(),
-            "--json".to_string(),
-            "T-Display-S3".to_string(),
-        ];
-        let error = goal_complete_prompt_arg(&args).expect_err("unknown flag");
-        assert!(error.contains("unknown option"));
-
-        let args = vec!["--project".to_string(), "--json".to_string()];
-        let error = goal_complete_prompt_arg(&args).expect_err("missing project value");
-        assert!(error.contains("requires a value"));
     }
 
     #[test]

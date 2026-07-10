@@ -53,7 +53,7 @@ BIN="$ROOT/target/debug/lilygo-skills"
 "$BIN" preference show --json >.tmp/preference-default.json
 "$BIN" preference show --project "$PROJECT_ROOT" --json >.tmp/preference-project.json
 "$BIN" reference list --project "$PROJECT_ROOT" --json >.tmp/reference-project.json
-"$BIN" goal plan --project "$PROJECT_ROOT" --json "T-Watch Ultra 用 binflow 传输并串口调试" \
+"$BIN" context --plan --project "$PROJECT_ROOT" --json "T-Watch Ultra 用 binflow 传输并串口调试" \
   >.tmp/preference-reference-goal.json
 
 PRIVATE_ROOT="$(mktemp -d "${TMPDIR:-/tmp}/lilygo-pref-private.XXXXXX")"
@@ -90,7 +90,7 @@ if "$BIN" preference show --project "$PRIVATE_VALUES_ROOT" --json >.tmp/preferen
   cat .tmp/preference-private-values.json >&2
   exit 1
 fi
-"$BIN" goal plan --project "$PRIVATE_VALUES_ROOT" --json "T-Watch Ultra debug prompt" \
+"$BIN" context --plan --project "$PRIVATE_VALUES_ROOT" --json "T-Watch Ultra debug prompt" \
   >.tmp/preference-private-values-goal.json
 
 node <<'NODE'

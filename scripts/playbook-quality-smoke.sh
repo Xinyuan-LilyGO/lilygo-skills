@@ -19,11 +19,11 @@ rm -rf "$OUT"
   >.tmp/playbook-route-lvgl.json
 "$BIN" route --json "what is the weather today" \
   >.tmp/playbook-route-weather.json
-"$BIN" goal plan --json "T-Watch Ultra LVGL blank screen touch debug" \
+"$BIN" context --plan --json "T-Watch Ultra LVGL blank screen touch debug" \
   >.tmp/playbook-goal-lvgl.json
-"$BIN" goal plan --json "T-Watch Ultra ESP-IDF OTA rollback manifest debug" \
+"$BIN" context --plan --json "T-Watch Ultra ESP-IDF OTA rollback manifest debug" \
   >.tmp/playbook-goal-ota.json
-"$BIN" goal plan --json "T-Watch Ultra add display driver BSP status action smoke" \
+"$BIN" context --plan --json "T-Watch Ultra add display driver BSP status action smoke" \
   >.tmp/playbook-goal-bsp.json
 "$BIN" index query playbook-lvgl-debug --json \
   >.tmp/playbook-query-lvgl.json

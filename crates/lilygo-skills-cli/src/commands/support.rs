@@ -16,50 +16,10 @@ pub(crate) fn prompt_arg(args: &[String]) -> Result<String, String> {
             skip_next = true;
             continue;
         }
-        if arg != "--json" {
+        // `--plan` is a mode flag on `context`; it is never part of the prompt.
+        if arg != "--json" && arg != "--plan" {
             parts.push(arg.as_str());
         }
-    }
-    if parts.is_empty() {
-        Err("missing prompt".to_string())
-    } else {
-        Ok(parts.join(" "))
-    }
-}
-
-pub(crate) fn goal_complete_prompt_arg(args: &[String]) -> Result<String, String> {
-    let value_options = ["--project", "--generated-root", "--source-root", "--port"];
-    let flag_options = [
-        "--json",
-        "--dry-run",
-        "--allow-generate",
-        "--allow-build",
-        "--allow-flash",
-        "--allow-serial",
-        "--allow-network",
-        "--allow-ota",
-        "--allow-simulator",
-    ];
-    let mut parts = Vec::new();
-    let mut index = 0;
-    while index < args.len() {
-        let arg = &args[index];
-        if value_options.contains(&arg.as_str()) {
-            if index + 1 >= args.len() || args[index + 1].starts_with("--") {
-                return Err(format!("{arg} requires a value"));
-            }
-            index += 2;
-            continue;
-        }
-        if flag_options.contains(&arg.as_str()) {
-            index += 1;
-            continue;
-        }
-        if arg.starts_with("--") {
-            return Err(format!("unknown option: {arg}"));
-        }
-        parts.push(arg.as_str());
-        index += 1;
     }
     if parts.is_empty() {
         Err("missing prompt".to_string())
@@ -354,10 +314,6 @@ pub(crate) fn print_status_json(
 // reviewed as content instead of being interleaved with command dispatch code.
 pub(crate) fn print_help() {
     print!("{}", include_str!("../../../../data/help/main.txt"));
-}
-
-pub(crate) fn print_goal_help() {
-    print!("{}", include_str!("../../../../data/help/goal.txt"));
 }
 
 pub(crate) fn print_profile_help() {

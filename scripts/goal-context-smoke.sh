@@ -13,15 +13,15 @@ mkdir -p .tmp
 cargo build -q -p lilygo-skills-cli
 BIN="$ROOT/target/debug/lilygo-skills"
 
-"$BIN" goal plan --json "T-Watch Ultra Arduino IMU 抬腕检测怎么做" \
+"$BIN" context --plan --json "T-Watch Ultra Arduino IMU 抬腕检测怎么做" \
   >.tmp/goal-context-imu.json
-"$BIN" goal plan --json "T-Watch Ultra Arduino LVGL touch does not move" \
+"$BIN" context --plan --json "T-Watch Ultra Arduino LVGL touch does not move" \
   >.tmp/goal-context-lvgl.json
-"$BIN" goal plan --json "T-Watch Ultra OTA manifest downloaded then rebooted" \
+"$BIN" context --plan --json "T-Watch Ultra OTA manifest downloaded then rebooted" \
   >.tmp/goal-context-ota.json
-"$BIN" goal plan --json "T-Watch Ultra run official NFC demo" \
+"$BIN" context --plan --json "T-Watch Ultra run official NFC demo" \
   >.tmp/goal-context-nfc.json
-"$BIN" goal plan --json "Arduino IMU 抬腕检测怎么做" \
+"$BIN" context --plan --json "Arduino IMU 抬腕检测怎么做" \
   >.tmp/goal-context-missing-board.json
 
 node <<'NODE'
