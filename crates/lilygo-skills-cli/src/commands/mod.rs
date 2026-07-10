@@ -1,5 +1,5 @@
-//! CLI command dispatcher for route, generation, source, project, setup, and
-//! goal surfaces; handlers keep public JSON contracts stable.
+//! CLI command dispatcher for route, context, source, project, and setup
+//! surfaces; handlers keep public JSON contracts stable.
 use crate::capsule::{plan_goal_with_project, render_hook_goal_summary};
 use crate::doctor::doctor_report;
 use crate::facts::{
@@ -11,10 +11,6 @@ use crate::model::{ActiveProfile, RouteResult, SkillKind};
 use crate::preferences::resolve_preferences;
 use crate::project_context::{
     clear_project_context, new_project_context, resolve_project_context, write_project_context,
-};
-use crate::project_ledger::{
-    hints_for_route, maybe_compact_project_hook_context, render_hook_ledger_context,
-    route_json_with_ledger,
 };
 use crate::project_skills::registry_with_project_skills;
 use crate::reference_catalog::list_references;
@@ -80,8 +76,7 @@ fn route(root: &Path, args: &[String]) -> Result<(), String> {
         let profile = project.context.active_profile();
         let mut route = route_with_profile_or_clarification(&registry, &prompt, Some(&profile));
         attach_route_readiness(root, &registry, &prompt, &mut route);
-        let hints = hints_for_route(project.project_root.as_path(), &route, &prompt);
-        return print_json(&route_json_with_ledger(&route, hints));
+        return print_json(&route);
     }
     let profile = load_profile(root);
     let mut route = route_with_profile_or_clarification(&registry, &prompt, profile.as_ref());
@@ -341,7 +336,6 @@ fn project(root: &Path, args: &[String]) -> Result<(), String> {
         "init" => project_init(root, &args[1..]),
         "show" => project_show(&args[1..]),
         "clear" => project_clear(&args[1..]),
-        "ledger" => project_ledger_command(&args[1..]),
         other => Err(format!("unknown project subcommand: {other}")),
     }
 }

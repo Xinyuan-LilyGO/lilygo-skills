@@ -176,6 +176,36 @@ registry 469 + text_match 71 + project_context+嗅探 ~370 + commands ~400 + con
 
 **T4 最终判据:** P4 真机 runner A/B(需用户凭据,不伪造不替代)。
 
+## 8. 文档驱动引导(REQ-M32-6,2026-07-10 用户:"多一些文档,引导这些,类似 dev-flow")
+
+原则:像 dev-flow 一样"**薄代码 + 厚引导文档**"。R5b/R5d 砍掉的 playbooks/recipes 选择
+逻辑,其**知识不能丢**——要在删代码**之前**沉淀成一套 AI 读着就能执行的引导文档。
+效果由三重保住,不靠被删的代码:①**引导文档**(AI 知道"怎么做")②**coverage 门禁**
+(注入事实不倒退)③**A/B/C 实测**(证明真效果)。
+
+### 引导文档集(SKILL.md 为入口,指向 guides/)
+
+放在 `skills/lilygo-router/guides/`,SKILL.md 与 `context`/`source query` 的 expand 指针指向它们:
+
+- `query-protocol.md` — 拿 context → 拉 source 的操作协议
+- `debug-display-bringup.md` — 屏点亮:ST7789/TFT_eSPI Setup / ESP-IDF i80 / 背光电源
+- `debug-lora-gnss.md` — SX126x/RadioLib + GNSS 上手与排错
+- `debug-power-battery.md` — 电源轨/充电/电量
+- `debug-flash-serial.md` — build/upload/monitor 有界步骤 + 失败归类
+- `debug-lvgl-loop.md` — LVGL 刷新/触摸循环排错
+- `board-bringup-checklist.md` — 新板从零上手清单(认板→源→demo→证据)
+- `toolchain-setup.md` — Arduino/PlatformIO/ESP-IDF/Rust 工具链
+- `honesty-evidence.md` — 证据等级/hardware_verified/不乱编 的判定细则
+
+这些是现有 recipe-*/playbook-* 的**散文版**。沉淀成文档后:(a) 保住效果与知识;
+(b) 解锁把 Rust `playbooks.rs`/`recipes.rs` 进一步瘦成"仅 ID 输出"甚至挪成 JSON 数据。
+
+### 顺序(关键:先沉淀知识,再砍代码)
+
+R5c(ledger)→ **R-docs(写引导文档集,从现有 recipe/playbook 代码提炼,不得杜撰)** →
+R5d(激进砍 capsule/死模块/model/router,此时知识已在文档里)→ R4 A/B/C → R6。
+R-docs 与 R5d 不并行(同仓冲突);R-docs 纯新增文档,gate 只需 ci-gate/coverage 不倒退。
+
 ## 5. 风险与诚实边界
 
 - coverage 基线由 goal 供给的 3 个指针事实:迁移不成 = 不许砍 goal(gate 说了算)。

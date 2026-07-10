@@ -21,7 +21,6 @@ GATES=(
   "../eval/run-board-triple-questions.js --boards all --json --require-topic board-t-watch-s3:display --require-topic board-t-watch-s3:input"
   "pure-query-compact-smoke.sh"
   "context-budget-smoke.sh"
-  "project-context-ledger-smoke.sh"
   "project-context-smoke.sh --dry-run"
   "playbook-quality-smoke.sh --dry-run"
   "preference-reference-smoke.sh --dry-run"
