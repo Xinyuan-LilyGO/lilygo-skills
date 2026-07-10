@@ -99,6 +99,30 @@ real installers only when the user explicitly asks.
   from memory.
 - If the prompt is not about a LilyGO board, return no deep context.
 
+## Guides
+
+This document is the entry point; the depth lives in `guides/`. Open the guide
+that matches the task — each is a focused, AI-executable how-to distilled from the
+recipe/playbook methodology:
+
+- `guides/query-protocol.md` — get `context` → auto board → pull `source query`
+  before stating any pin.
+- `guides/board-bringup-checklist.md` — zero-to-working: identify board → find
+  official source → run official demo → capture evidence.
+- `guides/debug-flash-serial.md` — bounded build → upload → monitor and the
+  failure buckets (missing tool/source, port/permission, runtime-timeout, OTA,
+  build).
+- `guides/debug-display-bringup.md` — screen bring-up: ST7789/TFT_eSPI Setup vs
+  ESP-IDF i80, backlight and power rails.
+- `guides/debug-lvgl-loop.md` — LVGL tick/flush/draw-buffer/touch loop triage.
+- `guides/debug-lora-gnss.md` — SX126x/RadioLib + GNSS bring-up and failure
+  triage.
+- `guides/debug-power-battery.md` — power rails, charging, and fuel-gauge checks.
+- `guides/toolchain-setup.md` — Arduino / PlatformIO / ESP-IDF / Rust esp-rs
+  setup (report + hints; install only on explicit ask).
+- `guides/honesty-evidence.md` — evidence levels, `hardware_verified=false`, the
+  never-invent rule, and "not confirmed in official sources".
+
 ## Multi-platform note
 
 This works as a **pure skill**: this `SKILL.md` plus the `lilygo-skills` CLI is
