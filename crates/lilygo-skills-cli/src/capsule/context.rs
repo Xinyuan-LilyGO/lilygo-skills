@@ -213,7 +213,6 @@ fn add_relevant_peripherals(
             source_authority_rank("lilygo-hardware"),
             &peripheral.source_url,
             &peripheral.source_status,
-            false,
         ));
     }
     let packs = load_source_pack_index(root)?;
@@ -331,7 +330,6 @@ fn add_documentation_repo(source_refs: &mut Vec<GoalSourceRef>) {
         65,
         DOCUMENTATION_REPO,
         "versioned-wiki-source",
-        false,
     ));
 }
 
@@ -341,23 +339,18 @@ fn source_ref_from_board(source: &SourceUrl) -> GoalSourceRef {
         board_source_rank(source.kind.as_str()),
         source.url.as_str(),
         source.status.as_str(),
-        false,
     )
 }
 
-fn source_ref(
-    kind: &str,
-    authority_rank: u32,
-    url: &str,
-    status: &str,
-    stale: bool,
-) -> GoalSourceRef {
+fn source_ref(kind: &str, authority_rank: u32, url: &str, status: &str) -> GoalSourceRef {
     GoalSourceRef {
         kind: kind.to_string(),
         authority_rank,
         url: url.to_string(),
         status: status.to_string(),
-        stale,
+        // The capsule's own source refs are never stale; only source-pack refs
+        // (constructed directly in `add_relevant_peripherals`) carry `stale`.
+        stale: false,
         evidence_level: "V3-source-reference".to_string(),
     }
 }
@@ -636,7 +629,6 @@ fn goal_source_ref_from_fact_source(source: &SourceFactSource) -> GoalSourceRef 
         board_source_rank(&source.kind),
         &source.path_or_url,
         &source.hash,
-        false,
     )
 }
 

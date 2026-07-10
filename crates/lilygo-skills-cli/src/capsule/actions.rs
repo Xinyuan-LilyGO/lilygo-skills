@@ -47,7 +47,6 @@ pub(super) fn next_actions_for_goal(
                 "lilygo-skills context --plan --json {}",
                 shell_quote(prompt)
             ),
-            "none",
             "Read the compact capsule plan as the next read-only step before editing firmware.",
         ));
     }
@@ -56,7 +55,6 @@ pub(super) fn next_actions_for_goal(
             "source-query-io",
             "Check board IO facts",
             format!("lilygo-skills source query --board {board_id} --topic io --json"),
-            "none",
             "Read exact pins, buses, expanders, connectors, and source refs before assigning GPIO.",
         ));
     }
@@ -65,7 +63,6 @@ pub(super) fn next_actions_for_goal(
             &format!("source-query-{topic}"),
             &format!("Check {topic} bus facts"),
             format!("lilygo-skills source query --board {board_id} --topic {topic} --json"),
-            "none",
             "Sensor and bus prompts need the bus-specific source view before code.",
         ));
     }
@@ -77,7 +74,6 @@ pub(super) fn next_actions_for_goal(
             &format!("source-query-{topic}"),
             &format!("Check {topic} source facts"),
             format!("lilygo-skills source query --board {board_id} --topic {topic} --json"),
-            "none",
             "Matched peripheral prompts should expose the narrow official source slice on demand.",
         ));
     }
@@ -89,7 +85,6 @@ pub(super) fn next_actions_for_goal(
             "expand-board-source",
             "Open selected board source refs",
             format!("lilygo-skills index query {board_id} --json"),
-            "none",
             format!(
                 "The closest official demo is {}; read its source before adapting it.",
                 demo.path
@@ -106,14 +101,15 @@ fn next_action(
     id: &str,
     label: &str,
     command: impl Into<String>,
-    permission: &str,
     reason: impl Into<String>,
 ) -> GoalNextAction {
     GoalNextAction {
         id: id.to_string(),
         label: label.to_string(),
         command: command.into(),
-        permission: permission.to_string(),
+        // Every capsule next-action is read-only: the permission-gated build/
+        // flash/serial actions were dropped with the goal execution surface (R5b).
+        permission: "none".to_string(),
         reason: reason.into(),
     }
 }
