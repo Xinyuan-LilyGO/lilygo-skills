@@ -29,6 +29,10 @@ pub enum Cond {
     Not(Box<Cond>),
     /// Any needle is a word-boundary match in the normalized prompt.
     Keyword(Vec<String>),
+    /// Any needle is a plain substring of the normalized prompt (no word
+    /// boundary). Mirrors the legacy `contains` gate checks distilled from the
+    /// reference and preference hint tables.
+    Substring(Vec<String>),
     /// A precomputed named boolean flag is true.
     Flag(String),
     /// A named string list is non-empty.
@@ -107,6 +111,9 @@ impl EvalCtx {
             Cond::Keyword(needles) => needles
                 .iter()
                 .any(|needle| contains_word(&self.normalized, needle)),
+            Cond::Substring(needles) => needles
+                .iter()
+                .any(|needle| self.normalized.contains(needle)),
             Cond::Flag(name) => self.flags.get(name).copied().unwrap_or(false),
             Cond::ListNonEmpty(list) => self.lists.get(list).is_some_and(|l| !l.is_empty()),
             Cond::ListContains { list, value } => self
