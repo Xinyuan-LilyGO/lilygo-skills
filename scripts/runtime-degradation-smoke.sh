@@ -76,17 +76,6 @@ function verifyInstalledHost(host) {
   const verify = run(`${host}: verify`, root, [bin, "verify", "--json"]);
   check(`${host}: verify PASS`, verify.exit_code === 0 && verify.json?.status === "PASS", verify.json);
 
-  const benchmark = run(`${host}: benchmark`, root, [
-    bin,
-    "benchmark",
-    "--json",
-    "--iterations",
-    "50",
-    "--max-ns-per-route",
-    "1000000"
-  ]);
-  check(`${host}: benchmark PASS`, benchmark.exit_code === 0 && benchmark.json?.status === "PASS", benchmark.json);
-
   const noSkill = run(`${host}: route no skill`, root, [
     bin,
     "route",

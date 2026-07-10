@@ -1,6 +1,5 @@
 //! CLI command dispatcher for route, generation, source, project, setup, and
 //! goal surfaces; handlers keep public JSON contracts stable.
-use crate::benchmark::run_benchmark;
 use crate::doctor::doctor_report;
 use crate::facts::{
     board_fact_enrichment_apply, board_fact_enrichment_preview, completeness_signals_for_prompt,
@@ -62,7 +61,6 @@ pub fn run(args: impl Iterator<Item = String>, mut stdin: impl Read) -> Result<(
         "index" => index(&root, &args[1..]),
         "generate" => generate_command(&root, &args[1..]),
         "verify" => verify_command(&root, &args[1..]),
-        "benchmark" => benchmark(&root, &args[1..]),
         "doctor" => doctor(&root, &args[1..]),
         "goal" => goal(&root, &args[1..]),
         "source" => source_command(&root, &args[1..]),
@@ -285,38 +283,6 @@ fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
     let home = option_value(args, "--home").map(PathBuf::from);
     let report = doctor_report(root, home.as_deref());
     print_status_json(&report, &report.status, "doctor check failed")
-}
-
-fn benchmark(root: &Path, args: &[String]) -> Result<(), String> {
-    require_json(args)?;
-    let iterations = usize_option(args, "--iterations", 1000)?;
-    let max_ns_per_route = optional_u128(args, "--max-ns-per-route")?;
-    // benchmark --generated-root <dir> benchmarks routing over the generated
-    // skill set, proving the cache is complete; goal-capsule data comes from the
-    // source root, which carries the board/fact data files.
-    let (registry_root, source_root) = match option_value(args, "--generated-root") {
-        Some(generated) => {
-            let generated_root = if Path::new(generated).is_absolute() {
-                PathBuf::from(generated)
-            } else {
-                current_dir()?.join(generated)
-            };
-            (generated_root, root.to_path_buf())
-        }
-        None => (root.to_path_buf(), root.to_path_buf()),
-    };
-    let registry = load_registry(&registry_root)?;
-    ensure_skill_files(&registry_root, &registry)?;
-    let project_start = optional_project_arg(args)?;
-    let project_root = match project_start {
-        Some(start) => resolve_project_context(start.as_path())?
-            .map(|project| project.project_root)
-            .or(Some(start)),
-        None => None,
-    };
-    let registry = registry_with_project_skills(&registry, project_root.as_deref())?;
-    let report = run_benchmark(&source_root, &registry, iterations, max_ns_per_route);
-    print_status_json(&report, &report.status, "benchmark failed")
 }
 
 fn goal(root: &Path, args: &[String]) -> Result<(), String> {

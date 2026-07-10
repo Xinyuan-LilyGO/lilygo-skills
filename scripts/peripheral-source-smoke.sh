@@ -31,7 +31,6 @@ cargo run -q -p lilygo-skills-cli -- update source-packs --dry-run --json >.tmp/
 cargo run -q -p lilygo-skills-cli -- update peripheral-skills --dry-run --json >.tmp/peripheral-update-skills.json
 cargo run -q -p lilygo-skills-cli -- route --json "T-Watch Ultra Arduino IMU 抬腕检测怎么做" >.tmp/peripheral-route.json
 cargo run -q -p lilygo-skills-cli -- index query chip-bhi260ap --json >.tmp/peripheral-chip-query.json
-cargo run -q -p lilygo-skills-cli -- benchmark --json --iterations 100 >.tmp/peripheral-benchmark.json
 
 node <<'NODE'
 const fs = require("fs");
@@ -46,7 +45,6 @@ const sourcePacks = read(".tmp/peripheral-update-source-packs.json");
 const peripheralSkills = read(".tmp/peripheral-update-skills.json");
 const route = read(".tmp/peripheral-route.json");
 const chip = read(".tmp/peripheral-chip-query.json");
-const benchmark = read(".tmp/peripheral-benchmark.json");
 const pack = sourcePacks.packs.find((item) => item.id === "periph-pack-t-watch-ultra-imu-bhi260ap");
 const noSourceWrites = [...(peripheralSkills.planned_writes || []), ...(peripheralSkills.writes || [])]
   .every((item) => !/^(skills\/|index\/routes\.json$)/.test(item));
@@ -87,12 +85,7 @@ const skillOk =
   peripheralSkills.skill_ids.includes("feature-raise-to-wake") &&
   chip.id === "chip-bhi260ap" &&
   chip.path === "skills/chip-bhi260ap/SKILL.md";
-const benchmarkOk =
-  benchmark.status === "PASS" &&
-  benchmark.baseline_comparison.status === "PASS" &&
-  benchmark.baseline_comparison.baseline_case_count === 63 &&
-  benchmark.baseline_comparison.added_case_count >= 12;
-const ok = hashesUnchanged && routeOk && sourceOk && skillOk && benchmarkOk;
+const ok = hashesUnchanged && routeOk && sourceOk && skillOk;
 
 process.stdout.write(JSON.stringify({
   status: ok ? "PASS" : "FAIL",
@@ -102,7 +95,6 @@ process.stdout.write(JSON.stringify({
   route_skills: route.skills,
   chip_query: chip.id,
   source_dimensions: pack ? pack.source_dimensions : [],
-  baseline_comparison: benchmark.baseline_comparison,
   route_quality: {
     m6_baseline: ["lilygo-router", "board-t-watch-ultra", "fw-arduino"],
     m7_expected: expectedRoute,

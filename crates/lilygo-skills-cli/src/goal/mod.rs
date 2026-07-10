@@ -67,6 +67,9 @@ impl GoalStartOptions {
     }
 }
 
+// Thin convenience wrapper over `plan_goal_with_project`; only test surfaces
+// call it now that the benchmark harness (its sole production caller) is gone.
+#[cfg(test)]
 pub fn plan_goal(
     root: &Path,
     registry: &Registry,

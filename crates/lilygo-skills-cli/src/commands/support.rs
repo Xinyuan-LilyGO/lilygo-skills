@@ -200,27 +200,6 @@ pub(crate) fn current_dir() -> Result<PathBuf, String> {
     std::env::current_dir().map_err(|error| format!("cwd failed: {error}"))
 }
 
-pub(crate) fn usize_option(args: &[String], name: &str, default: usize) -> Result<usize, String> {
-    option_value(args, name)
-        .map(|value| {
-            value
-                .parse::<usize>()
-                .map_err(|error| format!("invalid {name}: {error}"))
-        })
-        .unwrap_or(Ok(default))
-}
-
-pub(crate) fn optional_u128(args: &[String], name: &str) -> Result<Option<u128>, String> {
-    option_value(args, name)
-        .map(|value| {
-            value
-                .parse::<u128>()
-                .map(Some)
-                .map_err(|error| format!("invalid {name}: {error}"))
-        })
-        .unwrap_or(Ok(None))
-}
-
 pub(crate) fn extract_prompt(input: &str) -> String {
     if input.trim().is_empty() {
         return String::new();
