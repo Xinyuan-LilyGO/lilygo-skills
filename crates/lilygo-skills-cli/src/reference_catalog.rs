@@ -1,14 +1,23 @@
 //! Reference catalog resolver that combines built-in and project references
 //! into compact implementation/debug hints with source-authority boundaries.
-use crate::facts;
+//!
+//! The catalog *entries* live in JSON (`data/references/built-in.json` plus any
+//! project file). The remaining hardcoded piece — the gate that decides whether
+//! a prompt is implementation/debug-shaped enough to surface reference hints —
+//! now lives in `data/references/reference-triggers.json` and is evaluated by
+//! the generic [`crate::selection`] engine.
 use crate::model::{ReferenceCatalogReport, ReferenceEntry, ReferenceHint};
+use crate::selection::{SelectionConfig, SelectionInput};
 use serde::Deserialize;
+use std::collections::BTreeMap;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 const PROJECT_REFERENCE_PATH: &str = ".lilygo-skills/references.json";
 
 const BUILT_IN_REFERENCES_JSON: &str = include_str!("../../../data/references/built-in.json");
+const REFERENCE_TRIGGERS_JSON: &str =
+    include_str!("../../../data/references/reference-triggers.json");
 
 #[derive(Debug, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -48,10 +57,7 @@ pub(crate) fn reference_hints_for_prompt(
     project_start: Option<&Path>,
     prompt: &str,
 ) -> Vec<ReferenceHint> {
-    if facts::is_fact_prompt(prompt) && !implementation_reference_prompt(prompt) {
-        return Vec::new();
-    }
-    if !implementation_reference_prompt(prompt) {
+    if !reference_gate_open(prompt) {
         return Vec::new();
     }
     let Ok(catalog) = list_references(root, project_start) else {
@@ -162,24 +168,21 @@ fn find_project_references(start: &Path) -> Option<PathBuf> {
     }
 }
 
-fn implementation_reference_prompt(prompt: &str) -> bool {
-    let normalized = prompt.to_lowercase();
-    [
-        "implement",
-        "debug",
-        "driver",
-        "setup",
-        "install",
-        "binflow",
-        "serial",
-        "lvgl",
-        "ota",
-        "调试",
-        "实现",
-        "传输",
-    ]
-    .iter()
-    .any(|needle| normalized.contains(needle))
+fn reference_triggers() -> SelectionConfig {
+    serde_json::from_str(REFERENCE_TRIGGERS_JSON)
+        .expect("embedded data/references/reference-triggers.json must be valid SelectionConfig")
+}
+
+/// True when the prompt is implementation/debug-shaped enough to surface
+/// reference hints. Distilled from the old `implementation_reference_prompt`
+/// substring table, now evaluated by the shared selection engine.
+fn reference_gate_open(prompt: &str) -> bool {
+    let input = SelectionInput {
+        prompt: prompt.to_lowercase(),
+        flags: BTreeMap::new(),
+        lists: BTreeMap::new(),
+    };
+    !crate::selection::evaluate(&reference_triggers(), input).is_empty()
 }
 
 #[cfg(test)]
