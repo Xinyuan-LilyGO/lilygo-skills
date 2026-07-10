@@ -5,12 +5,10 @@
 //! replace source-backed board facts.
 
 use crate::model::{Playbook, PlaybookCatalog, PlaybookHint, Registry, Skill, SkillKind};
-use crate::templates::render_template;
 use crate::text_match::contains_word;
 use std::collections::{BTreeMap, BTreeSet};
 
 const PLAYBOOKS_JSON: &str = include_str!("../../../data/playbooks/playbooks.json");
-const PLAYBOOK_TEMPLATE: &str = include_str!("../../../templates/skills/playbook.md");
 
 pub fn playbook_catalog() -> PlaybookCatalog {
     serde_json::from_str(PLAYBOOKS_JSON).expect("embedded playbook catalog must be valid JSON")
@@ -51,14 +49,6 @@ pub fn validate_playbook_catalog(catalog: &PlaybookCatalog) -> Vec<String> {
         }
     }
     errors
-}
-
-pub fn playbook_skill_files() -> Vec<(String, String)> {
-    playbook_catalog()
-        .playbooks
-        .into_iter()
-        .map(|playbook| (playbook.id.clone(), render_playbook_skill(&playbook)))
-        .collect()
 }
 
 #[cfg(test)]
@@ -209,26 +199,6 @@ pub fn registry_with_playbooks(mut registry: Registry) -> Registry {
     registry
 }
 
-fn render_playbook_skill(playbook: &Playbook) -> String {
-    render_template(
-        PLAYBOOK_TEMPLATE,
-        &[
-            ("id", playbook.id.clone()),
-            ("title", playbook.title.clone()),
-            ("summary", playbook.summary.clone()),
-            ("load_when", playbook.load_when.clone()),
-            ("sources", bullet_list(&playbook.source_refs)),
-            ("facts", bullet_list(&playbook.required_board_facts)),
-            ("axes", bullet_list(&playbook.diagnostic_axes)),
-            ("steps", bullet_list(&playbook.steps)),
-            ("failures", bullet_list(&playbook.failure_classes)),
-            ("evidence", bullet_list(&playbook.evidence_targets)),
-            ("evidence_boundary", bullet_list(&playbook.anti_claims)),
-            ("resources", bullet_list(&playbook.resource_hints)),
-        ],
-    )
-}
-
 fn playbook_hint(playbook: &Playbook) -> PlaybookHint {
     PlaybookHint {
         playbook_id: playbook.id.clone(),
@@ -238,17 +208,6 @@ fn playbook_hint(playbook: &Playbook) -> PlaybookHint {
         evidence_targets: playbook.evidence_targets.clone(),
         anti_claims: playbook.anti_claims.clone(),
     }
-}
-
-fn bullet_list(items: &[String]) -> String {
-    if items.is_empty() {
-        return "- none".to_string();
-    }
-    items
-        .iter()
-        .map(|item| format!("- {item}"))
-        .collect::<Vec<_>>()
-        .join("\n")
 }
 
 fn order_playbook_ids(ids: BTreeSet<String>) -> Vec<String> {
@@ -410,23 +369,6 @@ mod tests {
                 playbook.id
             );
         }
-    }
-
-    #[test]
-    fn generated_playbook_skills() {
-        let files = playbook_skill_files();
-        assert_eq!(files.len(), required_playbook_ids().len());
-        let lvgl = files
-            .iter()
-            .find(|(id, _)| id == "playbook-lvgl-debug")
-            .map(|(_, content)| content)
-            .expect("lvgl playbook");
-        assert!(lvgl.contains("Diagnostic Axes"));
-        assert!(lvgl.contains("Evidence Targets"));
-        assert!(lvgl.contains("Evidence Boundary"));
-        assert!(lvgl.contains("Generation Contract: templates/skills/playbook.md"));
-        assert!(!lvgl.contains("{{"));
-        assert!(!lvgl.contains("/Users/"));
     }
 
     #[test]

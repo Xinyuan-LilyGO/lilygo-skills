@@ -277,69 +277,6 @@ pub struct ProjectSkillEntry {
     pub read_when: Option<String>,
 }
 
-#[derive(Debug, Clone, Serialize)]
-pub struct ProductCandidate {
-    pub id: String,
-    pub family_id: Option<String>,
-    pub slug: String,
-    pub wiki_url: String,
-    pub repo_url: String,
-    pub supported: bool,
-    pub source_status: String,
-    pub stale: bool,
-    pub warnings: Vec<String>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SourceModeReport {
-    pub github_org: String,
-    pub wiki: String,
-    pub documentation_repo: String,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SyncPreview {
-    pub status: String,
-    pub mode: String,
-    pub dry_run: bool,
-    pub sources: SourceModeReport,
-    pub source_count: usize,
-    pub repo_count: usize,
-    pub wiki_page_count: usize,
-    pub generated_candidate_count: usize,
-    pub product_candidate_count: usize,
-    pub unsupported_count: usize,
-    pub candidate_route_ids: Vec<String>,
-    pub candidates: Vec<BoardRecord>,
-    pub product_candidates: Vec<ProductCandidate>,
-    pub planned_writes: Vec<String>,
-    pub writes: Vec<String>,
-    pub warnings: Vec<String>,
-    pub source_manifest: String,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct UpdatePreview {
-    pub status: String,
-    pub target: String,
-    pub dry_run: bool,
-    pub source_families: Vec<String>,
-    pub cache_status: String,
-    pub stale_status: String,
-    pub source_count: usize,
-    pub board_count: usize,
-    pub generated_candidate_count: usize,
-    pub product_candidate_count: usize,
-    pub unsupported_count: usize,
-    pub product_candidates: Vec<ProductCandidate>,
-    pub stale_product_records: Vec<String>,
-    pub planned_fetches: Vec<String>,
-    pub planned_writes: Vec<String>,
-    pub writes: Vec<String>,
-    pub warnings: Vec<String>,
-    pub compatibility_notes: Vec<String>,
-}
-
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct PeripheralSourcePackIndex {
     pub schema_version: u32,
@@ -386,42 +323,6 @@ pub struct FeatureRef {
     pub requires_calibration: bool,
     pub hardware_verified: bool,
     pub evidence_level: String,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SourcePackUpdateReport {
-    pub status: String,
-    pub dry_run: bool,
-    pub source_pack_count: usize,
-    pub stale_source_packs: Vec<String>,
-    pub planned_writes: Vec<String>,
-    pub writes: Vec<String>,
-    pub packs: Vec<SourcePackSummary>,
-    pub warnings: Vec<String>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SourcePackSummary {
-    pub id: String,
-    pub board_id: String,
-    pub peripheral: String,
-    pub chip: String,
-    pub source_dimensions: Vec<String>,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct PeripheralSkillUpdateReport {
-    pub status: String,
-    pub dry_run: bool,
-    pub source_pack_count: usize,
-    pub generated_skill_count: usize,
-    pub generated_route_count: usize,
-    pub stale_source_packs: Vec<String>,
-    pub planned_writes: Vec<String>,
-    pub writes: Vec<String>,
-    pub skill_ids: Vec<String>,
-    pub route_fixture_ids: Vec<String>,
-    pub warnings: Vec<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

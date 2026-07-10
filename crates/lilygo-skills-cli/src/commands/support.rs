@@ -60,19 +60,6 @@ pub(crate) fn option_values(args: &[String], name: &str) -> Vec<String> {
         .collect()
 }
 
-pub(crate) fn output_path_arg(args: &[String], name: &str) -> Result<Option<PathBuf>, String> {
-    option_value(args, name)
-        .map(|value| {
-            let path = Path::new(value);
-            if path.is_absolute() {
-                Ok(path.to_path_buf())
-            } else {
-                current_dir().map(|cwd| cwd.join(path))
-            }
-        })
-        .transpose()
-}
-
 pub(crate) fn project_start_arg(args: &[String]) -> Result<PathBuf, String> {
     option_value(args, "--project")
         .map(PathBuf::from)
@@ -346,10 +333,6 @@ pub(crate) fn print_setup_help() {
 
 pub(crate) fn print_index_help() {
     print!("{}", include_str!("../../../../data/help/index.txt"));
-}
-
-pub(crate) fn print_generate_help() {
-    print!("{}", include_str!("../../../../data/help/generate.txt"));
 }
 
 pub(crate) fn find_root() -> Result<std::path::PathBuf, String> {

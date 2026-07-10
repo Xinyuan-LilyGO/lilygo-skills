@@ -1,10 +1,14 @@
 //! Project-local board, framework, feature, generated-cache, and private
 //! evidence boundary management under `.lilygo-skills`.
-use crate::generate::GENERATED_CACHE_DIR;
 use crate::model::{ActiveProfile, ProjectContext, Registry, SkillKind};
 use crate::source::write_if_changed;
 use std::fs;
 use std::path::{Path, PathBuf};
+
+/// Project-local generated-skill cache directory. The runtime no longer writes
+/// this cache (skills are context-injection only), but the path is still
+/// recognized so project-file signing skips it if a stale cache is present.
+pub(crate) const GENERATED_CACHE_DIR: &str = ".lilygo-skills/generated-skills";
 
 pub const PROJECT_FILE: &str = ".lilygo-skills/project.json";
 pub const LOCAL_FILE: &str = ".lilygo-skills/local.json";

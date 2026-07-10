@@ -25,8 +25,6 @@ BIN="$ROOT/target/debug/lilygo-skills"
   --framework fw-arduino \
   --feature feature-raise-to-wake \
   --json >.tmp/project-context-init.json
-"$BIN" verify --generated-root "$PROJECT_ROOT/.lilygo-skills/generated-skills" --json \
-  >.tmp/project-context-generated-verify.json
 "$BIN" project show --project "$PROJECT_ROOT/firmware/src" --json \
   >.tmp/project-context-show.json
 "$BIN" route --project "$PROJECT_ROOT" --json "抬腕检测怎么做" \
@@ -76,7 +74,6 @@ function check(name, ok, detail) {
   }
 }
 const init = read(".tmp/project-context-init.json");
-const generatedVerify = read(".tmp/project-context-generated-verify.json");
 const show = read(".tmp/project-context-show.json");
 const route = read(".tmp/project-context-route.json");
 const explicit = read(".tmp/project-context-explicit.json");
@@ -91,17 +88,6 @@ const clear = read(".tmp/project-context-clear.json");
 
 check("project init writes project config", init.status === "PASS" && init.writes.includes(".lilygo-skills/project.json"), init);
 check("local config ignored", init.writes.includes(".gitignore"), init);
-check("project init generates cache",
-  init.generated_cache &&
-  init.generated_cache.verify_status === "PASS" &&
-  init.generated_cache.skill_count >= 60 &&
-  init.writes.some((write) => write.includes(".lilygo-skills/generated-skills/skills")),
-  init);
-check("project generated cache verifies",
-  generatedVerify.status === "PASS" &&
-  generatedVerify.missing.length === 0 &&
-  generatedVerify.extra.length === 0,
-  generatedVerify);
 check("project show walks upward", show.context_source === "project" && show.board === "board-t-watch-ultra", show);
 check("project route injects", route.decision === "inject" &&
   ["board-t-watch-ultra", "periph-imu", "chip-bhi260ap", "fw-arduino", "feature-raise-to-wake"].every((skill) => route.skills.includes(skill)), route);
@@ -130,7 +116,6 @@ process.stdout.write(JSON.stringify({
   status: "PASS",
   checked: [
     "project init",
-    "project init generated cache",
     "project show upward discovery",
     "route --project",
     "cwd discovery",
