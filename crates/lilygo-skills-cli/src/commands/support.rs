@@ -1,7 +1,5 @@
 //! Shared CLI plumbing for option parsing, JSON rendering, help text, route
 //! readiness decoration, and installed-runtime root discovery.
-use crate::project_ledger::{clear_project_ledger, record_from_file, show_project_ledger};
-
 use super::*;
 
 pub(crate) fn prompt_arg(args: &[String]) -> Result<String, String> {
@@ -92,55 +90,6 @@ pub(crate) fn optional_project_arg(args: &[String]) -> Result<Option<PathBuf>, S
         return project_start_arg(args).map(Some);
     }
     Ok(None)
-}
-
-pub(crate) fn project_ledger_command(args: &[String]) -> Result<(), String> {
-    let Some(subcommand) = args.first().map(String::as_str) else {
-        print_project_help();
-        return Ok(());
-    };
-    if has_flag(&args[1..], "--help") || has_flag(&args[1..], "-h") {
-        print_project_help();
-        return Ok(());
-    }
-    match subcommand {
-        "--help" | "-h" => {
-            print_project_help();
-            Ok(())
-        }
-        "show" => {
-            require_json(&args[1..])?;
-            let start = project_start_arg(&args[1..])?;
-            let project = resolve_project_context(start.as_path())?;
-            print_json(&show_project_ledger(project.as_ref(), start.as_path())?)
-        }
-        "clear" => {
-            require_json(&args[1..])?;
-            let project_root = project_ledger_root(&args[1..])?;
-            let writes = clear_project_ledger(project_root.as_path())?;
-            print_json(&serde_json::json!({
-                "status": "PASS",
-                "project_root": project_root,
-                "writes": writes
-            }))
-        }
-        "record" => {
-            require_json(&args[1..])?;
-            let input = option_value(&args[1..], "--input")
-                .map(PathBuf::from)
-                .ok_or("--input <file> is required")?;
-            let project_root = project_ledger_root(&args[1..])?;
-            print_json(&record_from_file(project_root.as_path(), input.as_path())?)
-        }
-        other => Err(format!("unknown project ledger subcommand: {other}")),
-    }
-}
-
-fn project_ledger_root(args: &[String]) -> Result<PathBuf, String> {
-    let start = project_start_arg(args)?;
-    Ok(resolve_project_context(start.as_path())?
-        .map(|project| project.project_root)
-        .unwrap_or(start))
 }
 
 pub(crate) fn current_dir() -> Result<PathBuf, String> {

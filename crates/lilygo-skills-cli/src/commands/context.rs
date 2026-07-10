@@ -51,30 +51,12 @@ pub(super) fn assemble_capsule(
     let mut route = route_with_profile_or_clarification(&route_registry, prompt, profile.as_ref());
     attach_route_readiness(root, &route_registry, prompt, &mut route);
     let mut content = render_context(&route);
-    let ledger_hints = project
-        .as_ref()
-        .map(|project| hints_for_route(project.project_root.as_path(), &route, prompt));
-    if let Some(hints) = &ledger_hints {
-        content.push_str(&render_hook_ledger_context(hints));
-    }
     let mut goal_plan = None;
     if let Ok(plan) = plan_goal_with_project(root, &route_registry, prompt, &route, Some(start_dir))
     {
         content.push_str(&render_hook_goal_summary(&plan));
         goal_plan = Some(plan);
     }
-    let content = if let (Some(project), Some(hints)) = (project.as_ref(), ledger_hints.as_ref()) {
-        maybe_compact_project_hook_context(
-            project.project_root.as_path(),
-            prompt,
-            &route,
-            content,
-            goal_plan.as_ref(),
-            hints,
-        )
-    } else {
-        content
-    };
     let content = crate::session_context::maybe_compact_hook_context(
         host,
         input,
