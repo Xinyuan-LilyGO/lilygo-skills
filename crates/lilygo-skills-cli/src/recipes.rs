@@ -1,14 +1,26 @@
 //! Source-backed recipe registry for safe goal planning across build, flash,
 //! serial, LVGL, OTA, and BSP-oriented workflows.
+//!
+//! Both the recipe definitions and the trigger rules that decide which recipes
+//! fire for a prompt live in JSON (`data/recipes/recipes.json` and
+//! `data/recipes/recipe-triggers.json`). This module is a thin reader: it
+//! computes the two route-derived flags (`has_board`, `pure_fact_lookup`) and
+//! hands the rest to the generic [`crate::selection`] engine.
 use crate::model::{GoalRoute, Recipe, RecipeRegistry};
-use crate::text_match::contains_any;
-use std::collections::BTreeSet;
+use crate::selection::{SelectionConfig, SelectionInput};
+use std::collections::{BTreeMap, BTreeSet};
 
 const RECIPE_REGISTRY_JSON: &str = include_str!("../../../data/recipes/recipes.json");
+const RECIPE_TRIGGERS_JSON: &str = include_str!("../../../data/recipes/recipe-triggers.json");
 
 pub fn recipe_registry() -> RecipeRegistry {
     serde_json::from_str(RECIPE_REGISTRY_JSON)
         .expect("embedded data/recipes/recipes.json must be valid RecipeRegistry")
+}
+
+fn recipe_triggers() -> SelectionConfig {
+    serde_json::from_str(RECIPE_TRIGGERS_JSON)
+        .expect("embedded data/recipes/recipe-triggers.json must be valid SelectionConfig")
 }
 
 pub fn selected_recipes(prompt: &str, route: &GoalRoute) -> Vec<Recipe> {
@@ -33,112 +45,28 @@ pub fn source_packs_for_recipes(recipe_ids: &[String]) -> Vec<crate::model::Reci
         .collect()
 }
 
-pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<&'static str> {
-    let normalized = prompt.to_lowercase();
-    let mut selected = BTreeSet::new();
+pub fn selected_recipe_ids(prompt: &str, route: &GoalRoute) -> BTreeSet<String> {
     let has_board = route.board.is_some();
     let pure_fact_lookup = crate::facts::is_fact_prompt(prompt)
         && !crate::facts::is_implementation_or_debug_prompt(prompt);
-    let has_demo_target = has_board
-        && !pure_fact_lookup
-        && (contains_any(
-            &normalized,
-            &["demo", "example", "official", "示例", "例程"],
-        ) || !route.peripherals.is_empty()
-            || !route.chips.is_empty()
-            || !route.features.is_empty());
 
-    if has_demo_target {
-        selected.insert("recipe-run-official-demo");
-    }
-    if has_board
-        && !pure_fact_lookup
-        && (contains_any(
-            &normalized,
-            &[
-                "arduino",
-                "esp-idf",
-                "platformio",
-                "rust",
-                "build",
-                "upload",
-                "flash",
-                "烧录",
-                "编译",
-            ],
-        ) || has_demo_target)
-    {
-        selected.insert("recipe-build-upload-monitor");
-    }
-    if has_board
-        && !pure_fact_lookup
-        && (contains_any(
-            &normalized,
-            &[
-                "serial",
-                "boot log",
-                "monitor",
-                "unreadable",
-                "upload",
-                "flash",
-                "ota",
-                "imu",
-                "gesture",
-                "抬腕",
-            ],
-        ) || route
-            .features
-            .iter()
-            .any(|feature| feature == "feature-raise-to-wake"))
-    {
-        selected.insert("recipe-serial-debug");
-    }
-    if !pure_fact_lookup
-        && contains_any(
-            &normalized,
-            &["lvgl", "touch", "page-data", "screen", "display"],
-        )
-    {
-        selected.insert("recipe-lvgl-simulator");
-    }
-    if !pure_fact_lookup
-        && contains_any(
-            &normalized,
-            &["ota", "manifest", "partition", "rollback", "rebooted"],
-        )
-    {
-        selected.insert("recipe-ota-debug");
-    }
-    if !pure_fact_lookup
-        && (contains_any(
-            &normalized,
-            &[
-                "lora",
-                "gnss",
-                "gps",
-                "radio",
-                "meshtastic",
-                "telemetry",
-                "radiolib",
-            ],
-        ) || route.peripherals.iter().any(|peripheral| {
-            peripheral == "periph-lora"
-                || peripheral == "periph-lora-gps"
-                || peripheral == "periph-gps"
-        }))
-    {
-        selected.insert("recipe-lora-gnss-source");
-    }
-    let asks_for_bsp_source = contains_any(
-        &normalized,
-        &["bsp", "driver", "source", "header", "chip", "datasheet"],
-    );
-    let routed_chip_source_request =
-        !route.chips.is_empty() && contains_any(&normalized, &["driver", "source", "datasheet"]);
-    if !pure_fact_lookup && (asks_for_bsp_source || routed_chip_source_request) {
-        selected.insert("recipe-bsp-chip-driver");
-    }
-    selected
+    let mut flags = BTreeMap::new();
+    flags.insert("has_board", has_board);
+    flags.insert("pure_fact_lookup", pure_fact_lookup);
+
+    let mut lists = BTreeMap::new();
+    lists.insert("peripherals", route.peripherals.clone());
+    lists.insert("chips", route.chips.clone());
+    lists.insert("features", route.features.clone());
+
+    let input = SelectionInput {
+        prompt: prompt.to_lowercase(),
+        flags,
+        lists,
+    };
+    crate::selection::evaluate(&recipe_triggers(), input)
+        .into_iter()
+        .collect()
 }
 
 #[cfg(test)]
