@@ -32,6 +32,14 @@ board facts. Get them from the source-backed data below before you state them.
    and sha256 — not values from memory. Topics are things like a peripheral,
    chip, connector, or demo area surfaced by the capsule.
 
+   **The capsule is a pointer, not the pinout.** The injected capsule surfaces
+   only *some* pins — the critical subset — never the full pin map. If the
+   pin/bus you need is not present in the capsule, you **MUST** run
+   `lilygo-skills source query --board <id> --topic <topic> --json` to fetch it.
+   NEVER infer a pin from the subset, and never answer a pin from memory. An
+   absent pin means "go pull it", not "guess" — a partial capsule is the trigger
+   to pull, never a license to fill the gap.
+
 3. **When a fact is missing**, do not guess. If a topic reports
    `needs_source_ingestion` or `unknown_with_sources`, preview enrichment with
    `lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json`
@@ -97,6 +105,11 @@ real installers only when the user explicitly asks.
   value is not present in the source-backed data, say it is **not confirmed in
   official sources** and point at the discovery command — do not fill the gap
   from memory.
+- **The capsule's pins are a subset, not the whole pinout.** It is a pointer.
+  If the pin/bus you need is not in the capsule, run
+  `lilygo-skills source query --board <id> --topic <topic> --json` and answer
+  from that — an absent pin means "go pull it", never "infer it from the ones
+  that are shown".
 - If the prompt is not about a LilyGO board, return no deep context.
 
 ## Guides

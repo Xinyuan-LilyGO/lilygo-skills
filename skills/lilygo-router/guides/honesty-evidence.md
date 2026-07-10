@@ -39,6 +39,19 @@ not present in the source-backed data:
    (see [[query-protocol]]).
 3. Stop — do not fill the gap from memory.
 
+## The capsule is a subset, not the full pinout
+
+The injected capsule surfaces only *some* pins — the critical subset — never the
+complete pin map. **It is a pointer, not the pinout.** If the pin/bus you need is
+not present in the capsule, you **MUST** run
+`lilygo-skills source query --board <board-id> --topic <topic> --json` to fetch
+it, then answer from that source-backed value. NEVER infer a pin from the subset
+that happens to be shown, and never answer a pin from memory. An absent pin means
+"go pull it", not "guess" — a partial capsule is precisely the trigger to pull,
+never a licence to fill the gap by inference. This is the never-invent rule
+applied to the capsule: a shown pin is source-backed; an unshown one is a
+`source query` you have not run yet.
+
 ## Classify failures; don't retry blind
 
 Sort a failed run into a bucket (missing tool/source, port/permission,

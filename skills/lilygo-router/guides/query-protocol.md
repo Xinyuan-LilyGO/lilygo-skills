@@ -34,6 +34,14 @@ returned fact carries its official `path_or_url`, line reference, `sha256` hash,
 `authority_rank`, and `evidence_level`. Quote *those* values; do not paraphrase a
 pin from recall.
 
+**The capsule is a pointer, not the full pinout.** The injected capsule surfaces
+only *some* pins — the critical subset — never the complete pin map. If the
+pin/bus you need is not present in the capsule, you **MUST** run the
+`source query` above to fetch it. NEVER infer a pin from the subset that is
+shown, and never answer a pin from memory. An absent pin means "go pull it", not
+"guess" — a partial capsule is the signal to pull, not a licence to fill the gap.
+See [[honesty-evidence]].
+
 ## 3. When a fact is missing
 
 If a topic reports `needs_source_ingestion` or `unknown_with_sources`, do not
