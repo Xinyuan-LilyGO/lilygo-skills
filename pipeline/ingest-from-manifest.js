@@ -68,7 +68,13 @@ function ingestSource(source) {
   const macros = extractMacros(block);
   const sourceObj = {
     kind: source.source_kind,
-    path_or_url: source.url.replace("raw.githubusercontent.com", "github.com").replace("/master/", "/blob/master/"),
+    // raw.githubusercontent.com/OWNER/REPO/BRANCH/PATH -> github.com/OWNER/REPO/blob/BRANCH/PATH,
+    // branch-agnostic so non-master default branches (main, arduino-esp32-libs_*, ...) also yield
+    // a resolvable blob URL. Byte-identical to the old /master/ handling for master-branch sources.
+    path_or_url: source.url.replace(
+      /^https:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/([^/]+)\//,
+      "https://github.com/$1/$2/blob/$3/"
+    ),
     line_range: source.line_range,
     hash,
   };
