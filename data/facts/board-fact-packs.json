@@ -543,9 +543,226 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_SDA=GPIO11",
+          "claim": "Primary I2C SDA (CST816D touch) from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_SCL=GPIO14",
+          "claim": "Primary I2C SCL from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "LCD_MOSI=GPIO17",
+          "claim": "H0075Y002 160x160 round LCD SPI MOSI from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "LCD_SCLK=GPIO15",
+          "claim": "Round LCD SPI SCLK from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "LCD_DC=GPIO16",
+          "claim": "Round LCD data/command from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "LCD_CS=GPIO13",
+          "claim": "Round LCD chip-select from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "LCD_BL=GPIO18",
+          "claim": "Round LCD backlight from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "BOOT_KEY=GPIO0",
+          "claim": "BOOT/IO0 button from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.led.data",
+          "value": "APA102_DATA=GPIO38",
+          "claim": "APA102 RGB LED data from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "pin.led.clock",
+          "value": "APA102_CLOCK=GPIO39",
+          "claim": "APA102 RGB LED clock from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (CST816D touch): SDA=GPIO11, SCL=GPIO14",
+          "claim": "Primary I2C bus from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle-s3",
+          "topic": "pinout",
+          "key": "bus.display.spi",
+          "value": "H0075Y002 160x160 round LCD on SPI: SCLK=GPIO15, MOSI=GPIO17, DC=GPIO16, CS=GPIO13, BL=GPIO18",
+          "claim": "Round LCD SPI bus from official T-Circle-S3 pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle-S3/blob/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+            "line_range": "32-50",
+            "hash": "sha256:0ad1163357de547ea7fdcfad873a2a213ffc0aae773da86393f7b172edfc0eea"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
