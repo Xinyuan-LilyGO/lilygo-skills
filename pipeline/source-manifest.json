@@ -1179,6 +1179,194 @@
           "claim": "microSD SDIO bus from official t_display_p4_config.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t-camera-plus-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-CameraPlus-S3/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "49-149",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_SCLK",
+          "claim": "Shared SPI clock (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_MOSI",
+          "claim": "Shared SPI MOSI (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_MISO",
+          "claim": "Shared SPI MISO (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.mic.ws",
+          "macro": "MP34DT05TR_LRCLK",
+          "claim": "MP34DT05TR PDM mic word clock (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.mic.data",
+          "macro": "MP34DT05TR_DATA",
+          "claim": "MP34DT05TR PDM mic data (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.en",
+          "macro": "MP34DT05TR_MAX98357_EN",
+          "claim": "MAX98357A amplifier enable (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.data",
+          "macro": "MAX98357A_DATA",
+          "claim": "MAX98357A I2S data (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.bclk",
+          "macro": "MAX98357A_BCLK",
+          "claim": "MAX98357A I2S bit clock from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.lrclk",
+          "macro": "MAX98357A_LRCLK",
+          "claim": "MAX98357A I2S LR clock from official pin_config.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "LCD_CS",
+          "claim": "FP-133H01D LCD chip-select (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "LCD_DC",
+          "claim": "LCD data/command from official pin_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "LCD_BL",
+          "claim": "LCD backlight from official pin_config.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SD_CS",
+          "claim": "microSD chip-select from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.pwdn",
+          "macro": "OV2640_PWDN",
+          "claim": "OV2640 power-down (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.vsync",
+          "macro": "OV2640_VSYNC",
+          "claim": "OV2640 VSYNC (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.xclk",
+          "macro": "OV2640_XCLK",
+          "claim": "OV2640 XCLK from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.sda",
+          "macro": "OV2640_SDA",
+          "claim": "OV2640 SCCB SDA (SIOD) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.scl",
+          "macro": "OV2640_SCL",
+          "claim": "OV2640 SCCB SCL (SIOC) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.href",
+          "macro": "OV2640_HREF",
+          "claim": "OV2640 HREF from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.pclk",
+          "macro": "OV2640_PCLK",
+          "claim": "OV2640 pixel clock from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d7",
+          "macro": "OV2640_D9",
+          "claim": "OV2640 data Y9 (bit 7) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d6",
+          "macro": "OV2640_D8",
+          "claim": "OV2640 data Y8 (bit 6) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d5",
+          "macro": "OV2640_D7",
+          "claim": "OV2640 data Y7 (bit 5) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d4",
+          "macro": "OV2640_D6",
+          "claim": "OV2640 data Y6 (bit 4) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d3",
+          "macro": "OV2640_D5",
+          "claim": "OV2640 data Y5 (bit 3) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d2",
+          "macro": "OV2640_D4",
+          "claim": "OV2640 data Y4 (bit 2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d1",
+          "macro": "OV2640_D3",
+          "claim": "OV2640 data Y3 (bit 1) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d0",
+          "macro": "OV2640_D2",
+          "claim": "OV2640 data Y2 (bit 0) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_INT",
+          "claim": "CST816 touch interrupt from official pin_config.h"
+        },
+        {
+          "key": "pin.button.key1",
+          "macro": "KEY1",
+          "claim": "User KEY1 button from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.spi.primary",
+          "template": "Shared SPI (LCD + microSD): SCLK=GPIO{SPI_SCLK}, MOSI=GPIO{SPI_MOSI}, MISO=GPIO{SPI_MISO}",
+          "claim": "Shared SPI bus (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (SY6970 PMU + CST816 touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "bus.camera.dvp",
+          "template": "OV2640 DVP 8-bit parallel: XCLK=GPIO{OV2640_XCLK}, PCLK=GPIO{OV2640_PCLK}, VSYNC=GPIO{OV2640_VSYNC}, HREF=GPIO{OV2640_HREF}, SDA=GPIO{OV2640_SDA}, SCL=GPIO{OV2640_SCL}, D0=GPIO{OV2640_D2}, D1=GPIO{OV2640_D3}, D2=GPIO{OV2640_D4}, D3=GPIO{OV2640_D5}, D4=GPIO{OV2640_D6}, D5=GPIO{OV2640_D7}, D6=GPIO{OV2640_D8}, D7=GPIO{OV2640_D9}",
+          "claim": "OV2640 camera DVP bus from official pin_config.h"
+        }
+      ],
+      "variant_confirmed": true
     }
   ]
 }
