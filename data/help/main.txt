@@ -6,6 +6,7 @@ context [--project <dir>] [--plan] [--json] [prompt]
 index list --json
 index query <skill-id> --json
 verify --json
+verify sources --board <board-id> [--topic <topic>] --json
 doctor --json [--home <dir>]
 source query --board <board-id> --topic <io|pinout|bus|i2c|spi|uart|i2s|gpio|expander|connector|peripheral|display|imu|power|lora|gnss|input> --json
 source completeness --board <board-id> --topic <display|imu|power|lora|gnss|input> --json

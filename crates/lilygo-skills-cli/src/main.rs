@@ -20,6 +20,7 @@ mod setup_plan;
 mod source;
 mod source_packs;
 mod text_match;
+mod verify_sources;
 
 use std::process::ExitCode;
 

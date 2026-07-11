@@ -203,9 +203,32 @@ fn index(root: &Path, args: &[String]) -> Result<(), String> {
 }
 
 fn verify_command(root: &Path, args: &[String]) -> Result<(), String> {
+    // `verify sources` is a distinct live re-proof subcommand; the bare
+    // `verify --json` (generated-root check) and `verify-hardware` are
+    // untouched, so this adds a surface without colliding with either.
+    if args.first().map(String::as_str) == Some("sources") {
+        return verify_sources_command(root, &args[1..]);
+    }
     require_json(args)?;
     let report = verify(root);
     print_status_json(&report, &report.status, "verification failed")
+}
+
+fn verify_sources_command(root: &Path, args: &[String]) -> Result<(), String> {
+    if has_flag(args, "--help") || has_flag(args, "-h") {
+        println!(
+            "Usage: lilygo-skills verify sources --board <board-id> [--topic <topic>] --json\n\nRe-fetches each source-backed pin/bus fact's official raw URL (honors http(s) proxy),\nrecomputes sha256, and classifies OK / DRIFT / UNREACHABLE. Offline is graceful."
+        );
+        return Ok(());
+    }
+    require_json(args)?;
+    let board = option_value(args, "--board")
+        .ok_or_else(|| "--board <board-id> is required".to_string())?;
+    let topic = option_value(args, "--topic");
+    let report = crate::verify_sources::verify_sources(root, board, topic)?;
+    // DRIFT is a real integrity signal (upstream changed under an asserted
+    // fact) → non-zero exit; UNREACHABLE stays PASS so offline runs never fail.
+    print_status_json(&report, &report.status, "source verification found DRIFT")
 }
 
 fn doctor(root: &Path, args: &[String]) -> Result<(), String> {
