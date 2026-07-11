@@ -6380,9 +6380,298 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "SEN_SDA=GPIO21",
+          "claim": "Sensor I2C SDA (GPIO21) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "SEN_SCL=GPIO22",
+          "claim": "Sensor I2C SCL (GPIO22) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.touch.sda",
+          "value": "TOUCH_SDA=GPIO23",
+          "claim": "Touch I2C SDA (GPIO23) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.touch.scl",
+          "value": "TOUCH_SCL=GPIO32",
+          "claim": "Touch I2C SCL (GPIO32) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TOUCH_INT=GPIO38",
+          "claim": "Touch controller interrupt (GPIO38) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.rtc.int",
+          "value": "RTC_INT_PIN=GPIO37",
+          "claim": "PCF8563 RTC interrupt (GPIO37) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.power.int",
+          "value": "AXP202_INT=GPIO35",
+          "claim": "AXP202 PMU interrupt (GPIO35) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.imu.int",
+          "value": "BMA423_INT1=GPIO39",
+          "claim": "BMA423 accelerometer interrupt (GPIO39) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.motor",
+          "value": "MOTOR_PIN=GPIO4",
+          "claim": "Vibration motor (GPIO4) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.ir",
+          "value": "TWATCH_2020_IR_PIN=GPIO13",
+          "claim": "IR transmitter (GPIO13) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.audio.bck",
+          "value": "TWATCH_DAC_IIS_BCK=GPIO26",
+          "claim": "I2S DAC bit clock (GPIO26) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.audio.ws",
+          "value": "TWATCH_DAC_IIS_WS=GPIO25",
+          "claim": "I2S DAC word select (GPIO25) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "pin.audio.dout",
+          "value": "TWATCH_DAC_IIS_DOUT=GPIO33",
+          "claim": "I2S DAC data out (GPIO33) from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "bus.i2c.sensor",
+          "value": "Sensor I2C (AXP202 PMU + BMA423 IMU + PCF8563 RTC): SDA=GPIO21, SCL=GPIO22",
+          "claim": "Sensor I2C bus from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "bus.i2c.touch",
+          "value": "Touch I2C (FT6236): SDA=GPIO23, SCL=GPIO32, INT=GPIO38",
+          "claim": "Touch I2C bus from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-watch",
+          "topic": "pinout",
+          "key": "bus.audio.i2s",
+          "value": "I2S DAC audio: BCK=GPIO26, WS=GPIO25, DOUT=GPIO33",
+          "claim": "I2S audio DAC bus from official twatch2020_v1.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/TTGO_TWatch_Library/blob/master/src/board/twatch2020_v1.h",
+            "line_range": "14-32",
+            "hash": "sha256:de0d48a4744dea38c934c50772345eea08b696090a928f4b5435497ccb8a0f8e"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
