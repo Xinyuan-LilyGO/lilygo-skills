@@ -7279,9 +7279,298 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_SDA=GPIO7",
+          "claim": "I2C SDA (GPIO7) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_SCL=GPIO8",
+          "claim": "I2C SCL (GPIO8) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "SPI_1_SCLK=GPIO43",
+          "claim": "SPI SCLK (GPIO43) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "SPI_1_MOSI=GPIO44",
+          "claim": "SPI MOSI (GPIO44) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "SPI_1_MISO=GPIO39",
+          "claim": "SPI MISO (GPIO39) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.uart.tx",
+          "value": "T_HALOW_P4_TX=GPIO37",
+          "claim": "HaLow radio UART TX (GPIO37) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.uart.rx",
+          "value": "T_HALOW_P4_RX=GPIO38",
+          "claim": "HaLow radio UART RX (GPIO38) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.cmd",
+          "value": "TX_AH_R900PNR_CMD=GPIO42",
+          "claim": "HaLow radio SDIO CMD (GPIO42) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.clk",
+          "value": "TX_AH_R900PNR_CLK=GPIO40",
+          "claim": "HaLow radio SDIO CLK (GPIO40) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d0",
+          "value": "TX_AH_R900PNR_D0=GPIO39",
+          "claim": "HaLow radio SDIO D0 (GPIO39) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d1",
+          "value": "TX_AH_R900PNR_D1=GPIO40",
+          "claim": "HaLow radio SDIO D1 (GPIO40) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d2",
+          "value": "TX_AH_R900PNR_D2=GPIO41",
+          "claim": "HaLow radio SDIO D2 (GPIO41) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d3",
+          "value": "TX_AH_R900PNR_D3=GPIO42",
+          "claim": "HaLow radio SDIO D3 (GPIO42) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "ESP32P4_BOOT=GPIO36",
+          "claim": "ESP32-P4 BOOT button (GPIO36) from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (SGM38121): SDA=GPIO7, SCL=GPIO8",
+          "claim": "Primary I2C bus from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-halow-p4",
+          "topic": "pinout",
+          "key": "bus.spi.radio",
+          "value": "TX-AH-R900PNR HaLow radio on SPI: SCLK=GPIO43, MOSI=GPIO44, MISO=GPIO39",
+          "claim": "HaLow radio SPI bus from official t_halow_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Halow-P4/blob/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+            "line_range": "36-98",
+            "hash": "sha256:fd38812d3117ac8a975c52ceeb08b7bc02dd922688a97fa6bb5aa22650b512c1"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
