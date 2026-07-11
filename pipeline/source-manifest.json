@@ -694,6 +694,88 @@
           "claim": "TFT SPI display bus from official TWatch2021_V1_2.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t-display-s3-amoled-1.64",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "11-29",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.qspi.d0",
+          "macro": "LCD_SDIO0",
+          "claim": "AMOLED QSPI data0 (GPIO11) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d1",
+          "macro": "LCD_SDIO1",
+          "claim": "AMOLED QSPI data1 (GPIO13) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d2",
+          "macro": "LCD_SDIO2",
+          "claim": "AMOLED QSPI data2 (GPIO14) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d3",
+          "macro": "LCD_SDIO3",
+          "claim": "AMOLED QSPI data3 (GPIO15) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.sck",
+          "macro": "LCD_SCLK",
+          "claim": "AMOLED QSPI clock (GPIO12) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.cs",
+          "macro": "LCD_CS",
+          "claim": "AMOLED QSPI chip-select (GPIO10) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "LCD_RST",
+          "claim": "AMOLED display reset (GPIO17) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.en",
+          "macro": "LCD_EN",
+          "claim": "AMOLED display enable (GPIO16) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (GPIO7) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (GPIO6) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_INT",
+          "claim": "Touch interrupt (GPIO9) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TP_RST",
+          "claim": "Touch reset (GPIO8) from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.qspi.display",
+          "template": "AMOLED on QSPI: SCLK=GPIO{LCD_SCLK}, CS=GPIO{LCD_CS}, D0=GPIO{LCD_SDIO0}, D1=GPIO{LCD_SDIO1}, D2=GPIO{LCD_SDIO2}, D3=GPIO{LCD_SDIO3}, RST=GPIO{LCD_RST}",
+          "claim": "AMOLED QSPI display bus from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official pin_config.h"
+        }
+      ]
     }
   ]
 }
