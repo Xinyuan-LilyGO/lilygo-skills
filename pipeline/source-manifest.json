@@ -1052,6 +1052,133 @@
           "claim": "LCD SPI display bus from official pin_config.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t-display-p4",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-P4/main/components/private_library/t_display_p4_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "12-152",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_1_SDA",
+          "claim": "I2C bus 1 SDA (GPIO7) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_1_SCL",
+          "claim": "I2C bus 1 SCL (GPIO8) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c2.sda",
+          "macro": "IIC_2_SDA",
+          "claim": "I2C bus 2 SDA (GPIO20) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c2.scl",
+          "macro": "IIC_2_SCL",
+          "claim": "I2C bus 2 SCL (GPIO21) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_1_SCLK",
+          "claim": "SPI bus 1 SCLK (GPIO2) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_1_MOSI",
+          "claim": "SPI bus 1 MOSI (GPIO3) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_1_MISO",
+          "claim": "SPI bus 1 MISO (GPIO4) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "ESP32P4_BOOT",
+          "claim": "ESP32-P4 BOOT button (GPIO35) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "HI8561_SCREEN_BL",
+          "claim": "HI8561 display backlight (GPIO51) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "SX1262_CS",
+          "claim": "SX1262 LoRa chip-select (GPIO24) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "SX1262_BUSY",
+          "claim": "SX1262 LoRa BUSY (GPIO6) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "GPS_TX",
+          "claim": "L76K GPS UART TX (GPIO22) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "GPS_RX",
+          "claim": "L76K GPS UART RX (GPIO23) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.clk",
+          "macro": "SDIO_1_CLK",
+          "claim": "microSD SDIO CLK (GPIO43) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.cmd",
+          "macro": "SDIO_1_CMD",
+          "claim": "microSD SDIO CMD (GPIO44) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d0",
+          "macro": "SDIO_1_D0",
+          "claim": "microSD SDIO D0 (GPIO39) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d1",
+          "macro": "SDIO_1_D1",
+          "claim": "microSD SDIO D1 (GPIO40) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d2",
+          "macro": "SDIO_1_D2",
+          "claim": "microSD SDIO D2 (GPIO41) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d3",
+          "macro": "SDIO_1_D3",
+          "claim": "microSD SDIO D3 (GPIO42) from official t_display_p4_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "I2C bus 1 (RTC/gauge/touch): SDA=GPIO{IIC_1_SDA}, SCL=GPIO{IIC_1_SCL}",
+          "claim": "I2C bus 1 from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.i2c.secondary",
+          "template": "I2C bus 2 (ES8311 audio + IMU + camera): SDA=GPIO{IIC_2_SDA}, SCL=GPIO{IIC_2_SCL}",
+          "claim": "I2C bus 2 from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.spi.radio",
+          "template": "SPI bus 1 (SX1262 LoRa): SCLK=GPIO{SPI_1_SCLK}, MOSI=GPIO{SPI_1_MOSI}, MISO=GPIO{SPI_1_MISO}, CS=GPIO{SX1262_CS}, BUSY=GPIO{SX1262_BUSY}",
+          "claim": "SPI radio bus from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.sdmmc.microsd",
+          "template": "microSD on SDIO: CLK=GPIO{SDIO_1_CLK}, CMD=GPIO{SDIO_1_CMD}, D0=GPIO{SDIO_1_D0}, D1=GPIO{SDIO_1_D1}, D2=GPIO{SDIO_1_D2}, D3=GPIO{SDIO_1_D3}",
+          "claim": "microSD SDIO bus from official t_display_p4_config.h"
+        }
+      ]
     }
   ]
 }

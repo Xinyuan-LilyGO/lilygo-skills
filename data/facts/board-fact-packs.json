@@ -2559,9 +2559,424 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_1_SDA=GPIO7",
+          "claim": "I2C bus 1 SDA (GPIO7) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_1_SCL=GPIO8",
+          "claim": "I2C bus 1 SCL (GPIO8) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.i2c2.sda",
+          "value": "IIC_2_SDA=GPIO20",
+          "claim": "I2C bus 2 SDA (GPIO20) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.i2c2.scl",
+          "value": "IIC_2_SCL=GPIO21",
+          "claim": "I2C bus 2 SCL (GPIO21) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "SPI_1_SCLK=GPIO2",
+          "claim": "SPI bus 1 SCLK (GPIO2) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "SPI_1_MOSI=GPIO3",
+          "claim": "SPI bus 1 MOSI (GPIO3) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "SPI_1_MISO=GPIO4",
+          "claim": "SPI bus 1 MISO (GPIO4) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "ESP32P4_BOOT=GPIO35",
+          "claim": "ESP32-P4 BOOT button (GPIO35) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "HI8561_SCREEN_BL=GPIO51",
+          "claim": "HI8561 display backlight (GPIO51) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.lora.cs",
+          "value": "SX1262_CS=GPIO24",
+          "claim": "SX1262 LoRa chip-select (GPIO24) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.lora.busy",
+          "value": "SX1262_BUSY=GPIO6",
+          "claim": "SX1262 LoRa BUSY (GPIO6) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.gps.tx",
+          "value": "GPS_TX=GPIO22",
+          "claim": "L76K GPS UART TX (GPIO22) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.gps.rx",
+          "value": "GPS_RX=GPIO23",
+          "claim": "L76K GPS UART RX (GPIO23) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.clk",
+          "value": "SDIO_1_CLK=GPIO43",
+          "claim": "microSD SDIO CLK (GPIO43) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.cmd",
+          "value": "SDIO_1_CMD=GPIO44",
+          "claim": "microSD SDIO CMD (GPIO44) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d0",
+          "value": "SDIO_1_D0=GPIO39",
+          "claim": "microSD SDIO D0 (GPIO39) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d1",
+          "value": "SDIO_1_D1=GPIO40",
+          "claim": "microSD SDIO D1 (GPIO40) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d2",
+          "value": "SDIO_1_D2=GPIO41",
+          "claim": "microSD SDIO D2 (GPIO41) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "pin.sdmmc.d3",
+          "value": "SDIO_1_D3=GPIO42",
+          "claim": "microSD SDIO D3 (GPIO42) from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "I2C bus 1 (RTC/gauge/touch): SDA=GPIO7, SCL=GPIO8",
+          "claim": "I2C bus 1 from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "bus.i2c.secondary",
+          "value": "I2C bus 2 (ES8311 audio + IMU + camera): SDA=GPIO20, SCL=GPIO21",
+          "claim": "I2C bus 2 from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "bus.spi.radio",
+          "value": "SPI bus 1 (SX1262 LoRa): SCLK=GPIO2, MOSI=GPIO3, MISO=GPIO4, CS=GPIO24, BUSY=GPIO6",
+          "claim": "SPI radio bus from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-p4",
+          "topic": "pinout",
+          "key": "bus.sdmmc.microsd",
+          "value": "microSD on SDIO: CLK=GPIO43, CMD=GPIO44, D0=GPIO39, D1=GPIO40, D2=GPIO41, D3=GPIO42",
+          "claim": "microSD SDIO bus from official t_display_p4_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-P4/blob/main/components/private_library/t_display_p4_config.h",
+            "line_range": "12-152",
+            "hash": "sha256:1c38426766cc62147ebef02842583d007fc9c9b5bf4644ed037ce201b7325710"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
