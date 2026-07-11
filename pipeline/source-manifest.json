@@ -776,6 +776,103 @@
           "claim": "Primary I2C bus from official pin_config.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t-display-s3-long",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-Long/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "42-64",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.display.cs",
+          "macro": "TFT_QSPI_CS",
+          "claim": "AXS15231B QSPI chip-select (GPIO12) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "TFT_QSPI_SCK",
+          "claim": "AXS15231B QSPI clock (GPIO17) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d0",
+          "macro": "TFT_QSPI_D0",
+          "claim": "AXS15231B QSPI data0 (GPIO13) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d1",
+          "macro": "TFT_QSPI_D1",
+          "claim": "AXS15231B QSPI data1 (GPIO18) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d2",
+          "macro": "TFT_QSPI_D2",
+          "claim": "AXS15231B QSPI data2 (GPIO21) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d3",
+          "macro": "TFT_QSPI_D3",
+          "claim": "AXS15231B QSPI data3 (GPIO14) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "TFT_QSPI_RST",
+          "claim": "AXS15231B QSPI reset (GPIO16) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "TFT_BL",
+          "claim": "Display backlight (GPIO1) from official pins_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TP_RST",
+          "claim": "Touch reset (GPIO2) from official pins_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_IRQ",
+          "claim": "Touch interrupt (GPIO11) from official pins_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "I2C_SDA",
+          "claim": "I2C SDA / touch (GPIO15) from official pins_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "I2C_SCL",
+          "claim": "I2C SCL / touch (GPIO10) from official pins_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "PIN_BUTTON_1",
+          "claim": "BOOT button (GPIO0) from official pins_config.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SPI_SD_CS",
+          "claim": "microSD chip-select (GPIO38) from official pins_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.qspi.display",
+          "template": "AXS15231B on QSPI: SCK=GPIO{TFT_QSPI_SCK}, CS=GPIO{TFT_QSPI_CS}, D0=GPIO{TFT_QSPI_D0}, D1=GPIO{TFT_QSPI_D1}, D2=GPIO{TFT_QSPI_D2}, D3=GPIO{TFT_QSPI_D3}, RST=GPIO{TFT_QSPI_RST}",
+          "claim": "AXS15231B QSPI display bus from official pins_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (touch): SDA=GPIO{I2C_SDA}, SCL=GPIO{I2C_SCL}",
+          "claim": "Primary I2C bus from official pins_config.h"
+        },
+        {
+          "key": "bus.spi.sdcard",
+          "template": "microSD on SPI: SCLK=GPIO{SPI_SD_SCLK}, MOSI=GPIO{SPI_SD_MOSI}, MISO=GPIO{SPI_SD_MISO}, CS=GPIO{SPI_SD_CS}",
+          "claim": "microSD SPI bus from official pins_config.h"
+        }
+      ]
     }
   ]
 }
