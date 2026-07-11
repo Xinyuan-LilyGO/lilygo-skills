@@ -7,10 +7,26 @@ an RF/GNSS fix.
 
 ## Evidence levels
 
-Each fact and step carries a level; state the true one, never a higher one:
+`evidence_level` is a first-class axis on every fact and step. It states *how
+strongly the value is grounded* — never how well anything worked. Each fact
+carries exactly one level; state the true one, never a higher one:
 
-- **V3 — source reference.** A pin/bus/demo backed by an official URL, line, and
-  sha256. Proves what the source says. Read-only.
+- **V3 — source reference.** A pin/bus/demo value read out of an official
+  source. The strongest, re-verifiable form — `V3-source-reference` — is a
+  **`#define`-verified value carrying the complete provenance triple: an
+  official file URL + a `line_range` + a `sha256:` hash.** That triple is what
+  makes it *runnable-verifiable*: `lilygo-skills verify sources --board <id>`
+  re-fetches the URL, recomputes the sha256, and re-proves it live
+  (OK / DRIFT / UNREACHABLE). A V3 fact proves only *what the source says* — it
+  is read-only and says nothing about build, flash, or peripheral behavior.
+
+  **A value taken from prose, a wiki sentence, a photo, memory, or any source
+  that is not `#define`/code-verified with a URL+line+hash MUST NOT be labeled
+  V3.** If a fact is source-backed at the repo/reference level (an official URL
+  + hash but no `line_range`, e.g. a documentation-repo pointer), it is a weaker
+  reference tier: honest as a pointer, but it is not the line-anchored,
+  live-re-provable V3 that the `verify sources` re-proof and the
+  `eval/verify-provenance.js` gate treat as fully verifiable. Do not round it up.
 - **V4 — planning / host artifact.** A build, a partition/manifest inspection, a
   simulator/page-data render. Proves compilation or host-side state — not board
   behavior.
@@ -19,7 +35,8 @@ Each fact and step carries a level; state the true one, never a higher one:
   the only level that proves hardware behavior, and only for what was observed.
 
 A build (V4) is not a flash (V5). A flash is not a working peripheral. A running
-flush callback is not a visible frame. Visible NMEA is not a GNSS fix.
+flush callback is not a visible frame. Visible NMEA is not a GNSS fix. And a
+prose mention is not a V3 source reference.
 
 ## `hardware_verified=false`
 
