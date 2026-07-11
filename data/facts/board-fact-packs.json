@@ -5810,9 +5810,316 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.encoder.a",
+          "value": "KNOB_DATA_A=GPIO1",
+          "claim": "Rotary encoder channel A (GPIO1) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.encoder.b",
+          "value": "KNOB_DATA_B=GPIO2",
+          "claim": "Rotary encoder channel B (GPIO2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.encoder.key",
+          "value": "KNOB_KEY=GPIO0",
+          "claim": "Rotary encoder push key (GPIO0) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_SDA=GPIO5",
+          "claim": "I2C SDA (GPIO5) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_SCL=GPIO6",
+          "claim": "I2C SCL (GPIO6) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TOUCH_INT=GPIO9",
+          "claim": "CST816 touch interrupt (GPIO9) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.touch.rst",
+          "value": "TOUCH_RST=GPIO8",
+          "claim": "CST816 touch reset (GPIO8) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.d0",
+          "value": "SCREEN_SDIO0=GPIO11",
+          "claim": "AMOLED QSPI data0 (GPIO11) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.d1",
+          "value": "SCREEN_SDIO1=GPIO13",
+          "claim": "AMOLED QSPI data1 (GPIO13) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.d2",
+          "value": "SCREEN_SDIO2=GPIO7",
+          "claim": "AMOLED QSPI data2 (GPIO7) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.d3",
+          "value": "SCREEN_SDIO3=GPIO14",
+          "claim": "AMOLED QSPI data3 (GPIO14) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.sck",
+          "value": "SCREEN_SCLK=GPIO12",
+          "claim": "AMOLED QSPI clock (GPIO12) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.qspi.cs",
+          "value": "SCREEN_CS=GPIO10",
+          "claim": "AMOLED QSPI chip-select (GPIO10) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "SCREEN_RST=GPIO4",
+          "claim": "AMOLED display reset (GPIO4) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "pin.display.en",
+          "value": "SCREEN_EN=GPIO3",
+          "claim": "AMOLED display enable (GPIO3) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "bus.qspi.display",
+          "value": "AMOLED on QSPI: SCLK=GPIO12, CS=GPIO10, D0=GPIO11, D1=GPIO13, D2=GPIO7, D3=GPIO14, RST=GPIO4",
+          "claim": "AMOLED QSPI display bus from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-encoder-pro",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (CST816 touch): SDA=GPIO5, SCL=GPIO6",
+          "claim": "Primary I2C bus from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Encoder-Pro/blob/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+            "line_range": "21-46",
+            "hash": "sha256:dd80948e7d5babce382ce21fca311677c3d65aad0771175cd46c5208ddef9cad"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
