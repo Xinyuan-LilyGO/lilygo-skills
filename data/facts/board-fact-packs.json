@@ -4392,9 +4392,316 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "TFT_QSPI_CS=GPIO12",
+          "claim": "AXS15231B QSPI chip-select (GPIO12) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "TFT_QSPI_SCK=GPIO17",
+          "claim": "AXS15231B QSPI clock (GPIO17) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.d0",
+          "value": "TFT_QSPI_D0=GPIO13",
+          "claim": "AXS15231B QSPI data0 (GPIO13) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.d1",
+          "value": "TFT_QSPI_D1=GPIO18",
+          "claim": "AXS15231B QSPI data1 (GPIO18) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.d2",
+          "value": "TFT_QSPI_D2=GPIO21",
+          "claim": "AXS15231B QSPI data2 (GPIO21) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.d3",
+          "value": "TFT_QSPI_D3=GPIO14",
+          "claim": "AXS15231B QSPI data3 (GPIO14) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "TFT_QSPI_RST=GPIO16",
+          "claim": "AXS15231B QSPI reset (GPIO16) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "TFT_BL=GPIO1",
+          "claim": "Display backlight (GPIO1) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.touch.rst",
+          "value": "TP_RST=GPIO2",
+          "claim": "Touch reset (GPIO2) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TP_IRQ=GPIO11",
+          "claim": "Touch interrupt (GPIO11) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "I2C_SDA=GPIO15",
+          "claim": "I2C SDA / touch (GPIO15) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "I2C_SCL=GPIO10",
+          "claim": "I2C SCL / touch (GPIO10) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "PIN_BUTTON_1=GPIO0",
+          "claim": "BOOT button (GPIO0) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "pin.sdcard.cs",
+          "value": "SPI_SD_CS=GPIO38",
+          "claim": "microSD chip-select (GPIO38) from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "bus.qspi.display",
+          "value": "AXS15231B on QSPI: SCK=GPIO17, CS=GPIO12, D0=GPIO13, D1=GPIO18, D2=GPIO21, D3=GPIO14, RST=GPIO16",
+          "claim": "AXS15231B QSPI display bus from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (touch): SDA=GPIO15, SCL=GPIO10",
+          "claim": "Primary I2C bus from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-s3-long",
+          "topic": "pinout",
+          "key": "bus.spi.sdcard",
+          "value": "microSD on SPI: SCLK=GPIO40, MOSI=GPIO39, MISO=GPIO41, CS=GPIO38",
+          "claim": "microSD SPI bus from official pins_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3-Long/blob/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+            "line_range": "42-64",
+            "hash": "sha256:4b34305321c79b17faf04834b6deec1413e96391d23f2e74a9f626a0288ec4c7"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
