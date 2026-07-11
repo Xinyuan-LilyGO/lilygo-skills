@@ -263,13 +263,30 @@ fn source_recovery_hook_summary_t_display_s3() {
     let plan = plan("T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen");
     let summary = render_hook_goal_summary(&plan);
 
+    // lean-capsule refactor: the implementation-prompt source-recovery segment keeps only
+    // the concrete demo entry point and the critical source-backed pins inline.
+    // The former headers=[..], recovery=[..], and internal=[..] operating detail
+    // was dropped from the push capsule -- it is recovered on the pull side via
+    // `source query` / `verify sources` -- so those substrings must be absent.
     assert!(summary.contains("examples/tft/tft.ino"));
-    assert!(summary.contains("Setup206_LilyGo_T_Display_S3.h"));
-    assert!(summary.contains("pin_config.h"));
     assert!(summary.contains("PIN_IIC_SDA=GPIO18"));
     assert!(summary.contains("PIN_IIC_SCL=GPIO17"));
-    assert!(summary.contains("index query playbook-source-discovery --json"));
-    assert!(summary.contains("source query --board board-t-display-s3 --topic io --json"));
+    assert!(
+        !summary.contains("headers=["),
+        "headers must be dropped: {summary}"
+    );
+    assert!(
+        !summary.contains("recovery=["),
+        "recovery must be dropped: {summary}"
+    );
+    assert!(
+        !summary.contains("internal=["),
+        "internal must be dropped: {summary}"
+    );
+    assert!(
+        !summary.contains("Setup206_LilyGo_T_Display_S3.h"),
+        "header detail must be dropped: {summary}"
+    );
 }
 
 #[test]

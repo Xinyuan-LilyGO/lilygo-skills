@@ -57,15 +57,28 @@ if (!containsText(goal.context_capsule, [
 ])) {
   fail("goal source recovery fields", goal.context_capsule);
 }
+// Lean capsule: the push hook context keeps only the concrete demo entry
+// point and the critical source-backed pins inline. The headers/recovery/
+// internal operating detail is dropped from the push side -- it is recovered
+// on the pull side (`source query` / `verify sources`), and the full detail
+// still lives in the `context --plan` goal capsule JSON asserted above.
 if (!containsText(hookContext, [
   "examples/tft/tft.ino",
-  "Setup206_LilyGo_T_Display_S3.h",
-  "pin_config.h",
   "PIN_IIC_SDA=GPIO18",
-  "PIN_IIC_SCL=GPIO17",
-  "index query playbook-source-discovery --json"
+  "PIN_IIC_SCL=GPIO17"
 ])) {
   fail("hook compact context", hook);
+}
+for (const dropped of [
+  "headers=[",
+  "recovery=[",
+  "internal=[",
+  "Setup206_LilyGo_T_Display_S3.h",
+  "index query playbook-source-discovery --json"
+]) {
+  if (hookContext.includes(dropped)) {
+    fail("hook compact context leaked dropped field", { dropped, hookContext });
+  }
 }
 if (!containsText(i2c.facts, [
   "bus.i2c.primary",

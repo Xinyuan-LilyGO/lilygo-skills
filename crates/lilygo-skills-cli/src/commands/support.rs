@@ -143,13 +143,11 @@ pub(crate) fn render_context(route: &crate::model::RouteResult) -> String {
     if let Some(board_source) = &route.board_source {
         context.push_str(&format!("; board_source={board_source}"));
     }
+    // Lean capsule: the push side is a pointer, not a report. The
+    // `readiness=[topic=complete]` status list was ungraded scaffolding (dropping
+    // it holds coverage), so only the `expand=[..]` pull pointer -- the command
+    // that fetches the source-backed detail -- is kept.
     if !route.readiness.is_empty() {
-        let readiness = route
-            .readiness
-            .iter()
-            .map(|signal| format!("{}={}", signal.topic, signal.completeness))
-            .collect::<Vec<_>>()
-            .join(",");
         let expansion = route
             .readiness
             .iter()
@@ -162,7 +160,7 @@ pub(crate) fn render_context(route: &crate::model::RouteResult) -> String {
             .take(2)
             .collect::<Vec<_>>()
             .join(" | ");
-        context.push_str(&format!("; readiness=[{readiness}]; expand=[{expansion}]"));
+        context.push_str(&format!("; expand=[{expansion}]"));
     }
     context
 }

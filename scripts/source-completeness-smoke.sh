@@ -99,7 +99,12 @@ check("unsupported enrichment dry-run has no planned writes",
   unsupportedDryRun);
 check("hook compact no-write context",
   hook.decision === "inject" &&
-  hook.context.includes("readiness=[display=complete]") &&
+  // Lean capsule: the push side drops the `readiness=[topic=complete]` status
+  // list; the `expand=[..]` pull pointer (the source query that fetches the
+  // source-backed detail) is what stays.
+  hook.context.includes("expand=[") &&
+  hook.context.includes("source query") &&
+  !hook.context.includes("readiness=[") &&
   !hook.context.includes("update board-facts") &&
   hook.context.length < 1200,
   hook);
