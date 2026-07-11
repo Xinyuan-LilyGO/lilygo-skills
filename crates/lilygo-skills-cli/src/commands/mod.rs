@@ -708,7 +708,12 @@ mod tests {
         let after =
             fs::read(source_root.join(crate::facts::FACT_PACK_INDEX_PATH)).expect("fact packs");
         assert_eq!(before, after);
-        assert!(context.contains("readiness=[display=complete]"));
+        // lean-capsule refactor: the `readiness=[topic=complete]` status list was dropped
+        // from the push capsule; the `expand=[..]` pull pointer (the command that
+        // fetches the source-backed detail) stays.
+        assert!(context.contains("expand=["));
+        assert!(context.contains("source query"));
+        assert!(!context.contains("readiness=["));
         assert!(!context.contains("update board-facts"));
     }
 

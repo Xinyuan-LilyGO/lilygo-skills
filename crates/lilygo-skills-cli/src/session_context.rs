@@ -192,10 +192,12 @@ mod tests {
         // Efficiency guard (not an honesty/coverage assertion): the incremental
         // repeat must stay far smaller than the full capsule. Injection de-noise
         // shrank the full capsule (dropped goal_id/completeness/fact_tables/
-        // discovery_hints counts), so the fixed ratio was retuned from 5x to 4x;
-        // it still proves >4x compaction of the repeated context.
+        // discovery_hints counts), and the lean-capsule refactor shrank it further (dropped
+        // playbooks/readiness and the source-recovery headers/recovery/internal
+        // detail), so the fixed ratio was retuned 5x -> 4x -> 3x; it still proves
+        // >3x compaction of the repeated context.
         assert!(
-            second.len() * 4 <= full.len(),
+            second.len() * 3 <= full.len(),
             "second={second}\nfull={full}"
         );
         let _ = fs::remove_dir_all(&temp);

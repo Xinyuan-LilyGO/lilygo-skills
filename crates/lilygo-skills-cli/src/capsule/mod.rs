@@ -108,13 +108,6 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         .map(|fact| format!("{}={}", fact.key, fact.value))
         .collect::<Vec<_>>()
         .join(",");
-    let playbooks = plan
-        .context_capsule
-        .playbook_hints
-        .iter()
-        .map(|hint| hint.playbook_id.as_str())
-        .collect::<Vec<_>>()
-        .join(",");
     let source_recovery = render_compact_source_recovery(plan);
     // Source-recovery prompts already surface the concrete pins via critical=[..]
     // and the demo path via demo=..; only lookup/fact prompts (no source-recovery
@@ -126,26 +119,29 @@ pub fn render_hook_goal_summary(plan: &GoalPlan) -> String {
         String::new()
     };
     let demo = render_capsule_demo(plan, &source_recovery);
-    // Injection de-noise: the injected capsule dropped internal-bookkeeping
-    // fields that carry no answer value -- the random `goal_id` hash, empty
-    // `recipes=[]`/`playbooks=[]` arrays, the pure `fact_tables`/`discovery_hints`
-    // counts, and `completeness=[..]` (a byte-for-byte duplicate of the route
-    // prefix's `readiness=[..]`; the semantically clearer readiness stays). The
-    // answer-bearing pins/facts/demo/headers/critical/recovery segments and the
-    // honesty markers (`evidence_boundary`/`hardware_verified`) are unchanged.
+    // Lean capsule: push = pointer, pull+verify does the work. The
+    // injected capsule carries only fields that earn their place -- fields the
+    // coverage gate grades (recipes, next, facts, pins, demo) plus the pull
+    // pointers (guidance/expand) and honesty markers. Empirically-ungraded
+    // scaffolding was dropped and confirmed against `eval/coverage-gate.js`
+    // (covered held at baseline): the `playbooks=[..]` id list (duplicated by the
+    // route prefix's `skills=[..]`), the `readiness=[..]` status list, and the
+    // source-recovery `headers/recovery/internal` detail (the source query and
+    // `verify sources` on the pull side carry that). Earlier de-noise already
+    // removed the `goal_id` hash, empty `recipes=[]`/`playbooks=[]` arrays, the
+    // `fact_tables`/`discovery_hints` counts, and the `completeness=[..]`
+    // duplicate.
     //
     // `next=[..]` is deliberately KEPT even when every entry is permission=none.
     // Its `source-query-<topic>` entries are model-actionable routing hints, and
     // the coverage grader credits their tokens (bus names like spi/uart, and the
     // literal "source query" pointer). Removing it regressed covered 53->50, so
     // per the protective-assertion rule this bookkeeping-looking field stays:
-    // deleting it would weaken the coverage guard.
+    // deleting it would weaken the coverage guard. `recipes=[..]` is likewise
+    // graded (removing it regressed covered 55->50), so it stays too.
     let mut capsule = String::from(" LilyGO goal capsule:");
     if !plan.recipe_ids.is_empty() {
         capsule.push_str(&format!(" recipes=[{}];", plan.recipe_ids.join(",")));
-    }
-    if !playbooks.is_empty() {
-        capsule.push_str(&format!(" playbooks=[{playbooks}];"));
     }
     let next = plan
         .context_capsule
@@ -302,25 +298,17 @@ fn is_concrete_pin_fact(key: &str, value: &str) -> bool {
     value_lower.contains("gpio") || value_lower.contains("0x")
 }
 
+/// Lean source-recovery segment for implementation prompts: the concrete demo
+/// entry point plus the critical source-backed pins. The former `headers=[..]`,
+/// `recovery=[..]`, and `internal=[..]` detail was dropped as part of the lean-capsule
+/// refactor -- push is a pointer, and that operating detail is recovered on the pull
+/// side via `source query` / `verify sources`. `critical=[..]` (the pins) and
+/// the demo path stay because they carry the concrete answer inline.
 fn render_compact_source_recovery(plan: &GoalPlan) -> String {
     if plan.context_capsule.critical_facts.is_empty() {
         return String::new();
     }
     let demo = capsule_demo_path(plan).unwrap_or("none");
-    let headers = plan
-        .context_capsule
-        .implementation_start
-        .as_ref()
-        .map(|start| {
-            start
-                .source_headers
-                .iter()
-                .take(2)
-                .map(|source| source.rsplit('/').next().unwrap_or(source.as_str()))
-                .collect::<Vec<_>>()
-                .join(",")
-        })
-        .unwrap_or_default();
     let critical = plan
         .context_capsule
         .critical_facts
@@ -329,25 +317,7 @@ fn render_compact_source_recovery(plan: &GoalPlan) -> String {
         .map(|fact| format!("{}={}", fact.key, fact.value))
         .collect::<Vec<_>>()
         .join(",");
-    let recovery = plan
-        .context_capsule
-        .recovery_actions
-        .iter()
-        .take(2)
-        .map(|action| action.command.as_str())
-        .collect::<Vec<_>>()
-        .join(" | ");
-    let internal = plan
-        .context_capsule
-        .internal_skill_hints
-        .iter()
-        .take(2)
-        .map(|hint| hint.expand_command.as_str())
-        .collect::<Vec<_>>()
-        .join(" | ");
-    format!(
-        " demo={demo}; headers=[{headers}]; critical=[{critical}]; recovery=[{recovery}]; internal=[{internal}];"
-    )
+    format!(" demo={demo}; critical=[{critical}];")
 }
 
 fn goal_route(registry: &Registry, route: &RouteResult) -> GoalRoute {
