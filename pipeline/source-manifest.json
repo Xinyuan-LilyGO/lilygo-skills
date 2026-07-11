@@ -602,6 +602,98 @@
           "claim": "I2S audio DAC bus from official twatch2020_v1.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t-watch-2021",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Watch-2021/main/TWatch_2021_Library/src/board/TWatch2021_V1_2.h",
+      "source_kind": "arduino-pins",
+      "line_range": "11-43",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.power.on",
+          "macro": "TWATCH_PWR_ON",
+          "claim": "Power-on/hold pin (GPIO5) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.button.pwr",
+          "macro": "TWATCH_BTN_1",
+          "claim": "Main button BTN_1 (GPIO0) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.motor",
+          "macro": "TWATCH_MOTOR",
+          "claim": "Vibration motor (GPIO4) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "TWATCH_IICSCL",
+          "claim": "I2C SCL (GPIO25) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "TWATCH_IICSDA",
+          "claim": "I2C SDA (GPIO26) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TWATCH_TOUCH_RES",
+          "claim": "Touch reset (GPIO33) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TWATCH_TOUCH_INT",
+          "claim": "Touch interrupt / shared all-in-one INT (GPIO32) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.rtc.int",
+          "macro": "TWATCH_RTC_INT",
+          "claim": "RTC interrupt / shared all-in-one INT (GPIO32) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "TWATCH_TFT_MOSI",
+          "claim": "TFT SPI MOSI (GPIO13) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "TWATCH_TFT_SCLK",
+          "claim": "TFT SPI SCLK (GPIO14) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "TWATCH_TFT_CS",
+          "claim": "TFT SPI CS (GPIO15) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "TWATCH_TFT_DC",
+          "claim": "TFT data/command (GPIO19) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "TWATCH_TFT_RST",
+          "claim": "TFT reset (GPIO27) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "TWATCH_TFT_BL",
+          "claim": "TFT backlight (GPIO21) from official TWatch2021_V1_2.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (PMU/RTC/touch/IMU): SDA=GPIO{TWATCH_IICSDA}, SCL=GPIO{TWATCH_IICSCL}",
+          "claim": "Primary I2C bus from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "bus.display.spi",
+          "template": "TFT display on SPI: MOSI=GPIO{TWATCH_TFT_MOSI}, SCLK=GPIO{TWATCH_TFT_SCLK}, CS=GPIO{TWATCH_TFT_CS}, DC=GPIO{TWATCH_TFT_DC}, RST=GPIO{TWATCH_TFT_RST}, BL=GPIO{TWATCH_TFT_BL}",
+          "claim": "TFT SPI display bus from official TWatch2021_V1_2.h"
+        }
+      ]
     }
   ]
 }
