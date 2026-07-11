@@ -642,9 +642,370 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_SDA=GPIO39",
+          "claim": "Primary I2C SDA (CST226SE touch) from official T-Connect-Pro pin_config.h (T_Connect_Pro_V1_0 block)",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_SCL=GPIO40",
+          "claim": "Primary I2C SCL from official T-Connect-Pro pin_config.h (T_Connect_Pro_V1_0 block)",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "SCREEN_MOSI=GPIO11",
+          "claim": "ST7796 SPI MOSI from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.miso",
+          "value": "SCREEN_MISO=GPIO13",
+          "claim": "ST7796 SPI MISO from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "SCREEN_SCLK=GPIO12",
+          "claim": "ST7796 SPI SCLK from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "SCREEN_CS=GPIO21",
+          "claim": "ST7796 SPI CS from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "SCREEN_DC=GPIO41",
+          "claim": "ST7796 data/command from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "SCREEN_BL=GPIO46",
+          "claim": "ST7796 backlight from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.touch.rst",
+          "value": "TOUCH_RST=GPIO47",
+          "claim": "CST226SE touch reset from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TOUCH_INT=GPIO3",
+          "claim": "CST226SE touch interrupt from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.cs",
+          "value": "SX1262_CS=GPIO14",
+          "claim": "SX1262 LoRa CS from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.rst",
+          "value": "SX1262_RST=GPIO42",
+          "claim": "SX1262 LoRa reset from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.sclk",
+          "value": "SX1262_SCLK=GPIO12",
+          "claim": "SX1262 LoRa SCLK from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.mosi",
+          "value": "SX1262_MOSI=GPIO11",
+          "claim": "SX1262 LoRa MOSI from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.miso",
+          "value": "SX1262_MISO=GPIO13",
+          "claim": "SX1262 LoRa MISO from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.busy",
+          "value": "SX1262_BUSY=GPIO38",
+          "claim": "SX1262 LoRa BUSY from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "pin.lora.dio1",
+          "value": "SX1262_DIO1=GPIO45",
+          "claim": "SX1262 LoRa DIO1 from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (CST226SE touch): SDA=GPIO39, SCL=GPIO40",
+          "claim": "Primary I2C bus from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "bus.display.st7796",
+          "value": "ST7796 222x480 on SPI: SCLK=GPIO12, MOSI=GPIO11, MISO=GPIO13, CS=GPIO21, DC=GPIO41, BL=GPIO46",
+          "claim": "ST7796 display SPI bus from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-connect-pro",
+          "topic": "pinout",
+          "key": "bus.spi.lora",
+          "value": "SX1262 LoRa on SPI: SCLK=GPIO12, MOSI=GPIO11, MISO=GPIO13, CS=GPIO14, RST=GPIO42, BUSY=GPIO38, DIO1=GPIO45",
+          "claim": "SX1262 LoRa SPI bus from official T-Connect-Pro pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro/blob/main/libraries/private_library/pin_config.h",
+            "line_range": "17-47",
+            "hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
