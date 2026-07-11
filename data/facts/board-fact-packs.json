@@ -2177,9 +2177,190 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "I2C_SDA=GPIO3",
+          "claim": "I2C SDA (GPIO3) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "I2C_SCL=GPIO2",
+          "claim": "I2C SCL (GPIO2) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "SPI_MOSI=GPIO12",
+          "claim": "SPI MOSI (GPIO12) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "SPI_MISO=GPIO13",
+          "claim": "SPI MISO (GPIO13) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "SPI_SCK=GPIO14",
+          "claim": "SPI SCK (GPIO14) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.sdcard.cs",
+          "value": "SD_CS=GPIO11",
+          "claim": "microSD chip-select (GPIO11) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TOUCH_IRQ=GPIO21",
+          "claim": "Touch interrupt (GPIO21) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "pin.touch.rst",
+          "value": "TOUCH_RST=GPIO1",
+          "claim": "Touch reset (GPIO1) from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (BHI260AP IMU + BQ27220 gauge + touch): SDA=GPIO3, SCL=GPIO2",
+          "claim": "Primary I2C bus from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-display-bar",
+          "topic": "pinout",
+          "key": "bus.spi.primary",
+          "value": "SPI (microSD): SCK=GPIO14, MOSI=GPIO12, MISO=GPIO13",
+          "claim": "Primary SPI bus from official board.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-Bar/blob/master/examples/Factory/board.h",
+            "line_range": "1-23",
+            "hash": "sha256:936d20ac93261992feed777af6336869872ea0fe681759e79632088361c54713"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
