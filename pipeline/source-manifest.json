@@ -423,6 +423,31 @@
           "claim": "Round LCD SPI bus from official T-Circle-S3 pin_config.h"
         }
       ]
+    },
+    {
+      "board_id": "board-t7-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T7-S3/main/examples/test/test.ino",
+      "source_kind": "arduino-pins",
+      "line_range": "1-3",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.battery.adc",
+          "macro": "BAT_ADC",
+          "claim": "Battery voltage ADC (GPIO2) from official examples/test/test.ino"
+        },
+        {
+          "key": "pin.led.status",
+          "macro": "LED_PIN",
+          "claim": "Onboard LED (GPIO17) from official examples/test/test.ino"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "BUTTON_PIN",
+          "claim": "BOOT/user button (GPIO0) from official examples/test/test.ino"
+        }
+      ]
     }
   ]
 }

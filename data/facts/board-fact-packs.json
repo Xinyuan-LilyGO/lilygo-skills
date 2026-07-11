@@ -8707,6 +8707,60 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t7-s3",
+          "topic": "pinout",
+          "key": "pin.battery.adc",
+          "value": "BAT_ADC=GPIO2",
+          "claim": "Battery voltage ADC (GPIO2) from official examples/test/test.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T7-S3/blob/main/examples/test/test.ino",
+            "line_range": "1-3",
+            "hash": "sha256:e65978abb6c476a096837842f43ffb2fafe01459c83634ee76f2178c54f527da"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t7-s3",
+          "topic": "pinout",
+          "key": "pin.led.status",
+          "value": "LED_PIN=GPIO17",
+          "claim": "Onboard LED (GPIO17) from official examples/test/test.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T7-S3/blob/main/examples/test/test.ino",
+            "line_range": "1-3",
+            "hash": "sha256:e65978abb6c476a096837842f43ffb2fafe01459c83634ee76f2178c54f527da"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t7-s3",
+          "topic": "pinout",
+          "key": "pin.button.boot",
+          "value": "BUTTON_PIN=GPIO0",
+          "claim": "BOOT/user button (GPIO0) from official examples/test/test.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T7-S3/blob/main/examples/test/test.ino",
+            "line_range": "1-3",
+            "hash": "sha256:e65978abb6c476a096837842f43ffb2fafe01459c83634ee76f2178c54f527da"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
       "bus_matrix": [],
