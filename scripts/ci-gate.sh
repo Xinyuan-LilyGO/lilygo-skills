@@ -19,6 +19,7 @@ GATES=(
   "../pipeline/diff-gold-fact-packs.js --json"
   "../pipeline/run-official-source-pipeline.js --all-boards --json"
   "../eval/run-board-triple-questions.js --boards all --json --require-topic board-t-watch-s3:display --require-topic board-t-watch-s3:input"
+  "../eval/verify-provenance.js --json"
   "pure-query-compact-smoke.sh"
   "context-budget-smoke.sh"
   "project-context-smoke.sh --dry-run"
