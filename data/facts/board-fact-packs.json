@@ -444,9 +444,640 @@
           "evidence_level": "V3-source-reference",
           "stale": false,
           "confidence": "unknown_with_sources"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "SPI_SCLK=GPIO35",
+          "claim": "Shared SPI clock (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "SPI_MOSI=GPIO34",
+          "claim": "Shared SPI MOSI (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "SPI_MISO=GPIO48",
+          "claim": "Shared SPI MISO (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "IIC_SDA=GPIO33",
+          "claim": "I2C SDA (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "IIC_SCL=GPIO37",
+          "claim": "I2C SCL (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.mic.ws",
+          "value": "MP34DT05TR_LRCLK=GPIO40",
+          "claim": "MP34DT05TR PDM mic word clock (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.mic.data",
+          "value": "MP34DT05TR_DATA=GPIO38",
+          "claim": "MP34DT05TR PDM mic data (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.speaker.en",
+          "value": "MP34DT05TR_MAX98357_EN=GPIO18",
+          "claim": "MAX98357A amplifier enable (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.speaker.data",
+          "value": "MAX98357A_DATA=GPIO39",
+          "claim": "MAX98357A I2S data (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.speaker.bclk",
+          "value": "MAX98357A_BCLK=GPIO41",
+          "claim": "MAX98357A I2S bit clock from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.speaker.lrclk",
+          "value": "MAX98357A_LRCLK=GPIO42",
+          "claim": "MAX98357A I2S LR clock from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "LCD_CS=GPIO36",
+          "claim": "FP-133H01D LCD chip-select (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "LCD_DC=GPIO45",
+          "claim": "LCD data/command from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "LCD_BL=GPIO46",
+          "claim": "LCD backlight from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.sdcard.cs",
+          "value": "SD_CS=GPIO21",
+          "claim": "microSD chip-select from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.pwdn",
+          "value": "OV2640_PWDN=GPIO4",
+          "claim": "OV2640 power-down (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.vsync",
+          "value": "OV2640_VSYNC=GPIO3",
+          "claim": "OV2640 VSYNC (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.xclk",
+          "value": "OV2640_XCLK=GPIO7",
+          "claim": "OV2640 XCLK from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.sda",
+          "value": "OV2640_SDA=GPIO1",
+          "claim": "OV2640 SCCB SDA (SIOD) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.scl",
+          "value": "OV2640_SCL=GPIO2",
+          "claim": "OV2640 SCCB SCL (SIOC) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.href",
+          "value": "OV2640_HREF=GPIO5",
+          "claim": "OV2640 HREF from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.pclk",
+          "value": "OV2640_PCLK=GPIO10",
+          "claim": "OV2640 pixel clock from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d7",
+          "value": "OV2640_D9=GPIO6",
+          "claim": "OV2640 data Y9 (bit 7) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d6",
+          "value": "OV2640_D8=GPIO8",
+          "claim": "OV2640 data Y8 (bit 6) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d5",
+          "value": "OV2640_D7=GPIO9",
+          "claim": "OV2640 data Y7 (bit 5) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d4",
+          "value": "OV2640_D6=GPIO11",
+          "claim": "OV2640 data Y6 (bit 4) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d3",
+          "value": "OV2640_D5=GPIO13",
+          "claim": "OV2640 data Y5 (bit 3) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d2",
+          "value": "OV2640_D4=GPIO15",
+          "claim": "OV2640 data Y4 (bit 2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d1",
+          "value": "OV2640_D3=GPIO14",
+          "claim": "OV2640 data Y3 (bit 1) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.camera.d0",
+          "value": "OV2640_D2=GPIO12",
+          "claim": "OV2640 data Y2 (bit 0) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.touch.int",
+          "value": "TP_INT=GPIO47",
+          "claim": "CST816 touch interrupt from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "pin.button.key1",
+          "value": "KEY1=GPIO17",
+          "claim": "User KEY1 button from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
         }
       ],
-      "bus_matrix": [],
+      "bus_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "bus.spi.primary",
+          "value": "Shared SPI (LCD + microSD): SCLK=GPIO35, MOSI=GPIO34, MISO=GPIO48",
+          "claim": "Shared SPI bus (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "bus.i2c.primary",
+          "value": "Primary I2C (SY6970 PMU + CST816 touch): SDA=GPIO33, SCL=GPIO37",
+          "claim": "Primary I2C bus (V1.2) from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-camera-plus-s3",
+          "topic": "pinout",
+          "key": "bus.camera.dvp",
+          "value": "OV2640 DVP 8-bit parallel: XCLK=GPIO7, PCLK=GPIO10, VSYNC=GPIO3, HREF=GPIO5, SDA=GPIO1, SCL=GPIO2, D0=GPIO12, D1=GPIO14, D2=GPIO15, D3=GPIO13, D4=GPIO11, D5=GPIO9, D6=GPIO8, D7=GPIO6",
+          "claim": "OV2640 camera DVP bus from official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-CameraPlus-S3/blob/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+            "line_range": "49-149",
+            "hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085"
+          },
+          "authority_rank": 90,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
       "expander_matrix": [],
       "connector_matrix": [],
       "peripheral_table": [
