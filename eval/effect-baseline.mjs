@@ -49,11 +49,13 @@ const model = flag("--model", "haiku");
 //                    the Rust binary. Nothing is rewired.
 //   js             : route BOTH injection and lookup through the JS kernel
 //                    (bin/lilygo-skills.mjs). The harness prepends the JS
-//                    *thin-pointer* capsule (`context` output) to the prompt,
-//                    a PATH shim makes the model's `lilygo-skills source query`
-//                    self-run resolve to the JS bin, and the user-level Rust
-//                    hook is dropped (--setting-sources project,local) so the
-//                    Rust thick capsule cannot leak values into a JS run.
+//                    *thick* capsule — `hook claude` additionalContext, the same
+//                    push surface the Rust arm's global hook uses (pin/bus/driver
+//                    values inline), value-aligned to Rust by the
+//                    hook-capsule-alignment test — a PATH shim makes the model's
+//                    `lilygo-skills source query` self-run resolve to the JS bin,
+//                    and the user-level Rust hook is dropped (--setting-sources
+//                    project,local) so the Rust thick capsule cannot double-inject.
 //                    Auth stays REAL (no isolated CLAUDE_CONFIG_DIR): we only
 //                    swap the CLI implementation, never the auth plumbing.
 const cli = flag("--cli", "rust");
@@ -128,13 +130,15 @@ function bareEnvAndCwd() {
 }
 
 // ---- JS-CLI routing (only used when --cli js) ----
-// The JS kernel intentionally injects a *thin pointer* capsule ("run source
-// query", no values) — the M35 design bet is that the model pulls the exact
-// facts on demand instead of trusting a fat pre-filled capsule. So a JS run
-// only produces correct values if the model can actually EXECUTE the lookup.
-// We make that possible without touching auth: (1) prepend the JS capsule, (2)
-// a PATH shim so `lilygo-skills` resolves to the JS bin, (3) explicitly allow
-// that one Bash tool. Everything else (real credentials, model, cwd) is stock.
+// The JS kernel's `hook claude` pushes the SAME thick capsule the Rust global
+// hook does (critical pin/bus/driver values inline), so the JS arm is seeded
+// with the real facts exactly like the Rust arm — value-alignment is proven
+// deterministically by eval/hook-capsule-alignment-test.mjs. The capsule still
+// carries the `source query` expand pointer + guidance, so the model can pull
+// any value the push capped out. We wire this without touching auth: (1) prepend
+// the JS thick capsule (hook claude additionalContext), (2) a PATH shim so
+// `lilygo-skills` resolves to the JS bin, (3) explicitly allow that one Bash
+// tool. Everything else (real credentials, model, cwd) is stock.
 
 /** Build a one-shot PATH shim dir exposing `lilygo-skills` -> the JS bin. */
 function makeJsShimDir() {
@@ -145,18 +149,23 @@ function makeJsShimDir() {
   return dir;
 }
 
-/** Run the JS `context` command and return its thin-pointer capsule string. */
+/**
+ * Run the JS `hook claude` command (fed the prompt on stdin, as Claude Code's
+ * UserPromptSubmit hook would) and return the thick capsule it pushes — the
+ * `hookSpecificOutput.additionalContext` string, value-aligned to the Rust hook.
+ */
 function jsCapsule(prompt) {
-  const r = spawnSync("node", [JS_BIN, "context", "--json", prompt], {
+  const r = spawnSync("node", [JS_BIN, "hook", "claude"], {
     encoding: "utf8",
     cwd: ROOT,
+    input: JSON.stringify({ prompt }),
     maxBuffer: 16 * 1024 * 1024,
   });
   if (r.status !== 0 || !r.stdout) {
-    throw new Error(`js context failed (status=${r.status}): ${(r.stderr || "").slice(0, 300)}`);
+    throw new Error(`js hook claude failed (status=${r.status}): ${(r.stderr || "").slice(0, 300)}`);
   }
   const obj = JSON.parse(r.stdout);
-  return String(obj.context || "");
+  return String(obj.hookSpecificOutput?.additionalContext || "");
 }
 
 // Tools the JS arm must allow so the model can pull facts from the shim'd CLI.
@@ -182,8 +191,9 @@ function runClaude(prompt) {
     opts.env = env;
     opts.cwd = cwd;
   } else if (cli === "js") {
-    // with_skill + js: inject the JS thin capsule ourselves, route lookups to
-    // the JS bin via a PATH shim, drop the Rust hook, keep real auth.
+    // with_skill + js: inject the JS thick capsule ourselves (hook claude),
+    // route lookups to the JS bin via a PATH shim, drop the Rust hook, keep real
+    // auth.
     if (!jsShimDir) jsShimDir = makeJsShimDir();
     const capsule = jsCapsule(prompt);
     promptToSend =
@@ -233,12 +243,12 @@ if (dry) {
     task_count: tasks.length,
     runner_command_template:
       cli === "js"
-        ? `PATH=<shim>:$PATH claude -p "<js-thin-capsule>\\n\\n<prompt>" --model ${model} --setting-sources ${JS_SETTING_SOURCES} ${JS_ALLOWED_TOOLS.map((t) => `--allowedTools ${JSON.stringify(t)}`).join(" ")}`
+        ? `PATH=<shim>:$PATH claude -p "<js-thick-capsule>\\n\\n<prompt>" --model ${model} --setting-sources ${JS_SETTING_SOURCES} ${JS_ALLOWED_TOOLS.map((t) => `--allowedTools ${JSON.stringify(t)}`).join(" ")}`
         : `claude -p "<prompt>" --model ${model}`,
     js_routing:
       cli === "js"
         ? {
-            injection: `node ${path.relative(ROOT, JS_BIN)} context --json "<prompt>"  (thin pointer capsule, prepended)`,
+            injection: `echo '{"prompt":"<prompt>"}' | node ${path.relative(ROOT, JS_BIN)} hook claude  (thick capsule additionalContext, prepended)`,
             self_run_shim: `<tmp>/lilygo-skills -> exec node ${path.relative(ROOT, JS_BIN)} "$@"  (prepended to PATH)`,
             rust_hook: "dropped via --setting-sources project,local (thick capsule cannot leak)",
             auth: "REAL config (no CLAUDE_CONFIG_DIR isolation) — only the CLI impl is swapped",
