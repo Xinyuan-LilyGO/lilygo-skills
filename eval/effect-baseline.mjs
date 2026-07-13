@@ -82,10 +82,21 @@ function gradeAnswer(task, answer) {
 
 // ---- runner ----
 function bareEnvAndCwd() {
-  // Isolated empty config dir + neutral cwd so no global hook/skill/CLAUDE.md
-  // can contaminate the bare arm.
+  // Isolated config dir + neutral cwd so no global hook/skill/CLAUDE.md can
+  // contaminate the bare arm (the R4 trap). We copy ONLY the auth credential
+  // into the temp config dir (so the runner can still authenticate) and leave
+  // settings.json absent — i.e. no hooks, no injected LilyGO context. Copying
+  // credentials keeps auth working WITHOUT re-introducing any skill/hook, so
+  // this isolates the treatment (our injection) not the plumbing.
   const cfg = fs.mkdtempSync(path.join(os.tmpdir(), "m35-bare-cfg-"));
+  fs.chmodSync(cfg, 0o700);
   const cwd = fs.mkdtempSync(path.join(os.tmpdir(), "m35-bare-cwd-"));
+  const realCfg = process.env.CLAUDE_CONFIG_DIR || path.join(os.homedir(), ".claude");
+  const cred = path.join(realCfg, ".credentials.json");
+  if (fs.existsSync(cred)) {
+    fs.copyFileSync(cred, path.join(cfg, ".credentials.json"));
+    fs.chmodSync(path.join(cfg, ".credentials.json"), 0o600);
+  }
   const env = { ...process.env, CLAUDE_CONFIG_DIR: cfg };
   return { env, cwd, cfg };
 }
@@ -153,20 +164,29 @@ let runnerOk = true;
 let runnerError = null;
 let contaminated = false;
 
+// A runner that cannot authenticate emits its error on STDOUT (the "answer")
+// too — e.g. `claude -p` prints "Failed to authenticate. API Error: 401" or
+// "Not logged in · Please run /login". If we graded that as a normal answer we
+// would fabricate a score (values MISS). So scan stdout+stderr+error and treat
+// any auth/credential failure as runner-unavailable, per the P0 honesty rule.
+const AUTH_FAIL_RE =
+  /Invalid authentication|Failed to authenticate|Not logged in|Please run \/login|API Error: 401|401 [A-Za-z ]*credential|unauthor|Forbidden|missing.*API key/i;
+
 for (const t of tasks) {
   const res = runClaude(t.prompt);
   const answer = res.stdout;
-  // Detect a dead runner: non-zero exit with empty stdout, spawn error, or an
-  // auth/credential message. Bail honestly rather than grade nothing as fail.
-  const looksAuthFail = /auth|credential|login|API key|unauthor|forbidden/i.test(
-    res.stderr + " " + (res.error || "")
-  );
-  if (res.error || (res.status !== 0 && !answer) || (looksAuthFail && !answer)) {
+  // Detect a dead runner: spawn error, non-zero exit with empty stdout, or an
+  // auth/credential failure (which may arrive on stdout). Bail honestly rather
+  // than grade an error string as a wrong answer.
+  const authFailed = AUTH_FAIL_RE.test(answer + " " + res.stderr + " " + (res.error || ""));
+  if (res.error || (res.status !== 0 && !answer) || authFailed) {
     runnerOk = false;
     runnerError = {
       task_id: t.id,
       status: res.status,
       timed_out: res.timedOut,
+      auth_failed: authFailed,
+      stdout_head: answer.slice(0, 200),
       stderr: res.stderr.slice(0, 400),
       error: res.error,
     };
