@@ -16,9 +16,30 @@
 import { detectBoard } from "./find.mjs";
 import { getBoard, getPack, promptKeywords } from "./lib.mjs";
 
-/** Fetch-before-claim guidance, immediately before the honesty markers (Rust GUIDANCE_LINE). */
-const GUIDANCE_LINE =
-  " guidance=verify exact pins/buses via 'lilygo-skills source query' before claiming them; do not invent pin numbers;";
+/** Topics the source-recovery CLI accepts, offered so the model picks the right one. */
+const PULL_TOPICS = "pinout|display|lora|gnss|power|i2c|spi|touch";
+
+/**
+ * Fetch-before-claim guidance, immediately before the honesty markers (Rust
+ * GUIDANCE_LINE). Imperative pull-hardening: the push capsule only carries the
+ * facts that fit the byte budget; ANY concrete pin/bus/setting not already
+ * inlined in facts[]/pins[] MUST be pulled via `source query` and cited before
+ * the model may state it. This is what lets a neutral-cwd JS arm reach the
+ * push-capped values (it has no repo CLAUDE.md/skill to steer the pull); it is
+ * pure prose — it adds no fact value, so the JS↔Rust value-alignment holds.
+ * @param {string} board
+ * @returns {string}
+ */
+function guidanceLine(board) {
+  return (
+    " guidance=MANDATORY pull-before-claim:" +
+    " for ANY concrete pin/bus/setting NOT already listed in facts[]/pins[] above," +
+    ` you MUST FIRST run 'lilygo-skills source query --board ${board} --topic <topic> --json'` +
+    ` (topics: ${PULL_TOPICS}) and quote the returned official url + line_range + sha256 in your answer;` +
+    " never report a pin/bus/address from memory; if a value is neither inlined here nor recoverable via" +
+    " source query, say so — do not invent pin numbers;"
+  );
+}
 
 /**
  * Parse a hook stdin payload into a prompt (mirrors Rust extract_prompt): a JSON
@@ -267,7 +288,7 @@ export function assembleHookCapsule(prompt, opts = {}) {
     `${prefix} LilyGO goal capsule:` +
     ` facts=[${factsStr}];` +
     pins +
-    GUIDANCE_LINE +
+    guidanceLine(board) +
     ` evidence_boundary=V3/hardware_verified=false`;
   return { board, boardSource: source, context: capsule };
 }
