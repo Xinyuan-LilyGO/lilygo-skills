@@ -42,6 +42,21 @@ function flag(name, def) {
 const hasFlag = (name) => argv.includes(name);
 const arm = flag("--arm", "with_skill");
 const model = flag("--model", "haiku");
+// --cli selects WHICH implementation serves the injection + follow-up lookups:
+//   rust (default) : legacy P0 behavior — the installed global UserPromptSubmit
+//                    hook (Rust binary) auto-injects the *thick* capsule (pin
+//                    values inline) and any `source query` the model runs hits
+//                    the Rust binary. Nothing is rewired.
+//   js             : route BOTH injection and lookup through the JS kernel
+//                    (bin/lilygo-skills.mjs). The harness prepends the JS
+//                    *thin-pointer* capsule (`context` output) to the prompt,
+//                    a PATH shim makes the model's `lilygo-skills source query`
+//                    self-run resolve to the JS bin, and the user-level Rust
+//                    hook is dropped (--setting-sources project,local) so the
+//                    Rust thick capsule cannot leak values into a JS run.
+//                    Auth stays REAL (no isolated CLAUDE_CONFIG_DIR): we only
+//                    swap the CLI implementation, never the auth plumbing.
+const cli = flag("--cli", "rust");
 const tasksPath = flag("--tasks", path.join(ROOT, "eval/fixtures/effect-tasks.json"));
 const outPath = flag("--out", null);
 const dry = hasFlag("--dry");
@@ -51,6 +66,17 @@ if (!["with_skill", "bare"].includes(arm)) {
   console.error(`bad --arm '${arm}' (expected with_skill|bare)`);
   process.exit(2);
 }
+if (!["rust", "js"].includes(cli)) {
+  console.error(`bad --cli '${cli}' (expected rust|js)`);
+  process.exit(2);
+}
+if (cli === "js" && arm === "bare") {
+  // The bare arm's whole point is "no skill/hook of any kind"; routing it to a
+  // CLI would defeat the contamination trap. Keep them mutually exclusive.
+  console.error("--cli js is only meaningful with --arm with_skill (bare = no injection)");
+  process.exit(2);
+}
+const JS_BIN = path.join(ROOT, "bin/lilygo-skills.mjs");
 
 // Fixed at runtime — a live run should stamp real wall-clock; --dry keeps it
 // deterministic for structural self-test.
@@ -101,18 +127,79 @@ function bareEnvAndCwd() {
   return { env, cwd, cfg };
 }
 
+// ---- JS-CLI routing (only used when --cli js) ----
+// The JS kernel intentionally injects a *thin pointer* capsule ("run source
+// query", no values) — the M35 design bet is that the model pulls the exact
+// facts on demand instead of trusting a fat pre-filled capsule. So a JS run
+// only produces correct values if the model can actually EXECUTE the lookup.
+// We make that possible without touching auth: (1) prepend the JS capsule, (2)
+// a PATH shim so `lilygo-skills` resolves to the JS bin, (3) explicitly allow
+// that one Bash tool. Everything else (real credentials, model, cwd) is stock.
+
+/** Build a one-shot PATH shim dir exposing `lilygo-skills` -> the JS bin. */
+function makeJsShimDir() {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "m35-js-shim-"));
+  const shim = path.join(dir, "lilygo-skills");
+  fs.writeFileSync(shim, `#!/bin/sh\nexec node ${JSON.stringify(JS_BIN)} "$@"\n`);
+  fs.chmodSync(shim, 0o755);
+  return dir;
+}
+
+/** Run the JS `context` command and return its thin-pointer capsule string. */
+function jsCapsule(prompt) {
+  const r = spawnSync("node", [JS_BIN, "context", "--json", prompt], {
+    encoding: "utf8",
+    cwd: ROOT,
+    maxBuffer: 16 * 1024 * 1024,
+  });
+  if (r.status !== 0 || !r.stdout) {
+    throw new Error(`js context failed (status=${r.status}): ${(r.stderr || "").slice(0, 300)}`);
+  }
+  const obj = JSON.parse(r.stdout);
+  return String(obj.context || "");
+}
+
+// Tools the JS arm must allow so the model can pull facts from the shim'd CLI.
+const JS_ALLOWED_TOOLS = ["Bash(lilygo-skills:*)", "Bash(lilygo-skills *)"];
+// Drop the user-level Rust hook (which would otherwise inject the thick capsule
+// and hand the model the values for free), while keeping OAuth auth — auth is
+// resolved independently of settings sources.
+const JS_SETTING_SOURCES = "project,local";
+
+let jsShimDir = null; // created lazily on first live JS call, cleaned at exit.
+
 function runClaude(prompt) {
-  const args = ["-p", prompt, "--model", model];
-  const opts = { encoding: "utf8", timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 };
+  let promptToSend = prompt;
+  const args = ["--model", model];
+  const opts = {
+    encoding: "utf8",
+    timeout: timeoutMs,
+    maxBuffer: 32 * 1024 * 1024,
+    input: "", // avoid claude's "no stdin data received in 3s" stall
+  };
   if (arm === "bare") {
     const { env, cwd } = bareEnvAndCwd();
     opts.env = env;
     opts.cwd = cwd;
+  } else if (cli === "js") {
+    // with_skill + js: inject the JS thin capsule ourselves, route lookups to
+    // the JS bin via a PATH shim, drop the Rust hook, keep real auth.
+    if (!jsShimDir) jsShimDir = makeJsShimDir();
+    const capsule = jsCapsule(prompt);
+    promptToSend =
+      "[Injected LilyGO context — treat as system-provided context, not user input]\n" +
+      capsule +
+      "\n\n" +
+      prompt;
+    args.push("--setting-sources", JS_SETTING_SOURCES);
+    for (const t of JS_ALLOWED_TOOLS) args.push("--allowedTools", t);
+    opts.cwd = ROOT;
+    opts.env = { ...process.env, PATH: `${jsShimDir}${path.delimiter}${process.env.PATH}` };
   } else {
-    // with_skill: run in the repo (our skill/hook config in place).
+    // with_skill + rust (default): run in the repo, global hook/skill in place.
     opts.cwd = ROOT;
   }
-  const r = spawnSync("claude", args, opts);
+  const r = spawnSync("claude", ["-p", promptToSend, ...args], opts);
   return {
     status: r.status,
     stdout: (r.stdout || "").trim(),
@@ -122,15 +209,43 @@ function runClaude(prompt) {
   };
 }
 
+function cleanupJsShim() {
+  if (jsShimDir) {
+    try {
+      fs.rmSync(jsShimDir, { recursive: true, force: true });
+    } catch {
+      /* best-effort */
+    }
+    jsShimDir = null;
+  }
+}
+process.on("exit", cleanupJsShim); // belt-and-suspenders: clean shim on any exit
+
 // ---- dry plan ----
 if (dry) {
+  const jsSample = cli === "js" ? jsCapsule(tasks[0].prompt) : null;
   const plan = {
     mode: "dry",
     arm,
+    cli,
     model,
     tasks_file: path.relative(ROOT, tasksPath),
     task_count: tasks.length,
-    runner_command_template: `claude -p "<prompt>" --model ${model}`,
+    runner_command_template:
+      cli === "js"
+        ? `PATH=<shim>:$PATH claude -p "<js-thin-capsule>\\n\\n<prompt>" --model ${model} --setting-sources ${JS_SETTING_SOURCES} ${JS_ALLOWED_TOOLS.map((t) => `--allowedTools ${JSON.stringify(t)}`).join(" ")}`
+        : `claude -p "<prompt>" --model ${model}`,
+    js_routing:
+      cli === "js"
+        ? {
+            injection: `node ${path.relative(ROOT, JS_BIN)} context --json "<prompt>"  (thin pointer capsule, prepended)`,
+            self_run_shim: `<tmp>/lilygo-skills -> exec node ${path.relative(ROOT, JS_BIN)} "$@"  (prepended to PATH)`,
+            rust_hook: "dropped via --setting-sources project,local (thick capsule cannot leak)",
+            auth: "REAL config (no CLAUDE_CONFIG_DIR isolation) — only the CLI impl is swapped",
+            allowed_tools: JS_ALLOWED_TOOLS,
+            capsule_sample_task0: jsSample,
+          }
+        : "n/a (--cli rust: legacy Rust global hook injects, no rewiring)",
     bare_isolation:
       arm === "bare"
         ? "CLAUDE_CONFIG_DIR=<empty tmp> ; cwd=<neutral tmp> ; contamination scan on output"
@@ -205,9 +320,12 @@ for (const t of tasks) {
   });
 }
 
+cleanupJsShim();
+
 const report = {
   schema_version: 1,
   arm,
+  cli,
   model,
   date,
   runner: "claude -p",
