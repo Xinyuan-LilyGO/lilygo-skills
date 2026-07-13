@@ -82,6 +82,56 @@ function dispatcherPath(root) {
   return path.join(root, "bin", "lilygo-skills.mjs");
 }
 
+// Conventional per-user PATH dir. The runtime shim lives under the runtime root
+// (NOT on PATH), so a person typing `lilygo-skills` — or the model self-running
+// `lilygo-skills source query ...` from any cwd — can only resolve it if we also
+// place it on PATH. POSIX: ~/.local/bin; Windows: %USERPROFILE%\bin.
+function pathBinDir(home) {
+  if (installPlatform() === "win32") return path.join(home, "bin");
+  return path.join(home, ".local", "bin");
+}
+
+function pathShimPath(home) {
+  return path.join(pathBinDir(home), shimName());
+}
+
+// True if `dir` is already an entry on the current PATH (resolved, so symlinked
+// or trailing-slash forms still match). Used only to decide whether to warn.
+function pathIncludes(dir) {
+  const resolvedDir = path.resolve(dir);
+  return String(process.env.PATH || "")
+    .split(path.delimiter)
+    .filter(Boolean)
+    .some((entry) => {
+      try {
+        return path.resolve(entry) === resolvedDir;
+      } catch {
+        return false;
+      }
+    });
+}
+
+// Link/refresh the PATH shim so `lilygo-skills` resolves runtime-wide. Idempotent
+// by construction: any existing entry (symlink to an old root, stale file) is
+// removed and re-pointed at THIS install's runtime shim, so a re-install or a
+// root move always leaves the PATH entry current. POSIX uses a symlink (follows
+// dispatcher updates in place); Windows writes a thin forwarding .cmd because
+// symlinks there need elevation. Returns where it landed + whether it's on PATH.
+function installPathShim(home, root) {
+  const binDir = pathBinDir(home);
+  const target = pathShimPath(home);
+  const runtimeShim = path.join(root, "bin", shimName());
+  fs.mkdirSync(binDir, { recursive: true });
+  fs.rmSync(target, { force: true });
+  if (installPlatform() === "win32") {
+    fs.writeFileSync(target, shimContents(root));
+    fs.chmodSync(target, 0o755);
+  } else {
+    fs.symlinkSync(runtimeShim, target);
+  }
+  return { target, binDir, onPath: pathIncludes(binDir) };
+}
+
 function claudeSkillPath(home) {
   return path.join(home, ".claude", "skills", "lilygo-skills", "SKILL.md");
 }
@@ -283,6 +333,7 @@ function planHost(host, home) {
     },
     planned_writes: [
       path.join(root, "bin", shimName()),
+      pathShimPath(home),
       dispatcherPath(root),
       path.join(root, "bin", "hook.mjs"),
       path.join(root, "data", "boards.json"),
@@ -367,6 +418,11 @@ function installDispatcher(plan, repoRoot) {
   } else if (plan.host === "codex") {
     appendCodexAgents(plan.home, root);
   }
+  // Link the shim onto PATH so `lilygo-skills` (and the model's `source query`
+  // self-run) resolves from any cwd. With --all both hosts install identical
+  // bytes, so whichever runs last owns the PATH entry — either points at a
+  // complete runtime.
+  return installPathShim(plan.home, root);
 }
 
 function validateHost(plan) {
@@ -379,6 +435,12 @@ function validateHost(plan) {
   const shim = path.join(plan.runtime_root, "bin", shimName());
   if (fs.existsSync(shim) && (fs.statSync(shim).mode & 0o111) === 0) {
     errors.push(`installed launcher is not executable ${shim}`);
+  }
+  // The PATH shim must resolve to a real dispatcher: fs.existsSync follows
+  // symlinks, so a dangling link (root moved/removed) is caught here.
+  const pathShim = pathShimPath(plan.home);
+  if (!fs.existsSync(pathShim)) {
+    errors.push(`PATH shim missing or dangling ${pathShim}`);
   }
   if (plan.host === "claude") {
     const skill = claudeSkillPath(plan.home);
@@ -472,8 +534,14 @@ function main() {
     for (const plan of plans) {
       let applied = false;
       try {
-        installDispatcher(plan, repoRoot);
+        const shim = installDispatcher(plan, repoRoot);
         applied = true;
+        if (shim && !shim.onPath) {
+          warnings.push(
+            `${shim.binDir} is not on your PATH; add it (e.g. export ` +
+              `PATH="${shim.binDir}:$PATH") so \`lilygo-skills\` resolves`
+          );
+        }
       } catch (error) {
         errors.push(`${plan.host}: ${error.message}`);
       }
