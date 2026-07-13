@@ -17,14 +17,16 @@ mistaken for a working board.
 ## Architecture in one paragraph
 
 The product is a small **meta Skill** (`skills/lilygo-router/SKILL.md`) plus a
-thin Rust CLI. The `SKILL.md` is the *operating system*: it carries the query
-protocol, the debug loop, and the honesty rules as prose. The CLI is the
-deterministic **Context Kernel**: it decides whether a prompt is LilyGO work,
-which board/framework are involved, and which source-backed facts are safe to
-inject — then hands the AI a compact capsule and the exact `source query` command
-to pull anything deeper. "Which sub-skills / playbooks are relevant" is chosen by
-data-driven triggers; "is this a pin I may state" is enforced by the honesty
-rules and the source model.
+thin **Node CLI** (the JS context kernel under `bin/`). The `SKILL.md` is the
+*operating system*: it carries the query protocol, the debug loop, and the
+honesty rules as prose. The CLI is the deterministic **Context Kernel**: it
+decides whether a prompt is LilyGO work, which board is involved, and which
+source-backed facts are safe to inject — then hands the AI a compact capsule and
+the exact `source query` command to pull anything deeper. Board detection and
+fact selection are data-driven (they read `data/**`, never inline a pin); "is
+this a pin I may state" is enforced by the honesty rules and the source model.
+The kernel ships as `.mjs` and runs on the Node that every supported host
+already has, so there is no compiler or binary to build.
 
 ## Works on any agent — the hook is optional
 
@@ -36,47 +38,41 @@ rules and the source model.
   on a host without it you run one extra command and lose nothing — the data and
   quality gates are identical across platforms.
 
-## The CLI — five everyday commands
+## The CLI — the everyday surface
 
-The everyday surface is small and stable:
+The command surface is intentionally small and stable. The command name is
+`lilygo-skills` (an installed shim that execs `node <root>/bin/lilygo-skills.mjs`):
 
 ```bash
-lilygo-skills context [--project <dir>] --json "<prompt>"   # Context Kernel: CWD → board → capsule (≤~1KB)
+lilygo-skills context [--project <dir>] --json "<prompt>"              # Context Kernel: CWD → board → capsule (≤~1KB)
 lilygo-skills source query --board <board-id> --topic <topic> --json   # pull exact source-backed pins/buses
-lilygo-skills route --json "<prompt>"                        # relevance gate + matched skill/playbook ids
-lilygo-skills index list|query <id> --json                  # list registered skills/playbooks, expand one
-lilygo-skills doctor --json                                  # health-check the injection chain
+lilygo-skills verify sources --board <board-id> [--topic <t>] --json   # live re-proof (OK / DRIFT / UNREACHABLE)
+lilygo-skills doctor --json                                            # data-integrity self-check
+lilygo-skills hook <claude|codex>                                      # push the thick board capsule (stdin: {"prompt":..})
 ```
 
 `context` is the one-shot entry: it auto-detects the board from the project
 (reading `.lilygo-skills/project.json`, else sniffing `platformio.ini`,
-`sdkconfig`, and `*.ino`) and returns the matched skill ids, top-ranked facts,
-the verification level, and the follow-up lookup commands.
+`sdkconfig`, and `*.ino`) and returns the matched skill id, top-ranked facts, the
+verification level, and the follow-up lookup commands. `hook` is the push
+boundary the Claude Code hook calls to inline a board's critical pins before the
+model answers.
 
-A handful of supporting commands cover install/health, setup, and project memory:
-`verify`, `setup plan --framework <arduino|platformio|esp-idf|rust>`,
-`preference show`, `reference list`, `project init|show|clear`,
-`source completeness`, and `update board-facts` for source enrichment. There is no
-`goal`, `benchmark`, or `generate` command — those layers were folded into the
-`SKILL.md` prose and the data model.
+The operating depth — the debug loop, framework setup, LVGL/LoRa/power triage,
+and the honesty rules — lives as prose in `SKILL.md` and its guides, not as
+extra subcommands. Board fact ingestion and provenance verification are handled
+by the Node data pipeline (`pipeline/**`, `eval/**`), run at author time, not by
+the everyday CLI.
 
-## Data-driven selection
+## Data-driven, thin reader
 
-Recipes, playbooks, reference hints, and preference hints are **JSON data**, not
-hand-written prose branches. Each has a `*-triggers.json` table
-(`data/recipes/recipe-triggers.json`, `data/playbooks/playbook-triggers.json`,
-`data/references/reference-triggers.json`, `data/preferences/...`), and a single
-selection engine (`selection.rs`) matches the prompt against those triggers to
-decide which compact ids to surface. Adding or tuning a recipe/playbook/reference
-is a data edit, not new Rust. The reader code stays thin.
-
-- **Recipes** (`data/recipes/recipes.json`) — OTA, LVGL, and LoRa are
-  source-backed recipe packs citing official upstream docs (Espressif OTA, LVGL,
-  RadioLib + LilyGO examples), not committed peripheral skills.
-- **Playbooks** (`data/playbooks/playbooks.json`) — short operating guides for
-  source discovery, setup, build/flash/serial, LVGL, BSP drivers, and radio/GNSS.
-  The agent sees compact ids first and expands with
-  `lilygo-skills index query <playbook-id> --json`.
+Board detection and fact selection read committed JSON under `data/**` — board
+sniff rules (`data/sniff-rules.json`), prompt keywords
+(`data/facts/prompt-keywords.json`), topic fields (`data/facts/topic-fields.json`),
+and the source-backed fact packs (`data/facts/board-fact-packs.json`). The reader
+never inlines a pin: every value it returns comes from a fact pack that carries
+its official URL, line range, and sha256. Adding or deepening a board is a data
+edit through the ingest pipeline, not a code change.
 
 ## Guides — thin code, thick guidance
 
@@ -170,47 +166,43 @@ node install.js --all               # install + self-test
 lilygo-skills doctor --json         # confirm the injection chain
 ```
 
-- **Node.js** is required to run `install.js` and mount the Skill.
-- **Rust/Cargo** is recommended for the full dynamic runtime. Without it the
-  installer still mounts in **mount-only** mode; use `--build` to compile the CLI
-  in the same step, or `--prebuilt-only` to install a packaged runtime with no
-  Rust:
-
-  ```bash
-  node install.js --all --prebuilt-only && lilygo-skills doctor --json
-  ```
+**Node.js** is the only prerequisite. The installer copies the Node dispatcher
+(`bin/**`) and the data model (`data/**`) together as a self-contained runtime —
+the data travels with the dispatcher, so a runtime update can never leave stale
+data behind. There is nothing to compile.
 
 The installer writes runtime roots under `~/.claude/lilygo-skills/` and
 `~/.codex/lilygo-skills/`, installs the router Skill to
 `~/.claude/skills/lilygo-skills/SKILL.md`, idempotently merges the optional
-`UserPromptSubmit` hook into `~/.claude/settings.json`, and appends a marked
-section to `~/.codex/AGENTS.md`. If `settings.json` is not valid JSON the
-installer reports it and prints a manual snippet instead of touching the file.
+`UserPromptSubmit` hook (`node <root>/bin/hook.mjs claude`) into
+`~/.claude/settings.json`, and appends a marked section to `~/.codex/AGENTS.md`.
+If `settings.json` is not valid JSON the installer reports it and prints a manual
+snippet instead of touching the file.
 
 Host toolchains (Arduino CLI, PlatformIO, ESP-IDF, esp-rs, board cores, serial
-tools, radio/GNSS libs) stay explicit — they are handled through `setup plan` and
-user-approved steps, never installed implicitly.
+tools, radio/GNSS libs) stay explicit — they are reported with install hints and
+run only through user-approved steps, never installed implicitly.
 
 ## Quality gates
 
 Before publishing a runtime change, run the gates:
 
 ```bash
-cargo test --workspace                              # 154 tests
+npm test                                            # unit + CLI contract + hook value-alignment + CJK routing
+npx tsc -p tsconfig.json --noEmit                   # typecheck the JS kernel (strict)
 node eval/coverage-gate.js                          # injected-capsule coverage >= baseline
 node pipeline/verify-auto-mapping.js                # extracted pins == official macros
 node pipeline/verify-source-authority.js            # every fact keeps a ranked official source
-bash scripts/ci-gate.sh                             # 34 deterministic gates
-cargo fmt --check ; cargo clippy --workspace --all-targets -- -D warnings
+bash scripts/ci-gate.sh                             # aggregated deterministic gate
 ```
 
 `coverage-gate.js` grades the **real injected capsule** the model receives for
-every eval prompt against its expected facts (currently **55 of 62 facts covered,
-88.7%, with all 20 honesty markers present**, against a ratcheted floor that may
-only move up). This means trimming scaffolding can never silently regress the
-facts the model actually sees. `ci-gate.sh` runs 34 deterministic checks
-(byte-for-byte capsule fixtures, board triple-question tests, scorecard grading,
-install/doctor smokes, and the source pipeline).
+every eval prompt against its expected facts, against a ratcheted floor that may
+only move up — so trimming scaffolding can never silently regress the facts the
+model actually sees. `ci-gate.sh` aggregates the JS core gates (`npm test`,
+typecheck, `doctor`, live `verify sources`), the data/pipeline/provenance
+checks, the board triple-question tests, scorecard grading, and the
+install → hook integration smoke.
 
 ## Add a new board
 
