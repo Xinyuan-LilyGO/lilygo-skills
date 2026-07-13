@@ -20,14 +20,16 @@ const contract = JSON.parse(readFileSync(join(ROOT, "eval/fixtures/cli-contract.
 const packIndex = JSON.parse(readFileSync(join(ROOT, "data/facts/board-fact-packs.json"), "utf8"));
 
 /**
- * Run a bin/*.mjs entrypoint with argv and capture stdout + exit code.
- * @param {string} script
- * @param {string[]} argv
+ * Run the dispatcher (bin/lilygo-skills.mjs) with a full command tail and
+ * capture stdout + exit code. Everything routes through the one entrypoint the
+ * install surface will call, so the contract test exercises the real command
+ * surface (not the per-module scripts directly).
+ * @param {string[]} argv command + args, e.g. ["source","query","--board",...]
  * @returns {{ code: number, stdout: string }}
  */
-function runJs(script, argv) {
+function runCli(argv) {
   try {
-    const stdout = execFileSync(process.execPath, [join(BIN, script), ...argv], {
+    const stdout = execFileSync(process.execPath, [join(BIN, "lilygo-skills.mjs"), ...argv], {
       encoding: "utf8",
       stdio: ["ignore", "pipe", "pipe"],
     });
@@ -61,7 +63,7 @@ assert.ok(sourceQueryEntries.length >= 7, "expected the source-query contract en
 
 for (const entry of sourceQueryEntries) {
   test(`contract ${entry.label}`, () => {
-    const { code, stdout } = runJs("query.mjs", entry.args);
+    const { code, stdout } = runCli(entry.args);
     assert.equal(code, entry.exit_code, `exit code for ${entry.label}`);
     const json = JSON.parse(stdout);
     assert.deepEqual(Object.keys(json), entry.output_shape.top_level_keys, `top-level keys for ${entry.label}`);
@@ -83,7 +85,7 @@ assert.ok(contextEntries.length >= 3, "expected the context contract entries");
 
 for (const entry of contextEntries) {
   test(`contract ${entry.label}`, () => {
-    const { code, stdout } = runJs("find.mjs", entry.args);
+    const { code, stdout } = runCli(entry.args);
     assert.equal(code, entry.exit_code, `exit code for ${entry.label}`);
     const json = JSON.parse(stdout);
     assert.deepEqual(Object.keys(json), entry.output_shape.top_level_keys, `top-level keys for ${entry.label}`);
@@ -94,7 +96,7 @@ test("context sniffs a board from platformio.ini alone (no keyword)", () => {
   const dir = mkdtempSync(join(tmpdir(), "m35-ctx-"));
   try {
     writeFileSync(join(dir, "platformio.ini"), "[env:t-display-s3]\nboard = lilygo-t-display-s3\n");
-    const { code, stdout } = runJs("find.mjs", ["context", "--json", "--project", dir, "wire the I2C bus"]);
+    const { code, stdout } = runCli(["context", "--json", "--project", dir, "wire the I2C bus"]);
     assert.equal(code, 0);
     const json = JSON.parse(stdout);
     assert.equal(json.board, "board-t-display-s3");
@@ -109,7 +111,7 @@ test("context assigns no board on ambiguous project evidence", () => {
   const dir = mkdtempSync(join(tmpdir(), "m35-ctx-amb-"));
   try {
     writeFileSync(join(dir, "platformio.ini"), "[env:t-beam]\nboard = ttgo-t-beam\n\n[env:t-deck]\nboard = t-deck\n");
-    const { code, stdout } = runJs("find.mjs", ["context", "--json", "--project", dir]);
+    const { code, stdout } = runCli(["context", "--json", "--project", dir]);
     assert.equal(code, 0);
     const json = JSON.parse(stdout);
     assert.equal(json.board, null);
@@ -140,25 +142,25 @@ for (const entry of contract.entries.filter((/** @type {{ label: string }} */ e)
 }
 
 test("verify sources requires --json (exit 2)", () => {
-  const { code } = runJs("verify.mjs", ["verify", "sources", "--board", "board-t-beam"]);
+  const { code } = runCli(["verify", "sources", "--board", "board-t-beam"]);
   assert.equal(code, 2);
 });
 
 test("verify sources rejects an unknown board (exit 2)", () => {
-  const { code } = runJs("verify.mjs", ["verify", "sources", "--board", "board-does-not-exist", "--json"]);
+  const { code } = runCli(["verify", "sources", "--board", "board-does-not-exist", "--json"]);
   assert.equal(code, 2);
 });
 
 // --- doctor: exit-code + top-level key contract ----------------------------
 for (const entry of contract.entries.filter((/** @type {{ label: string }} */ e) => e.label === "doctor:json")) {
   test("doctor --json contract", () => {
-    const { code, stdout } = runJs("doctor.mjs", ["doctor", "--json"]);
+    const { code, stdout } = runCli(["doctor", "--json"]);
     assert.equal(code, entry.exit_code);
     assert.deepEqual(Object.keys(JSON.parse(stdout)), entry.output_shape.top_level_keys);
   });
 }
 
 test("doctor requires --json (exit 2)", () => {
-  const { code } = runJs("doctor.mjs", ["doctor"]);
+  const { code } = runCli(["doctor"]);
   assert.equal(code, 2);
 });
