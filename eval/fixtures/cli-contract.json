@@ -1,0 +1,1240 @@
+{
+  "schema_version": 1,
+  "suite": "cli-contract",
+  "purpose": "Structural snapshot of the Rust CLI (target/release/lilygo-skills) so the M35 JS rewrite can be contract-tested for shape parity. Values are truncated; only structure + one sample per array are kept.",
+  "generated_from": "target/release/lilygo-skills (Rust)",
+  "date": "2026-07-13",
+  "entries": [
+    {
+      "label": "context:keyword-prompt",
+      "command": "lilygo-skills context --json how do I wire the T-Display-S3 I2C bus",
+      "args": [
+        "context",
+        "--json",
+        "how do I wire the T-Display-S3 I2C bus"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "board",
+          "board_source",
+          "context",
+          "decision",
+          "skills",
+          "verification_level"
+        ]
+      }
+    },
+    {
+      "label": "context:project-sniff",
+      "command": "lilygo-skills context --json --project /var/folders/5g/75dzdz6s7_3ddmxj8j9j_85r0000gn/T/m35-pio-N2Z7dm wire the I2C bus",
+      "args": [
+        "context",
+        "--json",
+        "--project",
+        "/var/folders/5g/75dzdz6s7_3ddmxj8j9j_85r0000gn/T/m35-pio-N2Z7dm",
+        "wire the I2C bus"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "board",
+          "board_source",
+          "context",
+          "decision",
+          "skills",
+          "verification_level"
+        ]
+      },
+      "note": "board inferred from platformio.ini (inferred-from-project)"
+    },
+    {
+      "label": "context:no-op",
+      "command": "lilygo-skills context --json what is the capital of France",
+      "args": [
+        "context",
+        "--json",
+        "what is the capital of France"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "board",
+          "board_source",
+          "context",
+          "decision",
+          "skills",
+          "verification_level"
+        ]
+      },
+      "note": "off-domain prompt yields decision=no-op"
+    },
+    {
+      "label": "source-query:board-t-display-s3:pinout",
+      "command": "lilygo-skills source query --board board-t-display-s3 --topic pinout --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-display-s3",
+        "--topic",
+        "pinout",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 28,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-display-s3",
+            "topic": "pinout",
+            "key": "pin.battery.voltage",
+            "value": "PIN_BAT_VOLT=GPIO4",
+            "claim": "Battery voltage ADC pin from official factory pin_config.h",
+            "source": "{object:4 keys}",
+            "authority_rank": 95,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-display-s3",
+            "topic": "pinout",
+            "key": "gpio.free",
+            "value": "unknown_with_sources",
+            "claim": "Free GPIO cannot be inferred without complete official pin assignment proof",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "unknown_with_sources"
+          }
+        },
+        "source_refs": {
+          "count": 5,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "line_range",
+            "hash"
+          ],
+          "sample": {
+            "kind": "driver-header",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Display-S3/blob/master/lib/TFT_eSPI/User_Set…",
+            "line_range": "1-38",
+            "hash": "sha256:809949416716286a5b2db0821608251a1d69463ceea5721ccc5598a7fd841a5c"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 28,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-display-s3",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32-s3",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS"
+      },
+      "note": "i2c/display pins"
+    },
+    {
+      "label": "source-query:board-t-beam:lora",
+      "command": "lilygo-skills source query --board board-t-beam --topic lora --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-beam",
+        "--topic",
+        "lora",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 2,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "pinout",
+            "key": "bus.spi.lora",
+            "value": "LoRa radio on SPI: SCLK=GPIO5, MISO=GPIO19, MOSI=GPIO27, CS=GPIO18, RST=GPIO23, …",
+            "claim": "LoRa SPI bus from official Factory utilities.h",
+            "source": "{object:4 keys}",
+            "authority_rank": 90,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "lora",
+            "key": "lora.radio",
+            "value": "unknown_with_sources",
+            "claim": "LoRa radio details require official LoRa Series source inspection before selecti…",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "unknown_with_sources"
+          }
+        },
+        "source_refs": {
+          "count": 3,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+            "hash": "sha256:2e3b58611432ba429b774b3d6441fe08d4f963440b866fdb0ca98a0b0705231b"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 15,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 70,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command"
+        ]
+      },
+      "note": "SPI LoRa radio bus"
+    },
+    {
+      "label": "source-query:board-t-beam:gnss",
+      "command": "lilygo-skills source query --board board-t-beam --topic gnss --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-beam",
+        "--topic",
+        "gnss",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 2,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "pinout",
+            "key": "bus.uart.gps",
+            "value": "GPS on UART: RX=GPIO34, TX=GPIO12, 9600 baud",
+            "claim": "GPS UART bus from official Factory utilities.h",
+            "source": "{object:4 keys}",
+            "authority_rank": 90,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "gnss",
+            "key": "gnss.receiver",
+            "value": "unknown_with_sources",
+            "claim": "GNSS receiver details require official T-Beam source inspection before selecting…",
+            "source": "{object:3 keys}",
+            "authority_rank": 75,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "unknown_with_sources"
+          }
+        },
+        "source_refs": {
+          "count": 3,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-LoRa-Series",
+            "hash": "sha256:2e3b58611432ba429b774b3d6441fe08d4f963440b866fdb0ca98a0b0705231b"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 15,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-beam",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 70,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command",
+          "update_command",
+          "required_missing"
+        ]
+      },
+      "note": "GPS UART"
+    },
+    {
+      "label": "source-query:board-t-watch-ultra:power",
+      "command": "lilygo-skills source query --board board-t-watch-ultra --topic power --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-watch-ultra",
+        "--topic",
+        "power",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-watch-ultra",
+            "topic": "peripheral",
+            "key": "peripheral.power.axp2101",
+            "value": "Power manager | AXP2101 | I2C 0x34 | XPowersAXP2101",
+            "claim": "Board peripheral chip, bus, and driver record",
+            "source": "{object:3 keys}",
+            "authority_rank": 95,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 0,
+          "item_keys": null,
+          "sample": null
+        },
+        "source_refs": {
+          "count": 7,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "driver-header",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+            "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 35,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-watch-ultra",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32-s3",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 95,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command"
+        ]
+      },
+      "note": "AXP2101 power manager"
+    },
+    {
+      "label": "source-query:board-t-connect-pro:lora",
+      "command": "lilygo-skills source query --board board-t-connect-pro --topic lora --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-connect-pro",
+        "--topic",
+        "lora",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-connect-pro",
+            "topic": "pinout",
+            "key": "bus.spi.lora",
+            "value": "SX1262 LoRa on SPI: SCLK=GPIO12, MOSI=GPIO11, MISO=GPIO13, CS=GPIO14, RST=GPIO42…",
+            "claim": "SX1262 LoRa SPI bus from official T-Connect-Pro pin_config.h",
+            "source": "{object:4 keys}",
+            "authority_rank": 90,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 0,
+          "item_keys": null,
+          "sample": null
+        },
+        "source_refs": {
+          "count": 3,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Connect-Pro",
+            "hash": "sha256:d8f859b20b3add07f99ee1ed14d3dd9872fe03c63963097710a494bdb3dbcceb"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 20,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-connect-pro",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32-s3",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command",
+          "update_command",
+          "required_missing"
+        ]
+      },
+      "note": "SX1262 LoRa"
+    },
+    {
+      "label": "source-query:board-t-deck:input",
+      "command": "lilygo-skills source query --board board-t-deck --topic input --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-deck",
+        "--topic",
+        "input",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-deck",
+            "topic": "input",
+            "key": "input.keyboard",
+            "value": "unknown_with_sources",
+            "claim": "Keyboard/input details require official T-Deck source inspection before selectin…",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "unknown_with_sources"
+          }
+        },
+        "unknowns": {
+          "count": 1,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-deck",
+            "topic": "input",
+            "key": "input.keyboard",
+            "value": "unknown_with_sources",
+            "claim": "Keyboard/input details require official T-Deck source inspection before selectin…",
+            "source": "{object:3 keys}",
+            "authority_rank": 85,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "unknown_with_sources"
+          }
+        },
+        "source_refs": {
+          "count": 3,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "github-repo",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Deck",
+            "hash": "sha256:65309fa5382b1122f3e2d08af9c8f22568b9b13be5f757fed13f05451bd74e23"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 21,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-deck",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32-s3",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 70,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command",
+          "update_command",
+          "required_missing"
+        ]
+      },
+      "note": "keyboard/trackball (honest unknown_with_sources)"
+    },
+    {
+      "label": "source-query:board-t-watch-ultra:display",
+      "command": "lilygo-skills source query --board board-t-watch-ultra --topic display --json",
+      "args": [
+        "source",
+        "query",
+        "--board",
+        "board-t-watch-ultra",
+        "--topic",
+        "display",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "topic",
+          "supported",
+          "fact_pack",
+          "facts",
+          "unknowns",
+          "conflicts",
+          "source_refs",
+          "completeness",
+          "discovery_hints",
+          "warnings"
+        ],
+        "facts": {
+          "count": 2,
+          "item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "sample": {
+            "schema_version": 1,
+            "board_id": "board-t-watch-ultra",
+            "topic": "pinout",
+            "key": "bus.display.qspi.co5300",
+            "value": "CO5300 AMOLED 502x410 on QSPI: CS=GPIO41, SCK=GPIO40, D0=GPIO38, D1=GPIO39, D2=G…",
+            "claim": "CO5300 AMOLED QSPI display bus from official T-Watch-Ultra pins_arduino.h",
+            "source": "{object:4 keys}",
+            "authority_rank": 90,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "unknowns": {
+          "count": 0,
+          "item_keys": null,
+          "sample": null
+        },
+        "source_refs": {
+          "count": 7,
+          "item_keys": [
+            "kind",
+            "path_or_url",
+            "hash"
+          ],
+          "sample": {
+            "kind": "driver-header",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGoLib/blob/master/src/LilyGoWatchUltra.h",
+            "hash": "sha256:71a7727f247a6536b4e1c88a95e045f8732d3019ddccbc2afc234406746d532a"
+          }
+        },
+        "fact_pack": {
+          "keys": [
+            "schema_version",
+            "board_id",
+            "mcu_family",
+            "supported",
+            "pin_matrix",
+            "bus_matrix",
+            "expander_matrix",
+            "connector_matrix",
+            "peripheral_table",
+            "source_refs",
+            "conflicts"
+          ],
+          "pin_matrix_count": 35,
+          "pin_matrix_item_keys": [
+            "schema_version",
+            "board_id",
+            "topic",
+            "key",
+            "value",
+            "claim",
+            "source",
+            "authority_rank",
+            "evidence_level",
+            "stale",
+            "confidence"
+          ],
+          "pin_matrix_sample": {
+            "schema_version": 1,
+            "board_id": "board-t-watch-ultra",
+            "topic": "pinout",
+            "key": "mcu.family",
+            "value": "esp32-s3",
+            "claim": "MCU family for runnable support boundary",
+            "source": "{object:3 keys}",
+            "authority_rank": 95,
+            "evidence_level": "V3-source-reference",
+            "stale": false,
+            "confidence": "exact"
+          }
+        },
+        "status": "PASS",
+        "completeness_keys": [
+          "board_id",
+          "topic",
+          "completeness",
+          "evidence_level",
+          "source_query_command"
+        ]
+      },
+      "note": "CO5300 QSPI AMOLED"
+    },
+    {
+      "label": "verify-sources:board-t-connect-pro",
+      "command": "lilygo-skills verify sources --board board-t-connect-pro --json",
+      "args": [
+        "verify",
+        "sources",
+        "--board",
+        "board-t-connect-pro",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "counts",
+          "facts"
+        ],
+        "facts": {
+          "count": 20,
+          "item_keys": [
+            "key",
+            "topic",
+            "fetch_url",
+            "line_range",
+            "stored_hash",
+            "live_hash",
+            "verdict",
+            "detail"
+          ],
+          "sample": {
+            "key": "pin.i2c.sda",
+            "topic": "pinout",
+            "fetch_url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Connect-Pro/main/libraries/pr…",
+            "line_range": "17-47",
+            "stored_hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80",
+            "live_hash": "sha256:e0afda283f30331c81ec85aff2cbab8ed7e844b165df725e8b4e9a2a3b5b0d80",
+            "verdict": "OK",
+            "detail": "line_range re-sliced"
+          }
+        },
+        "counts": {
+          "total": 20,
+          "ok": 20,
+          "drift": 0,
+          "unreachable": 0
+        },
+        "status": "PASS"
+      },
+      "network_dependent": true,
+      "expected_total": 20,
+      "observed_counts": {
+        "total": 20,
+        "ok": 20,
+        "drift": 0,
+        "unreachable": 0
+      }
+    },
+    {
+      "label": "verify-sources:board-t-camera-plus-s3",
+      "command": "lilygo-skills verify sources --board board-t-camera-plus-s3 --json",
+      "args": [
+        "verify",
+        "sources",
+        "--board",
+        "board-t-camera-plus-s3",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "status",
+          "board_id",
+          "counts",
+          "facts"
+        ],
+        "facts": {
+          "count": 35,
+          "item_keys": [
+            "key",
+            "topic",
+            "fetch_url",
+            "line_range",
+            "stored_hash",
+            "live_hash",
+            "verdict",
+            "detail"
+          ],
+          "sample": {
+            "key": "pin.spi.sck",
+            "topic": "pinout",
+            "fetch_url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-CameraPlus-S3/arduino-esp32-l…",
+            "line_range": "49-149",
+            "stored_hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085",
+            "live_hash": "sha256:a73f088b9fdb5b1c98b6414e031bed9f5256921624723710d1d29e4a75d02085",
+            "verdict": "OK",
+            "detail": "line_range re-sliced"
+          }
+        },
+        "counts": {
+          "total": 35,
+          "ok": 35,
+          "drift": 0,
+          "unreachable": 0
+        },
+        "status": "PASS"
+      },
+      "network_dependent": true,
+      "expected_total": 35,
+      "observed_counts": {
+        "total": 35,
+        "ok": 35,
+        "drift": 0,
+        "unreachable": 0
+      }
+    },
+    {
+      "label": "doctor:json",
+      "command": "lilygo-skills doctor --json",
+      "args": [
+        "doctor",
+        "--json"
+      ],
+      "exit_code": 0,
+      "output_shape": {
+        "parse_ok": true,
+        "top_level_keys": [
+          "schema_version",
+          "status",
+          "runtime_mode",
+          "checks",
+          "sample_injection",
+          "warnings"
+        ],
+        "checks": {
+          "count": 10,
+          "item_keys": [
+            "id",
+            "status",
+            "summary"
+          ],
+          "sample": {
+            "id": "binary",
+            "status": "PASS",
+            "summary": "runtime binary is executable"
+          }
+        },
+        "status": "PASS"
+      }
+    },
+    {
+      "label": "doctor:requires-json",
+      "command": "lilygo-skills doctor",
+      "args": [
+        "doctor"
+      ],
+      "exit_code": 2,
+      "output_shape": {
+        "parse_ok": false,
+        "note": "usage error by contract: --json is required",
+        "stderr": "--json is required for this command"
+      }
+    }
+  ]
+}
