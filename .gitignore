@@ -9,3 +9,6 @@ doc/workflow/
 .artifact-lens/
 .tmp/
 target/
+# JS toolchain: TypeScript is a dev-only type gate; nothing here is runtime.
+node_modules/
+package-lock.json

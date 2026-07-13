@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "lilygo-skills",
+  "description": "LilyGO board context kernel (JS thin core over verifiable fact packs)",
+  "comment": "No top-level \"type\":\"module\" on purpose: existing pipeline/*.js and eval/*.js are CommonJS (require). The JS thin core ships as .mjs (always ESM) so both coexist and ci-gate stays green.",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node --test eval/"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "typescript": "^5.9.3"
+  }
+}
