@@ -12,10 +12,10 @@ and keep any install logs bounded.
 
 | Tool | Check | Install hint |
 |---|---|---|
-| rustup | `rustup --version` | Install from https://rustup.rs/ |
-| cargo | `cargo --version` | Installed by rustup; builds `lilygo-skills`. |
-| node | `node --version` | Node.js LTS for `install.js` and parity checks. |
+| node | `node --version` | Node.js LTS — runs the `lilygo-skills` CLI and `install.js`. |
 | git | `git --version` | For LilyGO / Espressif / reference source checkouts. |
+| rustup | `rustup --version` | Only for the Rust esp-rs firmware path; install from https://rustup.rs/ |
+| cargo | `cargo --version` | Installed by rustup; for the Rust esp-rs firmware path (`espup`, `espflash`). |
 | python3 | `python3 --version` | Required before PlatformIO / ESP-IDF tooling. |
 
 ## Framework toolchains

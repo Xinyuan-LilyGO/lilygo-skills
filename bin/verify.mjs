@@ -2,7 +2,7 @@
 // line-anchored fact. Re-fetches each fact's raw source, recomputes sha256, and
 // classifies OK / DRIFT / UNREACHABLE. Offline/rate-limited is graceful
 // (UNREACHABLE, never a crash). Mirrors Rust verify_sources.rs.
-import { getPack, sha256Hex } from "./lib.mjs";
+import { getPack, sha256Hex, isMain } from "./lib.mjs";
 
 const FETCH_TIMEOUT_MS = 30_000;
 const MAX_CONCURRENCY = 2;
@@ -223,6 +223,6 @@ export async function runVerify(argv) {
   return report.status === "PASS" ? 0 : 2;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   runVerify(process.argv.slice(2)).then((code) => process.exit(code));
 }

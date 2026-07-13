@@ -4,7 +4,7 @@
 // assigned only on unambiguous, registry-known evidence; ties resolve to none.
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { readJson } from "./lib.mjs";
+import { readJson, isMain } from "./lib.mjs";
 
 /** @type {SniffRules | undefined} */
 let rulesCache;
@@ -206,6 +206,6 @@ export function runContext(argv) {
   return 0;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   process.exit(runContext(process.argv.slice(2)));
 }

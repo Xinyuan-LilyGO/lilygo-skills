@@ -3,13 +3,32 @@
 // This module NEVER inlines a pin value; it only reads and shapes the committed
 // data under data/**. Behavior mirrors the Rust facts/{mod,build}.rs so the JS
 // core is contract-compatible with target/release/lilygo-skills.
-import { readFileSync } from "node:fs";
+import { readFileSync, realpathSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 /** Package root (bin/'s parent): data/** and pipeline/** live under it. */
 export const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
+
+/**
+ * True when the given module is the process entry point. Realpath-tolerant:
+ * `import.meta.url` is symlink-resolved by Node's ESM loader while
+ * `process.argv[1]` is not, so a naive `file://${argv[1]}` compare misfires when
+ * the module lives under a symlinked path (macOS `/var`→`/private/var`, a
+ * symlinked `$HOME`, etc.), silently skipping the CLI block and emitting nothing.
+ * @param {string} metaUrl the module's import.meta.url
+ * @returns {boolean}
+ */
+export function isMain(metaUrl) {
+  const entry = process.argv[1];
+  if (!entry) return false;
+  try {
+    return realpathSync(entry) === fileURLToPath(metaUrl);
+  } catch {
+    return false;
+  }
+}
 export const FACT_PACK_INDEX_PATH = "data/facts/board-fact-packs.json";
 export const DOCUMENTATION_REPO = "https://github.com/Xinyuan-LilyGO/documentation";
 /** Inline discovery-hint budget (mirrors Rust ContextBudget default). */

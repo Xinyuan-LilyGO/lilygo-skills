@@ -1,11 +1,21 @@
 #!/usr/bin/env node
+// Installer for the LilyGO JS context kernel. It materializes a self-contained
+// runtime under ~/.claude/lilygo-skills (or ~/.codex/lilygo-skills): the Node
+// dispatcher (bin/*.mjs), the data model (data/**), and a `lilygo-skills` shim
+// that execs `node <root>/bin/lilygo-skills.mjs`. The data travels WITH the
+// dispatcher (bin/lib.mjs anchors data/** at bin/'s parent), so a runtime update
+// can never leave stale data behind. No compiler or prebuilt binary is involved:
+// the host already has Node (Claude Code / Codex both run on it).
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const cp = require("child_process");
 
 function parseArgs(argv) {
-  const valueFlags = new Set(["--home", "--profile", "--bin"]);
+  const valueFlags = new Set(["--home"]);
+  // --build is accepted but does nothing: the JS dispatcher needs no build step.
+  // It is kept so a previously documented `install.js --all --dry-run --build`
+  // invocation still runs (with a one-line notice), rather than erroring.
   const booleanFlags = new Set([
     "--codex",
     "--claude",
@@ -13,7 +23,6 @@ function parseArgs(argv) {
     "--dry-run",
     "--build",
     "--no-self-test",
-    "--prebuilt-only",
   ]);
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -46,22 +55,12 @@ function parseArgs(argv) {
     }
     return value;
   };
-  const profile = optionValue("--profile") ?? "auto";
-  if (!["auto", "release", "debug"].includes(profile)) {
-    throw new Error("--profile must be auto, release, or debug");
-  }
-  if (args.has("--prebuilt-only") && (args.has("--build") || args.has("--bin"))) {
-    throw new Error("--prebuilt-only cannot be combined with --build or --bin");
-  }
   return {
     dryRun: args.has("--dry-run"),
     build: args.has("--build"),
     hosts,
     home: optionValue("--home") ?? os.homedir(),
-    profile,
-    bin: optionValue("--bin"),
     selfTest: !args.has("--no-self-test"),
-    prebuiltOnly: args.has("--prebuilt-only"),
   };
 }
 
@@ -72,22 +71,15 @@ function installPlatform() {
   return process.env.LILYGO_INSTALL_PLATFORM || process.platform;
 }
 
-function runtimeBinaryName() {
-  return installPlatform() === "win32" ? "lilygo-skills.exe" : "lilygo-skills";
+// Human-facing shim name. `.cmd` on Windows, bare on POSIX. Hooks and the
+// install self-test call `node <dispatcher>` directly, so the shim is only a
+// convenience for a person typing `lilygo-skills` on their PATH.
+function shimName() {
+  return installPlatform() === "win32" ? "lilygo-skills.cmd" : "lilygo-skills";
 }
 
-function prebuiltPlatformId() {
-  const platform = installPlatform();
-  const arch = process.env.LILYGO_INSTALL_ARCH || process.arch;
-  if (platform === "darwin" && arch === "arm64") return "macos-arm64";
-  if (platform === "darwin" && arch === "x64") return "macos-x64";
-  if (platform === "linux" && arch === "arm64") return "linux-arm64";
-  if (platform === "linux" && arch === "x64") return "linux-x64";
-  return `${platform}-${arch}`;
-}
-
-function prebuiltBinaryPath(repoRoot) {
-  return path.join(repoRoot, "dist", "bin", prebuiltPlatformId(), runtimeBinaryName());
+function dispatcherPath(root) {
+  return path.join(root, "bin", "lilygo-skills.mjs");
 }
 
 function claudeSkillPath(home) {
@@ -102,15 +94,19 @@ function codexAgentsPath(home) {
   return path.join(home, ".codex", "AGENTS.md");
 }
 
-// Quoted for space-safe shells, $HOME-relative so the entry survives home
-// moves; hook commands run through a shell that expands $HOME inside quotes.
-// A non-default --home cannot rely on $HOME at hook runtime, so it gets the
-// absolute path instead.
-function claudeHookCommand(home) {
+// `node "<hook.mjs>" claude` runs cross-platform (Node is on PATH on every
+// supported host). $HOME-relative for the default home so the entry survives a
+// home move; a non-default --home cannot rely on $HOME at hook runtime, so it
+// gets the absolute path instead.
+function claudeHookScript(home) {
   if (home && path.resolve(home) !== path.resolve(os.homedir())) {
-    return `"${path.join(home, ".claude", "lilygo-skills", "bin", runtimeBinaryName())}" hook claude`;
+    return path.join(home, ".claude", "lilygo-skills", "bin", "hook.mjs");
   }
-  return `"$HOME/.claude/lilygo-skills/bin/${runtimeBinaryName()}" hook claude`;
+  return "$HOME/.claude/lilygo-skills/bin/hook.mjs";
+}
+
+function claudeHookCommand(home) {
+  return `node "${claudeHookScript(home)}" claude`;
 }
 
 function manualClaudeWiring(home) {
@@ -131,11 +127,14 @@ function installClaudeSkill(repoRoot, home) {
   fs.copyFileSync(source, target);
 }
 
+// Match our own hook entry across both the current node form and any stale
+// Rust-era `... lilygo-skills ... hook claude` command, so a re-install cleanly
+// replaces the old entry instead of stacking a duplicate.
 function isLilygoHookCommand(hook) {
   return (
     typeof hook?.command === "string" &&
     hook.command.includes("lilygo-skills") &&
-    hook.command.includes("hook claude")
+    (hook.command.includes("hook.mjs") || hook.command.includes("hook claude"))
   );
 }
 
@@ -143,7 +142,7 @@ function isLilygoHookEntry(entry) {
   return entry && Array.isArray(entry.hooks) && entry.hooks.some(isLilygoHookCommand);
 }
 
-function mergeClaudeSettings(home, root) {
+function mergeClaudeSettings(home) {
   const settingsPath = claudeSettingsPath(home);
   let settings = {};
   if (fs.existsSync(settingsPath)) {
@@ -198,7 +197,7 @@ function mergeClaudeSettings(home, root) {
 }
 
 function codexAgentsSection(root) {
-  const bin = path.join(root, "bin", runtimeBinaryName());
+  const dispatcher = dispatcherPath(root);
   return [
     AGENTS_SECTION_START,
     "## LilyGO Skills",
@@ -208,8 +207,8 @@ function codexAgentsSection(root) {
     "other LilyGO products), firmware, flashing, LVGL, OTA, LoRa/GNSS, sensors,",
     "battery, or pinouts:",
     "",
-    `1. Run \`"${bin}" context --json "<prompt>"\` to get the injected board capsule (facts, pins, source refs).`,
-    `2. Run \`"${bin}" source query --board <board-id> --topic <topic> --json\` for exact pins/buses before claiming them.`,
+    `1. Run \`node "${dispatcher}" context --json "<prompt>"\` to get the injected board capsule (facts, pins, source refs).`,
+    `2. Run \`node "${dispatcher}" source query --board <board-id> --topic <topic> --json\` for exact pins/buses before claiming them.`,
     `3. Read the operating patterns in the meta skill \`${path.join(root, "public-skill", "SKILL.md")}\`.`,
     "",
     "Skip this section for prompts unrelated to LilyGO hardware.",
@@ -275,16 +274,19 @@ function planHost(host, home) {
     host,
     home,
     runtime_root: root,
-    // Board/peripheral skills are injected context built from data/** at query
-    // time, not materialized files; install copies the data model + route index.
+    // The Node dispatcher (bin/**) plus the data model (data/**) are copied as a
+    // self-contained unit; board/peripheral context is built from data/** at
+    // query time, not materialized as per-skill files.
     materialize_plan: {
-      copies: ["data/**", "index/routes.json", "skills/lilygo-router/SKILL.md"],
-      source: "data/** source model",
+      copies: ["bin/**", "data/**", "skills/lilygo-router/SKILL.md"],
+      source: "bin/** dispatcher + data/** source model",
     },
     planned_writes: [
-      path.join(root, "bin", runtimeBinaryName()),
-      path.join(root, "index", "routes.json"),
+      path.join(root, "bin", shimName()),
+      dispatcherPath(root),
+      path.join(root, "bin", "hook.mjs"),
       path.join(root, "data", "boards.json"),
+      path.join(root, "data", "facts", "board-fact-packs.json"),
       path.join(root, "data", "references", "source-intake", "manifest.md"),
       path.join(root, "public-skill", "SKILL.md"),
       path.join(root, "public-skill", "references"),
@@ -321,7 +323,7 @@ function publicPlan(plan, home, repoRoot) {
   const runtimeRoot = displayPath(plan.runtime_root, home, repoRoot);
   return {
     copies: plan.materialize_plan.copies,
-    output: path.join(runtimeRoot, "index", "routes.json"),
+    output: path.join(runtimeRoot, "bin", "lilygo-skills.mjs"),
     source: plan.materialize_plan.source,
   };
 }
@@ -339,286 +341,31 @@ function copyRouterSkill(repoRoot, runtimeRoot) {
   );
 }
 
-function fallbackRuntimeScript(repoRoot, runtimeRoot) {
-  return `#!/usr/bin/env node
-const fs = require("fs");
-const path = require("path");
-const cp = require("child_process");
-
-const SOURCE_ROOT = ${JSON.stringify(path.resolve(repoRoot))};
-const RUNTIME_ROOT = ${JSON.stringify(path.resolve(runtimeRoot))};
-
-function runtimeBinaryName() {
-  return process.platform === "win32" ? "lilygo-skills.exe" : "lilygo-skills";
-}
-
-function realRuntime() {
-  const candidates = [
-    process.env.LILYGO_SKILLS_REAL_BIN,
-    path.join(SOURCE_ROOT, "target", "release", runtimeBinaryName()),
-    path.join(SOURCE_ROOT, "target", "debug", runtimeBinaryName()),
-    path.join(RUNTIME_ROOT, "bin", "lilygo-skills-real"),
-  ].filter(Boolean);
-  return candidates.find((candidate) => fs.existsSync(candidate));
-}
-
-function tryRealRuntime(args) {
-  const real = realRuntime();
-  if (!real) return false;
-  const result = cp.spawnSync(real, args, { stdio: "inherit" });
-  process.exit(result.status === null ? 1 : result.status);
-}
-
-function readInput() {
-  try {
-    return fs.readFileSync(0, "utf8");
-  } catch (_) {
-    return "";
+// Cross-platform `lilygo-skills` launcher: exec the dispatcher with Node so a
+// person can invoke the documented `lilygo-skills <command>` name directly.
+function shimContents(root) {
+  const dispatcher = dispatcherPath(root);
+  if (installPlatform() === "win32") {
+    return `@echo off\r\nnode "${dispatcher}" %*\r\n`;
   }
+  return `#!/bin/sh\nexec node "${dispatcher}" "$@"\n`;
 }
 
-function promptFromInput(input) {
-  try {
-    const parsed = JSON.parse(input);
-    if (typeof parsed?.prompt === "string") return parsed.prompt;
-  } catch (_) {}
-  return input;
-}
-
-function promptFromRouteArgs(args) {
-  const jsonIndex = args.indexOf("--json");
-  if (jsonIndex >= 0 && args[jsonIndex + 1]) return args[jsonIndex + 1];
-  return args.slice(1).join(" ");
-}
-
-function isLilygoPrompt(prompt) {
-  return /LilyGO|T-Display|T-Watch|T-Beam|T-Deck|T-Echo|T-SIM|ESP32|ESP-IDF|PlatformIO|Arduino|LVGL|LoRa|GNSS|IMU|OTA|烧录|显示|固件|串口|传感器/i.test(prompt);
-}
-
-function setupPlan(framework) {
-  const common = [
-    ["rustup", ["cli-runtime"], "rustup --version", "Install from https://rustup.rs/."],
-    ["cargo", ["cli-runtime"], "cargo --version", "Installed by rustup; required to build the full lilygo-skills runtime."],
-    ["node", ["installer"], "node --version", "Install Node.js LTS for install.js."],
-    ["git", ["source"], "git --version", "Install Git for LilyGO, Espressif, and reference source checkouts."],
-  ];
-  const frameworkTools = {
-    arduino: [
-      ["arduino-cli", ["arduino"], "arduino-cli version", "Install Arduino CLI from https://docs.arduino.cc/arduino-cli/."],
-      ["arduino-esp32-core", ["arduino"], "arduino-cli core list | grep esp32:esp32", "Use arduino-cli core update-index and core install esp32:esp32."],
-      ["lilygo-libraries", ["arduino"], "arduino-cli lib list | grep -i LilyGo", "Install LilyGo libraries following the official repository guidance."],
-      ["serial-mcp-server", ["serial-debug"], "serial-mcp-server --help", "Optional serial observation loop: https://github.com/Adancurusul/serial-mcp-server."],
-    ],
-    platformio: [
-      ["python3", ["platformio"], "python3 --version", "Install Python 3 before PlatformIO Core."],
-      ["platformio-core", ["platformio"], "pio --version", "Install PlatformIO Core from https://docs.platformio.org/."],
-      ["platformio-esp32-platform", ["platformio"], "pio pkg list --global | grep espressif32", "PlatformIO resolves espressif32 from platformio.ini or pio pkg install."],
-      ["serial-mcp-server", ["serial-debug"], "serial-mcp-server --help", "Optional serial observation loop for pio device monitor output."],
-    ],
-    "esp-idf": [
-      ["python3", ["esp-idf"], "python3 --version", "Install Python 3 for ESP-IDF tooling."],
-      ["esp-idf", ["esp-idf"], "idf.py --version", "Install ESP-IDF from Espressif get-started docs for ESP32-S3."],
-      ["idf-tools", ["esp-idf"], "python3 $IDF_PATH/tools/idf_tools.py list", "Use the official install script to provision compiler, OpenOCD, and Python environment."],
-      ["serial-mcp-server", ["serial-debug"], "serial-mcp-server --help", "Optional serial observation loop for idf.py monitor output."],
-    ],
-    rust: [
-      ["espup", ["rust", "esp-rs"], "espup --version", "Install with cargo install espup and run espup install."],
-      ["espflash", ["rust", "flash", "serial"], "espflash --version", "Install with cargo install espflash."],
-      ["cargo-espflash", ["rust", "flash"], "cargo espflash --version", "Install with cargo install cargo-espflash when using cargo espflash."],
-      ["serial-mcp-server", ["serial-debug"], "serial-mcp-server --help", "Optional serial observation loop for espflash monitor output."],
-    ],
-  };
-  const selected = frameworkTools[framework];
-  if (!selected) {
-    return { status: "FAIL", errors: ["framework must be arduino, platformio, esp-idf, or rust"] };
-  }
-  const toTool = ([id, required_for, check, install_hint]) => ({
-    id,
-    required_for,
-    check,
-    install_hint,
-    mutates: false,
-  });
-  return {
-    schema_version: 1,
-    framework,
-    status: "planned",
-    runtime_mode: "mount-only",
-    dry_run: true,
-    no_mutation: true,
-    host_requirements: ["rustup", "cargo", "node", "git"],
-    toolchains: common.concat(selected).map(toTool),
-    next_commands: [
-      "node install.js --all --dry-run --build",
-      "node install.js --all --build",
-      framework === "platformio" ? "pio --version" : null,
-      framework === "arduino" ? "arduino-cli version" : null,
-      framework === "esp-idf" ? "idf.py --version" : null,
-      framework === "rust" ? "espup --version" : null,
-    ].filter(Boolean),
-    private_inputs_needed: [
-      "USB serial port is needed only for later flash/monitor commands",
-      "Wi-Fi credentials or OTA target must stay in private local config if needed later",
-    ],
-    writes: [],
-  };
-}
-
-function runtimeMissingContext() {
-  return "LilyGO Skill is mounted in setup-only mode. The full Rust runtime binary is not installed yet, so dynamic board facts and generated skills are not available. For setup, run 'lilygo-skills setup plan --framework <arduino|platformio|esp-idf|rust> --json'. To enable full context injection, build or provide the runtime with 'node install.js --all --build' or 'node install.js --all --bin /path/to/lilygo-skills'.";
-}
-
-function emitHook(host, prompt) {
-  if (!isLilygoPrompt(prompt)) {
-    if (host === "claude") {
-      console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "UserPromptSubmit" } }, null, 2));
-    } else {
-      console.log(JSON.stringify({ decision: "no-op", context: "", fail_open: true, host }, null, 2));
-    }
-    return;
-  }
-  const context = runtimeMissingContext();
-  if (host === "claude") {
-    console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: "UserPromptSubmit", additionalContext: context } }, null, 2));
-  } else {
-    console.log(JSON.stringify({
-      decision: "needs_runtime_setup",
-      context,
-      fail_open: true,
-      host,
-      missing: ["runtime-binary"],
-      questions: [],
-      skills: ["lilygo-router"]
-    }, null, 2));
-  }
-}
-
-const args = process.argv.slice(2);
-tryRealRuntime(args);
-
-if (args[0] === "setup" && args[1] === "--help") {
-  console.log("setup plan --framework <arduino|platformio|esp-idf|rust> --json");
-  process.exit(0);
-}
-if (args[0] === "setup" && args[1] === "plan") {
-  const framework = args[args.indexOf("--framework") + 1];
-  const plan = setupPlan(framework);
-  console.log(JSON.stringify(plan, null, 2));
-  process.exit(plan.status === "FAIL" ? 2 : 0);
-}
-if (args[0] === "hook") {
-  emitHook(args[1] || "codex", promptFromInput(readInput()));
-  process.exit(0);
-}
-if (args[0] === "route") {
-  const prompt = promptFromRouteArgs(args);
-  const matched = isLilygoPrompt(prompt);
-  console.log(JSON.stringify(matched ? {
-    decision: "needs_runtime_setup",
-    skills: ["lilygo-router"],
-    missing: ["runtime-binary"],
-    questions: [],
-    paths: { "lilygo-router": "skills/lilygo-router/SKILL.md" },
-    notes: [runtimeMissingContext()]
-  } : { decision: "no-op", skills: [], missing: [], questions: [] }, null, 2));
-  process.exit(0);
-}
-if (args[0] === "verify" || args[0] === "doctor") {
-  console.log(JSON.stringify({
-    status: "PASS",
-    runtime_mode: "mount-only",
-    full_runtime_available: false,
-    checks: [
-      { id: "mount-only", status: "WARN", summary: runtimeMissingContext() }
-    ],
-    sample_injection: {
-      status: "WARN",
-      prompt: "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen",
-      matched_skills: ["lilygo-router"],
-      no_op_status: "not_checked"
-    },
-    warnings: [runtimeMissingContext()]
-  }, null, 2));
-  process.exit(0);
-}
-if (args.length === 0 || args[0] === "--help" || args[0] === "help") {
-  console.log("lilygo-skills mount-only launcher: setup|hook|route|verify|doctor. Build the Rust runtime for full dynamic context.");
-  process.exit(0);
-}
-console.log(JSON.stringify({ status: "FAIL", runtime_mode: "mount-only", errors: [runtimeMissingContext()] }, null, 2));
-process.exit(2);
-`;
-}
-
-function installFallbackRuntime(plan, repoRoot) {
-  const binPath = path.join(plan.runtime_root, "bin", runtimeBinaryName());
-  fs.mkdirSync(path.join(plan.runtime_root, "bin"), { recursive: true });
-  fs.writeFileSync(binPath, fallbackRuntimeScript(repoRoot, plan.runtime_root));
-  fs.chmodSync(binPath, 0o755);
-  copyDir(path.join(repoRoot, "data"), path.join(plan.runtime_root, "data"), {
-    mirror: true,
-  });
-  copyDir(path.join(repoRoot, "index"), path.join(plan.runtime_root, "index"), {
-    mirror: true,
-  });
-  fs.rmSync(path.join(plan.runtime_root, "skills"), { recursive: true, force: true });
-  fs.mkdirSync(path.join(plan.runtime_root, "skills", "lilygo-router"), {
-    recursive: true,
-  });
-  fs.copyFileSync(
-    path.join(repoRoot, "skills", "lilygo-router", "SKILL.md"),
-    path.join(plan.runtime_root, "skills", "lilygo-router", "SKILL.md")
-  );
-  copyDir(
-    path.join(repoRoot, "skills", "references"),
-    path.join(plan.runtime_root, "skills", "references"),
-    { mirror: true }
-  );
-  copyDir(
-    path.join(repoRoot, "templates", "skills"),
-    path.join(plan.runtime_root, "templates", "skills"),
-    { mirror: true }
-  );
-  copyRouterSkill(repoRoot, plan.runtime_root);
+function installDispatcher(plan, repoRoot) {
+  const root = plan.runtime_root;
+  // bin/** (dispatcher + hook + data-reading modules) and data/** move together
+  // as one unit; mirroring guarantees no stale file survives a re-install.
+  copyDir(path.join(repoRoot, "bin"), path.join(root, "bin"), { mirror: true });
+  copyDir(path.join(repoRoot, "data"), path.join(root, "data"), { mirror: true });
+  const shimPath = path.join(root, "bin", shimName());
+  fs.writeFileSync(shimPath, shimContents(root));
+  fs.chmodSync(shimPath, 0o755);
+  copyRouterSkill(repoRoot, root);
   if (plan.host === "claude") {
     installClaudeSkill(repoRoot, plan.home);
-    mergeClaudeSettings(plan.home, plan.runtime_root);
+    mergeClaudeSettings(plan.home);
   } else if (plan.host === "codex") {
-    appendCodexAgents(plan.home, plan.runtime_root);
-  }
-}
-
-function applyHost(plan, repoRoot, binaryPath) {
-  if (!binaryPath) {
-    installFallbackRuntime(plan, repoRoot);
-    return;
-  }
-  const binPath = path.join(plan.runtime_root, "bin", runtimeBinaryName());
-  fs.mkdirSync(path.join(plan.runtime_root, "bin"), { recursive: true });
-  fs.copyFileSync(binaryPath, binPath);
-  fs.chmodSync(binPath, 0o755);
-  // Context-injection release boundary: board/peripheral skills are delivered
-  // as injected context (built from data/** at query time), not as materialized
-  // SKILL.md files. Install copies the runtime data model plus the route index;
-  // the installed tree stays "meta-only" so the CLI treats every registered
-  // skill as available without a per-skill file.
-  copyDir(path.join(repoRoot, "data"), path.join(plan.runtime_root, "data"), {
-    mirror: true,
-  });
-  fs.rmSync(path.join(plan.runtime_root, "doc", "references", "source-intake"), {
-    recursive: true,
-    force: true,
-  });
-  copyDir(path.join(repoRoot, "index"), path.join(plan.runtime_root, "index"), {
-    mirror: true,
-  });
-  // Single source: the public/meta skill is the committed router skill.
-  copyRouterSkill(repoRoot, plan.runtime_root);
-  if (plan.host === "claude") {
-    installClaudeSkill(repoRoot, plan.home);
-    mergeClaudeSettings(plan.home, plan.runtime_root);
-  } else if (plan.host === "codex") {
-    appendCodexAgents(plan.home, plan.runtime_root);
+    appendCodexAgents(plan.home, root);
   }
 }
 
@@ -629,9 +376,9 @@ function validateHost(plan) {
       errors.push(`missing installed path ${target}`);
     }
   }
-  const bin = path.join(plan.runtime_root, "bin", runtimeBinaryName());
-  if (fs.existsSync(bin) && (fs.statSync(bin).mode & 0o111) === 0) {
-    errors.push(`installed binary is not executable ${bin}`);
+  const shim = path.join(plan.runtime_root, "bin", shimName());
+  if (fs.existsSync(shim) && (fs.statSync(shim).mode & 0o111) === 0) {
+    errors.push(`installed launcher is not executable ${shim}`);
   }
   if (plan.host === "claude") {
     const skill = claudeSkillPath(plan.home);
@@ -664,16 +411,16 @@ function validateHost(plan) {
 }
 
 function runSelfTest(plan) {
-  const bin = path.join(plan.runtime_root, "bin", runtimeBinaryName());
-  if (!fs.existsSync(bin)) {
+  const dispatcher = dispatcherPath(plan.runtime_root);
+  if (!fs.existsSync(dispatcher)) {
     return {
       host: plan.host,
       status: "FAIL",
-      command: "lilygo-skills doctor --json --home <home>",
-      summary: "installed runtime binary is missing",
+      command: "node <root>/bin/lilygo-skills.mjs doctor --json",
+      summary: "installed dispatcher is missing",
     };
   }
-  const result = cp.spawnSync(bin, ["doctor", "--json", "--home", plan.home], {
+  const result = cp.spawnSync(process.execPath, [dispatcher, "doctor", "--json"], {
     cwd: plan.runtime_root,
     encoding: "utf8",
   });
@@ -681,117 +428,16 @@ function runSelfTest(plan) {
   try {
     parsed = JSON.parse(result.stdout || "{}");
   } catch (_) {}
-  const passed = result.status === 0 && parsed?.status === "PASS";
+  const injected = parsed?.sample_injection?.decision === "inject";
+  const passed = result.status === 0 && parsed?.status === "PASS" && injected;
   return {
     host: plan.host,
     status: passed ? "PASS" : "FAIL",
-    command: "lilygo-skills doctor --json --home <home>",
-    summary:
-      parsed?.sample_injection?.status === "PASS"
-        ? "injection chain self-test passed"
-        : "doctor did not report a passing sample injection",
+    command: "node <root>/bin/lilygo-skills.mjs doctor --json",
+    summary: injected
+      ? "injection chain self-test passed"
+      : "doctor did not report a passing sample injection",
     runtime_mode: parsed?.runtime_mode || "unknown",
-  };
-}
-
-function resolveBinary(repoRoot, options) {
-  if (options.prebuiltOnly) {
-    return {
-      path: prebuiltBinaryPath(repoRoot),
-      profile: "prebuilt",
-      build_hint: `install a release bundle containing dist/bin/${prebuiltPlatformId()}/${runtimeBinaryName()}`,
-    };
-  }
-  if (options.bin) {
-    return {
-      path: path.resolve(repoRoot, options.bin),
-      profile: "custom",
-      build_hint: "provide an existing executable with --bin <path>",
-    };
-  }
-  const candidates = {
-    release: path.join(repoRoot, "target", "release", runtimeBinaryName()),
-    debug: path.join(repoRoot, "target", "debug", runtimeBinaryName()),
-  };
-  if (options.build && options.profile === "auto") {
-    return {
-      path: candidates.release,
-      profile: "release",
-      build_hint: "run cargo build --release -p lilygo-skills-cli",
-    };
-  }
-  if (options.profile === "release") {
-    return {
-      path: candidates.release,
-      profile: "release",
-      build_hint: "run cargo build --release -p lilygo-skills-cli",
-    };
-  }
-  if (options.profile === "debug") {
-    return {
-      path: candidates.debug,
-      profile: "debug",
-      build_hint: "run cargo build -p lilygo-skills-cli",
-    };
-  }
-  const existing = Object.entries(candidates)
-    .filter(([, candidate]) => fs.existsSync(candidate))
-    .map(([profile, candidate]) => ({
-      profile,
-      path: candidate,
-      mtimeMs: fs.statSync(candidate).mtimeMs,
-    }))
-    .sort((left, right) => right.mtimeMs - left.mtimeMs);
-  if (existing.length > 0) {
-    const selected = existing[0];
-    return {
-      path: selected.path,
-      profile: selected.profile,
-      build_hint:
-        selected.profile === "release"
-          ? "run cargo build --release -p lilygo-skills-cli"
-          : "run cargo build -p lilygo-skills-cli",
-    };
-  }
-  return {
-    path: candidates.release,
-    profile: "release",
-    build_hint: "run cargo build --release -p lilygo-skills-cli",
-  };
-}
-
-function buildPlan(repoRoot, options, binary) {
-  if (options.prebuiltOnly || !options.build || options.bin) {
-    return {
-      enabled: false,
-      profile: binary.profile,
-      command: null,
-      binary: binary.path,
-    };
-  }
-  const release = options.profile !== "debug";
-  const command = release
-    ? ["cargo", "build", "--release", "-p", "lilygo-skills-cli"]
-    : ["cargo", "build", "-p", "lilygo-skills-cli"];
-  return {
-    enabled: true,
-    profile: release ? "release" : "debug",
-    command,
-    binary: binary.path,
-  };
-}
-
-function runBuild(plan, repoRoot) {
-  if (!plan.enabled) return null;
-  const result = cp.spawnSync(plan.command[0], plan.command.slice(1), {
-    cwd: repoRoot,
-    encoding: "utf8",
-  });
-  return {
-    status: result.status === 0 ? "PASS" : "FAIL",
-    exit_code: result.status,
-    stderr: (result.stderr || "").trim().slice(-4000),
-    stdout: (result.stdout || "").trim().slice(-4000),
   };
 }
 
@@ -815,100 +461,48 @@ function main() {
   const repoRoot = __dirname;
   const plans = options.hosts.map((host) => planHost(host, options.home));
   const warnings = [];
-  const binary = resolveBinary(repoRoot, options);
-  const build = buildPlan(repoRoot, options, binary);
-  const binaryExists = fs.existsSync(binary.path);
-  const mountOnly = !binaryExists && !build.enabled && !options.bin && !options.prebuiltOnly;
-  const runtimeMode =
-    mountOnly ? "mount-only" : options.prebuiltOnly && !binaryExists ? "prebuilt-missing" : "full";
-  if (!binaryExists && !build.enabled) {
-    warnings.push(
-      mountOnly
-        ? `runtime binary missing at ${binary.path}; installing setup-only mount; ${binary.build_hint} for full dynamic context`
-        : `runtime binary missing at ${binary.path}; ${binary.build_hint}`
-    );
+  if (options.build) {
+    warnings.push("--build is a no-op for the JS dispatcher; there is nothing to compile");
   }
   const writes = [];
   const errors = [];
   const verified_writes = [];
   const self_tests = [];
-  let build_result = null;
   if (!options.dryRun) {
-    if (options.prebuiltOnly && !binaryExists) {
-      errors.push(
-        `prebuilt runtime missing at ${binary.path}; ${binary.build_hint}`
-      );
-    }
-    build_result = runBuild(build, repoRoot);
-    if (build_result && build_result.status !== "PASS") {
-      errors.push(
-        `build failed: ${build.command.join(" ")} exited ${build_result.exit_code}; ${
-          build_result.stderr || build_result.stdout
-        }`
-      );
-    }
-    if (!build_result || build_result.status === "PASS") {
-      for (const plan of plans) {
-        let applied = false;
-        try {
-          if (!mountOnly && !fs.existsSync(binary.path)) {
-            throw new Error(`runtime binary missing at ${binary.path}; ${binary.build_hint}`);
-          }
-          applyHost(plan, repoRoot, mountOnly ? null : binary.path);
-          applied = true;
-        } catch (error) {
-          errors.push(`${plan.host}: ${error.message}`);
-        }
-        if (applied) {
-          writes.push(...plan.planned_writes);
-        }
-        errors.push(
-          ...validateHost(plan).map((error) => `${plan.host}: ${error}`)
-        );
-        verified_writes.push(
-          ...plan.planned_writes.filter((target) => fs.existsSync(target))
-        );
+    for (const plan of plans) {
+      let applied = false;
+      try {
+        installDispatcher(plan, repoRoot);
+        applied = true;
+      } catch (error) {
+        errors.push(`${plan.host}: ${error.message}`);
       }
-      if (options.selfTest && errors.length === 0) {
-        for (const plan of plans) {
-          const selfTest = runSelfTest(plan);
-          self_tests.push(selfTest);
-          if (selfTest.status !== "PASS") {
-            errors.push(`${plan.host}: install self-test failed: ${selfTest.summary}`);
-          }
+      if (applied) {
+        writes.push(...plan.planned_writes);
+      }
+      errors.push(...validateHost(plan).map((error) => `${plan.host}: ${error}`));
+      verified_writes.push(
+        ...plan.planned_writes.filter((target) => fs.existsSync(target))
+      );
+    }
+    if (options.selfTest && errors.length === 0) {
+      for (const plan of plans) {
+        const selfTest = runSelfTest(plan);
+        self_tests.push(selfTest);
+        if (selfTest.status !== "PASS") {
+          errors.push(`${plan.host}: install self-test failed: ${selfTest.summary}`);
         }
       }
     }
   }
-  const warningsAllowed = options.dryRun || mountOnly;
-  const status =
-    (warnings.length === 0 || warningsAllowed) && errors.length === 0
-      ? "PASS"
-      : "FAIL";
+  const status = errors.length === 0 ? "PASS" : "FAIL";
   process.stdout.write(
     JSON.stringify(
       {
         status,
         hosts: plans.map((plan) => plan.host),
         mode: options.dryRun ? "dry-run" : "apply",
-        runtime_mode: runtimeMode,
-        prebuilt_only: options.prebuiltOnly,
-        prebuilt_platform: prebuiltPlatformId(),
-        prebuilt_available: options.prebuiltOnly ? binaryExists : null,
-        binary_profile: binary.profile,
-        binary_source: displayPath(binary.path, options.home, repoRoot),
-        build_plan: {
-          enabled: build.enabled,
-          profile: build.profile,
-          command: build.command ? build.command.join(" ") : null,
-          binary: displayPath(build.binary, options.home, repoRoot),
-        },
-        build_result: build_result
-          ? {
-              status: build_result.status,
-              exit_code: build_result.exit_code,
-            }
-          : null,
+        runtime_mode: "js-dispatcher",
         self_tests,
         materialize_plans: plans.map((plan) => publicPlan(plan, options.home, repoRoot)),
         planned_writes: plans.flatMap((plan) =>

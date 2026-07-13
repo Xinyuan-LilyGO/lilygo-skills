@@ -14,7 +14,7 @@
 // board rather than the full routed skill list; the pin/bus/driver VALUES — the
 // graded, effect-bearing payload — are byte-faithful to Rust.
 import { detectBoard } from "./find.mjs";
-import { getBoard, getPack, promptKeywords } from "./lib.mjs";
+import { getBoard, getPack, promptKeywords, isMain } from "./lib.mjs";
 
 /** Topics the source-recovery CLI accepts, offered so the model picks the right one. */
 const PULL_TOPICS = "pinout|display|lora|gnss|power|i2c|spi|touch";
@@ -391,6 +391,6 @@ export async function runHookCommand(argv) {
   return runHook(argv, stdin);
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   runHookCommand(process.argv.slice(2)).then((code) => process.exit(code));
 }

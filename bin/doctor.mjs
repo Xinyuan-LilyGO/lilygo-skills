@@ -3,7 +3,7 @@
 // injection). Exit-code semantics mirror Rust doctor: `doctor` without `--json`
 // is a usage error (exit 2); a non-PASS report also exits 2.
 import { existsSync } from "node:fs";
-import { loadBoards, loadFactPacks, dataPath } from "./lib.mjs";
+import { loadBoards, loadFactPacks, dataPath, isMain } from "./lib.mjs";
 import { buildContext, loadSniffRules } from "./find.mjs";
 
 /**
@@ -99,6 +99,6 @@ export function runDoctor(argv) {
   return report.status === "PASS" ? 0 : 2;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   process.exit(runDoctor(process.argv.slice(2)));
 }

@@ -11,6 +11,7 @@ import { runSourceQuery } from "./query.mjs";
 import { runVerify } from "./verify.mjs";
 import { runDoctor } from "./doctor.mjs";
 import { runHookCommand } from "./hook.mjs";
+import { isMain } from "./lib.mjs";
 
 const USAGE =
   "Usage: lilygo-skills <command>\n\n" +
@@ -52,6 +53,6 @@ export async function dispatch(argv) {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   dispatch(process.argv.slice(2)).then((code) => process.exit(code));
 }

@@ -5,7 +5,7 @@
 // Mirrors Rust facts/mod.rs::source_query + facts/completeness.rs.
 import {
   getPack, getBoard, factsForTopic, normalizeTopic, unknownTopicFact,
-  isReadinessTopic, promptKeywords, topicFields, MAX_DISCOVERY_HINTS_INLINE,
+  isReadinessTopic, promptKeywords, topicFields, MAX_DISCOVERY_HINTS_INLINE, isMain,
 } from "./lib.mjs";
 
 /**
@@ -315,6 +315,6 @@ export function runSourceQuery(argv) {
   return 0;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isMain(import.meta.url)) {
   process.exit(runSourceQuery(process.argv.slice(2)));
 }
