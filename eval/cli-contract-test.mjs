@@ -9,7 +9,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -74,3 +75,46 @@ for (const entry of sourceQueryEntries) {
     }
   });
 }
+
+const contextEntries = contract.entries.filter(
+  (/** @type {{ label: string }} */ e) => e.label.startsWith("context:"),
+);
+assert.ok(contextEntries.length >= 3, "expected the context contract entries");
+
+for (const entry of contextEntries) {
+  test(`contract ${entry.label}`, () => {
+    const { code, stdout } = runJs("find.mjs", entry.args);
+    assert.equal(code, entry.exit_code, `exit code for ${entry.label}`);
+    const json = JSON.parse(stdout);
+    assert.deepEqual(Object.keys(json), entry.output_shape.top_level_keys, `top-level keys for ${entry.label}`);
+  });
+}
+
+test("context sniffs a board from platformio.ini alone (no keyword)", () => {
+  const dir = mkdtempSync(join(tmpdir(), "m35-ctx-"));
+  try {
+    writeFileSync(join(dir, "platformio.ini"), "[env:t-display-s3]\nboard = lilygo-t-display-s3\n");
+    const { code, stdout } = runJs("find.mjs", ["context", "--json", "--project", dir, "wire the I2C bus"]);
+    assert.equal(code, 0);
+    const json = JSON.parse(stdout);
+    assert.equal(json.board, "board-t-display-s3");
+    assert.equal(json.board_source, "inferred-from-project");
+    assert.equal(json.decision, "inject");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("context assigns no board on ambiguous project evidence", () => {
+  const dir = mkdtempSync(join(tmpdir(), "m35-ctx-amb-"));
+  try {
+    writeFileSync(join(dir, "platformio.ini"), "[env:t-beam]\nboard = ttgo-t-beam\n\n[env:t-deck]\nboard = t-deck\n");
+    const { code, stdout } = runJs("find.mjs", ["context", "--json", "--project", dir]);
+    assert.equal(code, 0);
+    const json = JSON.parse(stdout);
+    assert.equal(json.board, null);
+    assert.equal(json.decision, "no-op");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
