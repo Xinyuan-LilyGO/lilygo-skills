@@ -117,7 +117,8 @@ interface CompletenessSignal {
   evidence_level: string;
   source_query_command: string;
   update_command?: string;
-  required_missing: string[];
+  /** Omitted (like Rust's skip-empty) when nothing is missing. */
+  required_missing?: string[];
 }
 
 /** A discovery pointer telling the model which command to run next. */
