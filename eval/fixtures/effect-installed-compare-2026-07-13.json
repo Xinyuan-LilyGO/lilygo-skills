@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "suite": "M35 P3b installed-state effect",
+  "date": "2026-07-13",
+  "installed_js": {
+    "value_correct": 12,
+    "strict_pass": 7,
+    "hallucination": 0,
+    "total": 12,
+    "cli": "js",
+    "model": "haiku",
+    "runner_ok": true,
+    "source": "real installed hook + PATH shim, direct node run"
+  },
+  "rust_ref": {
+    "value_correct": 12,
+    "strict_pass": 3,
+    "hallucination": 0,
+    "total": 12,
+    "source": "P0 clean stored baseline (rust binary archived)"
+  },
+  "deterministic": {
+    "hook_value_alignment": "12/12",
+    "byte_parity": "P1 query/context/verify"
+  },
+  "verdict": "better",
+  "verdict_basis": [
+    "值 12/12 = Rust 12/12(不劣)",
+    "可验证严格 pass 7/12 > Rust 3/12(pull-hardening,翻倍+,核心更好)",
+    "幻觉 0 = 0",
+    "干净跑 contaminated 0 runner_ok true",
+    "7 条严格均含 github url+sha256 真引用(抽验为真)"
+  ]
+}
