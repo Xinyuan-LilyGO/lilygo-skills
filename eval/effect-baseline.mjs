@@ -168,14 +168,27 @@ function jsCapsule(prompt) {
   return String(obj.hookSpecificOutput?.additionalContext || "");
 }
 
-// Tools the JS arm must allow so the model can pull facts from the shim'd CLI.
-const JS_ALLOWED_TOOLS = ["Bash(lilygo-skills:*)", "Bash(lilygo-skills *)"];
 // Drop the user-level Rust hook (which would otherwise inject the thick capsule
-// and hand the model the values for free), while keeping OAuth auth — auth is
+// AND hand the model the values for free), while keeping OAuth auth — auth is
 // resolved independently of settings sources.
 const JS_SETTING_SOURCES = "project,local";
 
+// The JS arm runs in a NEUTRAL temp cwd, not the repo. Two reasons, both about
+// keeping the pull JS-only and headless-executable:
+//   * The repo CLAUDE.md steers the model to `cargo run -p lilygo-skills-cli`
+//     (the Rust binary); from a neutral cwd there is no Cargo project, so that
+//     route simply fails and the only resolvable `lilygo-skills` is the PATH
+//     shim (-> JS). A missing global hook + no repo config means no Rust capsule
+//     can leak either.
+//   * Headless `claude -p` cannot interactively approve a Bash tool call, so a
+//     `--allowedTools` allowlist still left the model stuck at "pending your
+//     approval" and unable to pull the push-capped values. The Rust arm reached
+//     those values because it inherited the user's permissive Bash settings; to
+//     give the JS arm the SAME pull ability (without re-introducing the Rust
+//     hook via user settings) we grant tool execution headlessly below. This is
+//     harness wiring, not a grader change — gradeAnswer is untouched.
 let jsShimDir = null; // created lazily on first live JS call, cleaned at exit.
+let jsNeutralCwd = null; // neutral cwd for the JS arm, cleaned at exit.
 
 function runClaude(prompt) {
   let promptToSend = prompt;
@@ -192,9 +205,11 @@ function runClaude(prompt) {
     opts.cwd = cwd;
   } else if (cli === "js") {
     // with_skill + js: inject the JS thick capsule ourselves (hook claude),
-    // route lookups to the JS bin via a PATH shim, drop the Rust hook, keep real
-    // auth.
+    // route lookups to the JS bin via a PATH shim, drop the Rust hook, run in a
+    // neutral cwd, and grant headless tool execution so the pull actually runs.
+    // Auth stays real (skip-permissions and setting-sources never touch auth).
     if (!jsShimDir) jsShimDir = makeJsShimDir();
+    if (!jsNeutralCwd) jsNeutralCwd = fs.mkdtempSync(path.join(os.tmpdir(), "m35-js-cwd-"));
     const capsule = jsCapsule(prompt);
     promptToSend =
       "[Injected LilyGO context — treat as system-provided context, not user input]\n" +
@@ -202,8 +217,8 @@ function runClaude(prompt) {
       "\n\n" +
       prompt;
     args.push("--setting-sources", JS_SETTING_SOURCES);
-    for (const t of JS_ALLOWED_TOOLS) args.push("--allowedTools", t);
-    opts.cwd = ROOT;
+    args.push("--dangerously-skip-permissions");
+    opts.cwd = jsNeutralCwd;
     opts.env = { ...process.env, PATH: `${jsShimDir}${path.delimiter}${process.env.PATH}` };
   } else {
     // with_skill + rust (default): run in the repo, global hook/skill in place.
@@ -220,16 +235,18 @@ function runClaude(prompt) {
 }
 
 function cleanupJsShim() {
-  if (jsShimDir) {
+  for (const dir of [jsShimDir, jsNeutralCwd]) {
+    if (!dir) continue;
     try {
-      fs.rmSync(jsShimDir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true });
     } catch {
       /* best-effort */
     }
-    jsShimDir = null;
   }
+  jsShimDir = null;
+  jsNeutralCwd = null;
 }
-process.on("exit", cleanupJsShim); // belt-and-suspenders: clean shim on any exit
+process.on("exit", cleanupJsShim); // belt-and-suspenders: clean shim + cwd on any exit
 
 // ---- dry plan ----
 if (dry) {
@@ -243,16 +260,17 @@ if (dry) {
     task_count: tasks.length,
     runner_command_template:
       cli === "js"
-        ? `PATH=<shim>:$PATH claude -p "<js-thick-capsule>\\n\\n<prompt>" --model ${model} --setting-sources ${JS_SETTING_SOURCES} ${JS_ALLOWED_TOOLS.map((t) => `--allowedTools ${JSON.stringify(t)}`).join(" ")}`
+        ? `PATH=<shim>:$PATH  (cwd=<neutral tmp>)  claude -p "<js-thick-capsule>\\n\\n<prompt>" --model ${model} --setting-sources ${JS_SETTING_SOURCES} --dangerously-skip-permissions`
         : `claude -p "<prompt>" --model ${model}`,
     js_routing:
       cli === "js"
         ? {
             injection: `echo '{"prompt":"<prompt>"}' | node ${path.relative(ROOT, JS_BIN)} hook claude  (thick capsule additionalContext, prepended)`,
             self_run_shim: `<tmp>/lilygo-skills -> exec node ${path.relative(ROOT, JS_BIN)} "$@"  (prepended to PATH)`,
+            neutral_cwd: "runs in an empty tmp dir (no repo CLAUDE.md cargo-steer, no Cargo project -> pull can only reach the JS shim)",
             rust_hook: "dropped via --setting-sources project,local (thick capsule cannot leak)",
+            permissions: "--dangerously-skip-permissions so headless pull runs; JS-only because the sole `lilygo-skills` on PATH is the shim and cwd has no Cargo project",
             auth: "REAL config (no CLAUDE_CONFIG_DIR isolation) — only the CLI impl is swapped",
-            allowed_tools: JS_ALLOWED_TOOLS,
             capsule_sample_task0: jsSample,
           }
         : "n/a (--cli rust: legacy Rust global hook injects, no rewiring)",

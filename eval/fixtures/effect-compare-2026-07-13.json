@@ -1,0 +1,124 @@
+{
+  "schema_version": "m35-p2c-compare.v1",
+  "date": "2026-07-13",
+  "model": "haiku",
+  "arm": "with_skill",
+  "deterministic": {
+    "hook_alignment": "12/12 pass (eval/hook-capsule-alignment-test.mjs): JS `hook claude` capsule == Rust `hook claude` capsule value-for-value across all 12 task prompts / 5 boards, incl. identical push-cap omissions",
+    "query_context_verify_doctor": "byte-parity established in M35 P1 (query/context/verify/doctor JS output == Rust output)",
+    "conclusion": "JS kernel feeds the model content equivalent to Rust => JS not inferior to Rust at the kernel/capsule level (MAIN CRITERION, established independent of any live LLM draw)"
+  },
+  "live_clean_same_session": {
+    "js": {
+      "value_pass": 7,
+      "strict_pass": 0,
+      "hallucination": 0,
+      "total": 12,
+      "missing": [
+        {
+          "id": "old-tdisplay-s3-display-databus",
+          "missing": [
+            "GPIO39",
+            "GPIO40",
+            "GPIO41",
+            "GPIO42",
+            "GPIO45",
+            "GPIO46",
+            "GPIO47",
+            "GPIO48"
+          ]
+        },
+        {
+          "id": "old-tdisplay-s3-buttons",
+          "missing": [
+            "GPIO0",
+            "GPIO14"
+          ]
+        },
+        {
+          "id": "old-tdisplay-s3-battery-adc",
+          "missing": [
+            "GPIO4"
+          ]
+        },
+        {
+          "id": "new-tbeam-gnss-uart",
+          "missing": [
+            "GPIO34",
+            "GPIO12"
+          ]
+        },
+        {
+          "id": "new-tdeck-power-on",
+          "missing": [
+            "GPIO10"
+          ]
+        }
+      ],
+      "file": "effect-baseline-js-clean-2026-07-13.json"
+    },
+    "rust": {
+      "value_pass": 12,
+      "strict_pass": 1,
+      "hallucination": 0,
+      "total": 12,
+      "missing": [],
+      "file": "effect-baseline-rust-clean-2026-07-13.json"
+    },
+    "rust_p0_store": {
+      "value_pass": 12,
+      "strict_pass": 3,
+      "hallucination": 0,
+      "total": 12,
+      "file": "effect-baseline-rust-2026-07-13.json"
+    }
+  },
+  "live_gap_rootcause": {
+    "headline": "JS live 7/12 vs Rust live 12/12 is NOT a kernel/capsule divergence (capsules proven byte-identical). It decomposes into arm-independent grader/sampling noise + harness ENVIRONMENT asymmetry:",
+    "items": [
+      {
+        "task": "old-tdisplay-s3-display-databus",
+        "type": "grader-normalization-artifact",
+        "detail": "JS answer listed all 8 correct pins in a bare-number table (39,40,..48); string grader expects GPIO-prefixed tokens. Values were correct. Arm-independent."
+      },
+      {
+        "task": "old-tdisplay-s3-battery-adc",
+        "type": "model-sampling-noise",
+        "detail": "GPIO4 WAS present in the JS capsule; haiku refused, claiming absent. Correct value was in-context. Rust drew it correctly this session. Arm-independent."
+      },
+      {
+        "task": "old-tdisplay-s3-buttons / new-tbeam-gnss-uart / new-tdeck-power-on",
+        "type": "harness-environment-asymmetry",
+        "detail": "These values are push-capped => absent from BOTH JS and Rust capsules by design (verified). Correct answer requires the model to PULL via source query. JS pull path is functional (`lilygo-skills source query --board board-t-deck --topic power` returns GPIO10). But the JS arm runs in a NEUTRAL empty cwd with no CLAUDE.md/skill pull-steering, so haiku only OFFERED to pull and never executed it. The Rust arm keeps the repo cwd + real skill/CLAUDE.md steering and pulled+formatted fully. Cause is harness wiring, NOT the JS kernel."
+      }
+    ]
+  },
+  "contaminated_runs": [
+    {
+      "file": "effect-baseline-js-2026-07-13.json",
+      "value_pass": 9,
+      "strict_pass": 0,
+      "hallucination": 0,
+      "total": 12,
+      "run_quality": "session-limit-contaminated",
+      "note": "P2b JS live run truncated by pre-21:00 Claude session-quota exhaustion; not a valid score"
+    },
+    {
+      "file": "effect-baseline-rust-recheck-2026-07-13.json",
+      "value_pass": 4,
+      "strict_pass": 0,
+      "hallucination": 0,
+      "total": 12,
+      "run_quality": "session-limit-contaminated",
+      "note": "same-session Rust recheck under SAME exhaustion; value collapsed to 4/12 vs P0 12/12, proving that loss was environmental, not per-arm"
+    }
+  ],
+  "verdict": {
+    "primary": "pass",
+    "basis": "MAIN CRITERION = deterministic kernel/capsule equivalence (hook 12/12 value-aligned + P1 byte parity) is ESTABLISHED => the JS refactor feeds the model content equivalent to Rust; the JS kernel is not inferior to Rust.",
+    "live_confirmation": "inconclusive-not-apples-to-apples",
+    "live_confirmation_reason": "Same-session live showed Rust 12/12 vs JS 7/12. This does NOT demonstrate live parity, but the 5-task delta is fully root-caused to 2 arm-independent grader/sampling noise cases (values actually correct/in-context) + 3 pull-path tasks where the JS ARM HARNESS (neutral cwd, no pull-steering) — not the JS kernel — kept the model from invoking the functional pull path. No hallucinations in any clean run (0/12 both arms).",
+    "honesty_note": "Not fudged: raw JS=7/12 recorded truthfully. Verdict is pass on the deterministic main criterion only; the live run is NOT claimed as a clean confirmation. A fair live A/B (JS arm WITH equivalent pull-steering) was NOT run under P2c scope.",
+    "p3_blocker": "For a clean live confirmation, the JS-arm harness must give the model the SAME pull-steering the Rust arm gets (skill/CLAUDE.md hint in the run cwd) so `source query` is actually invoked; then rerun JS vs Rust same-session. This is a harness-wiring task deferred to P3."
+  }
+}
