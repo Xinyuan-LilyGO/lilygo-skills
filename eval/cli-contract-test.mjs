@@ -118,3 +118,47 @@ test("context assigns no board on ambiguous project evidence", () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// --- verify sources: deterministic structural + exit-code contract ----------
+// (The live hash re-proof is exercised out-of-band, not in the offline suite.)
+import { rawFetchUrl } from "../bin/verify.mjs";
+
+test("rawFetchUrl rewrites github blob to raw and passes others through", () => {
+  assert.equal(
+    rawFetchUrl("https://github.com/owner/repo/blob/master/src/x.h"),
+    "https://raw.githubusercontent.com/owner/repo/master/src/x.h",
+  );
+  const raw = "https://raw.githubusercontent.com/owner/repo/master/x.h";
+  assert.equal(rawFetchUrl(raw), raw);
+});
+
+for (const entry of contract.entries.filter((/** @type {{ label: string }} */ e) => e.label.startsWith("verify-sources:"))) {
+  test(`verify contract shape ${entry.label}`, () => {
+    // JS verifySources emits exactly these top-level keys by construction.
+    assert.deepEqual(entry.output_shape.top_level_keys, ["status", "board_id", "counts", "facts"]);
+  });
+}
+
+test("verify sources requires --json (exit 2)", () => {
+  const { code } = runJs("verify.mjs", ["verify", "sources", "--board", "board-t-beam"]);
+  assert.equal(code, 2);
+});
+
+test("verify sources rejects an unknown board (exit 2)", () => {
+  const { code } = runJs("verify.mjs", ["verify", "sources", "--board", "board-does-not-exist", "--json"]);
+  assert.equal(code, 2);
+});
+
+// --- doctor: exit-code + top-level key contract ----------------------------
+for (const entry of contract.entries.filter((/** @type {{ label: string }} */ e) => e.label === "doctor:json")) {
+  test("doctor --json contract", () => {
+    const { code, stdout } = runJs("doctor.mjs", ["doctor", "--json"]);
+    assert.equal(code, entry.exit_code);
+    assert.deepEqual(Object.keys(JSON.parse(stdout)), entry.output_shape.top_level_keys);
+  });
+}
+
+test("doctor requires --json (exit 2)", () => {
+  const { code } = runJs("doctor.mjs", ["doctor"]);
+  assert.equal(code, 2);
+});
