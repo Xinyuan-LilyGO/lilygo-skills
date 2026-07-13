@@ -1,85 +1,74 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
-# Aggregated deterministic gate: every hardware-free smoke runs here so a
-# HEAD-failing smoke can never ride a green pipeline. Hardware-dependent
-# smokes participate via their --dry-run planning paths.
+# Aggregated deterministic gate for the JS context kernel. Every language-free
+# data/pipeline/eval check runs here alongside the JS core gates (unit + CLI
+# contract + hook value-alignment, typecheck, doctor, live source verify) and
+# the install->hook integration smoke, so a HEAD-failing check can never ride a
+# green pipeline. The former Rust-binary/Rust-source smokes are retired with the
+# Rust tree (kept on the dedicated rust-archive git branch); their behavioral
+# equivalence for the AI-facing surface (context / source query / verify sources
+# / doctor / hook) is covered by `npm test` + `tsc` + the doctor/verify gates.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-GATES=(
-  "capsule-byte-diff-smoke.sh"
-  "cjk-prompt-smoke.sh"
-  "doc-split-smoke.sh"
-  "goal-context-smoke.sh --dry-run"
-  "board-completeness-smoke.sh --dry-run"
-  "board-data-expansion-smoke.sh"
-  "../pipeline/run-official-source-pipeline.js --gold-only --json"
-  "../pipeline/diff-gold-fact-packs.js --json"
-  "../pipeline/run-official-source-pipeline.js --all-boards --json"
-  "../eval/run-board-triple-questions.js --boards all --json --require-topic board-t-watch-s3:display --require-topic board-t-watch-s3:input"
-  "../eval/verify-provenance.js --json"
-  "pure-query-compact-smoke.sh"
-  "context-budget-smoke.sh"
-  "project-context-smoke.sh --dry-run"
-  "playbook-quality-smoke.sh --dry-run"
-  "preference-reference-smoke.sh --dry-run"
-  "setup-plan-smoke.sh --dry-run"
-  "source-completeness-smoke.sh --dry-run"
-  "source-fact-smoke.sh --dry-run"
-  "source-recovery-smoke.sh"
-  "demo-intent-smoke.sh"
-  "bus-facts-smoke.sh --dry-run"
-  "next-actions-smoke.sh --dry-run"
-  "project-custom-skills-smoke.sh"
-  "doctor-smoke.sh"
-  "code-size-boundary-smoke.sh"
-  "rust-module-doc-smoke.sh"
-  "router-skill-surface-smoke.sh"
-  "source-comment-hygiene-smoke.sh"
-  "install-build-failure-smoke.sh"
-  "install-binary-selection-smoke.sh"
-  "install-injection-smoke.sh"
-  "practice-layer-free-smoke.sh"
-  "system-smoke.sh"
-  "scorecard-private-boundary-smoke.sh"
-)
-
 failed=()
-skipped=()
-for gate in "${GATES[@]}"; do
-  # shellcheck disable=SC2086
-  set -- $gate
-  script="scripts/$1"
-  shift
-  echo "== ci-gate: $script $* =="
-  set +e
-  if [[ "$script" == scripts/../pipeline/*.js || "$script" == scripts/../eval/*.js ]]; then
-    node "${script#scripts/../}" "$@"
-  else
-    bash "$script" "$@"
-  fi
-  code=$?
-  set -e
-  if [[ "$code" -eq 2 && "$script" =~ hardware|goal-hardware ]]; then
-    skipped+=("$script")
-    continue
-  fi
-  if [[ "$code" -ne 0 ]]; then
-    failed+=("$script")
-  fi
-done
 
-echo "== ci-gate: eval/run-scorecard.js --suite smoke --json =="
-node eval/run-scorecard.js --suite smoke --json
+run_gate() {
+  local label="$1"; shift
+  echo "== ci-gate: $label =="
+  if "$@"; then
+    return 0
+  fi
+  failed+=("$label")
+}
 
-echo "== ci-gate: eval/grade-scorecard.js --assert-forbidden-claims --json =="
-node eval/grade-scorecard.js --assert-forbidden-claims --json
+# --- JS core: unit + contract + typecheck + doctor + live verify ------------
+# `npm test` runs the node:test suite: CLI contract parity (source query /
+# context / verify / doctor exit codes + shapes + anti-fabrication value
+# parity), hook thick-capsule value-alignment (JS == frozen Rust reference,
+# value-for-value), and CJK routing.
+run_gate "npm test" npm test --silent
+run_gate "tsc --noEmit" npx tsc -p tsconfig.json --noEmit
+run_gate "doctor --json" node bin/lilygo-skills.mjs doctor --json
+# Live source re-proof: OK when the network confirms hashes, graceful
+# UNREACHABLE (still exit 0) when offline/rate-limited; only a real DRIFT fails.
+run_gate "verify sources (t-connect-pro)" \
+  node bin/lilygo-skills.mjs verify sources --board board-t-connect-pro --topic pinout --json
 
+# --- data / pipeline / provenance (language-independent) --------------------
+run_gate "official source pipeline (gold)" \
+  node pipeline/run-official-source-pipeline.js --gold-only --json
+run_gate "diff gold fact packs" \
+  node pipeline/diff-gold-fact-packs.js --json
+run_gate "official source pipeline (all boards)" \
+  node pipeline/run-official-source-pipeline.js --all-boards --json
+run_gate "board triple questions" \
+  node eval/run-board-triple-questions.js --boards all --json \
+  --require-topic board-t-watch-s3:display --require-topic board-t-watch-s3:input
+run_gate "verify provenance" \
+  node eval/verify-provenance.js --json
+
+# --- doc / surface / hygiene smokes (language-independent) -------------------
+run_gate "doc-split" bash scripts/doc-split-smoke.sh
+run_gate "router-skill-surface" bash scripts/router-skill-surface-smoke.sh
+run_gate "practice-layer-free" bash scripts/practice-layer-free-smoke.sh
+run_gate "source-comment-hygiene" bash scripts/source-comment-hygiene-smoke.sh
+
+# --- install -> hook integration + scorecard boundary -----------------------
+run_gate "install-injection" bash scripts/install-injection-smoke.sh
+run_gate "scorecard-private-boundary" bash scripts/scorecard-private-boundary-smoke.sh
+
+# --- scorecard smoke suite --------------------------------------------------
+run_gate "run-scorecard (smoke)" node eval/run-scorecard.js --suite smoke --json
+run_gate "grade-scorecard (forbidden-claims)" \
+  node eval/grade-scorecard.js --assert-forbidden-claims --json
+
+GATES=17
 if [[ ${#failed[@]} -gt 0 ]]; then
-  echo "FAIL ci-gate: ${failed[*]}" >&2
+  echo "FAIL ci-gate (${#failed[@]}/${GATES}): ${failed[*]}" >&2
   exit 1
 fi
 
-echo "{\"status\":\"PASS\",\"gates\":${#GATES[@]},\"boundary_skips\":${#skipped[@]}}"
+echo "{\"status\":\"PASS\",\"gates\":${GATES},\"baseline\":\"js\"}"
