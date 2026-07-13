@@ -10,9 +10,11 @@ import { runContext } from "./find.mjs";
 import { runSourceQuery } from "./query.mjs";
 import { runVerify } from "./verify.mjs";
 import { runDoctor } from "./doctor.mjs";
+import { runHookCommand } from "./hook.mjs";
 
 const USAGE =
   "Usage: lilygo-skills <command>\n\n" +
+  "  hook <claude|codex>                              push the thick board capsule (stdin: {\"prompt\":..})\n" +
   "  context [--project <dir>] [--json] [prompt]      resolve board + thin capsule\n" +
   "  source query --board <id> --topic <t> --json     source-cited facts for a topic\n" +
   "  verify sources --board <id> [--topic <t>] --json live re-proof (OK/DRIFT/UNREACHABLE)\n" +
@@ -25,6 +27,8 @@ const USAGE =
 export async function dispatch(argv) {
   const command = argv[0];
   switch (command) {
+    case "hook":
+      return runHookCommand(argv.slice(1));
     case "context":
       return runContext(argv);
     case "source":
