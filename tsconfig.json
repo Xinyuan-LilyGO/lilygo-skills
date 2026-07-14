@@ -15,5 +15,5 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["bin/**/*.mjs", "types.d.ts"]
+  "include": ["bin/**/*.mjs", "eval/official-*.mjs", "types.d.ts"]
 }
