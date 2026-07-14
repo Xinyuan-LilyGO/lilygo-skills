@@ -27,26 +27,20 @@ source-backed support flow 展开。
 4. 生成或更新 compact board skills。
 5. 在官方 source 能证明时，为 IO、pinout、bus、expander、connector、peripheral 和
    quick-start topics 添加 source facts。
-6. 为应当 quick-start ready 的 topic 添加 completeness gate。
-7. 添加 route fixtures 和 negative over-injection cases。
-8. 运行 verification suite。
+6. 在 `eval/**` 下添加 context/verification fixtures 和 negative over-injection cases。
+7. 运行 verification suite。
 
-常用命令：
+Board 和 fact-pack 数据现在随 skill 目录一起分发，由 official-source pipeline 生成。
+重新生成并 diff 数据：
 
 ```bash
-cargo run -p lilygo-skills-cli -- sync-boards --dry-run --json
-cargo run -p lilygo-skills-cli -- update boards --dry-run --json
-cargo run -p lilygo-skills-cli -- update skills --dry-run --json
-cargo run -p lilygo-skills-cli -- update fact-packs --dry-run --json
-cargo run -p lilygo-skills-cli -- update board-facts --board <board-id> --topic <topic> --dry-run --json
-cargo run -p lilygo-skills-cli -- update source-packs --dry-run --json
-cargo run -p lilygo-skills-cli -- update peripheral-skills --dry-run --json
+node pipeline/run-official-source-pipeline.js --all-boards --json
+node pipeline/diff-gold-fact-packs.js
 ```
 
-只有当 planned writes 正确且位于支持路径内时，才去掉 `--dry-run`。`update skills` 和
-`update peripheral-skills` 只能把 generated runtime skills 写入
-`.lilygo-skills/generated-skills/` 或 `--out <generated-root>`，不能写入 source
-`skills/` 树。
+Pipeline 默认是 dry 的（只把 plan 写到 `.tmp/pipeline/`）；只有确认 diff 正确后再加
+`--write`，才会写入 `data/facts/**`。提交前先检查 JSON plan，不要手改 generated fact
+packs。
 
 ## Fact Quality Rules
 
@@ -67,24 +61,21 @@ Generated skills 应保持紧凑：
 - Verification boundary。
 
 不要把完整 datasheet、长源码文件或完整 fact pack 粘到 `SKILL.md` 里。AI 需要更多信息时，
-应调用 `source query`、`source completeness`、`index query` 或 `reference list`。
+应调用 `source query` 或 `verify sources`。
 
 ## Tests And Smokes
 
 最低要求：
 
 ```bash
-cargo test -q -p lilygo-skills-cli
-cargo run -q -p lilygo-skills-cli -- verify --json
-cargo run --release -q -p lilygo-skills-cli -- benchmark --json --iterations 5000
-bash scripts/source-completeness-smoke.sh --dry-run
-bash scripts/board-completeness-smoke.sh --dry-run
-bash scripts/full-evidence-smoke.sh --dry-run
+npx tsc --noEmit
+npm test
+bash scripts/ci-gate.sh
 git diff --check
 ```
 
 新增和既有 family trigger 重叠的板子时，添加 exact-board precedence regression，避免
-route output 把误导性的 generic board 当作 selected context。
+`context` output 把误导性的 generic board 当作 selected context。
 
 ## Documentation Checklist
 

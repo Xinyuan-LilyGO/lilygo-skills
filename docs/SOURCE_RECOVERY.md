@@ -23,10 +23,10 @@ the runtime should surface:
   `examples/factory/pin_config.h`.
 - Critical facts such as `PIN_IIC_SDA=GPIO18` and `PIN_IIC_SCL=GPIO17`.
 - Recovery commands such as `source query --board board-t-display-s3 --topic io`.
-- Internal playbook expansion such as `index query playbook-source-discovery`.
+- Re-proof commands such as `verify sources --board board-t-display-s3`.
 
-The hook context receives only the compact version. Richer detail remains behind
-`goal plan`, `source query`, and generated board skills.
+The thin `context` capsule receives only the compact version. Richer detail
+remains behind `source query`, `verify sources`, and the generated board skills.
 
 ## How It Is Used
 
@@ -41,9 +41,9 @@ The agent can then inspect the generated context and, when more detail is
 needed, expand through:
 
 ```bash
-lilygo-skills goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen"
+lilygo-skills context --json "T-Display-S3 PlatformIO Arduino TFT_eSPI I2C sensor screen"
 lilygo-skills source query --board board-t-display-s3 --topic io --json
-lilygo-skills index query playbook-source-discovery --json
+lilygo-skills verify sources --board board-t-display-s3 --topic io --json
 ```
 
 This keeps exact pins and demo paths source-backed instead of relying on model
@@ -54,25 +54,27 @@ memory.
 Generated board skills include a compact `Source-Backed Board Facts` section.
 For T-Display-S3, that section includes official I2C pins, touch pins, display
 facts, and demo references. The source tree still does not commit generated
-board snapshots; they are materialized by install, cache generation, or explicit
-project generation.
+board snapshots; they are materialized by the installer and the official-source
+pipeline. Inspect the facts directly with:
 
 ```bash
-lilygo-skills generate skills --out .tmp/generated-skills --json
-sed -n '1,220p' .tmp/generated-skills/skills/board-t-display-s3/SKILL.md
+lilygo-skills source query --board board-t-display-s3 --topic i2c --json
+lilygo-skills source query --board board-t-display-s3 --topic display --json
 ```
 
 ## Verification
 
-Use the smoke test when changing routing, fact packs, generated skills, or hook
-rendering:
+When changing board detection, fact packs, generated skills, or hook rendering,
+run the gates:
 
 ```bash
-bash scripts/source-recovery-smoke.sh
+npx tsc --noEmit
+npm test
+bash scripts/ci-gate.sh
 ```
 
-That script checks `goal plan`, `hook codex`, `source query`, generated
-`board-t-display-s3/SKILL.md`, and generated-root verification.
+The test suite covers the `context`, `hook`, `source query`, and `verify
+sources` surfaces and the generated `board-t-display-s3` facts.
 
 Source recovery is V3 source/context evidence. It can guide implementation and
 debugging, but it is not a hardware-success claim until build, flash, serial,

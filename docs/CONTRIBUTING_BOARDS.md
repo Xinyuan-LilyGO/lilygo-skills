@@ -30,27 +30,22 @@ flow.
 4. Generate or update compact board skills.
 5. Add source facts for IO, pinout, bus, expander, connector, peripheral, and
    quick-start topics where official sources prove them.
-6. Add completeness gates for topics that should be quick-start ready.
-7. Add route fixtures and negative over-injection cases.
-8. Run the verification suite.
+6. Add context/verification fixtures and negative over-injection cases under
+   `eval/**`.
+7. Run the verification suite.
 
-Useful commands:
+Board and fact-pack data now travel with the skill directory and are produced
+by the official-source pipeline. Regenerate and diff data with:
 
 ```bash
-cargo run -p lilygo-skills-cli -- sync-boards --dry-run --json
-cargo run -p lilygo-skills-cli -- update boards --dry-run --json
-cargo run -p lilygo-skills-cli -- update skills --dry-run --json
-cargo run -p lilygo-skills-cli -- update fact-packs --dry-run --json
-cargo run -p lilygo-skills-cli -- update board-facts --board <board-id> --topic <topic> --dry-run --json
-cargo run -p lilygo-skills-cli -- update source-packs --dry-run --json
-cargo run -p lilygo-skills-cli -- update peripheral-skills --dry-run --json
+node pipeline/run-official-source-pipeline.js --all-boards --json
+node pipeline/diff-gold-fact-packs.js
 ```
 
-Run without `--dry-run` only when the planned writes are correct and inside the
-supported paths. `update skills` and `update peripheral-skills` write generated
-runtime skills only to `.lilygo-skills/generated-skills/` or `--out
-<generated-root>`; they must not write generated `SKILL.md` files into the
-source `skills/` tree.
+The pipeline is dry by default (it writes a plan under `.tmp/pipeline/`); add
+`--write` only once the diff is correct to persist `data/facts/**`. Inspect the
+JSON plan before committing regenerated fact packs, and do not hand-edit
+generated packs.
 
 ## Fact Quality Rules
 
@@ -73,26 +68,23 @@ Generated skills should stay compact:
 - Verification boundary.
 
 Do not paste full datasheets, long source files, or complete fact packs into
-`SKILL.md`. The AI should call `source query`, `source completeness`, `index
-query`, or `reference list` when it needs more.
+`SKILL.md`. The AI should call `source query` or `verify sources` when it needs
+more.
 
 ## Tests And Smokes
 
 At minimum:
 
 ```bash
-cargo test -q -p lilygo-skills-cli
-cargo run -q -p lilygo-skills-cli -- verify --json
-cargo run --release -q -p lilygo-skills-cli -- benchmark --json --iterations 5000
-bash scripts/source-completeness-smoke.sh --dry-run
-bash scripts/board-completeness-smoke.sh --dry-run
-bash scripts/full-evidence-smoke.sh --dry-run
+npx tsc --noEmit
+npm test
+bash scripts/ci-gate.sh
 git diff --check
 ```
 
 When adding a board that overlaps an existing family trigger, add an exact-board
-precedence regression so route output does not include a misleading generic
-board as the selected context.
+precedence regression so `context` output does not select a misleading generic
+board as the injected context.
 
 ## Documentation Checklist
 
