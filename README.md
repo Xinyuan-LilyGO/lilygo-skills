@@ -171,6 +171,11 @@ lilygo-skills doctor --json         # confirm the injection chain
 the data travels with the dispatcher, so a runtime update can never leave stale
 data behind. There is nothing to compile.
 
+It also places a `lilygo-skills` shim in `~/.local/bin`. If that directory is not
+already on your `PATH`, the installer appends it to your shell rc (idempotently)
+and prints the file to `source` — so both `lilygo-skills` and the model's
+`source query` pull resolve in a fresh shell.
+
 The installer writes runtime roots under `~/.claude/lilygo-skills/` and
 `~/.codex/lilygo-skills/`, installs the router Skill to
 `~/.claude/skills/lilygo-skills/SKILL.md`, idempotently merges the optional
@@ -237,6 +242,10 @@ Board facts are ingested from official LilyGO sources, never hand-typed:
 | Action routing | [docs/ACTION_ROUTING.md](docs/ACTION_ROUTING.md) | [docs/ACTION_ROUTING.zh-CN.md](docs/ACTION_ROUTING.zh-CN.md) |
 | Verification levels | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | Board contribution | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
+| Router Skill & guides | [skills/lilygo-router/SKILL.md](skills/lilygo-router/SKILL.md) + [guides/](skills/lilygo-router/guides/) | (bilingual prose in-file) |
+| Design & review records | [docs/design/](docs/design/) | (per-milestone) |
+| Changelog | [CHANGELOG.md](CHANGELOG.md) | — |
+| Agent runtime notes | [AGENTS.md](AGENTS.md) · [CLAUDE.md](CLAUDE.md) | — |
 
 The public repository is the runtime source: CLI, installer, router Skill, source
 model, data tables, references, schemas, and release gates. This README is the

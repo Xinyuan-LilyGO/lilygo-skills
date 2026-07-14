@@ -140,6 +140,10 @@ lilygo-skills doctor --json         # 确认注入链路
 一个自包含 runtime 一起复制——数据随 dispatcher 同行,runtime 更新绝不会留下过期数据。
 没有任何东西需要编译。
 
+安装器还会在 `~/.local/bin` 放一个 `lilygo-skills` shim。若该目录尚未在 `PATH` 上,
+安装器会幂等地把它追加进你的 shell rc 并打印出需要 `source` 的文件——这样在新开的 shell 里
+`lilygo-skills` 与模型的 `source query`(pull)都能解析。
+
 安装器把 runtime 根写到 `~/.claude/lilygo-skills/` 和 `~/.codex/lilygo-skills/`,把 router
 Skill 装到 `~/.claude/skills/lilygo-skills/SKILL.md`,向 `~/.claude/settings.json` 幂等合并
 可选的 `UserPromptSubmit` hook(`node <root>/bin/hook.mjs claude`),并向 `~/.codex/AGENTS.md`
@@ -199,6 +203,10 @@ data/pipeline/provenance 校验、板级三问测试、scorecard grading,以及 
 | Action routing | [docs/ACTION_ROUTING.md](docs/ACTION_ROUTING.md) | [docs/ACTION_ROUTING.zh-CN.md](docs/ACTION_ROUTING.zh-CN.md) |
 | 验证等级 | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | 新增板子 | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
+| Router Skill 与引导 | [skills/lilygo-router/SKILL.md](skills/lilygo-router/SKILL.md) + [guides/](skills/lilygo-router/guides/) | (文件内含中英散文) |
+| 设计与评审记录 | [docs/design/](docs/design/) | (按里程碑) |
+| 变更日志 | [CHANGELOG.md](CHANGELOG.md) | — |
+| Agent 运行说明 | [AGENTS.md](AGENTS.md) · [CLAUDE.md](CLAUDE.md) | — |
 
 公开仓库就是 runtime source:CLI、安装器、router Skill、source model、数据表、references、
 schema 和发布门禁。本 README 是主要使用文档。

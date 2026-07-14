@@ -111,12 +111,45 @@ function pathIncludes(dir) {
     });
 }
 
+// Marker guarding the auto-added PATH line so re-installs never duplicate it.
+const PATH_RC_MARKER = "# lilygo-skills PATH (added by install.js)";
+
+// When the shim's bin dir is not yet on PATH, append an idempotent export to the
+// user's shell rc so `lilygo-skills` — and the model's `source query` pull —
+// resolves after the next shell start. POSIX only; picks the rc for the active
+// shell (zsh/bash), else ~/.profile. Returns { rc, added } or null (win32 / no-op).
+function ensurePathInShellRc(home, binDir) {
+  if (installPlatform() === "win32") return null;
+  const shell = String(process.env.SHELL || "");
+  const candidates = [];
+  if (shell.includes("zsh")) candidates.push(path.join(home, ".zshrc"));
+  else if (shell.includes("bash")) candidates.push(path.join(home, ".bashrc"));
+  candidates.push(path.join(home, ".zshrc"), path.join(home, ".bashrc"));
+  const rc = candidates.find((p) => fs.existsSync(p)) || path.join(home, ".profile");
+  let current = "";
+  try {
+    current = fs.readFileSync(rc, "utf8");
+  } catch {
+    current = "";
+  }
+  if (current.includes(PATH_RC_MARKER)) return { rc, added: false };
+  const exportValue =
+    path.resolve(binDir) === path.resolve(path.join(home, ".local", "bin"))
+      ? '"$HOME/.local/bin:$PATH"'
+      : `"${binDir}:$PATH"`;
+  const prefix = current && !current.endsWith("\n") ? "\n" : "";
+  fs.appendFileSync(rc, `${prefix}${PATH_RC_MARKER}\nexport PATH=${exportValue}\n`);
+  return { rc, added: true };
+}
+
 // Link/refresh the PATH shim so `lilygo-skills` resolves runtime-wide. Idempotent
 // by construction: any existing entry (symlink to an old root, stale file) is
 // removed and re-pointed at THIS install's runtime shim, so a re-install or a
 // root move always leaves the PATH entry current. POSIX uses a symlink (follows
 // dispatcher updates in place); Windows writes a thin forwarding .cmd because
-// symlinks there need elevation. Returns where it landed + whether it's on PATH.
+// symlinks there need elevation. When the bin dir is not yet on PATH, the shell
+// rc is updated so a brand-new user's pull path resolves. Returns where it
+// landed, whether it's on PATH, and any rc it updated.
 function installPathShim(home, root) {
   const binDir = pathBinDir(home);
   const target = pathShimPath(home);
@@ -129,7 +162,9 @@ function installPathShim(home, root) {
   } else {
     fs.symlinkSync(runtimeShim, target);
   }
-  return { target, binDir, onPath: pathIncludes(binDir) };
+  const onPath = pathIncludes(binDir);
+  const rcUpdated = onPath ? null : ensurePathInShellRc(home, binDir);
+  return { target, binDir, onPath, rcUpdated };
 }
 
 function claudeSkillPath(home) {
@@ -537,10 +572,18 @@ function main() {
         const shim = installDispatcher(plan, repoRoot);
         applied = true;
         if (shim && !shim.onPath) {
-          warnings.push(
-            `${shim.binDir} is not on your PATH; add it (e.g. export ` +
-              `PATH="${shim.binDir}:$PATH") so \`lilygo-skills\` resolves`
-          );
+          if (shim.rcUpdated && shim.rcUpdated.added) {
+            warnings.push(
+              `added ${shim.binDir} to PATH via ${shim.rcUpdated.rc}; ` +
+                `restart your shell or run: source ${shim.rcUpdated.rc} ` +
+                `(so \`lilygo-skills\` and the model's source-query pull resolve)`
+            );
+          } else {
+            warnings.push(
+              `${shim.binDir} is not on your PATH; add it (e.g. export ` +
+                `PATH="${shim.binDir}:$PATH") so \`lilygo-skills\` resolves`
+            );
+          }
         }
       } catch (error) {
         errors.push(`${plan.host}: ${error.message}`);
