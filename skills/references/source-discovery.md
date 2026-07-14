@@ -18,7 +18,6 @@ examples, build flags, register behavior, or board wiring.
 If exact facts are absent, return one of these instead of guessing:
 
 - `unknown_with_sources` when sources exist but do not prove the value;
-- `needs_source_ingestion` when the board/topic has official refs but no fact pack;
 - `needs_clarification` when user-owned board/framework/private details are missing;
 - `unsupported` when the product is outside the current verified runtime support boundary.
 
@@ -26,7 +25,13 @@ If exact facts are absent, return one of these instead of guessing:
 
 ```bash
 lilygo-skills source query --board <board-id> --topic io --json
-lilygo-skills source completeness --board <board-id> --topic display --json
-lilygo-skills update board-facts --board <board-id> --topic <topic> --dry-run --json
-lilygo-skills reference list --project <dir> --json
+lilygo-skills source query --board <board-id> --topic display --json
+lilygo-skills verify sources --board <board-id> --topic display --json
+```
+
+To regenerate the fact pack from official sources when a board/topic has refs but
+no facts yet, run the pipeline:
+
+```bash
+node pipeline/run-official-source-pipeline.js --all-boards --json
 ```
