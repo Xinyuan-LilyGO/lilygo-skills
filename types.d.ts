@@ -84,7 +84,7 @@ interface DemoRef {
 /** A board registry record (data/boards.json `boards[]`). */
 interface BoardRecord {
   id: string;
-  family_id?: string;
+  family_id?: string | null;
   product?: boolean;
   display_name?: string;
   aliases: string[];

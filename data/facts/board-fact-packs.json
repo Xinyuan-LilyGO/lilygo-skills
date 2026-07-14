@@ -12255,6 +12255,750 @@
         }
       ],
       "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-rgb",
+      "mcu_family": "esp32-s3",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "BOARD_TFT_BL=GPIO46",
+          "claim": "pin.display.backlight auto-mapped from BOARD_TFT_BL in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "BOARD_TFT_RST=GPIO6",
+          "claim": "pin.display.reset auto-mapped from BOARD_TFT_RST in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "BOARD_TFT_CS=GPIO3",
+          "claim": "pin.display.cs auto-mapped from BOARD_TFT_CS in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "BOARD_TFT_MOSI=GPIO4",
+          "claim": "pin.display.mosi auto-mapped from BOARD_TFT_MOSI in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "BOARD_TFT_SCLK=GPIO5",
+          "claim": "pin.display.sck auto-mapped from BOARD_TFT_SCLK in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "BOARD_I2C_SDA=GPIO8",
+          "claim": "pin.i2c.sda auto-mapped from BOARD_I2C_SDA in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-rgb",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "BOARD_I2C_SCL=GPIO48",
+          "claim": "pin.i2c.scl auto-mapped from BOARD_I2C_SCL in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+            "line_range": "16-56",
+            "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB/blob/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+          "line_range": "16-56",
+          "hash": "sha256:def76a8c20fa16c0f0381b08b384591d2fe077f90ee53fcd652b0cca001c18fd"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-2can",
+      "mcu_family": "esp32-s3",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-2can",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "SPI_MOSI=GPIO11",
+          "claim": "pin.spi.mosi auto-mapped from SPI_MOSI in official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-2Can/blob/785d55c03942019c6cfd009261d2491bb5df2bd4/libraries/private_library/pin_config.h",
+            "line_range": "18-19",
+            "hash": "sha256:c6587a42bced9ccedb161667e92eb421a299a3f54261fd635e469b5df505a31f"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-2can",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "SPI_MISO=GPIO13",
+          "claim": "pin.spi.miso auto-mapped from SPI_MISO in official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-2Can/blob/785d55c03942019c6cfd009261d2491bb5df2bd4/libraries/private_library/pin_config.h",
+            "line_range": "18-19",
+            "hash": "sha256:c6587a42bced9ccedb161667e92eb421a299a3f54261fd635e469b5df505a31f"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-2Can/blob/785d55c03942019c6cfd009261d2491bb5df2bd4/libraries/private_library/pin_config.h",
+          "line_range": "18-19",
+          "hash": "sha256:c6587a42bced9ccedb161667e92eb421a299a3f54261fd635e469b5df505a31f"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-circle",
+      "mcu_family": "esp32",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "BOARD_I2C_SDA=GPIO5",
+          "claim": "pin.i2c.sda auto-mapped from BOARD_I2C_SDA in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle/blob/e152c0823a0a697570bcb72fcec8f45c0ca6ae93/examples/TFT_eSPI_Simple/utilities.h",
+            "line_range": "16-17",
+            "hash": "sha256:acc2d49e0061790ed2789783e0d741e222e521e1dddfd1126954ae93354a3951"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-circle",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "BOARD_I2C_SCL=GPIO6",
+          "claim": "pin.i2c.scl auto-mapped from BOARD_I2C_SCL in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle/blob/e152c0823a0a697570bcb72fcec8f45c0ca6ae93/examples/TFT_eSPI_Simple/utilities.h",
+            "line_range": "16-17",
+            "hash": "sha256:acc2d49e0061790ed2789783e0d741e222e521e1dddfd1126954ae93354a3951"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Circle/blob/e152c0823a0a697570bcb72fcec8f45c0ca6ae93/examples/TFT_eSPI_Simple/utilities.h",
+          "line_range": "16-17",
+          "hash": "sha256:acc2d49e0061790ed2789783e0d741e222e521e1dddfd1126954ae93354a3951"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-embed-cc1101",
+      "mcu_family": "esp32-s3",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-embed-cc1101",
+          "topic": "pinout",
+          "key": "pin.i2c.sda",
+          "value": "BOARD_I2C_SDA=GPIO8",
+          "claim": "pin.i2c.sda auto-mapped from BOARD_I2C_SDA in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+            "line_range": "48-69",
+            "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-embed-cc1101",
+          "topic": "pinout",
+          "key": "pin.i2c.scl",
+          "value": "BOARD_I2C_SCL=GPIO18",
+          "claim": "pin.i2c.scl auto-mapped from BOARD_I2C_SCL in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+            "line_range": "48-69",
+            "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-embed-cc1101",
+          "topic": "pinout",
+          "key": "pin.spi.sck",
+          "value": "BOARD_SPI_SCK=GPIO11",
+          "claim": "pin.spi.sck auto-mapped from BOARD_SPI_SCK in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+            "line_range": "48-69",
+            "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-embed-cc1101",
+          "topic": "pinout",
+          "key": "pin.spi.mosi",
+          "value": "BOARD_SPI_MOSI=GPIO9",
+          "claim": "pin.spi.mosi auto-mapped from BOARD_SPI_MOSI in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+            "line_range": "48-69",
+            "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-embed-cc1101",
+          "topic": "pinout",
+          "key": "pin.spi.miso",
+          "value": "BOARD_SPI_MISO=GPIO10",
+          "claim": "pin.spi.miso auto-mapped from BOARD_SPI_MISO in official utilities.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+            "line_range": "48-69",
+            "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101/blob/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+          "line_range": "48-69",
+          "hash": "sha256:7d97de3d4ac39d32b4314a650955965ec375cc156ed7683d2aa5907cdd1cbc85"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-lora-dual",
+      "mcu_family": "esp32",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-dual",
+          "topic": "pinout",
+          "key": "pin.lora.miso",
+          "value": "RADIO_MISO=GPIO33",
+          "claim": "pin.lora.miso auto-mapped from RADIO_MISO in official Factory.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Lora-Dual/blob/bd603e651172b7c850f76dedca4cbac8d91e2575/T-Lora-Dual/examples/Factory/Factory.ino",
+            "line_range": "7-8",
+            "hash": "sha256:50c990662d07ec820a1871e509a5a181d88b12b1e3c13f8cb63f2a73379f4790"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-lora-dual",
+          "topic": "pinout",
+          "key": "pin.lora.mosi",
+          "value": "RADIO_MOSI=GPIO32",
+          "claim": "pin.lora.mosi auto-mapped from RADIO_MOSI in official Factory.ino",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Lora-Dual/blob/bd603e651172b7c850f76dedca4cbac8d91e2575/T-Lora-Dual/examples/Factory/Factory.ino",
+            "line_range": "7-8",
+            "hash": "sha256:50c990662d07ec820a1871e509a5a181d88b12b1e3c13f8cb63f2a73379f4790"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Lora-Dual/blob/bd603e651172b7c850f76dedca4cbac8d91e2575/T-Lora-Dual/examples/Factory/Factory.ino",
+          "line_range": "7-8",
+          "hash": "sha256:50c990662d07ec820a1871e509a5a181d88b12b1e3c13f8cb63f2a73379f4790"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-nixietube",
+      "mcu_family": "esp32",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "TFT_MOSI=GPIO23",
+          "claim": "pin.display.mosi auto-mapped from TFT_MOSI in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "TFT_SCLK=GPIO18",
+          "claim": "pin.display.sck auto-mapped from TFT_SCLK in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "TFT_CS=GPIO5",
+          "claim": "pin.display.cs auto-mapped from TFT_CS in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "TFT_DC=GPIO19",
+          "claim": "pin.display.dc auto-mapped from TFT_DC in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "TFT_RST=GPIO4",
+          "claim": "pin.display.reset auto-mapped from TFT_RST in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-nixietube",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "TFT_BL=GPIO33",
+          "claim": "pin.display.backlight auto-mapped from TFT_BL in official Setup137_LilyGo_T-NixieTube.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+            "line_range": "12-17",
+            "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube/blob/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+          "line_range": "12-17",
+          "hash": "sha256:c0d94c788a48a3ec786d490b3cbf3441fa73c37770ff45d55ffa522be47497c5"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-touchbar-amoled",
+      "mcu_family": "esp32-s3",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-touchbar-amoled",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "TFT_DC=GPIO16",
+          "claim": "pin.display.dc auto-mapped from TFT_DC in official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Touchbar-AMOLED/blob/355803a6893f2ae7c57389dcda7f088880080293/examples/lifting_dedsk/pin_config.h",
+            "line_range": "24-28",
+            "hash": "sha256:e47f0db7f4b3e7640fecf0c758ddfcdc1969f7fd0d6f76c33664f3845deb8bf9"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-touchbar-amoled",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "TFT_MOSI=GPIO18",
+          "claim": "pin.display.mosi auto-mapped from TFT_MOSI in official pin_config.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Touchbar-AMOLED/blob/355803a6893f2ae7c57389dcda7f088880080293/examples/lifting_dedsk/pin_config.h",
+            "line_range": "24-28",
+            "hash": "sha256:e47f0db7f4b3e7640fecf0c758ddfcdc1969f7fd0d6f76c33664f3845deb8bf9"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Touchbar-AMOLED/blob/355803a6893f2ae7c57389dcda7f088880080293/examples/lifting_dedsk/pin_config.h",
+          "line_range": "24-28",
+          "hash": "sha256:e47f0db7f4b3e7640fecf0c758ddfcdc1969f7fd0d6f76c33664f3845deb8bf9"
+        }
+      ],
+      "conflicts": []
+    },
+    {
+      "schema_version": 1,
+      "board_id": "board-t-wristband",
+      "mcu_family": "esp32",
+      "supported": true,
+      "pin_matrix": [
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.reset",
+          "value": "TFT_RST=GPIO26",
+          "claim": "pin.display.reset auto-mapped from TFT_RST in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.mosi",
+          "value": "TFT_MOSI=GPIO19",
+          "claim": "pin.display.mosi auto-mapped from TFT_MOSI in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.sck",
+          "value": "TFT_SCLK=GPIO18",
+          "claim": "pin.display.sck auto-mapped from TFT_SCLK in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.cs",
+          "value": "TFT_CS=GPIO5",
+          "claim": "pin.display.cs auto-mapped from TFT_CS in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.dc",
+          "value": "TFT_DC=GPIO23",
+          "claim": "pin.display.dc auto-mapped from TFT_DC in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        },
+        {
+          "schema_version": 1,
+          "board_id": "board-t-wristband",
+          "topic": "pinout",
+          "key": "pin.display.backlight",
+          "value": "TFT_BL=GPIO27",
+          "claim": "pin.display.backlight auto-mapped from TFT_BL in official Setup26_TTGO_T_Wristband.h",
+          "source": {
+            "kind": "arduino-pins",
+            "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+            "line_range": "7-13",
+            "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+          },
+          "authority_rank": 95,
+          "evidence_level": "V3-source-reference",
+          "stale": false,
+          "confidence": "exact"
+        }
+      ],
+      "bus_matrix": [],
+      "expander_matrix": [],
+      "connector_matrix": [],
+      "peripheral_table": [],
+      "source_refs": [
+        {
+          "kind": "arduino-pins",
+          "path_or_url": "https://github.com/Xinyuan-LilyGO/T-Wristband/blob/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+          "line_range": "7-13",
+          "hash": "sha256:670b6b38d535d37a0389ad37561a0163c0c269184c712365d597ddf965ea3dc3"
+        }
+      ],
+      "conflicts": []
     }
   ]
 }

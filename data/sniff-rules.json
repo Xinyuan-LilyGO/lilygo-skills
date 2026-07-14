@@ -181,6 +181,68 @@
         "esp32s3series",
         "seriesesp32s3"
       ]
+    },
+    {
+      "board_id": "board-t-rgb",
+      "aliases": [
+        "boardtrgb",
+        "lilygotrgb"
+      ]
+    },
+    {
+      "board_id": "board-t-2can",
+      "aliases": [
+        "boardt2can",
+        "t2can",
+        "t2can"
+      ]
+    },
+    {
+      "board_id": "board-t-circle",
+      "aliases": [
+        "boardtcircle",
+        "tcircle",
+        "tcircle"
+      ]
+    },
+    {
+      "board_id": "board-t-embed-cc1101",
+      "aliases": [
+        "boardtembedcc1101",
+        "tembedcc1101",
+        "tembedcc1101",
+        "tembedcc1101"
+      ]
+    },
+    {
+      "board_id": "board-t-lora-dual",
+      "aliases": [
+        "boardtloradual",
+        "tloradual",
+        "tloradual",
+        "tloradual"
+      ]
+    },
+    {
+      "board_id": "board-t-nixietube",
+      "aliases": [
+        "boardtnixietube",
+        "tnixietube"
+      ]
+    },
+    {
+      "board_id": "board-t-touchbar-amoled",
+      "aliases": [
+        "boardttouchbaramoled",
+        "ttouchbaramoled"
+      ]
+    },
+    {
+      "board_id": "board-t-wristband",
+      "aliases": [
+        "boardtwristband",
+        "twristband"
+      ]
     }
   ]
 }

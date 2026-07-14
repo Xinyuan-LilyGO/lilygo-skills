@@ -15,5 +15,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["bin/**/*.mjs", "eval/official-*.mjs", "eval/m38-*.mjs", "types.d.ts"]
+  "include": [
+    "bin/**/*.mjs",
+    "eval/official-*.mjs",
+    "eval/m38-*.mjs",
+    "pipeline/export-on-demand-cache.mjs",
+    "types.d.ts"
+  ]
 }

@@ -55,7 +55,7 @@ test("known AUTO board ingests on demand and serves only fully provenanced pins"
   });
   let crawls = 0;
   try {
-    const report = await sourceQueryWithOnDemand("board-t-nixietube", "pinout", {
+    const report = await sourceQueryWithOnDemand("T-NixieTube", "pinout", {
       cacheDir,
       registry,
       repositoryFetcher: async () => { crawls++; return fixture("m38-ingest-happy.json"); },
