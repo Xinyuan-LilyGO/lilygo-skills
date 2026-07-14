@@ -359,18 +359,19 @@ function planHost(host, home) {
     host,
     home,
     runtime_root: root,
-    // The Node dispatcher (bin/**) plus the data model (data/**) are copied as a
-    // self-contained unit; board/peripheral context is built from data/** at
-    // query time, not materialized as per-skill files.
+    // The Node dispatcher (bin/**), its official MCP transport, and the data
+    // model (data/**) are copied as a self-contained unit; board/peripheral
+    // context is built from data/** at query time.
     materialize_plan: {
-      copies: ["bin/**", "data/**", "skills/lilygo-router/SKILL.md"],
-      source: "bin/** dispatcher + data/** source model",
+      copies: ["bin/**", "eval/official-mcp.mjs", "data/**", "skills/lilygo-router/SKILL.md"],
+      source: "bin/** dispatcher + official MCP transport + data/** source model",
     },
     planned_writes: [
       path.join(root, "bin", shimName()),
       pathShimPath(home),
       dispatcherPath(root),
       path.join(root, "bin", "hook.mjs"),
+      path.join(root, "eval", "official-mcp.mjs"),
       path.join(root, "data", "boards.json"),
       path.join(root, "data", "facts", "board-fact-packs.json"),
       path.join(root, "data", "references", "source-intake", "manifest.md"),
@@ -442,6 +443,11 @@ function installDispatcher(plan, repoRoot) {
   // bin/** (dispatcher + hook + data-reading modules) and data/** move together
   // as one unit; mirroring guarantees no stale file survives a re-install.
   copyDir(path.join(repoRoot, "bin"), path.join(root, "bin"), { mirror: true });
+  fs.mkdirSync(path.join(root, "eval"), { recursive: true });
+  fs.copyFileSync(
+    path.join(repoRoot, "eval", "official-mcp.mjs"),
+    path.join(root, "eval", "official-mcp.mjs")
+  );
   copyDir(path.join(repoRoot, "data"), path.join(root, "data"), { mirror: true });
   const shimPath = path.join(root, "bin", shimName());
   fs.writeFileSync(shimPath, shimContents(root));
