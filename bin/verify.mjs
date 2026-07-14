@@ -54,11 +54,11 @@ function sliceRange(text, range) {
 
 /**
  * Fetch raw text with a timeout, optional GITHUB_TOKEN, and backoff retries on
- * transient failures. Returns the body or throws the final error.
+ * transient failures. Returns the body plus its HTTP ETag when present.
  * @param {string} url
- * @returns {Promise<string>}
+ * @returns {Promise<{ text: string; etag: string | null }>}
  */
-async function fetchText(url) {
+export async function fetchSource(url) {
   /** @type {Record<string, string>} */
   const headers = {};
   const token = process.env["GITHUB_TOKEN"];
@@ -67,7 +67,9 @@ async function fetchText(url) {
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
     try {
       const response = await fetch(url, { headers, signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-      if (response.ok) return await response.text();
+      if (response.ok) {
+        return { text: await response.text(), etag: response.headers.get("etag") };
+      }
       // Rate-limit / server errors are retryable; hard 4xx are not.
       if (response.status === 429 || response.status >= 500) {
         lastError = new Error(`http ${response.status}`);
@@ -80,6 +82,11 @@ async function fetchText(url) {
     if (attempt < MAX_ATTEMPTS) await sleep(400 * attempt);
   }
   throw lastError;
+}
+
+/** @param {string} url @returns {Promise<string>} */
+async function fetchText(url) {
+  return (await fetchSource(url)).text;
 }
 
 /**

@@ -7,7 +7,9 @@ import {
   getPack, getBoard, factsForTopic, normalizeTopic, unknownTopicFact,
   isReadinessTopic, promptKeywords, topicFields, MAX_DISCOVERY_HINTS_INLINE, isMain,
 } from "./lib.mjs";
-import { ensureOnDemandPinout } from "./on-demand-ingest.mjs";
+import { ensureOnDemandPinout, readIngestVerdict } from "./on-demand-ingest.mjs";
+import { m38CacheRoot } from "./board-registry.mjs";
+import { readFreshnessState, runDailyFreshness } from "./freshness.mjs";
 
 /**
  * @param {string} boardId
@@ -31,8 +33,39 @@ export function sourceQuery(boardId, rawTopic) {
  */
 export async function sourceQueryWithOnDemand(boardId, rawTopic, options = {}) {
   const topic = normalizeTopic(rawTopic);
+  const cacheDir = options.cacheDir ?? m38CacheRoot();
+  const freshness = await readFreshnessState(cacheDir);
+  const blocked = freshness?.blocked_boards[boardId];
+  if (blocked) {
+    return honestDegradeReport(boardId, topic, {
+      schema_version: 1,
+      status: "degraded",
+      board_id: boardId,
+      requested_board: boardId,
+      product_name: boardId,
+      repo_url: blocked.repo_url,
+      reason: `freshness-${blocked.reason}`,
+      message: `board found at ${blocked.repo_url}, but no verifiable pinout could be obtained`,
+      ingested_at: blocked.last_checked,
+      last_checked: blocked.last_checked,
+      candidate_paths: [],
+      cache_status: "cache",
+    });
+  }
   const localPack = getPack(boardId);
-  if (localPack) return sourceQueryFromPack(boardId, topic, localPack, getBoard(boardId));
+  if (localPack) {
+    const override = freshness?.overrides[boardId];
+    if (override) {
+      const verdict = await readIngestVerdict(cacheDir, override.cache_board_id);
+      if (verdict?.status === "verified") {
+        return sourceQueryFromPack(boardId, topic, mergeOverridePack(localPack, verdict.fact_pack, verdict.repo_url), getBoard(boardId));
+      }
+    }
+    return sourceQueryFromPack(boardId, topic, localPack, getBoard(boardId));
+  }
+  if (!options.registry && !options.repositoryFetcher && options.enabled !== false) {
+    await runDailyFreshness({ cacheDir });
+  }
   const verdict = await ensureOnDemandPinout(boardId, options);
   if (verdict.status === "verified") {
     const report = sourceQueryFromPack(verdict.board_id, topic, verdict.fact_pack, undefined);
@@ -45,6 +78,29 @@ export async function sourceQueryWithOnDemand(boardId, rawTopic, options = {}) {
     return report;
   }
   return honestDegradeReport(boardId, topic, verdict);
+}
+
+/** @param {FactPack} committed @param {FactPack} override @param {string} repoUrl @returns {FactPack} */
+function mergeOverridePack(committed, override, repoUrl) {
+  /** @param {Fact} fact @returns {boolean} */
+  const keepOutsideRepo = (fact) => !fact.source.path_or_url.startsWith(`${repoUrl}/`);
+  /** @param {Fact[]} base @param {Fact[]} replacement @returns {Fact[]} */
+  const mergeByKey = (base, replacement) => {
+    const rows = base.filter(keepOutsideRepo);
+    const byKey = new Map(rows.map((fact) => [fact.key, fact]));
+    for (const fact of replacement) byKey.set(fact.key, fact);
+    return [...byKey.values()];
+  };
+  return {
+    ...committed,
+    pin_matrix: mergeByKey(committed.pin_matrix, override.pin_matrix),
+    bus_matrix: mergeByKey(committed.bus_matrix, override.bus_matrix),
+    source_refs: [
+      ...committed.source_refs.filter((source) => !source.path_or_url.startsWith(`${repoUrl}/`)),
+      ...override.source_refs,
+    ],
+    conflicts: [],
+  };
 }
 
 /**

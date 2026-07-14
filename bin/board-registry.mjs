@@ -55,6 +55,7 @@ const MAX_GH_OUTPUT_BYTES = 16 * 1024 * 1024;
  * @property {string} source_of_listing
  * @property {string[]} aliases
  * @property {string[]} repo_candidates
+ * @property {{ url: string; name: string; default_branch: string; archived: boolean; pushed_at: string }[]=} repo_metadata
  */
 /**
  * @typedef {object} BoardRegistry
@@ -262,6 +263,13 @@ export function mergeBoardListings(githubRepos, products, localBoards = []) {
       source_of_listing: listingSources.join("+"),
       aliases,
       repo_candidates: repos.map((repo) => repo.html_url).sort(),
+      repo_metadata: repos.map((repo) => ({
+        url: repo.html_url,
+        name: repo.name,
+        default_branch: repo.default_branch,
+        archived: repo.archived,
+        pushed_at: repo.pushed_at,
+      })).sort((a, b) => a.url.localeCompare(b.url)),
     };
   }).sort((a, b) => a.id.localeCompare(b.id) || a.product_name.localeCompare(b.product_name));
 }
