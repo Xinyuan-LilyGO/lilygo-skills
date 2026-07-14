@@ -78,7 +78,16 @@ if (cli === "js" && arm === "bare") {
   console.error("--cli js is only meaningful with --arm with_skill (bare = no injection)");
   process.exit(2);
 }
-const JS_BIN = path.join(ROOT, "bin/lilygo-skills.mjs");
+// JS_BIN routes BOTH the thick-capsule injection (`hook claude`) and the
+// model's `source query` pull. It defaults to the repo dispatcher, but
+// LILYGO_JS_BIN lets a caller point the arm at an *installed* dispatcher
+// (~/.claude/lilygo-skills/bin/lilygo-skills.mjs) so the effect run exercises
+// the real install surface, not the working tree. Plumbing only — grading,
+// tasks, and expected values are untouched; installed vs repo bytes are proven
+// identical by the M35 P3b byte-parity check before this is used.
+const JS_BIN = process.env.LILYGO_JS_BIN
+  ? path.resolve(process.env.LILYGO_JS_BIN)
+  : path.join(ROOT, "bin/lilygo-skills.mjs");
 
 // Fixed at runtime — a live run should stamp real wall-clock; --dry keeps it
 // deterministic for structural self-test.
