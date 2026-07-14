@@ -363,8 +363,16 @@ function planHost(host, home) {
     // model (data/**) are copied as a self-contained unit; board/peripheral
     // context is built from data/** at query time.
     materialize_plan: {
-      copies: ["bin/**", "eval/official-mcp.mjs", "data/**", "skills/lilygo-router/SKILL.md"],
-      source: "bin/** dispatcher + official MCP transport + data/** source model",
+      copies: [
+        "bin/**",
+        "eval/official-mcp.mjs",
+        "pipeline/auto-map-pins.js",
+        "pipeline/extract-defines.js",
+        "pipeline/pin-naming-conventions.json",
+        "data/**",
+        "skills/lilygo-router/SKILL.md",
+      ],
+      source: "bin/** dispatcher + official MCP transport + pin extractor + data/** source model",
     },
     planned_writes: [
       path.join(root, "bin", shimName()),
@@ -372,6 +380,9 @@ function planHost(host, home) {
       dispatcherPath(root),
       path.join(root, "bin", "hook.mjs"),
       path.join(root, "eval", "official-mcp.mjs"),
+      path.join(root, "pipeline", "auto-map-pins.js"),
+      path.join(root, "pipeline", "extract-defines.js"),
+      path.join(root, "pipeline", "pin-naming-conventions.json"),
       path.join(root, "data", "boards.json"),
       path.join(root, "data", "facts", "board-fact-packs.json"),
       path.join(root, "data", "references", "source-intake", "manifest.md"),
@@ -448,6 +459,11 @@ function installDispatcher(plan, repoRoot) {
     path.join(repoRoot, "eval", "official-mcp.mjs"),
     path.join(root, "eval", "official-mcp.mjs")
   );
+  fs.rmSync(path.join(root, "pipeline"), { recursive: true, force: true });
+  fs.mkdirSync(path.join(root, "pipeline"), { recursive: true });
+  for (const name of ["auto-map-pins.js", "extract-defines.js", "pin-naming-conventions.json"]) {
+    fs.copyFileSync(path.join(repoRoot, "pipeline", name), path.join(root, "pipeline", name));
+  }
   copyDir(path.join(repoRoot, "data"), path.join(root, "data"), { mirror: true });
   const shimPath = path.join(root, "bin", shimName());
   fs.writeFileSync(shimPath, shimContents(root));

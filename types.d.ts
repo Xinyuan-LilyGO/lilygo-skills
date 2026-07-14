@@ -144,6 +144,29 @@ interface FactQueryReport {
   completeness?: CompletenessSignal;
   discovery_hints: DiscoveryHint[];
   warnings: string[];
+  on_demand?: {
+    cache_status: string;
+    repo_url: string;
+    source_path: string;
+    gates: Record<string, string | number>;
+  };
+}
+
+/** Pinless response returned when dynamic verification cannot prove a source. */
+interface HonestDegradeReport {
+  status: "NO_VERIFIABLE_PINOUT";
+  board_id: string;
+  resolved_board_id: string;
+  topic: string;
+  supported: false;
+  repo_url: string | null;
+  reason: string;
+  message: string;
+  facts: Fact[];
+  pin_matrix: Fact[];
+  source_refs: SourceRef[];
+  conflicts: Fact[];
+  warnings: string[];
 }
 
 /** One re-fetch verdict row (Rust `SourceVerifyFact`). */

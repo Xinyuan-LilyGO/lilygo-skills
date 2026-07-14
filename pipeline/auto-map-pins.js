@@ -9,10 +9,15 @@ const path = require("path");
 
 const CONVENTIONS = path.join(__dirname, "pin-naming-conventions.json");
 
+/** @typedef {{ strip_prefixes?: string[]; strip_suffixes?: string[]; macro_to_key?: Record<string, string> }} PinConventions */
+/** @typedef {{ key: string; macro: string; value_num: string }} MappedPin */
+
+/** @returns {PinConventions} */
 function loadConventions() {
   return JSON.parse(fs.readFileSync(CONVENTIONS, "utf8"));
 }
 
+/** @param {string} macro @param {PinConventions} conv @returns {string} */
 function normalizeMacro(macro, conv) {
   let name = macro;
   for (const prefix of conv.strip_prefixes || []) {
@@ -27,6 +32,7 @@ function normalizeMacro(macro, conv) {
 // macros: { MACRO_NAME: "18", ... } as extracted from a source block.
 // Returns [{ key, macro, value_num }] for macros the convention recognizes,
 // in the source's macro order.
+/** @param {Record<string, string>} macros @returns {MappedPin[]} */
 function autoMapPins(macros) {
   const conv = loadConventions();
   const table = conv.macro_to_key || {};

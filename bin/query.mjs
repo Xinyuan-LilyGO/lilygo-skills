@@ -7,6 +7,7 @@ import {
   getPack, getBoard, factsForTopic, normalizeTopic, unknownTopicFact,
   isReadinessTopic, promptKeywords, topicFields, MAX_DISCOVERY_HINTS_INLINE, isMain,
 } from "./lib.mjs";
+import { ensureOnDemandPinout } from "./on-demand-ingest.mjs";
 
 /**
  * @param {string} boardId
@@ -17,6 +18,43 @@ export function sourceQuery(boardId, rawTopic) {
   const topic = normalizeTopic(rawTopic);
   const pack = getPack(boardId);
   if (!pack) throw new Error(`unknown board fact pack: ${boardId}`);
+  return sourceQueryFromPack(boardId, topic, pack, getBoard(boardId));
+}
+
+/**
+ * Query committed data first, then run the guarded dynamic path only on a
+ * local cache miss.
+ * @param {string} boardId
+ * @param {string} rawTopic
+ * @param {import("./on-demand-ingest.mjs").OnDemandOptions} [options]
+ * @returns {Promise<FactQueryReport | HonestDegradeReport>}
+ */
+export async function sourceQueryWithOnDemand(boardId, rawTopic, options = {}) {
+  const topic = normalizeTopic(rawTopic);
+  const localPack = getPack(boardId);
+  if (localPack) return sourceQueryFromPack(boardId, topic, localPack, getBoard(boardId));
+  const verdict = await ensureOnDemandPinout(boardId, options);
+  if (verdict.status === "verified") {
+    const report = sourceQueryFromPack(verdict.board_id, topic, verdict.fact_pack, undefined);
+    report.on_demand = {
+      cache_status: verdict.cache_status,
+      repo_url: verdict.repo_url,
+      source_path: verdict.source.path,
+      gates: verdict.gates,
+    };
+    return report;
+  }
+  return honestDegradeReport(boardId, topic, verdict);
+}
+
+/**
+ * @param {string} boardId
+ * @param {string} topic
+ * @param {FactPack} pack
+ * @param {BoardRecord | undefined} board
+ * @returns {FactQueryReport}
+ */
+function sourceQueryFromPack(boardId, topic, pack, board) {
   let facts = factsForTopic(pack, topic);
   if (facts.length === 0) facts = [unknownTopicFact(pack, topic)];
   const unknowns = facts.filter((fact) => fact.confidence === "unknown_with_sources");
@@ -31,11 +69,35 @@ export function sourceQuery(boardId, rawTopic) {
     unknowns,
     conflicts: pack.conflicts,
     source_refs: pack.source_refs,
-    ...(isReadinessTopic(topic) ? { completeness: completenessSignal(boardId, topic) } : {}),
+    ...(board && isReadinessTopic(topic) ? { completeness: completenessSignal(boardId, topic) } : {}),
     discovery_hints: discoveryHints(boardId, topic, true),
     warnings: queryWarnings(pack),
   };
   return report;
+}
+
+/**
+ * @param {string} requestedBoard
+ * @param {string} topic
+ * @param {import("./on-demand-ingest.mjs").DegradedIngestVerdict} verdict
+ * @returns {HonestDegradeReport}
+ */
+function honestDegradeReport(requestedBoard, topic, verdict) {
+  return {
+    status: "NO_VERIFIABLE_PINOUT",
+    board_id: requestedBoard,
+    resolved_board_id: verdict.board_id,
+    topic,
+    supported: false,
+    repo_url: verdict.repo_url,
+    reason: verdict.reason,
+    message: verdict.message,
+    facts: [],
+    pin_matrix: [],
+    source_refs: [],
+    conflicts: [],
+    warnings: ["No pin value is served unless every dynamic-ingest gate passes."],
+  };
 }
 
 /**
@@ -295,9 +357,9 @@ export function parseQueryArgs(argv) {
 
 /**
  * @param {string[]} argv
- * @returns {number} exit code
+ * @returns {Promise<number>} exit code
  */
-export function runSourceQuery(argv) {
+export async function runSourceQuery(argv) {
   const { board, topic, json } = parseQueryArgs(argv);
   if (!board || !topic) {
     process.stderr.write("usage: source query --board <id> --topic <topic> --json\n");
@@ -305,7 +367,7 @@ export function runSourceQuery(argv) {
   }
   let report;
   try {
-    report = sourceQuery(board, topic);
+    report = await sourceQueryWithOnDemand(board, topic);
   } catch (error) {
     process.stderr.write(`${error instanceof Error ? error.message : String(error)}\n`);
     return 1;
@@ -316,5 +378,5 @@ export function runSourceQuery(argv) {
 }
 
 if (isMain(import.meta.url)) {
-  process.exit(runSourceQuery(process.argv.slice(2)));
+  runSourceQuery(process.argv.slice(2)).then((code) => { process.exitCode = code; });
 }

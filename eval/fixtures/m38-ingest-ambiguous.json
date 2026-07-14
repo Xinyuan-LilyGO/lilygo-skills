@@ -1,0 +1,15 @@
+{
+  "commit": "3333333333333333333333333333333333333333",
+  "files": [
+    {
+      "path": "examples/Factory/utilities.h",
+      "blob_sha": "4444444444444444444444444444444444444444",
+      "text": "#define I2C_SDA 21\n#define I2C_SCL 22\n"
+    },
+    {
+      "path": "examples/Alternate/pin_config.h",
+      "blob_sha": "5555555555555555555555555555555555555555",
+      "text": "#define I2C_SDA 8\n#define I2C_SCL 9\n"
+    }
+  ]
+}
