@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "arm": "with_skill",
+  "cli": "rust",
+  "model": "haiku",
+  "date": "2026-07-13",
+  "runner": "claude -p",
+  "runner_ok": true,
+  "runner_error": null,
+  "contaminated": null,
+  "tasks_file": "eval/fixtures/effect-tasks.json",
+  "per_task": [
+    {
+      "id": "old-tdisplay-s3-i2c-pins",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the LilyGO T-Display-S3 hardware configuration:\n\n- **I2C SDA**: GPIO18 (PIN_IIC_SDA)\n- **I2C SCL**: GPIO17 (PIN_IIC_SCL)\n\nThese are the standard I2C pins for this board."
+    },
+    {
+      "id": "old-tdisplay-s3-display-databus",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the LilyGO board information for the T-Display-S3, the ST7789 LCD data lines are mapped to the following GPIOs:\n\n| Data Line | GPIO |\n|-----------|------|\n| D0        | GPIO39 |\n| D1        | GPIO40 |\n| D2        | GPIO41 |\n| D3        | GPIO42 |\n| D4        | GPIO45 |\n| D5        | GPIO46 |\n| D6        | GPIO47 |\n| D7        | GPIO48 |\n\nAdditionally, the parallel bus control lines are:\n- **CS** (Chip Select): GPIO6\n- **DC** (Data/Command): GPIO7\n- **RST** (Reset): GPIO5\n- **WR** (Write"
+    },
+    {
+      "id": "old-tdisplay-s3-display-control",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the T-Display-S3 pin configuration:\n\n| Control Line | GPIO |\n|---|---|\n| **CS** (Chip Select) | GPIO6 |\n| **DC** (Data/Command) | GPIO7 |\n| **RST** (Reset) | GPIO5 |\n| **WR** (Write) | GPIO8 |\n| **RD** (Read) | GPIO9 |\n\nThese are the ST7789 control pins for the 8-bit parallel display bus. The data lines (D0–D7) use GPIO39–GPIO48."
+    },
+    {
+      "id": "old-tdisplay-s3-backlight-power",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the LilyGO context already injected for your board:\n\n**LCD Backlight Control:** GPIO38 (PIN_LCD_BL)  \n**Power Enable:** GPIO15 (PIN_POWER_ON)\n\nIf your screen is dark, ensure:\n1. **GPIO15 is held HIGH** — this enables board power. Without this, the display stays off.\n2. **GPIO38 is set HIGH** — this turns on the LCD backlight. If GPIO15 is on but the screen is dark, GPIO38 may not be initialized or driven high.\n\nQuick checks:\n- Verify GPIO38 is configured as output and set `digitalWrite("
+    },
+    {
+      "id": "old-tdisplay-s3-buttons",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the official T-Display-S3 factory pin configuration, the two user buttons are on:\n\n- **Button 1 (BOOT/BUTTON1)**: GPIO0\n- **Button 2 (BUTTON2)**: GPIO14\n\nThese are confirmed from the official factory `pin_config.h` file in the T-Display-S3 GitHub repository."
+    },
+    {
+      "id": "old-tdisplay-s3-battery-adc",
+      "cohort": "old",
+      "pass": true,
+      "hallucination": false,
+      "cited": true,
+      "missing": [],
+      "raw_excerpt": "**GPIO4** reads the battery voltage divider on the T-Display-S3. \n\nThe pin is defined as `PIN_BAT_VOLT=GPIO4` and is documented in the official factory `pins_config.h` from the [T-Display-S3 repository](https://github.com/Xinyuan-LilyGO/T-Display-S3)."
+    },
+    {
+      "id": "new-tbeam-lora-spi",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the authoritative LilyGO source data in this repository:\n\n- **SPI SCLK**: **GPIO5** (RADIO_SCLK_PIN)\n- **LoRa Radio Chip-Select (CS/NSS)**: **GPIO18** (RADIO_CS_PIN)\n\nThese pin assignments are sourced from the official LilyGO utilities.h file (V3-source-reference evidence level, authority rank 90) from the LilyGo-LoRa-Series repository."
+    },
+    {
+      "id": "new-tbeam-gnss-uart",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the official LilyGO pin definitions in their utilities.h file:\n\n- **GPS UART RX** (into ESP32): **GPIO34** (GPS_RX_PIN)\n- **GPS UART TX** (from ESP32): **GPIO12** (GPS_TX_PIN)\n\nThese pins are mapped directly from the official LilyGO LilyGo-LoRa-Series repository (utilities.h, lines 89-141) with high confidence (authority rank 90)."
+    },
+    {
+      "id": "new-tconnect-pro-i2c",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the source data for the **LilyGO T-Connect-Pro**, the I2C pins are:\n\n- **SDA (Serial Data)**: **GPIO39** (labeled as IIC_SDA)\n- **SCL (Serial Clock)**: **GPIO40** (labeled as IIC_SCL)\n\nThese are used for the primary I2C bus, which controls the CST226SE capacitive touch controller on this board."
+    },
+    {
+      "id": "new-twatch-ultra-display-qspi",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "For the T-Watch Ultra (CO5300 AMOLED on QSPI), based on official source data:\n\n- **Display CS (Chip Select)**: **GPIO41** (`DISP_CS`)\n- **Display SCK (Serial Clock)**: **GPIO40** (`DISP_SCK`)\n\nThese are sourced from the official LilyGo `pins_arduino.h` file for the T-Watch Ultra variant and verified at V3 reference authority level.\n\nFor completeness, the full CO5300 QSPI pinout is:\n- D0: GPIO38\n- D1: GPIO39\n- D2: GPIO42\n- D3: GPIO45\n- SCK: GPIO40\n- CS: GPIO41\n- RST: GPIO37\n- TE (tearing effect):"
+    },
+    {
+      "id": "new-tdeck-keyboard-int",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the LilyGO T-Deck hardware facts, **GPIO46** is the keyboard interrupt line (`BOARD_KEYBOARD_INT`).\n\nThis is the interrupt pin for the on-board I2C keyboard controller on the I2C bus (SDA=GPIO18, SCL=GPIO8, INT=GPIO46)."
+    },
+    {
+      "id": "new-tdeck-power-on",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "**GPIO10** must be driven high to power on the T-Deck board peripherals (BOARD_POWERON).\n\nThis is defined as `BOARD_POWERON=GPIO10` in the official T-Deck utilities.h header, stored as a V3 verified source reference in the LilyGO fact system."
+    }
+  ],
+  "summary": {
+    "pass_n": 1,
+    "total": 12,
+    "graded": 12,
+    "hallucination_n": 0
+  },
+  "run_quality": "clean",
+  "run_note": "Clean same-session live run (2026-07-13, post-21:00 quota reset). No session-limit / empty-response contamination signals observed."
+}

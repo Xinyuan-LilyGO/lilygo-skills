@@ -1,6 +1,0 @@
-{
-  "hookSpecificOutput": {
-    "additionalContext": "LilyGO context injection: skills=[lilygo-router,board-t-display-s3,series-esp32-s3,periph-display]; verification_level=context-injection; hardware_verified=false; readiness=[display=complete]; expand=[lilygo-skills source query --board board-t-display-s3 --topic display --json] LilyGO goal capsule: goal_id=goal-9b65e288f8b7; recipes=[]; playbooks=[]; next=[source-query-io:none,source-query-i2c:none,source-query-gpio:none,source-query-display:none]; facts=[chip=ST7789 170x320 TFT,bus=8-bit parallel display bus,driver=TFT_eSPI Setup206; ESP-IDF i80-style panel init,chip=GPIO-controlled backlight and screen power,bus=GPIO38 backlight; GPIO15 screen power,driver=PIN_LCD_BL=GPIO38; PIN_POWER_ON=GPIO15]; completeness=[display=complete]; fact_tables=3; discovery_hints=2; evidence_boundary=V3/hardware_verified=false",
-    "hookEventName": "UserPromptSubmit"
-  }
-}

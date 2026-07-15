@@ -1,0 +1,151 @@
+{
+  "schema_version": 1,
+  "arm": "with_skill",
+  "cli": "rust",
+  "model": "haiku",
+  "date": "2026-07-13",
+  "runner": "claude -p",
+  "runner_ok": true,
+  "runner_error": null,
+  "contaminated": null,
+  "tasks_file": "eval/fixtures/effect-tasks.json",
+  "per_task": [
+    {
+      "id": "old-tdisplay-s3-i2c-pins",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the LilyGO context data:\n\n- **I2C SDA**: GPIO18\n- **I2C SCL**: GPIO17\n\nThese are defined as `PIN_IIC_SDA=GPIO18` and `PIN_IIC_SCL=GPIO17` in the board configuration."
+    },
+    {
+      "id": "old-tdisplay-s3-display-databus",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the T-Display-S3 board specifications, the ST7789 LCD data lines D0–D7 use the following GPIOs:\n\n| Data Line | GPIO |\n|-----------|------|\n| D0        | GPIO39 |\n| D1        | GPIO40 |\n| D2        | GPIO41 |\n| D3        | GPIO42 |\n| D4        | GPIO45 |\n| D5        | GPIO46 |\n| D6        | GPIO47 |\n| D7        | GPIO48 |\n\nThese pins form the 8-bit parallel display bus, alongside the control signals: CS=GPIO6, DC=GPIO7, RST=GPIO5, WR=GPIO8, RD=GPIO9."
+    },
+    {
+      "id": "old-tdisplay-s3-display-control",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the T-Display-S3 pinout in the system context:\n\n| Control Line | GPIO |\n|---|---|\n| CS | GPIO6 |\n| DC | GPIO7 |\n| RST | GPIO5 |\n| WR | GPIO8 |\n| RD | GPIO9 |\n\nThese are the 8-bit parallel bus control lines for the ST7789 display. The data lines (D0–D7) use GPIO39–48."
+    },
+    {
+      "id": "old-tdisplay-s3-backlight-power",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [],
+      "raw_excerpt": "Based on the T-Display-S3 pin configuration:\n\n- **GPIO38** — LCD backlight control (`PIN_LCD_BL`)\n- **GPIO15** — Board power control (`PIN_POWER_ON`)\n\nIf your screen stays dark, verify both are set high:\n1. **GPIO38 must be HIGH** to enable the backlight\n2. **GPIO15 must be held HIGH** to keep the board powered (if it drops, the entire board powers down)\n\nA dark screen typically means either the backlight GPIO isn't driven high, or the power GPIO isn't being held. Check that your initialization "
+    },
+    {
+      "id": "old-tdisplay-s3-buttons",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": true,
+      "missing": [
+        "GPIO0",
+        "GPIO14"
+      ],
+      "raw_excerpt": "I need to verify the exact GPIO pins for the T-Display-S3 buttons via the official source. The source manifest shows that the T-Display-S3 button pins are auto-extracted from the official LilyGO factory code at:\n\n```\nhttps://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3/master/examples/factory/pin_config.h (lines 31-48)\n```\n\nFollowing the project guidance (\"do not invent pin numbers; verify exact pins via source query\"), I should use `lilygo-skills source query --board board-t-display-s3"
+    },
+    {
+      "id": "old-tdisplay-s3-battery-adc",
+      "cohort": "old",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO4"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-tbeam-lora-spi",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO5",
+        "GPIO18"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-tbeam-gnss-uart",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO34",
+        "GPIO12"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-tconnect-pro-i2c",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO39",
+        "GPIO40"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-twatch-ultra-display-qspi",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO41",
+        "GPIO40"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-tdeck-keyboard-int",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO46"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    },
+    {
+      "id": "new-tdeck-power-on",
+      "cohort": "new",
+      "pass": false,
+      "hallucination": false,
+      "cited": false,
+      "missing": [
+        "GPIO10"
+      ],
+      "raw_excerpt": "You've hit your session limit · resets 9pm (Asia/Shanghai)"
+    }
+  ],
+  "summary": {
+    "pass_n": 0,
+    "total": 12,
+    "graded": 12,
+    "hallucination_n": 0
+  },
+  "run_quality": "session-limit-contaminated",
+  "contamination_note": "Same-session Rust recheck under the SAME quota exhaustion; value collapsed to 4/12 vs P0 clean store 12/12, proving the loss was environmental (session limit), not a per-arm regression. NOT a valid effect score."
+}

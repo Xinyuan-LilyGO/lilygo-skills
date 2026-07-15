@@ -29,9 +29,9 @@ reference、source hash、authority rank、evidence level、stale flag 和 confi
 ## 查询 Facts
 
 ```bash
-cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic io --json
-cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic expander --json
-cargo run -p lilygo-skills-cli -- source query --board board-t-watch-ultra --topic peripheral --json
+lilygo-skills source query --board board-t-watch-ultra --topic io --json
+lilygo-skills source query --board board-t-watch-ultra --topic expander --json
+lilygo-skills source query --board board-t-watch-ultra --topic peripheral --json
 lilygo-skills source query --board board-t-display-s3 --topic i2c --json
 ```
 
@@ -49,40 +49,36 @@ power、LoRa、GNSS 和 input。
 
 `unknown_with_sources` 是有意设计的状态。它比编造空闲 GPIO、扩展 IO 通道或总线连接安全。
 
-## Completeness
+## Verification
 
-Completeness 按 board + topic 评估：
+Facts 会按 board + topic 对记录的 source 重新证明：
 
 ```bash
-cargo run -p lilygo-skills-cli -- source completeness --board board-t-display-s3 --topic display --json
+lilygo-skills verify sources --board board-t-display-s3 --topic display --json
 ```
 
 状态：
 
-- `complete`：quick-start contract 需要的事实和 reference 已足够。
-- `partial`：已有部分事实，但缺少关键事实。
-- `needs_source_ingestion`：支持的 board/topic，但本地 fact pack 需要从官方 source 补充。
-- `unsupported`：超出当前支持边界。
+- `OK`：fact 仍与记录的 source 和 hash 一致。
+- `DRIFT`：source 已变化，fact 需要重新生成。
+- `UNREACHABLE`：无法抓取 source 做在线重新证明。
 
-Route、hook 和 goal plan 可以暴露紧凑 readiness 状态，但不能写 fact pack。
+`context` 和 `hook` 输出可以暴露紧凑 readiness 状态，但不能写 fact pack。
 
 ## Enrichment
 
-显式 update 命令用于 enrichment：
+Board facts 由 official-source pipeline 重新生成，不再使用交互式 update 命令：
 
 ```bash
-cargo run -p lilygo-skills-cli -- update board-facts \
-  --board board-t-display-s3 \
-  --topic display \
-  --dry-run \
-  --json
+node pipeline/run-official-source-pipeline.js --all-boards --json
+node pipeline/diff-gold-fact-packs.js
 ```
 
-Dry-run 输出应该包含 source adapters、planned reads、planned writes、parsed facts /
-unknowns、source hashes、validation status 和 follow-up commands。
+Pipeline 默认是 dry 的，会把 plan 写到 `.tmp/pipeline/`，输出包含 source adapters、
+planned reads、parsed facts / unknowns、source hashes 和 validation status。
 
-去掉 `--dry-run` 后只能写入已支持且通过验证的内容。不支持的板子或当前 LilyGO 支持范围外
-的目标必须 fail closed，不能修改 fact pack。
+只有 diff 正确后再加 `--write`，才会把已验证的内容写入 `data/facts/**`。当前 LilyGO
+支持范围外的板子或 topic 会 fail closed，不能修改 fact pack。
 
 ## Source Authority
 
@@ -100,9 +96,8 @@ unknowns、source hashes、validation status 和 follow-up commands。
 
 ## Context Budget
 
-Fact pack 默认不整包注入。Route 和 hook 输出应该只包含 matched skill ids、短摘要、
-top-ranked facts、overflow counts，以及 `source query`、`source completeness` 或
-`update board-facts` 命令。
+Fact pack 默认不整包注入。`context` 和 `hook` 输出应该只包含 matched skill ids、短摘要、
+top-ranked facts、overflow counts，以及 `source query` 或 `verify sources` 命令。
 
 当用户要求实现细节、引脚分配、外设行为或调试时，AI 应调用 lookup commands。
 

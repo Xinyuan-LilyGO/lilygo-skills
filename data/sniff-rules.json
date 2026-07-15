@@ -1,0 +1,248 @@
+{
+  "schema_version": 1,
+  "min_alias_len": 4,
+  "max_file_bytes": 65536,
+  "max_source_files": 16,
+  "boards": [
+    {
+      "board_id": "board-t-beam",
+      "aliases": [
+        "boardtbeam",
+        "tbeam"
+      ]
+    },
+    {
+      "board_id": "board-t-camera-plus-s3",
+      "aliases": [
+        "boardtcamerapluss3",
+        "tcamerapluss3"
+      ]
+    },
+    {
+      "board_id": "board-t-circle-s3",
+      "aliases": [
+        "boardtcircles3",
+        "tcircles3"
+      ]
+    },
+    {
+      "board_id": "board-t-connect-pro",
+      "aliases": [
+        "boardtconnectpro",
+        "tconnectpro"
+      ]
+    },
+    {
+      "board_id": "board-t-deck",
+      "aliases": [
+        "boardtdeck",
+        "tdeck"
+      ]
+    },
+    {
+      "board_id": "board-t-display",
+      "aliases": [
+        "boardtdisplay",
+        "tdisplay"
+      ]
+    },
+    {
+      "board_id": "board-t-display-bar",
+      "aliases": [
+        "boardtdisplaybar",
+        "tdisplaybar"
+      ]
+    },
+    {
+      "board_id": "board-t-display-p4",
+      "aliases": [
+        "boardtdisplayp4",
+        "tdisplayp4"
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3",
+      "aliases": [
+        "boardtdisplays3",
+        "tdisplay",
+        "tdisplays3"
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-amoled",
+      "aliases": [
+        "boardtdisplays3amoled",
+        "tdisplays3amoled"
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-amoled-1.64",
+      "aliases": [
+        "boardtdisplays3amoled164",
+        "tdisplays3amoled164"
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-long",
+      "aliases": [
+        "boardtdisplays3long",
+        "tdisplays3long"
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-pro",
+      "aliases": [
+        "boardtdisplays3pro",
+        "tdisplays3pro"
+      ]
+    },
+    {
+      "board_id": "board-t-dongle-s3",
+      "aliases": [
+        "boardtdongles3",
+        "tdongle",
+        "tdongles3"
+      ]
+    },
+    {
+      "board_id": "board-t-encoder-pro",
+      "aliases": [
+        "boardtencoderpro",
+        "tencoderpro"
+      ]
+    },
+    {
+      "board_id": "board-t-halow-p4",
+      "aliases": [
+        "boardthalowp4",
+        "thalowp4"
+      ]
+    },
+    {
+      "board_id": "board-t-keyboard-s3-pro",
+      "aliases": [
+        "boardtkeyboards3pro",
+        "tkeyboards3pro"
+      ]
+    },
+    {
+      "board_id": "board-t-lora-pager",
+      "aliases": [
+        "boardtlorapager",
+        "tlorapager"
+      ]
+    },
+    {
+      "board_id": "board-t-watch",
+      "aliases": [
+        "boardtwatch",
+        "twatch"
+      ]
+    },
+    {
+      "board_id": "board-t-watch-2021",
+      "aliases": [
+        "boardtwatch2021",
+        "twatch2021"
+      ]
+    },
+    {
+      "board_id": "board-t-watch-s3",
+      "aliases": [
+        "boardtwatchs3",
+        "twatchs3"
+      ]
+    },
+    {
+      "board_id": "board-t-watch-s3-plus",
+      "aliases": [
+        "boardtwatchs3plus",
+        "twatchs3plus"
+      ]
+    },
+    {
+      "board_id": "board-t-watch-ultra",
+      "aliases": [
+        "boardtwatchultra",
+        "twatchultra"
+      ]
+    },
+    {
+      "board_id": "board-t7-s3",
+      "aliases": [
+        "boardt7s3",
+        "t7s3"
+      ]
+    },
+    {
+      "board_id": "series-esp32-s3",
+      "aliases": [
+        "esp32s3",
+        "esp32s3series",
+        "seriesesp32s3"
+      ]
+    },
+    {
+      "board_id": "board-t-rgb",
+      "aliases": [
+        "boardtrgb",
+        "lilygotrgb"
+      ]
+    },
+    {
+      "board_id": "board-t-2can",
+      "aliases": [
+        "boardt2can",
+        "t2can",
+        "t2can"
+      ]
+    },
+    {
+      "board_id": "board-t-circle",
+      "aliases": [
+        "boardtcircle",
+        "tcircle",
+        "tcircle"
+      ]
+    },
+    {
+      "board_id": "board-t-embed-cc1101",
+      "aliases": [
+        "boardtembedcc1101",
+        "tembedcc1101",
+        "tembedcc1101",
+        "tembedcc1101"
+      ]
+    },
+    {
+      "board_id": "board-t-lora-dual",
+      "aliases": [
+        "boardtloradual",
+        "tloradual",
+        "tloradual",
+        "tloradual"
+      ]
+    },
+    {
+      "board_id": "board-t-nixietube",
+      "aliases": [
+        "boardtnixietube",
+        "tnixietube"
+      ]
+    },
+    {
+      "board_id": "board-t-touchbar-amoled",
+      "aliases": [
+        "boardttouchbaramoled",
+        "ttouchbaramoled"
+      ]
+    },
+    {
+      "board_id": "board-t-wristband",
+      "aliases": [
+        "boardtwristband",
+        "twristband"
+      ]
+    }
+  ]
+}

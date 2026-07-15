@@ -1010,7 +1010,8 @@
         "spiffs",
         "littlefs",
         "storage",
-        "partition"
+        "partition",
+        "存储"
       ],
       "aliases": [],
       "priority": 58,

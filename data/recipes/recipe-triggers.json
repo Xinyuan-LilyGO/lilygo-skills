@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "replace_underscore": false,
+  "rules": [
+    {
+      "insert": ["recipe-run-official-demo"],
+      "when": {
+        "all": [
+          { "flag": "has_board" },
+          { "not": { "flag": "pure_fact_lookup" } },
+          {
+            "any": [
+              { "keyword": ["demo", "example", "official", "示例", "例程"] },
+              { "list_non_empty": "peripherals" },
+              { "list_non_empty": "chips" },
+              { "list_non_empty": "features" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-build-upload-monitor"],
+      "when": {
+        "all": [
+          { "flag": "has_board" },
+          { "not": { "flag": "pure_fact_lookup" } },
+          {
+            "any": [
+              {
+                "keyword": [
+                  "arduino",
+                  "esp-idf",
+                  "platformio",
+                  "rust",
+                  "build",
+                  "upload",
+                  "flash",
+                  "烧录",
+                  "编译"
+                ]
+              },
+              { "selected": "recipe-run-official-demo" }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-serial-debug"],
+      "when": {
+        "all": [
+          { "flag": "has_board" },
+          { "not": { "flag": "pure_fact_lookup" } },
+          {
+            "any": [
+              {
+                "keyword": [
+                  "serial",
+                  "boot log",
+                  "monitor",
+                  "unreadable",
+                  "upload",
+                  "flash",
+                  "ota",
+                  "imu",
+                  "gesture",
+                  "抬腕"
+                ]
+              },
+              {
+                "list_contains": {
+                  "list": "features",
+                  "value": "feature-raise-to-wake"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-lvgl-simulator"],
+      "when": {
+        "all": [
+          { "not": { "flag": "pure_fact_lookup" } },
+          { "keyword": ["lvgl", "touch", "page-data", "screen", "display"] }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-ota-debug"],
+      "when": {
+        "all": [
+          { "not": { "flag": "pure_fact_lookup" } },
+          { "keyword": ["ota", "manifest", "partition", "rollback", "rebooted"] }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-lora-gnss-source"],
+      "when": {
+        "all": [
+          { "not": { "flag": "pure_fact_lookup" } },
+          {
+            "any": [
+              {
+                "keyword": [
+                  "lora",
+                  "gnss",
+                  "gps",
+                  "radio",
+                  "meshtastic",
+                  "telemetry",
+                  "radiolib"
+                ]
+              },
+              {
+                "list_contains_any": {
+                  "list": "peripherals",
+                  "values": ["periph-lora", "periph-lora-gps", "periph-gps"]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["recipe-bsp-chip-driver"],
+      "when": {
+        "all": [
+          { "not": { "flag": "pure_fact_lookup" } },
+          {
+            "any": [
+              {
+                "keyword": [
+                  "bsp",
+                  "driver",
+                  "source",
+                  "header",
+                  "chip",
+                  "datasheet"
+                ]
+              },
+              {
+                "all": [
+                  { "list_non_empty": "chips" },
+                  { "keyword": ["driver", "source", "datasheet"] }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,2 +1,0 @@
-lilygo-skills generate skills --out <dir> --json
-Materializes runtime board, peripheral, reference, and playbook skills into a generated cache under <dir>. The only sanctioned producer of generated SKILL.md after the meta-only release boundary; never writes into the source skills/ tree.

@@ -6,9 +6,9 @@ Use the CLI and install surfaces as the source of truth for behavior:
 
 ```bash
 node install.js --all --dry-run --build
-cargo run -q -p lilygo-skills-cli -- verify --json
-cargo run -q -p lilygo-skills-cli -- route --json "<prompt>"
-cargo run -q -p lilygo-skills-cli -- goal complete --dry-run --json "<prompt>"
+lilygo-skills context --json "<prompt>"
+lilygo-skills source query --board <board-id> --topic <topic> --json
+lilygo-skills verify sources --board <board-id> --json
 ```
 
 Runtime source data is under `data/**`, including
@@ -19,8 +19,7 @@ Runtime source data is under `data/**`, including
 Before claiming a runtime change is complete, run focused tests plus:
 
 ```bash
-cargo fmt --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
+npx tsc --noEmit
+npm test
 bash scripts/ci-gate.sh
 ```

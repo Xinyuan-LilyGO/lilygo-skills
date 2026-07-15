@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "rules": [
+    {
+      "insert": ["proceed"],
+      "when": {
+        "substring": [
+          "implement",
+          "debug",
+          "driver",
+          "setup",
+          "install",
+          "binflow",
+          "serial",
+          "lvgl",
+          "ota",
+          "调试",
+          "实现",
+          "传输"
+        ]
+      }
+    }
+  ]
+}

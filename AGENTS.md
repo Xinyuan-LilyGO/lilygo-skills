@@ -4,7 +4,7 @@ This is the public `lilygo-skills` runtime repository.
 
 ## What Lives Here
 
-- Rust CLI runtime in `crates/lilygo-skills-cli/`
+- JS thin core in `bin/*.mjs` (Node, zero-build; types via JSDoc + `tsc`)
 - Installer in `install.js`
 - Meta router skill in `skills/lilygo-router/SKILL.md`
 - Static expansion references in `skills/references/`
@@ -22,9 +22,9 @@ Prefer the installed or built CLI surfaces before browsing source:
 
 ```bash
 node install.js --all --dry-run --build
-cargo run -q -p lilygo-skills-cli -- verify --json
-cargo run -q -p lilygo-skills-cli -- route --json "<prompt>"
-cargo run -q -p lilygo-skills-cli -- goal complete --dry-run --json "<prompt>"
+lilygo-skills context --json "<prompt>"
+lilygo-skills source query --board <board-id> --topic <topic> --json
+lilygo-skills verify sources --board <board-id> --json
 ```
 
 Use `data/references/source-intake/**` for public source-intake data. Do not add
@@ -37,9 +37,8 @@ For runtime changes, run the relevant focused test first, then the aggregate
 gate before claiming completion:
 
 ```bash
-cargo fmt --check
-cargo clippy --workspace --all-targets -- -D warnings
-cargo test --workspace
+npx tsc --noEmit
+npm test
 bash scripts/ci-gate.sh
 node install.js --all --dry-run --build
 ```

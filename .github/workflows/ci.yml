@@ -9,28 +9,23 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: dtolnay/rust-toolchain@stable
-
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
 
-      - name: Format
-        run: cargo fmt --check
+      - name: Install dev dependencies
+        run: npm ci
 
-      - name: Clippy
-        run: cargo clippy -q -p lilygo-skills-cli -- -D warnings
+      - name: Typecheck
+        run: npx tsc -p tsconfig.json --noEmit
 
-      - name: Rust tests
-        run: cargo test -q -p lilygo-skills-cli
+      - name: Unit + contract tests
+        run: npm test
 
-      - name: Deterministic smoke gate (all hardware-free smokes)
+      - name: Deterministic gate (data / pipeline / JS core smokes)
         run: bash scripts/ci-gate.sh
 
-      - name: Benchmark
-        run: cargo run --release -q -p lilygo-skills-cli -- benchmark --json --iterations 1000
-
-      - name: Installer dry-run with build plan
-        run: node install.js --all --dry-run --build
+      - name: Installer dry-run
+        run: node install.js --all --dry-run

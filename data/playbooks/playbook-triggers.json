@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "replace_underscore": true,
+  "flags": [
+    {
+      "name": "embedded",
+      "when": {
+        "any": [
+          { "list_any_prefix": { "list": "route_skills", "prefix": "board-" } },
+          { "list_contains": { "list": "route_skills", "value": "lilygo-router" } },
+          {
+            "keyword": [
+              "lilygo",
+              "t-display",
+              "t-watch",
+              "t-beam",
+              "esp32",
+              "arduino",
+              "esp-idf",
+              "platformio",
+              "lvgl",
+              "ota",
+              "lora",
+              "gnss"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "action",
+      "when": {
+        "keyword": [
+          "add",
+          "implement",
+          "debug",
+          "fix",
+          "build",
+          "flash",
+          "upload",
+          "monitor",
+          "setup",
+          "install",
+          "run",
+          "demo",
+          "example",
+          "fails",
+          "failure",
+          "blank",
+          "does not",
+          "怎么做",
+          "实现",
+          "调试",
+          "安装",
+          "烧录"
+        ]
+      }
+    },
+    {
+      "name": "source",
+      "when": {
+        "keyword": [
+          "source",
+          "official",
+          "datasheet",
+          "pinout",
+          "which repo",
+          "where to find",
+          "资料",
+          "官方",
+          "数据手册"
+        ]
+      }
+    }
+  ],
+  "gate": { "flag": "embedded" },
+  "rules": [
+    {
+      "insert": ["playbook-source-discovery"],
+      "when": { "any": [{ "flag": "action" }, { "flag": "source" }] }
+    },
+    {
+      "insert": ["playbook-build-flash-serial"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          {
+            "keyword": [
+              "build",
+              "flash",
+              "upload",
+              "serial",
+              "monitor",
+              "boot log",
+              "烧录",
+              "上传",
+              "串口"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["playbook-lvgl-debug"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          {
+            "keyword": [
+              "lvgl",
+              "display",
+              "screen",
+              "touch",
+              "flush",
+              "blank",
+              "page-data"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["playbook-ota-debug", "playbook-build-flash-serial"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          {
+            "keyword": [
+              "ota",
+              "rollback",
+              "manifest",
+              "partition",
+              "firmware update"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["playbook-bsp-driver"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          {
+            "keyword": [
+              "bsp",
+              "driver",
+              "peripheral driver",
+              "status action smoke",
+              "capability"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "insert": ["playbook-radio-gnss"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          { "keyword": ["lora", "gnss", "gps", "radio", "meshtastic"] }
+        ]
+      }
+    },
+    {
+      "insert": ["playbook-setup-toolchain"],
+      "when": {
+        "all": [
+          { "flag": "action" },
+          {
+            "keyword": [
+              "setup",
+              "install",
+              "toolchain",
+              "blank machine",
+              "rustup",
+              "node"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "order": [
+    "playbook-source-discovery",
+    "playbook-setup-toolchain",
+    "playbook-build-flash-serial",
+    "playbook-lvgl-debug",
+    "playbook-ota-debug",
+    "playbook-bsp-driver",
+    "playbook-radio-gnss"
+  ]
+}

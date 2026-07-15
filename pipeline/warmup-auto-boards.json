@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "boards": [
+    {
+      "board_id": "board-t-rgb",
+      "mcu": "esp32-s3",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/LilyGo-T-RGB"
+    },
+    {
+      "board_id": "board-t-2can",
+      "mcu": "esp32-s3",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-2Can"
+    },
+    {
+      "board_id": "board-t-circle",
+      "mcu": "esp32",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-Circle"
+    },
+    {
+      "board_id": "board-t-embed-cc1101",
+      "mcu": "esp32-s3",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-Embed-CC1101"
+    },
+    {
+      "board_id": "board-t-lora-dual",
+      "mcu": "esp32",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-Lora-Dual"
+    },
+    {
+      "board_id": "board-t-nixietube",
+      "mcu": "esp32",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-NixieTube"
+    },
+    {
+      "board_id": "board-t-touchbar-amoled",
+      "mcu": "esp32-s3",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-Touchbar-AMOLED/blob/master/platformio.ini"
+    },
+    {
+      "board_id": "board-t-wristband",
+      "mcu": "esp32",
+      "mcu_evidence_url": "https://github.com/Xinyuan-LilyGO/T-Wristband"
+    }
+  ]
+}

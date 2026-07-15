@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "suite": "effect-baseline-12",
+  "date": "2026-07-13",
+  "model_default": "haiku",
+  "grading": {
+    "pass": "normalized answer contains every expected.values token (exact GPIO/setting match); with_skill arm additionally requires a verifiable citation (github url or sha256 fragment)",
+    "hallucination": "answer asserts a deterministic value listed in conflict_values while NOT stating the correct expected value(s); conflict_values are only populated from real prior evidence (smoke-scorecard forbidden claims), never invented, so tasks without evidence keep hallucination detection unasserted",
+    "source_of_truth": "data/facts/board-fact-packs.json (V3 official url+line_range+sha256)"
+  },
+  "notes": {
+    "old6": "Migrated from eval/fixtures/smoke-scorecard.json T-Display-S3 tasks. The original smoke tasks were prose/behavioural (Setup206, examples/*.ino); to make grading script-decidable AND fact-pack-aligned each was re-anchored to an exact T-Display-S3 pin fact on the same board/topic. `origin` records the smoke task it descends from.",
+    "new6": "Blind tasks drawn directly from M33/M34-ingested fact packs; never used in prior dev feedback. Cover LoRa, GNSS, i2c, display, input, power across 4 distinct boards.",
+    "conflict_values": "Real wrong values a bare model has historically emitted (from smoke-scorecard forbidden_hits). Empty where no evidenced conflict exists."
+  },
+  "tasks": [
+    {
+      "id": "old-tdisplay-s3-i2c-pins",
+      "cohort": "old",
+      "origin": "tdisplay-s3-i2c-pins",
+      "prompt": "On the LilyGO T-Display-S3, which GPIO pins are the I2C SDA and SCL lines? Give the exact pin numbers.",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO18", "GPIO17"], "must_cite": true },
+      "source_fact_key": "pin.i2c.sda",
+      "conflict_values": ["SDA=GPIO17", "SCL=GPIO18"]
+    },
+    {
+      "id": "old-tdisplay-s3-display-databus",
+      "cohort": "old",
+      "origin": "tdisplay-s3-display-occupied",
+      "prompt": "On the T-Display-S3 the ST7789 LCD uses an 8-bit parallel bus. List the GPIOs for the LCD data lines D0 through D7.",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": {
+        "values": ["GPIO39", "GPIO40", "GPIO41", "GPIO42", "GPIO45", "GPIO46", "GPIO47", "GPIO48"],
+        "must_cite": true
+      },
+      "source_fact_key": "pin.display.d0",
+      "conflict_values": ["TFT_MOSI", "TFT_SCLK"]
+    },
+    {
+      "id": "old-tdisplay-s3-display-control",
+      "cohort": "old",
+      "origin": "tdisplay-s3-display-minimal",
+      "prompt": "On the T-Display-S3, which GPIOs are the LCD control lines CS, DC, RST, WR and RD?",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO6", "GPIO7", "GPIO5", "GPIO8", "GPIO9"], "must_cite": true },
+      "source_fact_key": "pin.display.cs",
+      "conflict_values": []
+    },
+    {
+      "id": "old-tdisplay-s3-backlight-power",
+      "cohort": "old",
+      "origin": "tdisplay-s3-flash-troubleshoot",
+      "prompt": "My T-Display-S3 screen stays dark. Which GPIO controls the LCD backlight, and which GPIO must be held high (PIN_POWER_ON) to keep the board powered?",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO38", "GPIO15"], "must_cite": true },
+      "source_fact_key": "pin.display.backlight",
+      "conflict_values": []
+    },
+    {
+      "id": "old-tdisplay-s3-buttons",
+      "cohort": "old",
+      "origin": "tdisplay-s3-factory-demo",
+      "prompt": "On the T-Display-S3 factory firmware, which two GPIOs are the user buttons (BOOT/BUTTON1 and BUTTON2)?",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO0", "GPIO14"], "must_cite": true },
+      "source_fact_key": "pin.button.1",
+      "conflict_values": []
+    },
+    {
+      "id": "old-tdisplay-s3-battery-adc",
+      "cohort": "old",
+      "origin": "tdisplay-s3-tft-espi-pitfall",
+      "prompt": "On the T-Display-S3, which GPIO / ADC pin reads the battery voltage divider (PIN_BAT_VOLT)?",
+      "board": "board-t-display-s3",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO4"], "must_cite": true },
+      "source_fact_key": "pin.battery.voltage",
+      "conflict_values": []
+    },
+    {
+      "id": "new-tbeam-lora-spi",
+      "cohort": "new",
+      "prompt": "On the LilyGO T-Beam, the LoRa radio is on SPI. What GPIO is the SPI SCLK, and what GPIO is the radio chip-select (CS/NSS)?",
+      "board": "board-t-beam",
+      "topic": "lora",
+      "expected": { "values": ["GPIO5", "GPIO18"], "must_cite": true },
+      "source_fact_key": "pin.lora.sclk",
+      "conflict_values": []
+    },
+    {
+      "id": "new-tbeam-gnss-uart",
+      "cohort": "new",
+      "prompt": "On the T-Beam, the GPS module is on a UART. Which GPIO is the GPS UART RX (into the ESP32) and which is the GPS TX?",
+      "board": "board-t-beam",
+      "topic": "gnss",
+      "expected": { "values": ["GPIO34", "GPIO12"], "must_cite": true },
+      "source_fact_key": "pin.gps.rx",
+      "conflict_values": []
+    },
+    {
+      "id": "new-tconnect-pro-i2c",
+      "cohort": "new",
+      "prompt": "On the LilyGO T-Connect-Pro, which GPIOs are the I2C SDA and SCL lines?",
+      "board": "board-t-connect-pro",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO39", "GPIO40"], "must_cite": true },
+      "source_fact_key": "pin.i2c.sda",
+      "conflict_values": []
+    },
+    {
+      "id": "new-twatch-ultra-display-qspi",
+      "cohort": "new",
+      "prompt": "On the T-Watch Ultra (CO5300 AMOLED on QSPI), which GPIO is the display CS and which GPIO is the display SCK/CLK?",
+      "board": "board-t-watch-ultra",
+      "topic": "display",
+      "expected": { "values": ["GPIO41", "GPIO40"], "must_cite": true },
+      "source_fact_key": "pin.display.cs",
+      "conflict_values": []
+    },
+    {
+      "id": "new-tdeck-keyboard-int",
+      "cohort": "new",
+      "prompt": "On the LilyGO T-Deck, which GPIO is the keyboard interrupt (BOARD_KEYBOARD_INT) line?",
+      "board": "board-t-deck",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO46"], "must_cite": true },
+      "source_fact_key": "pin.keyboard.int",
+      "conflict_values": []
+    },
+    {
+      "id": "new-tdeck-power-on",
+      "cohort": "new",
+      "prompt": "On the T-Deck, which GPIO must be driven high to power on the board peripherals (BOARD_POWERON)?",
+      "board": "board-t-deck",
+      "topic": "pinout",
+      "expected": { "values": ["GPIO10"], "must_cite": true },
+      "source_fact_key": "pin.power.on",
+      "conflict_values": []
+    }
+  ]
+}

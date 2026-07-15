@@ -1,0 +1,2013 @@
+{
+  "schema_version": 1,
+  "note": "Declarative board->official-source ingestion manifest. Adding a board is a data entry here, not code. The extractor (ingest-from-manifest.js) fetches url, hashes it, slices line_range, extracts the named #define macros, and emits source-backed fact-pack entries. No per-board pin values are hardcoded in code.",
+  "sources": [
+    {
+      "board_id": "board-t-beam",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/LilyGo-LoRa-Series/master/examples/Factory/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "89-141",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "auto_pins": true,
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "I2C_SDA=GPIO{I2C_SDA}; I2C_SCL=GPIO{I2C_SCL}",
+          "claim": "Primary I2C bus from official Factory utilities.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "LoRa radio on SPI: SCLK=GPIO{RADIO_SCLK_PIN}, MISO=GPIO{RADIO_MISO_PIN}, MOSI=GPIO{RADIO_MOSI_PIN}, CS=GPIO{RADIO_CS_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO0=GPIO{RADIO_DIO0_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}",
+          "claim": "LoRa SPI bus from official Factory utilities.h"
+        },
+        {
+          "key": "bus.uart.gps",
+          "template": "GPS on UART: RX=GPIO{GPS_RX_PIN}, TX=GPIO{GPS_TX_PIN}, 9600 baud",
+          "claim": "GPS UART bus from official Factory utilities.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-deck",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Deck/master/examples/UnitTest/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "1-95",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "auto_pins": true,
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "BOARD_I2C_SDA=GPIO{BOARD_I2C_SDA}; BOARD_I2C_SCL=GPIO{BOARD_I2C_SCL}",
+          "claim": "Primary I2C bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.spi.shared",
+          "template": "Shared SPI (display+LoRa+SD): SCK=GPIO{BOARD_SPI_SCK}, MOSI=GPIO{BOARD_SPI_MOSI}, MISO=GPIO{BOARD_SPI_MISO}",
+          "claim": "Shared SPI bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.display.st7789",
+          "template": "ST7789 on shared SPI: CS=GPIO{BOARD_TFT_CS}, DC=GPIO{BOARD_TFT_DC}, BL=GPIO{BOARD_TFT_BACKLIGHT}",
+          "claim": "Display bus from official T-Deck UnitTest utilities.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "LoRa SX1262 on shared SPI: CS=GPIO{RADIO_CS_PIN}, BUSY=GPIO{RADIO_BUSY_PIN}, RST=GPIO{RADIO_RST_PIN}, DIO1=GPIO{RADIO_DIO1_PIN}",
+          "claim": "LoRa SPI bus from official T-Deck UnitTest utilities.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3/master/examples/factory/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "31-48",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "auto_pins": true,
+      "buses": [
+        {
+          "key": "bus.display.parallel",
+          "template": "ST7789 170x320 on 8-bit parallel (i80) bus, occupied GPIOs: D0-D7=GPIO{PIN_LCD_D0}/{PIN_LCD_D1}/{PIN_LCD_D2}/{PIN_LCD_D3}/{PIN_LCD_D4}/{PIN_LCD_D5}/{PIN_LCD_D6}/{PIN_LCD_D7}, WR=GPIO{PIN_LCD_WR}, RD=GPIO{PIN_LCD_RD}, DC=GPIO{PIN_LCD_DC}, CS=GPIO{PIN_LCD_CS}, RST=GPIO{PIN_LCD_RES}, BL=GPIO{PIN_LCD_BL}, PWR=GPIO{PIN_POWER_ON}",
+          "claim": "ST7789 8-bit parallel display bus and occupied GPIOs from official factory pin_config.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-dongle-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Dongle-S3/main/examples/factory_screen/factory_screen.ino",
+      "source_kind": "arduino-pins",
+      "line_range": "33-63",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.button.boot",
+          "macro": "BOOT_PIN",
+          "claim": "BOOT/IO0 button from official factory_screen.ino"
+        },
+        {
+          "key": "pin.led.data",
+          "macro": "LED_DI_PIN",
+          "claim": "APA102 RGB LED data from official factory_screen.ino"
+        },
+        {
+          "key": "pin.led.clock",
+          "macro": "LED_CI_PIN",
+          "claim": "APA102 RGB LED clock from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "PIN_NUM_MOSI",
+          "claim": "ST7735 SPI MOSI from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "PIN_NUM_CLK",
+          "claim": "ST7735 SPI SCLK from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "PIN_NUM_CS",
+          "claim": "ST7735 SPI CS from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "PIN_NUM_DC",
+          "claim": "ST7735 data/command from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "PIN_NUM_RST",
+          "claim": "ST7735 reset from official factory_screen.ino"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "PIN_NUM_BCKL",
+          "claim": "ST7735 backlight from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.d0",
+          "macro": "SD_MMC_D0_PIN",
+          "claim": "microSD SD_MMC D0 from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.d1",
+          "macro": "SD_MMC_D1_PIN",
+          "claim": "microSD SD_MMC D1 from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.d2",
+          "macro": "SD_MMC_D2_PIN",
+          "claim": "microSD SD_MMC D2 from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.d3",
+          "macro": "SD_MMC_D3_PIN",
+          "claim": "microSD SD_MMC D3 from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.clk",
+          "macro": "SD_MMC_CLK_PIN",
+          "claim": "microSD SD_MMC CLK from official factory_screen.ino"
+        },
+        {
+          "key": "pin.sdmmc.cmd",
+          "macro": "SD_MMC_CMD_PIN",
+          "claim": "microSD SD_MMC CMD from official factory_screen.ino"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.display.st7735",
+          "template": "ST7735 0.96in 160x80 on SPI2: MOSI=GPIO{PIN_NUM_MOSI}, SCLK=GPIO{PIN_NUM_CLK}, CS=GPIO{PIN_NUM_CS}, DC=GPIO{PIN_NUM_DC}, RST=GPIO{PIN_NUM_RST}, BL=GPIO{PIN_NUM_BCKL}",
+          "claim": "ST7735 SPI display bus from official factory_screen.ino"
+        },
+        {
+          "key": "bus.sdmmc.microsd",
+          "template": "microSD on SD_MMC: CLK=GPIO{SD_MMC_CLK_PIN}, CMD=GPIO{SD_MMC_CMD_PIN}, D0=GPIO{SD_MMC_D0_PIN}, D1=GPIO{SD_MMC_D1_PIN}, D2=GPIO{SD_MMC_D2_PIN}, D3=GPIO{SD_MMC_D3_PIN}",
+          "claim": "microSD SD_MMC bus from official factory_screen.ino"
+        },
+        {
+          "key": "bus.led.apa102",
+          "template": "APA102 RGB LED: DATA=GPIO{LED_DI_PIN}, CLK=GPIO{LED_CI_PIN}",
+          "claim": "APA102 RGB LED bus from official factory_screen.ino"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display-s3-amoled",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-AMOLED/main/examples/factory/pins_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "34-55",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.display.te",
+          "macro": "TFT_TE",
+          "claim": "AMOLED tearing-effect from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.sdo",
+          "macro": "TFT_SDO",
+          "claim": "AMOLED SDO (read) from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "TFT_QSPI_CS",
+          "claim": "RM67162 AMOLED QSPI CS from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "TFT_QSPI_SCK",
+          "claim": "RM67162 AMOLED QSPI SCK from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.d0",
+          "macro": "TFT_QSPI_D0",
+          "claim": "RM67162 AMOLED QSPI D0 from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.d1",
+          "macro": "TFT_QSPI_D1",
+          "claim": "RM67162 AMOLED QSPI D1 from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.d2",
+          "macro": "TFT_QSPI_D2",
+          "claim": "RM67162 AMOLED QSPI D2 from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.d3",
+          "macro": "TFT_QSPI_D3",
+          "claim": "RM67162 AMOLED QSPI D3 from official factory pins_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "TFT_QSPI_RST",
+          "claim": "RM67162 AMOLED reset from official factory pins_config.h"
+        },
+        {
+          "key": "pin.led",
+          "macro": "PIN_LED",
+          "claim": "Onboard LED from official factory pins_config.h"
+        },
+        {
+          "key": "pin.battery.adc",
+          "macro": "PIN_BAT_VOLT",
+          "claim": "Battery voltage ADC from official factory pins_config.h"
+        },
+        {
+          "key": "pin.button.1",
+          "macro": "PIN_BUTTON_1",
+          "claim": "Button 1 (BOOT/IO0) from official factory pins_config.h"
+        },
+        {
+          "key": "pin.button.2",
+          "macro": "PIN_BUTTON_2",
+          "claim": "Button 2 from official factory pins_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.display.qspi.rm67162",
+          "template": "RM67162 AMOLED 536x240 on QSPI (SPI2): CS=GPIO{TFT_QSPI_CS}, SCK=GPIO{TFT_QSPI_SCK}, D0=GPIO{TFT_QSPI_D0}, D1=GPIO{TFT_QSPI_D1}, D2=GPIO{TFT_QSPI_D2}, D3=GPIO{TFT_QSPI_D3}, RST=GPIO{TFT_QSPI_RST}, TE=GPIO{TFT_TE}",
+          "claim": "RM67162 AMOLED QSPI display bus from official factory pins_config.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/TTGO-T-Display/master/TFT_eSPI/User_Setups/Setup25_TTGO_T_Display.h",
+      "source_kind": "arduino-pins",
+      "line_range": "14-20",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "auto_pins": true,
+      "buses": [
+        {
+          "key": "bus.display.st7789",
+          "template": "ST7789V 135x240 on SPI: MOSI=GPIO{TFT_MOSI}, SCLK=GPIO{TFT_SCLK}, CS=GPIO{TFT_CS}, DC=GPIO{TFT_DC}, RST=GPIO{TFT_RST}, BL=GPIO{TFT_BL}",
+          "claim": "ST7789V SPI display bus from official TTGO T-Display TFT_eSPI Setup25"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-lora-pager",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/master/variants/lilygo_tlora_pager/pins_arduino.h",
+      "source_kind": "arduino-pins",
+      "line_range": "14-71",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "SDA",
+          "claim": "Shared I2C SDA from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "SCL",
+          "claim": "Shared I2C SCL from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "MOSI",
+          "claim": "Shared SPI MOSI from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "MISO",
+          "claim": "Shared SPI MISO from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SCK",
+          "claim": "Shared SPI SCK from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "DISP_CS",
+          "claim": "ST7796 display CS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "DISP_DC",
+          "claim": "ST7796 display DC from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "DISP_BL",
+          "claim": "ST7796 display backlight from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "LORA_CS",
+          "claim": "SX1262 LoRa CS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.rst",
+          "macro": "LORA_RST",
+          "claim": "SX1262 LoRa RST from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "LORA_BUSY",
+          "claim": "SX1262 LoRa BUSY from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.dio1",
+          "macro": "LORA_IRQ",
+          "claim": "SX1262 LoRa IRQ/DIO1 from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "GPS_TX",
+          "claim": "GPS UART TX from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "GPS_RX",
+          "claim": "GPS UART RX from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.pps",
+          "macro": "GPS_PPS",
+          "claim": "GPS PPS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.keyboard.int",
+          "macro": "KB_INT",
+          "claim": "Keyboard interrupt from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.keyboard.backlight",
+          "macro": "KB_BACKLIGHT",
+          "claim": "Keyboard backlight from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.rotary.a",
+          "macro": "ROTARY_A",
+          "claim": "Rotary encoder A from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.rotary.b",
+          "macro": "ROTARY_B",
+          "claim": "Rotary encoder B from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.rotary.c",
+          "macro": "ROTARY_C",
+          "claim": "Rotary encoder push from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SD_CS",
+          "claim": "microSD CS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.nfc.cs",
+          "macro": "NFC_CS",
+          "claim": "ST25R3916 NFC CS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.nfc.int",
+          "macro": "NFC_INT",
+          "claim": "ST25R3916 NFC interrupt from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.rtc.int",
+          "macro": "RTC_INT",
+          "claim": "PCF85063 RTC interrupt from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.sensor.int",
+          "macro": "SENSOR_INT",
+          "claim": "BHI260AP sensor interrupt from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.ws",
+          "macro": "I2S_WS",
+          "claim": "ES8311 I2S WS from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.sck",
+          "macro": "I2S_SCK",
+          "claim": "ES8311 I2S BCLK from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.mclk",
+          "macro": "I2S_MCLK",
+          "claim": "ES8311 I2S MCLK from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.dout",
+          "macro": "I2S_SDOUT",
+          "claim": "ES8311 I2S DOUT from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.din",
+          "macro": "I2S_SDIN",
+          "claim": "ES8311 I2S DIN from official T-LoRa-Pager pins_arduino.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Shared I2C (BHI260AP, PCF85063, BQ25896, DRV2605L, ES8311): SDA=GPIO{SDA}, SCL=GPIO{SCL}",
+          "claim": "Shared I2C bus from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "bus.spi.shared",
+          "template": "Shared SPI (LoRa + microSD + ST25R3916): SCK=GPIO{SCK}, MOSI=GPIO{MOSI}, MISO=GPIO{MISO}",
+          "claim": "Shared SPI bus from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "SX1262 LoRa on shared SPI: CS=GPIO{LORA_CS}, RST=GPIO{LORA_RST}, BUSY=GPIO{LORA_BUSY}, IRQ/DIO1=GPIO{LORA_IRQ}",
+          "claim": "SX1262 LoRa SPI bus from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "bus.display.st7796",
+          "template": "ST7796 222x480 on SPI: CS=GPIO{DISP_CS}, DC=GPIO{DISP_DC}, BL=GPIO{DISP_BL}, MOSI=GPIO{MOSI}, SCK=GPIO{SCK}",
+          "claim": "ST7796 SPI display bus from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "bus.uart.gps",
+          "template": "GPS on UART: TX=GPIO{GPS_TX}, RX=GPIO{GPS_RX}, PPS=GPIO{GPS_PPS}",
+          "claim": "GPS UART bus from official T-LoRa-Pager pins_arduino.h"
+        },
+        {
+          "key": "bus.i2s.es8311",
+          "template": "ES8311 audio codec on I2S: WS=GPIO{I2S_WS}, BCLK=GPIO{I2S_SCK}, MCLK=GPIO{I2S_MCLK}, DOUT=GPIO{I2S_SDOUT}, DIN=GPIO{I2S_SDIN}",
+          "claim": "ES8311 I2S audio bus from official T-LoRa-Pager pins_arduino.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-watch-ultra",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/LilyGoLib-PlatformIO/master/variants/lilygo_twatch_ultra/pins_arduino.h",
+      "source_kind": "arduino-pins",
+      "line_range": "15-71",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.display.d0",
+          "macro": "DISP_D0",
+          "claim": "CO5300 AMOLED QSPI D0 from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.d1",
+          "macro": "DISP_D1",
+          "claim": "CO5300 AMOLED QSPI D1 from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.d2",
+          "macro": "DISP_D2",
+          "claim": "CO5300 AMOLED QSPI D2 from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.d3",
+          "macro": "DISP_D3",
+          "claim": "CO5300 AMOLED QSPI D3 from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "DISP_SCK",
+          "claim": "CO5300 AMOLED QSPI SCK from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "DISP_CS",
+          "claim": "CO5300 AMOLED QSPI CS from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "DISP_RST",
+          "claim": "CO5300 AMOLED reset from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.display.te",
+          "macro": "DISP_TE",
+          "claim": "CO5300 AMOLED tearing-effect from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "SDA",
+          "claim": "Shared I2C SDA from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "SCL",
+          "claim": "Shared I2C SCL from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "MOSI",
+          "claim": "Shared SPI MOSI from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "MISO",
+          "claim": "Shared SPI MISO from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SCK",
+          "claim": "Shared SPI SCK from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "LORA_CS",
+          "claim": "SX1262/SX1280 LoRa CS from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.rst",
+          "macro": "LORA_RST",
+          "claim": "SX1262/SX1280 LoRa RST from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "LORA_BUSY",
+          "claim": "SX1262/SX1280 LoRa BUSY from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.lora.dio1",
+          "macro": "LORA_IRQ",
+          "claim": "SX1262/SX1280 LoRa IRQ/DIO1 from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "TX",
+          "claim": "GPS UART TX (GPS_TX aliases TX) from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "RX",
+          "claim": "GPS UART RX (GPS_RX aliases RX) from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.gps.pps",
+          "macro": "GPS_PPS",
+          "claim": "GPS PPS from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_INT",
+          "claim": "Touch-panel interrupt from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.rtc.int",
+          "macro": "RTC_INT",
+          "claim": "PCF85063 RTC interrupt from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.pmu.int",
+          "macro": "PMU_INT",
+          "claim": "AXP2101 PMU interrupt from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.nfc.int",
+          "macro": "NFC_INT",
+          "claim": "ST25R3916 NFC interrupt from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.sensor.int",
+          "macro": "SENSOR_INT",
+          "claim": "BHI260AP sensor interrupt from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.nfc.cs",
+          "macro": "NFC_CS",
+          "claim": "ST25R3916 NFC CS from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.mic.sck",
+          "macro": "MIC_SCK",
+          "claim": "PDM microphone clock from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.mic.data",
+          "macro": "MIC_DAT",
+          "claim": "PDM microphone data from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.bclk",
+          "macro": "I2S_BCLK",
+          "claim": "MAX98357A I2S BCLK from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.wclk",
+          "macro": "I2S_WCLK",
+          "claim": "MAX98357A I2S WCLK from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.i2s.dout",
+          "macro": "I2S_DOUT",
+          "claim": "MAX98357A I2S DOUT from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SD_CS",
+          "claim": "microSD CS from official T-Watch-Ultra pins_arduino.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Shared I2C (BHI260AP, PCF85063, AXP2101, DRV2605L): SDA=GPIO{SDA}, SCL=GPIO{SCL}",
+          "claim": "Shared I2C bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.spi.shared",
+          "template": "Shared SPI (LoRa + microSD): SCK=GPIO{SCK}, MOSI=GPIO{MOSI}, MISO=GPIO{MISO}",
+          "claim": "Shared SPI bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "SX1262/SX1280 LoRa on shared SPI: CS=GPIO{LORA_CS}, RST=GPIO{LORA_RST}, BUSY=GPIO{LORA_BUSY}, IRQ/DIO1=GPIO{LORA_IRQ}",
+          "claim": "SX1262/SX1280 LoRa SPI bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.display.qspi.co5300",
+          "template": "CO5300 AMOLED 502x410 on QSPI: CS=GPIO{DISP_CS}, SCK=GPIO{DISP_SCK}, D0=GPIO{DISP_D0}, D1=GPIO{DISP_D1}, D2=GPIO{DISP_D2}, D3=GPIO{DISP_D3}, RST=GPIO{DISP_RST}, TE=GPIO{DISP_TE}",
+          "claim": "CO5300 AMOLED QSPI display bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.uart.gps",
+          "template": "GPS on UART: TX=GPIO{TX}, RX=GPIO{RX}, PPS=GPIO{GPS_PPS}",
+          "claim": "GPS UART bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.i2s.speaker",
+          "template": "MAX98357A speaker on I2S: BCLK=GPIO{I2S_BCLK}, WCLK=GPIO{I2S_WCLK}, DOUT=GPIO{I2S_DOUT}",
+          "claim": "MAX98357A I2S speaker bus from official T-Watch-Ultra pins_arduino.h"
+        },
+        {
+          "key": "bus.pdm.mic",
+          "template": "PDM microphone: CLK=GPIO{MIC_SCK}, DATA=GPIO{MIC_DAT}",
+          "claim": "PDM microphone bus from official T-Watch-Ultra pins_arduino.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-display-s3-pro",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-Pro/master/examples/factory/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "20-36",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "auto_pins": true,
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Shared I2C (LTR553 ALS, CST816S touch, SY6970 PMU, camera): SDA=GPIO{BOARD_I2C_SDA}, SCL=GPIO{BOARD_I2C_SCL}",
+          "claim": "Shared I2C bus from official T-Display-S3-Pro factory utilities.h"
+        },
+        {
+          "key": "bus.spi.shared",
+          "template": "Shared SPI (ST7789V2 TFT + microSD): SCK=GPIO{BOARD_SPI_SCK}, MOSI=GPIO{BOARD_SPI_MOSI}, MISO=GPIO{BOARD_SPI_MISO}",
+          "claim": "Shared SPI bus from official T-Display-S3-Pro factory utilities.h"
+        },
+        {
+          "key": "bus.display.st7789",
+          "template": "ST7789V2 222x480 IPS on shared SPI: CS=GPIO{BOARD_TFT_CS}, DC=GPIO{BOARD_TFT_DC}, RST=GPIO{BOARD_TFT_RST}, BL=GPIO{BOARD_TFT_BL}",
+          "claim": "ST7789V2 display bus from official T-Display-S3-Pro factory utilities.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-connect-pro",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Connect-Pro/main/libraries/private_library/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "17-47",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "Primary I2C SDA (CST226SE touch) from official T-Connect-Pro pin_config.h (T_Connect_Pro_V1_0 block)"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "Primary I2C SCL from official T-Connect-Pro pin_config.h (T_Connect_Pro_V1_0 block)"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "SCREEN_MOSI",
+          "claim": "ST7796 SPI MOSI from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.display.miso",
+          "macro": "SCREEN_MISO",
+          "claim": "ST7796 SPI MISO from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "SCREEN_SCLK",
+          "claim": "ST7796 SPI SCLK from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "SCREEN_CS",
+          "claim": "ST7796 SPI CS from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "SCREEN_DC",
+          "claim": "ST7796 data/command from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "SCREEN_BL",
+          "claim": "ST7796 backlight from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TOUCH_RST",
+          "claim": "CST226SE touch reset from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TOUCH_INT",
+          "claim": "CST226SE touch interrupt from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "SX1262_CS",
+          "claim": "SX1262 LoRa CS from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.rst",
+          "macro": "SX1262_RST",
+          "claim": "SX1262 LoRa reset from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.sclk",
+          "macro": "SX1262_SCLK",
+          "claim": "SX1262 LoRa SCLK from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.mosi",
+          "macro": "SX1262_MOSI",
+          "claim": "SX1262 LoRa MOSI from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.miso",
+          "macro": "SX1262_MISO",
+          "claim": "SX1262 LoRa MISO from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "SX1262_BUSY",
+          "claim": "SX1262 LoRa BUSY from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "pin.lora.dio1",
+          "macro": "SX1262_DIO1",
+          "claim": "SX1262 LoRa DIO1 from official T-Connect-Pro pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (CST226SE touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "bus.display.st7796",
+          "template": "ST7796 222x480 on SPI: SCLK=GPIO{SCREEN_SCLK}, MOSI=GPIO{SCREEN_MOSI}, MISO=GPIO{SCREEN_MISO}, CS=GPIO{SCREEN_CS}, DC=GPIO{SCREEN_DC}, BL=GPIO{SCREEN_BL}",
+          "claim": "ST7796 display SPI bus from official T-Connect-Pro pin_config.h"
+        },
+        {
+          "key": "bus.spi.lora",
+          "template": "SX1262 LoRa on SPI: SCLK=GPIO{SX1262_SCLK}, MOSI=GPIO{SX1262_MOSI}, MISO=GPIO{SX1262_MISO}, CS=GPIO{SX1262_CS}, RST=GPIO{SX1262_RST}, BUSY=GPIO{SX1262_BUSY}, DIO1=GPIO{SX1262_DIO1}",
+          "claim": "SX1262 LoRa SPI bus from official T-Connect-Pro pin_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-circle-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Circle-S3/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "32-50",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "Primary I2C SDA (CST816D touch) from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "Primary I2C SCL from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "LCD_MOSI",
+          "claim": "H0075Y002 160x160 round LCD SPI MOSI from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "LCD_SCLK",
+          "claim": "Round LCD SPI SCLK from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "LCD_DC",
+          "claim": "Round LCD data/command from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "LCD_CS",
+          "claim": "Round LCD chip-select from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "LCD_BL",
+          "claim": "Round LCD backlight from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "BOOT_KEY",
+          "claim": "BOOT/IO0 button from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.led.data",
+          "macro": "APA102_DATA",
+          "claim": "APA102 RGB LED data from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "pin.led.clock",
+          "macro": "APA102_CLOCK",
+          "claim": "APA102 RGB LED clock from official T-Circle-S3 pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (CST816D touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official T-Circle-S3 pin_config.h"
+        },
+        {
+          "key": "bus.display.spi",
+          "template": "H0075Y002 160x160 round LCD on SPI: SCLK=GPIO{LCD_SCLK}, MOSI=GPIO{LCD_MOSI}, DC=GPIO{LCD_DC}, CS=GPIO{LCD_CS}, BL=GPIO{LCD_BL}",
+          "claim": "Round LCD SPI bus from official T-Circle-S3 pin_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t7-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T7-S3/main/examples/test/test.ino",
+      "source_kind": "arduino-pins",
+      "line_range": "1-3",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.battery.adc",
+          "macro": "BAT_ADC",
+          "claim": "Battery voltage ADC (GPIO2) from official examples/test/test.ino"
+        },
+        {
+          "key": "pin.led.status",
+          "macro": "LED_PIN",
+          "claim": "Onboard LED (GPIO17) from official examples/test/test.ino"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "BUTTON_PIN",
+          "claim": "BOOT/user button (GPIO0) from official examples/test/test.ino"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-display-bar",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-Bar/master/examples/Factory/board.h",
+      "source_kind": "arduino-pins",
+      "line_range": "1-23",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "I2C_SDA",
+          "claim": "I2C SDA (GPIO3) from official board.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "I2C_SCL",
+          "claim": "I2C SCL (GPIO2) from official board.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_MOSI",
+          "claim": "SPI MOSI (GPIO12) from official board.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_MISO",
+          "claim": "SPI MISO (GPIO13) from official board.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_SCK",
+          "claim": "SPI SCK (GPIO14) from official board.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SD_CS",
+          "claim": "microSD chip-select (GPIO11) from official board.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TOUCH_IRQ",
+          "claim": "Touch interrupt (GPIO21) from official board.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TOUCH_RST",
+          "claim": "Touch reset (GPIO1) from official board.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (BHI260AP IMU + BQ27220 gauge + touch): SDA=GPIO{I2C_SDA}, SCL=GPIO{I2C_SCL}",
+          "claim": "Primary I2C bus from official board.h"
+        },
+        {
+          "key": "bus.spi.primary",
+          "template": "SPI (microSD): SCK=GPIO{SPI_SCK}, MOSI=GPIO{SPI_MOSI}, MISO=GPIO{SPI_MISO}",
+          "claim": "Primary SPI bus from official board.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-watch",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/TTGO_TWatch_Library/master/src/board/twatch2020_v1.h",
+      "source_kind": "arduino-pins",
+      "line_range": "14-32",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "SEN_SDA",
+          "claim": "Sensor I2C SDA (GPIO21) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "SEN_SCL",
+          "claim": "Sensor I2C SCL (GPIO22) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.touch.sda",
+          "macro": "TOUCH_SDA",
+          "claim": "Touch I2C SDA (GPIO23) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.touch.scl",
+          "macro": "TOUCH_SCL",
+          "claim": "Touch I2C SCL (GPIO32) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TOUCH_INT",
+          "claim": "Touch controller interrupt (GPIO38) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.rtc.int",
+          "macro": "RTC_INT_PIN",
+          "claim": "PCF8563 RTC interrupt (GPIO37) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.power.int",
+          "macro": "AXP202_INT",
+          "claim": "AXP202 PMU interrupt (GPIO35) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.imu.int",
+          "macro": "BMA423_INT1",
+          "claim": "BMA423 accelerometer interrupt (GPIO39) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.motor",
+          "macro": "MOTOR_PIN",
+          "claim": "Vibration motor (GPIO4) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.ir",
+          "macro": "TWATCH_2020_IR_PIN",
+          "claim": "IR transmitter (GPIO13) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.audio.bck",
+          "macro": "TWATCH_DAC_IIS_BCK",
+          "claim": "I2S DAC bit clock (GPIO26) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.audio.ws",
+          "macro": "TWATCH_DAC_IIS_WS",
+          "claim": "I2S DAC word select (GPIO25) from official twatch2020_v1.h"
+        },
+        {
+          "key": "pin.audio.dout",
+          "macro": "TWATCH_DAC_IIS_DOUT",
+          "claim": "I2S DAC data out (GPIO33) from official twatch2020_v1.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.sensor",
+          "template": "Sensor I2C (AXP202 PMU + BMA423 IMU + PCF8563 RTC): SDA=GPIO{SEN_SDA}, SCL=GPIO{SEN_SCL}",
+          "claim": "Sensor I2C bus from official twatch2020_v1.h"
+        },
+        {
+          "key": "bus.i2c.touch",
+          "template": "Touch I2C (FT6236): SDA=GPIO{TOUCH_SDA}, SCL=GPIO{TOUCH_SCL}, INT=GPIO{TOUCH_INT}",
+          "claim": "Touch I2C bus from official twatch2020_v1.h"
+        },
+        {
+          "key": "bus.audio.i2s",
+          "template": "I2S DAC audio: BCK=GPIO{TWATCH_DAC_IIS_BCK}, WS=GPIO{TWATCH_DAC_IIS_WS}, DOUT=GPIO{TWATCH_DAC_IIS_DOUT}",
+          "claim": "I2S audio DAC bus from official twatch2020_v1.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-watch-2021",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Watch-2021/main/TWatch_2021_Library/src/board/TWatch2021_V1_2.h",
+      "source_kind": "arduino-pins",
+      "line_range": "11-43",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.power.on",
+          "macro": "TWATCH_PWR_ON",
+          "claim": "Power-on/hold pin (GPIO5) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.button.pwr",
+          "macro": "TWATCH_BTN_1",
+          "claim": "Main button BTN_1 (GPIO0) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.motor",
+          "macro": "TWATCH_MOTOR",
+          "claim": "Vibration motor (GPIO4) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "TWATCH_IICSCL",
+          "claim": "I2C SCL (GPIO25) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "TWATCH_IICSDA",
+          "claim": "I2C SDA (GPIO26) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TWATCH_TOUCH_RES",
+          "claim": "Touch reset (GPIO33) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TWATCH_TOUCH_INT",
+          "claim": "Touch interrupt / shared all-in-one INT (GPIO32) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.rtc.int",
+          "macro": "TWATCH_RTC_INT",
+          "claim": "RTC interrupt / shared all-in-one INT (GPIO32) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "TWATCH_TFT_MOSI",
+          "claim": "TFT SPI MOSI (GPIO13) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "TWATCH_TFT_SCLK",
+          "claim": "TFT SPI SCLK (GPIO14) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "TWATCH_TFT_CS",
+          "claim": "TFT SPI CS (GPIO15) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "TWATCH_TFT_DC",
+          "claim": "TFT data/command (GPIO19) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "TWATCH_TFT_RST",
+          "claim": "TFT reset (GPIO27) from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "TWATCH_TFT_BL",
+          "claim": "TFT backlight (GPIO21) from official TWatch2021_V1_2.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (PMU/RTC/touch/IMU): SDA=GPIO{TWATCH_IICSDA}, SCL=GPIO{TWATCH_IICSCL}",
+          "claim": "Primary I2C bus from official TWatch2021_V1_2.h"
+        },
+        {
+          "key": "bus.display.spi",
+          "template": "TFT display on SPI: MOSI=GPIO{TWATCH_TFT_MOSI}, SCLK=GPIO{TWATCH_TFT_SCLK}, CS=GPIO{TWATCH_TFT_CS}, DC=GPIO{TWATCH_TFT_DC}, RST=GPIO{TWATCH_TFT_RST}, BL=GPIO{TWATCH_TFT_BL}",
+          "claim": "TFT SPI display bus from official TWatch2021_V1_2.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-amoled-1.64",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-AMOLED-1.64/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "11-29",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.qspi.d0",
+          "macro": "LCD_SDIO0",
+          "claim": "AMOLED QSPI data0 (GPIO11) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d1",
+          "macro": "LCD_SDIO1",
+          "claim": "AMOLED QSPI data1 (GPIO13) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d2",
+          "macro": "LCD_SDIO2",
+          "claim": "AMOLED QSPI data2 (GPIO14) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d3",
+          "macro": "LCD_SDIO3",
+          "claim": "AMOLED QSPI data3 (GPIO15) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.sck",
+          "macro": "LCD_SCLK",
+          "claim": "AMOLED QSPI clock (GPIO12) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.cs",
+          "macro": "LCD_CS",
+          "claim": "AMOLED QSPI chip-select (GPIO10) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "LCD_RST",
+          "claim": "AMOLED display reset (GPIO17) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.en",
+          "macro": "LCD_EN",
+          "claim": "AMOLED display enable (GPIO16) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (GPIO7) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (GPIO6) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_INT",
+          "claim": "Touch interrupt (GPIO9) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TP_RST",
+          "claim": "Touch reset (GPIO8) from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.qspi.display",
+          "template": "AMOLED on QSPI: SCLK=GPIO{LCD_SCLK}, CS=GPIO{LCD_CS}, D0=GPIO{LCD_SDIO0}, D1=GPIO{LCD_SDIO1}, D2=GPIO{LCD_SDIO2}, D3=GPIO{LCD_SDIO3}, RST=GPIO{LCD_RST}",
+          "claim": "AMOLED QSPI display bus from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official pin_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-display-s3-long",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-S3-Long/T-Display-S3-Long-cst3530/examples/factory/pins_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "42-64",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.display.cs",
+          "macro": "TFT_QSPI_CS",
+          "claim": "AXS15231B QSPI chip-select (GPIO12) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "TFT_QSPI_SCK",
+          "claim": "AXS15231B QSPI clock (GPIO17) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d0",
+          "macro": "TFT_QSPI_D0",
+          "claim": "AXS15231B QSPI data0 (GPIO13) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d1",
+          "macro": "TFT_QSPI_D1",
+          "claim": "AXS15231B QSPI data1 (GPIO18) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d2",
+          "macro": "TFT_QSPI_D2",
+          "claim": "AXS15231B QSPI data2 (GPIO21) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.d3",
+          "macro": "TFT_QSPI_D3",
+          "claim": "AXS15231B QSPI data3 (GPIO14) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "TFT_QSPI_RST",
+          "claim": "AXS15231B QSPI reset (GPIO16) from official pins_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "TFT_BL",
+          "claim": "Display backlight (GPIO1) from official pins_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TP_RST",
+          "claim": "Touch reset (GPIO2) from official pins_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_IRQ",
+          "claim": "Touch interrupt (GPIO11) from official pins_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "I2C_SDA",
+          "claim": "I2C SDA / touch (GPIO15) from official pins_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "I2C_SCL",
+          "claim": "I2C SCL / touch (GPIO10) from official pins_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "PIN_BUTTON_1",
+          "claim": "BOOT button (GPIO0) from official pins_config.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SPI_SD_CS",
+          "claim": "microSD chip-select (GPIO38) from official pins_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.qspi.display",
+          "template": "AXS15231B on QSPI: SCK=GPIO{TFT_QSPI_SCK}, CS=GPIO{TFT_QSPI_CS}, D0=GPIO{TFT_QSPI_D0}, D1=GPIO{TFT_QSPI_D1}, D2=GPIO{TFT_QSPI_D2}, D3=GPIO{TFT_QSPI_D3}, RST=GPIO{TFT_QSPI_RST}",
+          "claim": "AXS15231B QSPI display bus from official pins_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (touch): SDA=GPIO{I2C_SDA}, SCL=GPIO{I2C_SCL}",
+          "claim": "Primary I2C bus from official pins_config.h"
+        },
+        {
+          "key": "bus.spi.sdcard",
+          "template": "microSD on SPI: SCLK=GPIO{SPI_SD_SCLK}, MOSI=GPIO{SPI_SD_MOSI}, MISO=GPIO{SPI_SD_MISO}, CS=GPIO{SPI_SD_CS}",
+          "claim": "microSD SPI bus from official pins_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-encoder-pro",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Encoder-Pro/arduino-esp32-libs_V3.0.7/libraries/Mylibrary/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "21-46",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.encoder.a",
+          "macro": "KNOB_DATA_A",
+          "claim": "Rotary encoder channel A (GPIO1) from official pin_config.h"
+        },
+        {
+          "key": "pin.encoder.b",
+          "macro": "KNOB_DATA_B",
+          "claim": "Rotary encoder channel B (GPIO2) from official pin_config.h"
+        },
+        {
+          "key": "pin.encoder.key",
+          "macro": "KNOB_KEY",
+          "claim": "Rotary encoder push key (GPIO0) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (GPIO5) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (GPIO6) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TOUCH_INT",
+          "claim": "CST816 touch interrupt (GPIO9) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.rst",
+          "macro": "TOUCH_RST",
+          "claim": "CST816 touch reset (GPIO8) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d0",
+          "macro": "SCREEN_SDIO0",
+          "claim": "AMOLED QSPI data0 (GPIO11) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d1",
+          "macro": "SCREEN_SDIO1",
+          "claim": "AMOLED QSPI data1 (GPIO13) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d2",
+          "macro": "SCREEN_SDIO2",
+          "claim": "AMOLED QSPI data2 (GPIO7) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.d3",
+          "macro": "SCREEN_SDIO3",
+          "claim": "AMOLED QSPI data3 (GPIO14) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.sck",
+          "macro": "SCREEN_SCLK",
+          "claim": "AMOLED QSPI clock (GPIO12) from official pin_config.h"
+        },
+        {
+          "key": "pin.qspi.cs",
+          "macro": "SCREEN_CS",
+          "claim": "AMOLED QSPI chip-select (GPIO10) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "SCREEN_RST",
+          "claim": "AMOLED display reset (GPIO4) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.en",
+          "macro": "SCREEN_EN",
+          "claim": "AMOLED display enable (GPIO3) from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.qspi.display",
+          "template": "AMOLED on QSPI: SCLK=GPIO{SCREEN_SCLK}, CS=GPIO{SCREEN_CS}, D0=GPIO{SCREEN_SDIO0}, D1=GPIO{SCREEN_SDIO1}, D2=GPIO{SCREEN_SDIO2}, D3=GPIO{SCREEN_SDIO3}, RST=GPIO{SCREEN_RST}",
+          "claim": "AMOLED QSPI display bus from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (CST816 touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official pin_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-keyboard-s3-pro",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Keyboard-S3-Pro/arduino-esp32-libs_V2.0.14/libraries/Mylibrary/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "11-29",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "Primary I2C SDA (GPIO42) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "Primary I2C SCL (GPIO2) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c2.sda",
+          "macro": "IIC_SDA_2",
+          "claim": "Secondary I2C SDA (GPIO6) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c2.scl",
+          "macro": "IIC_SCL_2",
+          "claim": "Secondary I2C SCL (GPIO7) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.mosi",
+          "macro": "LCD_MOSI",
+          "claim": "LCD SPI MOSI (GPIO40) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.sck",
+          "macro": "LCD_SCLK",
+          "claim": "LCD SPI SCLK (GPIO41) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "LCD_DC",
+          "claim": "LCD data/command (GPIO39) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.reset",
+          "macro": "LCD_RST",
+          "claim": "LCD reset (GPIO38) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "LCD_BL",
+          "claim": "LCD backlight (GPIO1) from official pin_config.h"
+        },
+        {
+          "key": "pin.encoder.a",
+          "macro": "KNOB_DATA_A",
+          "claim": "Rotary encoder channel A (GPIO4) from official pin_config.h"
+        },
+        {
+          "key": "pin.encoder.b",
+          "macro": "KNOB_DATA_B",
+          "claim": "Rotary encoder channel B (GPIO5) from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (host keyboard STM32G0): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.secondary",
+          "template": "Secondary I2C: SDA=GPIO{IIC_SDA_2}, SCL=GPIO{IIC_SCL_2}",
+          "claim": "Secondary I2C bus from official pin_config.h"
+        },
+        {
+          "key": "bus.display.spi",
+          "template": "N085 LCD on SPI: MOSI=GPIO{LCD_MOSI}, SCLK=GPIO{LCD_SCLK}, DC=GPIO{LCD_DC}, RST=GPIO{LCD_RST}, BL=GPIO{LCD_BL}",
+          "claim": "LCD SPI display bus from official pin_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-display-p4",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Display-P4/main/components/private_library/t_display_p4_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "12-152",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_1_SDA",
+          "claim": "I2C bus 1 SDA (GPIO7) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_1_SCL",
+          "claim": "I2C bus 1 SCL (GPIO8) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c2.sda",
+          "macro": "IIC_2_SDA",
+          "claim": "I2C bus 2 SDA (GPIO20) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.i2c2.scl",
+          "macro": "IIC_2_SCL",
+          "claim": "I2C bus 2 SCL (GPIO21) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_1_SCLK",
+          "claim": "SPI bus 1 SCLK (GPIO2) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_1_MOSI",
+          "claim": "SPI bus 1 MOSI (GPIO3) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_1_MISO",
+          "claim": "SPI bus 1 MISO (GPIO4) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "ESP32P4_BOOT",
+          "claim": "ESP32-P4 BOOT button (GPIO35) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "HI8561_SCREEN_BL",
+          "claim": "HI8561 display backlight (GPIO51) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.lora.cs",
+          "macro": "SX1262_CS",
+          "claim": "SX1262 LoRa chip-select (GPIO24) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.lora.busy",
+          "macro": "SX1262_BUSY",
+          "claim": "SX1262 LoRa BUSY (GPIO6) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.gps.tx",
+          "macro": "GPS_TX",
+          "claim": "L76K GPS UART TX (GPIO22) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.gps.rx",
+          "macro": "GPS_RX",
+          "claim": "L76K GPS UART RX (GPIO23) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.clk",
+          "macro": "SDIO_1_CLK",
+          "claim": "microSD SDIO CLK (GPIO43) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.cmd",
+          "macro": "SDIO_1_CMD",
+          "claim": "microSD SDIO CMD (GPIO44) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d0",
+          "macro": "SDIO_1_D0",
+          "claim": "microSD SDIO D0 (GPIO39) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d1",
+          "macro": "SDIO_1_D1",
+          "claim": "microSD SDIO D1 (GPIO40) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d2",
+          "macro": "SDIO_1_D2",
+          "claim": "microSD SDIO D2 (GPIO41) from official t_display_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d3",
+          "macro": "SDIO_1_D3",
+          "claim": "microSD SDIO D3 (GPIO42) from official t_display_p4_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "I2C bus 1 (RTC/gauge/touch): SDA=GPIO{IIC_1_SDA}, SCL=GPIO{IIC_1_SCL}",
+          "claim": "I2C bus 1 from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.i2c.secondary",
+          "template": "I2C bus 2 (ES8311 audio + IMU + camera): SDA=GPIO{IIC_2_SDA}, SCL=GPIO{IIC_2_SCL}",
+          "claim": "I2C bus 2 from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.spi.radio",
+          "template": "SPI bus 1 (SX1262 LoRa): SCLK=GPIO{SPI_1_SCLK}, MOSI=GPIO{SPI_1_MOSI}, MISO=GPIO{SPI_1_MISO}, CS=GPIO{SX1262_CS}, BUSY=GPIO{SX1262_BUSY}",
+          "claim": "SPI radio bus from official t_display_p4_config.h"
+        },
+        {
+          "key": "bus.sdmmc.microsd",
+          "template": "microSD on SDIO: CLK=GPIO{SDIO_1_CLK}, CMD=GPIO{SDIO_1_CMD}, D0=GPIO{SDIO_1_D0}, D1=GPIO{SDIO_1_D1}, D2=GPIO{SDIO_1_D2}, D3=GPIO{SDIO_1_D3}",
+          "claim": "microSD SDIO bus from official t_display_p4_config.h"
+        }
+      ]
+    },
+    {
+      "board_id": "board-t-camera-plus-s3",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-CameraPlus-S3/arduino-esp32-libs_V2.0.14/libraries/private_library/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "49-149",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_SCLK",
+          "claim": "Shared SPI clock (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_MOSI",
+          "claim": "Shared SPI MOSI (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_MISO",
+          "claim": "Shared SPI MISO (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.mic.ws",
+          "macro": "MP34DT05TR_LRCLK",
+          "claim": "MP34DT05TR PDM mic word clock (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.mic.data",
+          "macro": "MP34DT05TR_DATA",
+          "claim": "MP34DT05TR PDM mic data (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.en",
+          "macro": "MP34DT05TR_MAX98357_EN",
+          "claim": "MAX98357A amplifier enable (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.data",
+          "macro": "MAX98357A_DATA",
+          "claim": "MAX98357A I2S data (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.bclk",
+          "macro": "MAX98357A_BCLK",
+          "claim": "MAX98357A I2S bit clock from official pin_config.h"
+        },
+        {
+          "key": "pin.speaker.lrclk",
+          "macro": "MAX98357A_LRCLK",
+          "claim": "MAX98357A I2S LR clock from official pin_config.h"
+        },
+        {
+          "key": "pin.display.cs",
+          "macro": "LCD_CS",
+          "claim": "FP-133H01D LCD chip-select (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.display.dc",
+          "macro": "LCD_DC",
+          "claim": "LCD data/command from official pin_config.h"
+        },
+        {
+          "key": "pin.display.backlight",
+          "macro": "LCD_BL",
+          "claim": "LCD backlight from official pin_config.h"
+        },
+        {
+          "key": "pin.sdcard.cs",
+          "macro": "SD_CS",
+          "claim": "microSD chip-select from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.pwdn",
+          "macro": "OV2640_PWDN",
+          "claim": "OV2640 power-down (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.vsync",
+          "macro": "OV2640_VSYNC",
+          "claim": "OV2640 VSYNC (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.xclk",
+          "macro": "OV2640_XCLK",
+          "claim": "OV2640 XCLK from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.sda",
+          "macro": "OV2640_SDA",
+          "claim": "OV2640 SCCB SDA (SIOD) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.scl",
+          "macro": "OV2640_SCL",
+          "claim": "OV2640 SCCB SCL (SIOC) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.href",
+          "macro": "OV2640_HREF",
+          "claim": "OV2640 HREF from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.pclk",
+          "macro": "OV2640_PCLK",
+          "claim": "OV2640 pixel clock from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d7",
+          "macro": "OV2640_D9",
+          "claim": "OV2640 data Y9 (bit 7) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d6",
+          "macro": "OV2640_D8",
+          "claim": "OV2640 data Y8 (bit 6) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d5",
+          "macro": "OV2640_D7",
+          "claim": "OV2640 data Y7 (bit 5) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d4",
+          "macro": "OV2640_D6",
+          "claim": "OV2640 data Y6 (bit 4) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d3",
+          "macro": "OV2640_D5",
+          "claim": "OV2640 data Y5 (bit 3) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d2",
+          "macro": "OV2640_D4",
+          "claim": "OV2640 data Y4 (bit 2) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d1",
+          "macro": "OV2640_D3",
+          "claim": "OV2640 data Y3 (bit 1) from official pin_config.h"
+        },
+        {
+          "key": "pin.camera.d0",
+          "macro": "OV2640_D2",
+          "claim": "OV2640 data Y2 (bit 0) from official pin_config.h"
+        },
+        {
+          "key": "pin.touch.int",
+          "macro": "TP_INT",
+          "claim": "CST816 touch interrupt from official pin_config.h"
+        },
+        {
+          "key": "pin.button.key1",
+          "macro": "KEY1",
+          "claim": "User KEY1 button from official pin_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.spi.primary",
+          "template": "Shared SPI (LCD + microSD): SCLK=GPIO{SPI_SCLK}, MOSI=GPIO{SPI_MOSI}, MISO=GPIO{SPI_MISO}",
+          "claim": "Shared SPI bus (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (SY6970 PMU + CST816 touch): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus (V1.2) from official pin_config.h"
+        },
+        {
+          "key": "bus.camera.dvp",
+          "template": "OV2640 DVP 8-bit parallel: XCLK=GPIO{OV2640_XCLK}, PCLK=GPIO{OV2640_PCLK}, VSYNC=GPIO{OV2640_VSYNC}, HREF=GPIO{OV2640_HREF}, SDA=GPIO{OV2640_SDA}, SCL=GPIO{OV2640_SCL}, D0=GPIO{OV2640_D2}, D1=GPIO{OV2640_D3}, D2=GPIO{OV2640_D4}, D3=GPIO{OV2640_D5}, D4=GPIO{OV2640_D6}, D5=GPIO{OV2640_D7}, D6=GPIO{OV2640_D8}, D7=GPIO{OV2640_D9}",
+          "claim": "OV2640 camera DVP bus from official pin_config.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-halow-p4",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Halow-P4/master/examples/camera_display/components/private_library/t_halow_p4_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "36-98",
+      "topic": "pinout",
+      "authority_rank": 90,
+      "pins": [
+        {
+          "key": "pin.i2c.sda",
+          "macro": "IIC_SDA",
+          "claim": "I2C SDA (GPIO7) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.i2c.scl",
+          "macro": "IIC_SCL",
+          "claim": "I2C SCL (GPIO8) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.spi.sck",
+          "macro": "SPI_1_SCLK",
+          "claim": "SPI SCLK (GPIO43) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.spi.mosi",
+          "macro": "SPI_1_MOSI",
+          "claim": "SPI MOSI (GPIO44) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.spi.miso",
+          "macro": "SPI_1_MISO",
+          "claim": "SPI MISO (GPIO39) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.uart.tx",
+          "macro": "T_HALOW_P4_TX",
+          "claim": "HaLow radio UART TX (GPIO37) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.uart.rx",
+          "macro": "T_HALOW_P4_RX",
+          "claim": "HaLow radio UART RX (GPIO38) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.cmd",
+          "macro": "TX_AH_R900PNR_CMD",
+          "claim": "HaLow radio SDIO CMD (GPIO42) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.clk",
+          "macro": "TX_AH_R900PNR_CLK",
+          "claim": "HaLow radio SDIO CLK (GPIO40) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d0",
+          "macro": "TX_AH_R900PNR_D0",
+          "claim": "HaLow radio SDIO D0 (GPIO39) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d1",
+          "macro": "TX_AH_R900PNR_D1",
+          "claim": "HaLow radio SDIO D1 (GPIO40) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d2",
+          "macro": "TX_AH_R900PNR_D2",
+          "claim": "HaLow radio SDIO D2 (GPIO41) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.sdmmc.d3",
+          "macro": "TX_AH_R900PNR_D3",
+          "claim": "HaLow radio SDIO D3 (GPIO42) from official t_halow_p4_config.h"
+        },
+        {
+          "key": "pin.button.boot",
+          "macro": "ESP32P4_BOOT",
+          "claim": "ESP32-P4 BOOT button (GPIO36) from official t_halow_p4_config.h"
+        }
+      ],
+      "buses": [
+        {
+          "key": "bus.i2c.primary",
+          "template": "Primary I2C (SGM38121): SDA=GPIO{IIC_SDA}, SCL=GPIO{IIC_SCL}",
+          "claim": "Primary I2C bus from official t_halow_p4_config.h"
+        },
+        {
+          "key": "bus.spi.radio",
+          "template": "TX-AH-R900PNR HaLow radio on SPI: SCLK=GPIO{SPI_1_SCLK}, MOSI=GPIO{SPI_1_MOSI}, MISO=GPIO{SPI_1_MISO}",
+          "claim": "HaLow radio SPI bus from official t_halow_p4_config.h"
+        }
+      ],
+      "variant_confirmed": true
+    },
+    {
+      "board_id": "board-t-rgb",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/LilyGo-T-RGB/359c03f7cd8e9aaadd4bf0f3fbf790844fd95f98/src/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "16-56",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-2can",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-2Can/785d55c03942019c6cfd009261d2491bb5df2bd4/libraries/private_library/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "18-19",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-circle",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Circle/e152c0823a0a697570bcb72fcec8f45c0ca6ae93/examples/TFT_eSPI_Simple/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "16-17",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-embed-cc1101",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Embed-CC1101/d33afd9c045cd25d15fb204c42064a0d4ac24156/examples/utilities.h",
+      "source_kind": "arduino-pins",
+      "line_range": "48-69",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-lora-dual",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Lora-Dual/bd603e651172b7c850f76dedca4cbac8d91e2575/T-Lora-Dual/examples/Factory/Factory.ino",
+      "source_kind": "arduino-pins",
+      "line_range": "7-8",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-nixietube",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-NixieTube/9d81f041ee246e7cf52e34cd06012edc64b7c78c/lib/TFT_eSPI-master/User_Setups/Setup137_LilyGo_T-NixieTube.h",
+      "source_kind": "arduino-pins",
+      "line_range": "12-17",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-touchbar-amoled",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Touchbar-AMOLED/355803a6893f2ae7c57389dcda7f088880080293/examples/lifting_dedsk/pin_config.h",
+      "source_kind": "arduino-pins",
+      "line_range": "24-28",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    },
+    {
+      "board_id": "board-t-wristband",
+      "url": "https://raw.githubusercontent.com/Xinyuan-LilyGO/T-Wristband/d0c9be6f7d2d3eed7097fbd59acce36b58dd0714/libdeps/TFT_eSPI/User_Setups/Setup26_TTGO_T_Wristband.h",
+      "source_kind": "arduino-pins",
+      "line_range": "7-13",
+      "topic": "pinout",
+      "authority_rank": 95,
+      "auto_pins": true,
+      "buses": []
+    }
+  ]
+}

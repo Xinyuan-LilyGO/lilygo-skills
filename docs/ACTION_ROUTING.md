@@ -1,51 +1,48 @@
 # Action Routing
 
+Chinese version: [ACTION_ROUTING.zh-CN.md](ACTION_ROUTING.zh-CN.md).
+
 Action routing keeps LilyGO context compact while making the next useful path
-visible to the agent.
+visible to the agent. In the JS thin core this is done by two commands over the
+same board capsule:
 
-When a prompt is about implementation or debugging, `goal plan` and installed
-hook context can expose:
+- `context` resolves the board and returns a thin capsule (≤~1KB) that names the
+  board, the verification boundary, and the `source query` command to pull exact
+  facts.
+- `hook` pushes the thick board capsule into the `UserPromptSubmit` context,
+  inlining the top source-backed facts plus a mandatory pull-before-claim rule.
 
-- the smallest relevant official demo, such as `examples/tft/tft.ino` for a
-  first T-Display-S3 screen instead of the full factory test;
-- source queries for exact IO and bus facts, including `io`, `i2c`, `spi`,
-  `uart`, `i2s`, and `gpio`;
-- permission-aware `next_actions` that distinguish read-only source lookup
-  from build, flash, serial, network, or OTA work;
-- `goal-plan-bridge`, a read-only next action that points the agent at
-  `goal plan` before code edits or hardware actions;
-- project-local custom skill hints from `.lilygo-skills/skills/index.json`;
-- project ledger hints from `.lilygo-skills/ledger.json` and
-  `.lilygo-skills/context-digest.json` when the repo has already received or
-  verified the same context;
-- install health through `doctor --json`.
+Both surfaces point the agent at exact facts instead of pasting whole sources or
+generated skill bodies into the prompt.
 
-Pure fact lookup remains compact. If the user asks "which pins or buses are
-used?", the runtime returns fact tables and source-query commands, not build,
-flash, serial, OTA, or demo actions.
+## What The Capsule Exposes
 
-The classifier is intentionally asymmetric:
+When a board is detected, the capsule exposes:
 
-| Prompt shape | Routing behavior |
-|--------------|------------------|
-| Pure lookup: "which pins are used by the screen?", "哪些引脚被屏幕占用了?" | Read-only capsule: facts and source-query commands only |
-| Implementation/debug: "bring up the display", "让屏幕先亮起来", "debug the sensor" | Goal bridge, selected demos, playbooks, and permission-labelled next actions |
-| Mixed: "check the pins, then bring up the display" | Implementation/debug wins, but lookup expansion stays visible |
+- the resolved `board` id and how it was detected (`keyword` or project files);
+- the verification boundary (`context-injection`, `hardware_verified=false`,
+  `evidence_boundary=V3`);
+- the `source query` command with the topics that carry facts, such as
+  `pinout`, `display`, `i2c`, `spi`, `power`, `lora`, `gnss`, and `touch`;
+- for the thick capsule, the top-ranked inlined facts (chip, bus, driver, and
+  power pins) so common questions are answered without a second call.
 
-Short words such as "first", "minimal", "先", or "最小" do not trigger a demo
-by themselves. They affect demo ranking only when paired with a display/run or
-factory-test intent.
+Pure fact lookup stays compact. If the user asks "which pins or buses are
+used?", the capsule returns the board facts and the `source query` command, not
+build, flash, serial, or OTA actions. The thin core never emits mutation-oriented
+actions; execution stays with the agent and the user's own toolchain.
 
-This is also the token-budget rule. The default capsule should expose the path
-to more context, not paste every source or generated Skill body into the prompt.
-When more detail is needed, the agent expands with `source query`, `index
-query`, generated project skills, or `goal plan`.
+## Pull Before Claim
 
-Project ledger hits follow the same rule. A ledger hit can make repeated prompts
-shorter by saying what was previously verified or already injected, but it does
-not stop an implementation request. Explicit wording such as "re-run",
-"re-verify", or "重新验证" bypasses the compact hit and keeps the full goal path
-visible.
+The thick capsule carries a hard rule: for any concrete pin, bus, address, or
+setting that is not already inlined in the capsule, the agent must first run
+`source query` for the relevant topic and quote the returned official
+`url + line_range + sha256`. Values that are neither inlined nor recoverable via
+`source query` must be reported as unknown rather than guessed.
+
+`verify sources` re-proves those facts against their recorded sources and reports
+`OK`, `DRIFT`, or `UNREACHABLE`, so a stale capsule is caught before the agent
+relies on it.
 
 ## Natural-Language Use
 
@@ -56,62 +53,33 @@ I am using LilyGO T-Display-S3 with PlatformIO Arduino.
 Bring up the first TFT screen and then add an I2C sensor.
 ```
 
-The agent should first inspect:
+The agent should first inspect the capsule:
 
 ```bash
-lilygo-skills goal plan --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"
+lilygo-skills context --json "T-Display-S3 PlatformIO Arduino TFT_eSPI first screen with I2C sensor"
 ```
 
-The capsule should rank the minimal TFT demo first, expose `source query`
-commands for IO/I2C, and show permission-gated build or device steps.
-
-For lookup-only wording, the same board prompt should stay smaller:
+Then pull the exact IO/I2C facts before writing pins:
 
 ```bash
-lilygo-skills route --json "T-Display-S3 的 I2C 引脚和外设地址有哪些?"
+lilygo-skills source query --board board-t-display-s3 --topic i2c --json
+lilygo-skills source query --board board-t-display-s3 --topic pinout --json
 ```
 
-That output should keep fact/source-query context and omit demos, recipes, and
-mutation-oriented actions.
-
-For explicit factory bring-up, the larger factory example remains reachable:
+For a firmware repository, pass the project directory so board detection uses the
+build config and sources instead of the prompt alone:
 
 ```bash
-lilygo-skills goal plan --json "T-Display-S3 run the full factory test"
+lilygo-skills context --project . --json "bring up the display"
 ```
 
-The expected behavior is not "always use the smallest demo"; it is "use the
-smallest demo for first visible output, and keep full factory examples for
-full-board diagnostics."
+## Project Detection
 
-For repeated project work, the user can ask:
-
-```text
-We already verified this display bring-up in this repo. Remember it, and keep
-future prompts short unless I ask to re-verify.
-```
-
-The agent should store only a redacted public summary and evidence hash. Later
-display prompts may receive a compact `previously_verified` hint plus
-`project ledger show`, `source query`, and `goal evidence` expansion commands.
-
-## Project Custom Skills
-
-Firmware repositories can add local operating patterns without modifying the
-public LilyGO runtime:
-
-```text
-.lilygo-skills/
-  skills/
-    index.json
-    project-lvgl-loop/
-      SKILL.md
-```
-
-Each custom skill id must start with `project-`, use a relative path under
-`.lilygo-skills/skills/`, and avoid private paths, credentials, raw logs,
-serial ports, or local network values. Project skills are supplemental
-patterns; official board facts, headers, and examples remain the authority.
+`context --project <dir>` sniffs a firmware repository for board-identifying
+tokens in `platformio.ini`, build config, and a bounded set of source files.
+Project-file evidence is treated as more specific than prompt keywords, so an
+in-repo board wins when both are present. Detection is read-only and does not
+write any project-local state.
 
 ## Health Check
 
@@ -121,15 +89,9 @@ After install, or anytime context injection looks silent, run:
 lilygo-skills doctor --json
 ```
 
-When checking an installed sandbox or user home:
-
-```bash
-lilygo-skills doctor --json --home "$HOME"
-```
-
-`doctor` proves the runtime data, generated skills, route sample, no-op sample,
-and active Codex/Claude wiring for the checked home. Missing integrations are
-warnings; malformed LilyGO hook wiring is a failure. When both host runtimes
-exist, `doctor` also warns if their binary or data mirrors differ and prints the
-reinstall command. Hardware behavior is verified through the task's goal
-evidence path.
+`doctor` proves the runtime data model for the active install: it checks that the
+runtime data files are present, that the board registry and fact packs match,
+that every fact carries V3 evidence, and that the sniff matchers load. It also
+returns a `sample_injection` capsule so you can confirm the injection chain end
+to end. A data-integrity problem fails closed; anything the agent then runs on
+hardware is verified through that task's own build/flash/serial evidence.

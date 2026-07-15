@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "arm": "bare",
+  "model": "haiku",
+  "date": "2026-07-13",
+  "runner": "claude -p",
+  "runner_ok": false,
+  "runner_error": {
+    "task_id": "old-tdisplay-s3-i2c-pins",
+    "status": 1,
+    "auth_failed": true,
+    "stdout_head": "Failed to authenticate. API Error: 401 Invalid authentication credentials",
+    "stderr": "",
+    "error": null
+  },
+  "contaminated": false,
+  "tasks_file": "eval/fixtures/effect-tasks.json",
+  "per_task": [],
+  "summary": {
+    "pass_n": null,
+    "total": 12,
+    "graded": 0,
+    "hallucination_n": null
+  }
+}

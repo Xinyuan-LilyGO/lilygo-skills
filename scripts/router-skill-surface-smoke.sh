@@ -7,8 +7,6 @@ SKILL="$ROOT/skills/lilygo-router/SKILL.md"
 required=(
   "capsule auto-injection"
   "lilygo-skills source query"
-  "lilygo-skills goal complete"
-  "lilygo-skills goal plan"
   "lilygo-skills update board-facts"
 )
 
@@ -22,6 +20,7 @@ done
 forbidden=(
   "lilygo-skills route"
   "lilygo-skills index"
+  "lilygo-skills goal"
   "lilygo-skills generate"
   "lilygo-skills verify"
   "lilygo-skills benchmark"

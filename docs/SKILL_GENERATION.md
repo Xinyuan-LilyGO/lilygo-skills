@@ -13,9 +13,9 @@ playbook, debug, app, or recipe Skill snapshots.
 | `skills/lilygo-router/SKILL.md` | Meta entry loaded by the agent. |
 | `skills/references/*.md` | Static expansion references for operating context. |
 | `templates/skills/*.md` | Markdown templates used by generation. |
-| `index/routes.json` | Skill registry and route triggers. |
+| `index/routes.json` | Skill registry and board triggers. |
 | `data/boards.json` | Board/product source model. |
-| `data/facts/**` | Source-backed board facts and completeness data. |
+| `data/facts/**` | Source-backed board facts. |
 | `data/peripherals/**` | Peripheral/chip/feature source packs. |
 | `data/playbooks/**` | Generated playbook source model. |
 | `data/skills/reference/**` | Source markdown for reference practice skills. |
@@ -35,37 +35,29 @@ become a skill.
 
 ## Natural Language Trigger
 
-Users do not need to memorize the generation command. They can say:
+Users do not need to memorize any generation command. Generated skills are
+materialized by the installer and refreshed by the official-source pipeline; they
+are not produced by an interactive per-project generate command. When a user
+says:
 
 ```text
-Initialize this firmware repo for the LilyGO Skill. I use T-Display-S3 with PlatformIO.
+Set this machine up for the LilyGO Skill. I use T-Display-S3 with PlatformIO.
 ```
 
-The agent should map that to project-local initialization:
+the agent installs the runtime, which mounts the router Skill and the generated
+board skills:
 
 ```bash
-lilygo-skills project init --project . --board board-t-display-s3 --framework fw-platformio --json
+node install.js --all --dry-run     # preview writes
+node install.js --all               # install + self-test
 ```
 
-That writes committed `.lilygo-skills/project.json` and an ignored
-`.lilygo-skills/generated-skills/` cache.
+To point board detection at a firmware repo without writing anything, run
+`context --project .`. To inspect a board's facts, run `source query`.
 
-If the user says:
-
-```text
-Regenerate the LilyGO skills for this project and check that they are complete.
-```
-
-the agent should write only the generated cache, not the source tree:
-
-```bash
-lilygo-skills generate skills --out .lilygo-skills/generated-skills --json
-lilygo-skills verify --generated-root .lilygo-skills/generated-skills --json
-```
-
-Route and hook never generate files for ordinary questions. They report needed
-layers, missing pieces, and the executable generate/update next step; actual
-writes require an explicit install, project-init, generate, or update request.
+`context` and `hook` never generate files for ordinary questions. They resolve
+the board and report the source-query next step; actual writes require an
+explicit install or a pipeline run.
 
 ## Template Shape, Source Content
 
@@ -79,7 +71,7 @@ Generated chip skills are intentionally narrow: they are created only for real
 chip identifiers. Composite descriptions such as "SX1262 or SX1280", memory
 capacity labels, and storage media stay in board/peripheral facts and source
 query output. This keeps the chip layer precise while still exposing those
-facts through `goal plan`, `goal complete`, and `source query`.
+facts through `context`, `hook`, and `source query`.
 
 For example, `board-t-watch-ultra` is generated with a shared board template,
 but its content includes T-Watch Ultra-specific facts: ESP32-S3, Arduino FQBN,
@@ -111,18 +103,16 @@ templates/skills/*.md
 index/routes.json
 ```
 
-Use these commands to inspect the concrete generated content:
+Use these commands to inspect the concrete board content:
 
 ```bash
-lilygo-skills generate skills --out .tmp/generated-skills --json
-sed -n '1,220p' .tmp/generated-skills/skills/board-t-watch-ultra/SKILL.md
-lilygo-skills goal plan --json "T-Watch Ultra Arduino LVGL touch does not move"
-lilygo-skills goal plan --json "T-Watch Ultra ESP-IDF OTA rollback manifest debug"
+lilygo-skills context --json "T-Watch Ultra Arduino LVGL touch does not move"
 lilygo-skills source query --board board-t-watch-ultra --topic io --json
+lilygo-skills verify sources --board board-t-watch-ultra --topic io --json
 ```
 
 The board Skill is the compact generated snapshot. The richer task-time context
-is in `goal plan.context_capsule`, `source query`, and `source completeness`,
+is in the `context`/`hook` capsule plus `source query` and `verify sources`,
 which keep default injection small while still giving the agent source-backed
 facts and official demo references when implementation or debug work needs them.
 For example, generated `board-t-display-s3` includes a `Source-Backed Board
@@ -151,10 +141,10 @@ Generation Contract: templates/skills/<kind>.md
 ## Verification
 
 ```bash
-lilygo-skills generate skills --out .tmp/generated-skills --json
-lilygo-skills verify --generated-root .tmp/generated-skills --json
-bash scripts/static-context-template-smoke.sh --dry-run
-bash scripts/meta-only-source-smoke.sh
+npx tsc --noEmit
+npm test
+bash scripts/ci-gate.sh
+lilygo-skills doctor --json
 ```
 
 Generation is V3 source/context evidence. Hardware behavior still needs its own

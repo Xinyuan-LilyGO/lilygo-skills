@@ -1,0 +1,8 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "[{\"category\":\"industrial-series\",\"product\":\"t-2can\",\"title\":\"T-2Can\",\"tags\":[\"CAN\",\"ESP32-S3\"],\"shopLink\":\"https://lilygo.cc/products/t-2can\"},{\"category\":\"other\",\"product\":\"t-solar\",\"title\":\"T-Solar\",\"tags\":[\"Solar\"],\"shopLink\":\"https://lilygo.cc/products/t-solar-kit\"},{\"category\":\"other\",\"product\":\"t-mini-epaper-s3\",\"title\":\"T-Mini E-Paper S3\",\"tags\":[\"E-Paper\"],\"shopLink\":\"https://lilygo.cc/products/t-mini-epaper-s3\"}]"
+    }
+  ]
+}

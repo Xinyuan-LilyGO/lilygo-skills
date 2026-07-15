@@ -1,6 +1,0 @@
-{
-  "hookSpecificOutput": {
-    "additionalContext": "LilyGO incremental: critical=[pin.i2c.sda=GPIO18,pin.i2c.scl=GPIO17]; next=[source-query-io:none,source-query-i2c:none,source-query-display:none]; expand=goal plan; evidence_boundary=V3/hardware_verified=false",
-    "hookEventName": "UserPromptSubmit"
-  }
-}

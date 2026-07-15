@@ -13,28 +13,27 @@ files, fact packs, reference docs, and templates are expansion material.
 | Framework | Arduino, PlatformIO, ESP-IDF, Rust esp-rs, LVGL. |
 | Preferences | Public behavior choices such as tool order and code limits. |
 | References | Public read hints for official examples, datasheets, project docs, and tools. |
-| Goal plan | Read-only execution plan with permissions and evidence boundaries. |
+| Capsule | Read-only `context`/`hook` capsule with evidence boundaries. |
 | Generated skills | Compact runtime summaries generated from the source model. |
 
 ## Default Injection
 
 Inline only:
 
-- matched skill ids and summaries;
+- the resolved board id and matched skills;
 - top-ranked facts needed for the current prompt;
-- readiness or `needs_source_ingestion`;
-- expansion commands such as `index query`, `source query`, and `goal plan`;
-- evidence boundary and required permissions.
+- the verification boundary (`context-injection`, `hardware_verified=false`,
+  `evidence_boundary=V3`);
+- expansion commands such as `source query` and `verify sources`.
 
 Do not inline complete reference docs or templates unless the user asks for
 that material or the implementation needs it.
 
 ## No-Write Rule
 
-`route`, host hooks, `index query`, `source query`, `source completeness`, and
-`goal plan` are read-only. They may report a generation or update command, but
-they do not write files, fetch sources, open serial ports, flash devices, or run
-network operations.
+`context`, host hooks, `source query`, and `verify sources` are read-only. They
+may report a follow-up command, but they do not write files, fetch sources beyond
+live re-proof, open serial ports, flash devices, or run network operations.
 
-Writing happens only through explicit commands such as `generate skills`,
-`project init`, `update board-facts`, or permissioned `goal start`.
+Writing to the data model happens only through the installer (`node install.js`)
+and the official-source pipeline (`node pipeline/run-official-source-pipeline.js`).

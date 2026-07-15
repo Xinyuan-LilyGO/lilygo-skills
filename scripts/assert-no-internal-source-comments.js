@@ -4,7 +4,7 @@ const path = require("path");
 
 const repoRoot = path.resolve(__dirname, "..");
 const scanRoots = [
-  path.join(repoRoot, "crates", "lilygo-skills-cli", "src"),
+  path.join(repoRoot, "bin"),
   path.join(repoRoot, "install.js"),
   path.join(repoRoot, "scripts"),
 ];

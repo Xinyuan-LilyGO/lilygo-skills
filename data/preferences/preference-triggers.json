@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "flags": [
+    {
+      "name": "explicit",
+      "when": {
+        "substring": ["binflow", "serial", "debug", "调试", "style", "preference"]
+      }
+    }
+  ],
+  "rules": [
+    {
+      "insert": ["proceed"],
+      "when": {
+        "all": [
+          { "any": [{ "not": { "flag": "is_fact" } }, { "flag": "explicit" }] },
+          { "any": [{ "flag": "impl_debug" }, { "flag": "explicit" }] }
+        ]
+      }
+    }
+  ]
+}
