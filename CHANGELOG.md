@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.0.0 — 2026-07-15
 
 - Rewrote the runtime from the Rust CLI to a JS thin core: a Node dispatcher
   under `bin/*.mjs` with no build step, types provided by JSDoc plus `tsc`.
