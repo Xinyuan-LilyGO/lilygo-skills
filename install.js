@@ -190,8 +190,27 @@ function claudeHookScript(home) {
   return "$HOME/.claude/lilygo-skills/bin/hook.mjs";
 }
 
+// Hooks run in a NON-login shell, so a version-manager node (fnm/nvm/volta —
+// only wired up in the login shell's rc) is not on that PATH. Probe a bare
+// system PATH; when `node` does not resolve there, pin the hook to the absolute
+// node running this installer so the hook cannot silently die on such hosts.
+function hookNodeBinary() {
+  if (installPlatform() === "win32") return "node";
+  try {
+    const probe = cp.execFileSync(
+      "/bin/sh",
+      ["-c", "command -v node"],
+      { env: { PATH: "/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin" }, encoding: "utf8" }
+    ).trim();
+    if (probe) return "node";
+  } catch {
+    // fall through to the absolute path
+  }
+  return process.execPath;
+}
+
 function claudeHookCommand(home) {
-  return `node "${claudeHookScript(home)}" claude`;
+  return `${hookNodeBinary()} "${claudeHookScript(home)}" claude`;
 }
 
 function manualClaudeWiring(home) {
