@@ -204,7 +204,6 @@ data/pipeline/provenance 校验、板级三问测试、scorecard grading,以及 
 | 验证等级 | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | 新增板子 | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
 | Router Skill 与引导 | [skills/lilygo-router/SKILL.md](skills/lilygo-router/SKILL.md) + [guides/](skills/lilygo-router/guides/) | (文件内含中英散文) |
-| 设计与评审记录 | [docs/design/](docs/design/) | (按里程碑) |
 | 变更日志 | [CHANGELOG.md](CHANGELOG.md) | — |
 | Agent 运行说明 | [AGENTS.md](AGENTS.md) · [CLAUDE.md](CLAUDE.md) | — |
 

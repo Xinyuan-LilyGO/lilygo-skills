@@ -260,7 +260,7 @@ function reportMarkdown(scorecard) {
   const wins = scorecard.boards.filter((board) => board.verdict === "win").map((board) => board.board_id);
   const losses = scorecard.boards.filter((board) => board.verdict === "lose").map((board) => board.board_id);
   const unmeasurable = scorecard.boards.filter((board) => board.verdict === "unmeasurable").map((board) => `${board.board_id}: ${board.official.raw_error}`);
-  return `# M36 official assistant comparison\n\n` +
+  return `# M36 hosted product catalog comparison\n\n` +
     `Run date: 2026-07-14. Endpoint: ${scorecard.endpoint}. Transport: MCP-SSE.\n\n` +
     `## Headline\n\n` +
     `- Shared boards compared: ${summary.boards_compared}; measurable: ${summary.boards_measurable}.\n` +

@@ -243,7 +243,6 @@ Board facts are ingested from official LilyGO sources, never hand-typed:
 | Verification levels | [docs/VERIFICATION_LEVELS.md](docs/VERIFICATION_LEVELS.md) | [docs/VERIFICATION_LEVELS.zh-CN.md](docs/VERIFICATION_LEVELS.zh-CN.md) |
 | Board contribution | [docs/CONTRIBUTING_BOARDS.md](docs/CONTRIBUTING_BOARDS.md) | [docs/CONTRIBUTING_BOARDS.zh-CN.md](docs/CONTRIBUTING_BOARDS.zh-CN.md) |
 | Router Skill & guides | [skills/lilygo-router/SKILL.md](skills/lilygo-router/SKILL.md) + [guides/](skills/lilygo-router/guides/) | (bilingual prose in-file) |
-| Design & review records | [docs/design/](docs/design/) | (per-milestone) |
 | Changelog | [CHANGELOG.md](CHANGELOG.md) | — |
 | Agent runtime notes | [AGENTS.md](AGENTS.md) · [CLAUDE.md](CLAUDE.md) | — |
 
